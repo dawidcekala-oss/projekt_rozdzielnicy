@@ -104,7 +104,7 @@ def fan(x, y, r=2.3):
 def ct(x, y, r=2.1): circle(x, y, r, fill="none")
 def terminal(x, y, r=0.85): circle(x, y, r)
 def coil(x, y, w=6.4, h=3.4, lab=""):
-    rect(x - w / 2, y - h / 2, w, h); text(x, y + 0.65, lab, 1.5, "middle", bold=True)
+    rect(x - w / 2, y - h / 2, w, h); text(x, y + 0.65 if len(lab) <= 5 else y + 0.5, lab, 1.5 if len(lab) <= 5 else 1.1, "middle", bold=True)
     text(x - w / 2 + 0.2, y - h / 2 - 0.5, "A1", 0.95); text(x + w / 2 - 0.2, y - h / 2 - 0.5, "A2", 0.95, "end")
 def bridge(x, y, s=2.6):
     poly([(x, y - s), (x + s, y), (x, y + s), (x - s, y)], close=True); text(x, y + 0.5, "≈/=", 1.1, "middle")
@@ -127,7 +127,7 @@ def header():
     rect(3, 3, 204, 291, lw=0.5, fill="none")
     text(5, 7.4, "AMPERE POINT – ROZDZIELNICA TESTOWA (SYMULATOR USTEREK INSTALACJI)", 2.6, bold=True)
     text(5, 10.4, "Schemat zasadniczy, arkusz 1/1, rew. C · przyłącze 3×400/230 V TN-S 32 A, prąd testów ≤16 A · wyjścia CEE 32 A, CEE 16 A, 2× Schuko · sterowanie Raspberry Pi 5 + Z-Wave (Shelly Wave Pro 3) + GPIO · obudowa ABS 700×500×250", 1.5)
-    text(5, 12.6, "Urządzenie probiercze wg EN 50191 – obsługa wyłącznie przez osoby z uprawnieniami SEP E/D. Zasada: cewka bez napięcia = instalacja poprawna; usterka = cewka pod napięciem; wyjście załączone = styki -A11 zamknięte.", 1.35, italic=True)
+    text(5, 12.6, "Urządzenie probiercze wg EN 50191 – obsługa wyłącznie przez osoby z uprawnieniami SEP E/D. Zasada: cewka bez napięcia = instalacja poprawna; usterka = cewka pod napięciem; wyjście załączone = -K1 zamknięty (cewka z Lc przez -A11:O1).", 1.35, italic=True)
 
 def column_A():
     X = XA
@@ -152,46 +152,58 @@ def column_A():
     for n in ("L1", "L2", "L3", "N"): wire([(X[n], y + 7.0), (X[n], 62.0)], n)
     # Rew. C: bez SPD (-F2) i bez licznika (-P1) – przewody L1..N biegną wprost do -K12, miejsce opisane notą
     for n in ("L1", "L2", "L3", "N"): wire([(X[n], 62.0), (X[n], 91.0)], n)
+    wire([(X["PE"], 61.0), (X["PE"], 140.0)], "PE")
     text(X["PE"] + 3.0, 48.4, "Rew. C – zmiany po uzgodnieniu z D.C.:", 1.4, bold=True)
     for k, t in enumerate([
-        "• bez ogranicznika przepięć (-F2 skreślony); na TH35 zostają 4 moduły wolne,",
-        "  gdyby SPD T2 4P miał wrócić: L1, L2, L3, N → PE na zaciskach za -Q1",
-        "• bez licznika energii (-P1 skreślony); energia, moc, U, I wyjścia mierzą",
-        "  -P2a, -P2b, -P2c PZEM-016 w kolumnie B (Modbus RTU)",
-        "• -F1 RCD 4P 40 A 30 mA z magazynu (sprawdzić typ A i działanie przycisku T)",
-        "• obudowa -U1: ABS 700×500×250 IP65 z płytą montażową (zamiast Rittal AX)"]):
-        text(X["PE"] + 3.0, 50.6 + k * 1.95, t, 1.2)
-    # odgałęzienie sterowania: F6, F7 (L1) i N230
+        "• bez SPD (-F2 skreślony, decyzja D.C.); 4 moduły TH35 wolne, gdyby miał wrócić;",
+        "  przepięcia z sieci: tylko -RV2 S20K275 (L230–N230) i odporność własna -G1",
+        "• bez licznika energii (-P1 skreślony) – U/I/P/kWh wyjścia: 3× PZEM-016 (kol. B)",
+        "• -F1 RCD 4P 40 A 30 mA z magazynu (typ A/F/B – nie AC; sprawdzić przycisk T)",
+        "• -F6 = RCBO 1P+N B6 30 mA: sterowanie, drzwi, -G1, Shelly, -A20 za własnym RCD",
+        "• -K1 stycznik główny 4NO (styki Shelly są bistabilne) · -U1 ABS 700×500×250"]):
+        text(X["PE"] + 3.0, 50.6 + k * 1.95, t, 1.1)
+    # -W2 blok rozdzielczy PE i -W1 blok N (strona zasilania)
+    dot(X["PE"], 66.0, COL["PE"]); wire([(X["PE"], 66.0), (52.0, 66.0)], "PE"); rect(52.0, 65.1, 2.4, 1.8, fill="#149114", lw=0.2)
+    text(55.5, 66.4, "-W2 blok PE (7 zac.): płyta montażowa, drzwi, radiator -R1, -G1, -X6/-A20", 1.05)
+    text(55.5, 68.5, "-W1 blok N (7 zac.): N230 (przez -F6), -X6/-A20; reszta N/PE: szybkozłączki", 1.05)
+    # odgałęzienie sterowania: -F6 RCBO 1P+N B6 30 mA (L230/N230), -F7 B10 (LT1 = pierwotne -T1)
     yF = 74.0
-    dot(X["L1"], yF, COL["L1"]); hwire(yF, X["L1"], 78.0, "L1", cross=[X[m] for m in NETS])
-    dot(66.0, yF, COL["L1"])
-    breaker(66.0, yF, 7.0); breaker(78.0, yF, 7.0)
-    text(68.4, yF + 4.0, "-F6 B6", 1.4, bold=True); text(80.4, yF + 4.0, "-F7 B10", 1.4, bold=True)
-    wire([(66.0, yF + 7.0), (66.0, 84.0)], "C"); text(66.0, 86.0, "L230", 1.4, "middle", bold=True, col=COL["C"])
-    wire([(78.0, yF + 7.0), (78.0, 84.0)], "C"); text(78.0, 86.0, "LT1", 1.4, "middle", bold=True, col=COL["C"])
-    yN = 77.0
-    dot(X["N"], yN, COL["N"]); hwire(yN, X["N"], 90.0, "N", cross=[X["PE"]]); text(90.0, 86.0, "N230", 1.4, "middle", bold=True, col=COL["N"])
-    wire([(90.0, yN), (90.0, 84.0)], "N")
-    text(55.0, 89.2, "L230/N230: zasilanie sterowania (pas dolny); LT1: pierwotne -T1 (kolumna B)", 1.1)
+    dot(X["L1"], yF, COL["L1"]); hwire(yF, X["L1"], 92.0, "L1", cross=[X[m] for m in NETS if m != "L1"])
+    yN = 72.0
+    dot(X["N"], yN, COL["N"]); hwire(yN, X["N"], 72.0, "N", cross=[X["PE"]]); vwire(72.0, yN, 75.5, "N", cross=[yF])
+    dot(66.0, yF, COL["L1"]); wire([(66.0, yF), (66.0, 75.5)], "L1")
+    breaker(66.0, 75.5, 7.0); breaker(72.0, 75.5, 7.0); breaker(92.0, yF, 7.0)
+    emit('<ellipse cx="69.00" cy="74.70" rx="4.6" ry="1.0" fill="none" stroke="#111" stroke-width="0.3"/>')
+    mech_link((66.0, 72.0), 79.1)
+    text(74.5, 77.6, "-F6 RCBO 1P+N B6", 1.3, bold=True); text(74.5, 79.5, "30 mA typ A", 1.15)
+    text(90.8, yF - 1.3, "-F7 B10", 1.2, "end", bold=True)
+    wire([(66.0, 82.5), (66.0, 84.8)], "C"); text(66.0, 86.6, "L230", 1.4, "middle", bold=True, col=COL["C"])
+    wire([(72.0, 82.5), (72.0, 84.8)], "N"); text(72.0, 86.6, "N230", 1.4, "middle", bold=True, col=COL["N"])
+    wire([(92.0, yF + 7.0), (92.0, 84.8)], "C"); text(92.0, 86.6, "LT1", 1.4, "middle", bold=True, col=COL["C"])
+    # -RV2 S20K275 między L230 a N230 – jedyna ochrona przepięciowa elektroniki po rezygnacji z SPD
+    dot(66.0, 83.8, COL["C"]); dot(72.0, 83.8, COL["N"]); wire([(66.0, 83.8), (67.3, 83.8)], "C"); wire([(70.7, 83.8), (72.0, 83.8)], "N")
+    rect(67.3, 83.0, 3.4, 1.6, lw=0.3); line(67.7, 84.4, 70.3, 83.2); line(70.3, 83.2, 70.9, 83.2)
+    text(73.4, 84.3, "-RV2 S20K275", 1.0)
+    text(52.0, 89.2, "L230/N230: zasilanie sterowania za RCBO -F6 (pas dolny); LT1: pierwotne -T1 (kol. B)", 1.0)
     # K12 (tor przez RCD) + pominięcie
     yK = 92.0
     for n in ("L1", "L2", "L3", "N"):
         x = X[n]
         dot(x, yK - 1.0, COL[n])
-        wire([(x, yK - 1.0), (x - 3.0, yK - 1.0), (x - 3.0, 104.0)], n)      # tor pominięcia
+        wire([(x, yK - 1.0), (x - 3.0, yK - 1.0), (x - 3.0, 99.5)], n)      # tor pominięcia
         contact(x, yK, "NC", 6.0, contactor=True)
-        wire([(x, yK + 6.0), (x, 108.0)], n)
-        contact(x - 3.0, 104.0, "NO", 6.0, contactor=True, side=-1)
-        wire([(x - 3.0, 110.0), (x - 3.0, 115.0), (x, 115.0)], n); dot(x, 115.0, COL[n])
+        wire([(x, yK + 6.0), (x, 109.5)], n)
+        contact(x - 3.0, 99.5, "NO", 6.0, contactor=True, side=-1)
+        wire([(x - 3.0, 105.5), (x - 3.0, 117.5), (x, 117.5)], n); dot(x, 117.5, COL[n])
     mech_link((X["L1"], X["L2"]), yK + 3.0); mech_link((X["L3"], X["N"]), yK + 3.0)
-    mech_link((X["L1"] - 3, X["L2"] - 3), 107.0); mech_link((X["L3"] - 3, X["N"] - 3), 107.0)
+    mech_link((X["L1"] - 3, X["L2"] - 3), 102.5); mech_link((X["L3"] - 3, X["N"] - 3), 102.5)
     text(X["PE"] + 3.0, yK + 2.6, "-K12a, -K12b  2NO+2NC 25 A", 1.5, bold=True)
     text(X["PE"] + 3.0, yK + 4.7, "zestyki NC: tor przez RCD;", 1.3); text(X["PE"] + 3.0, yK + 6.7, "zestyki NO (lewe tory): pominięcie RCD (F13)", 1.3)
     # RCD -F1
     yR = 108.0
-    emit(f'<ellipse cx="{(X["L1"] + X["N"]) / 2:.2f}" cy="{yR + 0.8:.2f}" rx="{(X["N"] - X["L1"]) / 2 + 2.4:.2f}" ry="1.5" fill="none" stroke="#111" stroke-width="0.3"/>')
+    emit(f'<ellipse cx="{(X["L1"] + X["N"]) / 2:.2f}" cy="{yR + 0.8:.2f}" rx="{(X["N"] - X["L1"]) / 2 + 1.0:.2f}" ry="1.5" fill="none" stroke="#111" stroke-width="0.3"/>')
     for n in ("L1", "L2", "L3", "N"):
-        breaker(X[n], yR + 1.5, 6.5); wire([(X[n], yR + 8.0), (X[n], 118.0)], n)
+        breaker(X[n], yR + 1.5, 6.5); wire([(X[n], yR + 8.0), (X[n], 120.0 if n != "N" else 130.0)], n)
     mech_link((X["L1"], X["N"]), yR + 4.9)
     text(X["PE"] + 3.0, yR + 3.6, "-F1  RCD 4P 40 A, IΔn 30 mA, typ A – z magazynu", 1.5, bold=True); text(X["PE"] + 3.0, yR + 5.7, "(jedyny RCD stanowiska; pomijany tylko w F13 przez -K12)", 1.3)
     # -F3 3P B16 (sekcja usterek, testy ≤16 A)
@@ -201,16 +213,15 @@ def column_A():
     text(X["PE"] + 3.0, yF3 + 2.6, "-F3  wyłącznik 3P B16 – zabezpieczenie sekcji usterek", 1.5, bold=True)
     text(X["PE"] + 3.0, yF3 + 4.7, "i obu gniazd CEE (prąd testów ≤16 A, styki Shelly 16 A)", 1.3)
     for n in ("L1", "L2", "L3"): wire([(X[n], yF3 + 6.5), (X[n], 130.0)], n)
-    # -A11 Shelly Wave Pro 3 = stycznik główny (3 styki NO 16 A)
+    # -K1 stycznik główny 4NO (cewka z Lc przez -A11:O1) – styki Shelly Wave Pro 3 są bistabilne, więc nie mogą być wyłącznikiem bezpieczeństwa
     yS = 130.0
-    for i, n in enumerate(("L1", "L2", "L3")):
-        contact(X[n], yS, "NO", 6.0, side=-1); arc(X[n], yS + 4.1, 0.8, 90, 270)
-        text(X[n] - 1.2, yS - 0.6, f"O{i + 1}", 1.0, "end")
-    mech_link((X["L1"], X["L3"]), yS + 3.0)
-    text(X["PE"] + 3.0, yS + 2.6, "-A11  Shelly Wave Pro 3 (Z-Wave): O1 L1, O2 L2, O3 L3", 1.5, bold=True)
-    text(X["PE"] + 3.0, yS + 4.7, "= stycznik główny wyjścia (16 A/styk); zasilanie -A11 z Lc,", 1.3)
-    text(X["PE"] + 3.0, yS + 6.7, "więc E-STOP / kluczyk odłączają wyjście sprzętowo", 1.3)
+    for n in ("L1", "L2", "L3", "N"): contact(X[n], yS, "NO", 6.0, contactor=True, side=-1)
+    mech_link((X["L1"], X["N"]), yS + 3.0)
+    text(X["PE"] + 3.0, yS + 2.6, "-K1  stycznik główny 4NO 25 A – cewka z Lc przez -A11:O1", 1.5, bold=True)
+    text(X["PE"] + 3.0, yS + 4.7, "E-STOP / kluczyk przerywają Lc → -K1 opada = wyjście odłączone", 1.3)
+    text(X["PE"] + 3.0, yS + 6.7, "(styki Shelly Wave są bistabilne – zostają w ostatnim stanie)", 1.3)
     for n in ("L1", "L2", "L3"): wire([(X[n], yS + 6.0), (X[n], 140.0)], n)
+    wire([(X["N"], yS + 6.0), (X["N"], 156.0)], "N")
     # -K2 zamiana L2<->L3 (2NO+2NC): NC prosto, NO na krzyż
     yK2 = 140.0
     contact(X["L2"], yK2, "NC", 6.0, contactor=True, side=-1); contact(X["L3"], yK2, "NC", 6.0, contactor=True)
@@ -223,7 +234,7 @@ def column_A():
     arc((X["L2"] + X["L3"]) / 2, yK2 + 9.0, 0.7, 180, 360, COL["L3"], LWP)
     wire([(X["L2"], yK2 + 6.0), (X["L2"], 156.0)], "L2"); wire([(X["L3"], yK2 + 6.0), (X["L3"], 156.0)], "L3")
     dot(X["L2"], yK2 + 10.4, COL["L2"]); dot(X["L3"], yK2 + 10.4, COL["L3"])
-    wire([(X["L1"], yK2), (X["L1"], 156.0)], "L1"); wire([(X["N"], 118.0), (X["N"], 156.0)], "N")
+    wire([(X["L1"], yK2), (X["L1"], 156.0)], "L1")
     text(X["PE"] + 3.0, yK2 + 2.6, "-K2  2NO+2NC 25 A: NC L2→L2′, L3→L3′ · NO: zamiana", 1.5, bold=True)
     text(X["PE"] + 3.0, yK2 + 4.7, "L2↔L3 = zła kolejność faz (F9); przełączanie tylko", 1.3)
     text(X["PE"] + 3.0, yK2 + 6.7, "przy otwartym -A11; -K13 CKF-B potwierdza na wyjściu", 1.3)
@@ -277,16 +288,16 @@ def column_B():
     text(xp - 2.5 + 0.8, 72.5, "P1", 1.1); text(xp - 4.5 - 0.6, 72.5, "P2", 1.1, "end")
     # ramka K6/K7 (pierwotne) x 150..204, y 62..86  — przewody P1/P2 prowadzone poziomo w prawo pod kolumną? użyj y 66 w prawo do ramki
     fx, fy, fw, fh = 152.0, 66.0, 52.0, 27.0
+    rect(fx, fy, fw, fh, fill="#fcfcfc", rx=0.6)
     hwire(74.0, xp - 2.5, fx + 12.0, "C", cross=[X[n] for n in NETS] + [xp - 4.5, fx + 4.0])
     hwire(76.0, xp - 4.5, fx + 12.0, "C", cross=[X[n] for n in NETS] + [fx + 4.0])
-    rect(fx, fy, fw, fh, fill="#fcfcfc", rx=0.6)
     text(fx + 1.2, fy + 2.4, "-K6 boost / -K7 buck – pierwotne -T1 (2× 2NO+2NC 25 A)", 1.4, bold=True)
     text(fx + 1.2, fy + 4.3, "oba bez napięcia: NC(K6)·NC(K7) zwierają P1–P2 → bocznik magnetyczny", 1.15)
     xl, xn = fx + 4.0, fx + fw - 4.0
-    wire([(xl, fy + 6.0), (xl, fy + fh - 1.5)], "C"); text(xl, fy + fh - 2.0 + 0.0, "", 1)
-    wire([(xn, fy + 6.0), (xn, fy + fh - 1.5)], "N")
+    wire([(xl, fy + 6.0), (xl, fy + 18.0)], "C")
+    wire([(xn, fy + 6.0), (xn, fy + 18.0)], "N")
     text(xl, fy + 5.6, "LT1 (z -F7)", 1.1, "middle", col=COL["C"]); text(xn, fy + 5.6, "N230", 1.1, "middle", col=COL["N"])
-    rect(xl - 1.0, fy + 7.0, 2.0, 3.0, lw=0.22); text(xl - 1.6, fy + 9.4, "-RT1 NTC", 1.0, "end")
+    rect(xl - 1.0, fy + 10.6, 2.0, 1.5, lw=0.22); text(xl - 1.5, fy + 11.9, "-RT1", 0.95, "end")
     # P1 i P2 szyny w ramce
     p1y, p2y = 74.0, 76.0
     xP1, xP2 = fx + 22.0, fx + 30.0
@@ -303,7 +314,10 @@ def column_B():
     # zwarcie: P1 -> NC K6 -> NC K7 -> P2
     hcontact(xP1, yz, "NC", 3.8); hcontact(xP1 + 4.2, yz, "NC", 3.8); wire([(xP1 + 8.0, yz), (xP2, yz)], "C")
     dot(xP1, yz, COL["C"]); dot(xP2, yz, COL["C"]); text(xP1 + 1.9, yz - 2.3, "K6", 1.0, "middle"); text(xP1 + 6.1, yz - 2.3, "K7", 1.0, "middle")
-    varistor_v(xn - 3.0, yk7 + 1.5, 3.4, 2.0); text(xn - 6.5, yk7 + 4.2, "-RV1", 1.0, "end")
+    yv = fy + fh - 1.5   # -RV1 równolegle do pierwotnego (P1–P2)
+    dot(xP1, yv, COL["C"]); dot(xP2, yv, COL["C"]); wire([(xP1, yv), (xP1 + 2.6, yv)], "C"); wire([(xP2 - 2.6, yv), (xP2, yv)], "C")
+    rect(xP1 + 2.6, yv - 0.8, 2.8, 1.6, lw=0.3); line(xP1 + 3.0, yv + 0.6, xP1 + 5.0, yv - 0.6); line(xP1 + 5.0, yv - 0.6, xP1 + 5.6, yv - 0.6)
+    text(xP2 + 1.0, yv + 0.4, "-RV1 S14K275", 1.0)
     # K8 (N), K9 (PE 2 bieguny ∥)
     yK8 = 106.0
     for n in ("N", "PE"): wire([(X[n], y0[n]), (X[n], yK8)], n)
@@ -312,9 +326,9 @@ def column_B():
     contact(X["PE"], yK8 + 0.4, "NC", 6.0, contactor=True, side=-1); contact(X["PE"] + 3.0, yK8 + 0.4, "NC", 6.0, contactor=True, side=1)
     wire([(X["PE"] + 3.0, yK8 + 6.4), (X["PE"] + 3.0, yK8 + 7.0), (X["PE"], yK8 + 7.0)], "PE"); dot(X["PE"], yK8 + 7.0, COL["PE"])
     wire([(X["N"], yK8 + 6.0), (X["N"], 134.0)], "N"); wire([(X["PE"], yK8 + 7.0), (X["PE"], 134.0)], "PE")
-    text(X["N"] - 1.4, yK8 - 1.2, "-K8", 1.2, "end"); text(X["PE"] + 5.2, yK8 - 1.2, "-K9", 1.2)
+    text(X["N"] - 1.4, yK8 - 1.2, "-K8", 1.2, "end"); text(X["PE"] + 6.2, yK8 - 1.2, "-K9", 1.2)
     text(xlab + 6.0, yK8 - 5.2, "-K8 2NC 25 A: przerwa N (F4)", 1.3, bold=True)
-    text(xlab + 6.0, yK8 - 3.1, "-K9 2NC 25 A: przerwa PE (F1), 2 bieguny ∥", 1.3, bold=True)
+    text(xlab + 6.0, yK8 - 3.1, "-K9 2NO+2NC 25 A: 2×NC ∥ = przerwa PE (F1); NO → -A13:SW1", 1.3, bold=True)
     # szyny do drabinki upływów
     xr = 203.0
     rails = {"PEs": 115.0, "L1o": 119.0, "No": 124.0, "PEo": 129.0}
@@ -324,7 +338,8 @@ def column_B():
     dot(X["N"], rails["No"], COL["N"]); hwire(rails["No"], X["N"], xr, "N", cross=[X["PE"], 151.0])
     dot(X["PE"], rails["PEo"], COL["PE"]); hwire(rails["PEo"], X["PE"], xr, "PE", cross=[151.0])
     for k, lab, c in (("PEs", "PE (sieć)", "PE"), ("L1o", "L1′", "L1"), ("No", "N′", "N"), ("PEo", "PE′", "PE")):
-        text(xr + 0.6, rails[k] + 0.55, lab, 1.15, col=COL[c])
+        if k == "PEs": text(206.6, rails[k] - 0.5, lab, 1.05, "end", col=COL[c])
+        else: text(xr + 0.6, rails[k] + 0.55, lab, 1.15, col=COL[c])
     # F2: PEs -> styk -> R2 -> PEo
     x = 156.0
     dot(x, rails["PEs"], COL["PE"]); contact(x, rails["PEs"] + 0.2, "NO", 4.2, side=1); text(x + 2.3, rails["PEs"] + 3.0, "-A14:O1", 1.05)
@@ -334,7 +349,7 @@ def column_B():
     # F3: L1o -> styk -> R3 220k -> PEo
     x = 168.0
     dot(x, rails["L1o"], COL["L1"]); contact(x, rails["L1o"] + 0.2, "NO", 3.8, side=1); text(x + 2.3, rails["L1o"] + 2.8, "-A14:O2", 1.05)
-    resistor_v(x, rails["L1o"] + 4.2, 3.6, 2.0); text(x + 1.6, rails["L1o"] + 6.9, "-R3 220 kΩ 2 W", 1.0)
+    resistor_v(x, rails["L1o"] + 4.2, 3.6, 2.0); text(x + 1.6, rails["L1o"] + 6.9, "-R3 2×110k 2W", 1.0)
     vwire(x, rails["L1o"] + 7.8, rails["PEo"], "PE", cross=[rails["No"]]); dot(x, rails["PEo"], COL["PE"])
     text(x, rails["PEs"] - 1.3, "F3 PE pod U", 1.1, "middle", bold=True)
     # F6: No -> styk -> PEo
@@ -345,21 +360,24 @@ def column_B():
     # F14: L1o -> styk -> R4 -> PEo
     x = 193.0
     dot(x, rails["L1o"], COL["L1"]); contact(x, rails["L1o"] + 0.2, "NO", 3.8, side=1); text(x + 2.3, rails["L1o"] + 2.8, "-A15:O1", 1.05)
-    resistor_v(x, rails["L1o"] + 4.2, 3.6, 2.0); text(x + 1.6, rails["L1o"] + 6.9, "-R4 6,8 kΩ 25 W", 1.0)
+    resistor_v(x, rails["L1o"] + 4.2, 3.6, 2.0); text(x - 1.5, rails["L1o"] + 7.0, "-R4 6,8k 25W", 0.95, "end")
     vwire(x, rails["L1o"] + 7.8, rails["PEo"], "PE", cross=[rails["No"]]); dot(x, rails["PEo"], COL["PE"])
     text(x + 1.0, rails["PEs"] - 1.3, "F14 upływ 34 mA~", 1.1, "middle", bold=True)
     # F15: zestaw DC pod szynami: L1' -> styk -> dioda -V1 -> węzeł A; -C1 ∥ -R6 między A a N'; -R5 z A do PE'
     yd = rails["PEo"] + 3.0
-    text(154.0, yd + 1.4, "F15 upływ 6 mA= (oślepianie RCD typu A):", 1.1, bold=True)
-    text(154.0, yd + 3.7, "L1′ → styk → dioda -V1 (1 kV) → węzeł A; -C1 22 µF/400 V ∥ -R6 100 kΩ", 1.0)
-    text(154.0, yd + 5.9, "między A a N′ (≈ 325 V=); -R5 56 kΩ 5 W z A do PE′ → ≈ 6 mA prądu stałego", 1.0)
+    text(154.0, yd + 1.4, "F15 upływ 6 mA= przed ładowarką – RCD A/AC nie zadziała, typ B tak:", 1.1, bold=True)
+    text(154.0, yd + 3.7, "L1′ → -A15:O2 → -R7 100 Ω 2 W → -V1 (2×1N4007) → węzeł A;", 1.0)
+    text(154.0, yd + 5.9, "-C1 22 µF/400 V ∥ -R6 100 kΩ między A a N′ (≈ 325 V=);", 1.0)
+    text(154.0, yd + 8.1, "-R5 56 kΩ 5 W z A do PE′ → ≈ 6 mA= (RDC-DD go nie widzi)", 1.0)
     xv = 200.5
-    dot(xv, rails["L1o"], COL["L1"]); vwire(xv, rails["L1o"], yd + 2.0, "L1", cross=[rails["No"], rails["PEo"]])
+    dot(xv, rails["L1o"], COL["L1"]); vwire(xv, rails["L1o"], 125.4, "L1", cross=[rails["No"]])
+    resistor_v(xv, 125.4, 2.8, 1.8); text(xv - 1.5, 127.6, "-R7 100 Ω", 0.95, "end")
+    vwire(xv, 128.2, yd + 2.0, "L1", cross=[rails["PEo"]])
     contact(xv, yd + 2.0, "NO", 3.6, side=-1); text(xv - 2.2, yd + 4.6, "-A15:O2", 1.0, "end")
     # dioda pionowo (strzałka w dół)
     wire([(xv, yd + 5.6), (xv, yd + 7.0)], "L1")
     poly([(xv - 1.3, yd + 7.0), (xv + 1.3, yd + 7.0), (xv, yd + 9.2)], close=True); line(xv - 1.3, yd + 9.2, xv + 1.3, yd + 9.2)
-    text(xv + 1.8, yd + 8.8, "-V1", 1.0)
+    text(xv - 1.8, yd + 8.8, "-V1", 1.0, "end")
     yA = yd + 11.0
     wire([(xv, yd + 9.2), (xv, yA)], "S"); dot(xv, yA, COL["S"])            # węzeł A
     # R5 w lewo do PE'
@@ -394,7 +412,7 @@ def column_B():
     yb = {n: 160.0 + i * 2.0 for i, n in enumerate(NETS)}
     xe = 203.0
     for n in NETS:
-        dot(X[n], yb[n], COL[n]); hwire(yb[n], X[n], xe, n, cross=[X[m] for m in NETS if X[m] > X[n]])
+        dot(X[n], yb[n], COL[n]); hwire(yb[n], 110.0, xe, n, cross=[X[m] for m in NETS if X[m] > X[n]])
         text(xe + 0.6, yb[n] + 0.5, n + "″", 1.15, col=COL[n])
     def group3(x0, name, tag, ysock):
         for i, n in enumerate(("L1", "L2", "L3")):
@@ -402,8 +420,7 @@ def column_B():
             dot(x, yb[n], COL[n]); vwire(x, yb[n], ysock, n, cross=[yb[m] for m in NETS if yb[m] > yb[n]])
         dot(x0 + 9.6, yb["N"], COL["N"]); vwire(x0 + 9.6, yb["N"], ysock, "N", cross=[yb["PE"]])
         dot(x0 + 12.8, yb["PE"], COL["PE"]); wire([(x0 + 12.8, yb["PE"]), (x0 + 12.8, ysock)], "PE")
-        text(x0 - 1.5, 178.0, tag, 1.15)
-        rect(x0 - 2.0, ysock, 17.0, 5.0, rx=0.8); text(x0 + 6.5, ysock + 3.3, name, 1.4, "middle", bold=True)
+        rect(x0 - 2.0, ysock, 17.0, 6.6, rx=0.8); text(x0 + 6.5, ysock + 2.9, name, 1.4, "middle", bold=True); text(x0 + 6.5, ysock + 5.5, tag, 1.0, "middle")
     group3(141.0, "-X2  CEE 32 A 5P", "zab. -F3 B16 (kol. A)", 187.0)
     group3(163.0, "-X3  CEE 16 A 5P", "zab. -F3 B16 (kol. A)", 187.0)
     x5 = 187.0
@@ -421,7 +438,7 @@ def column_B():
     arc(x5 + 1.6, yk + 5.6, 0.6, 180, 360, COL["N"], LWP)
     wire([(x5, yk + 4.0), (x5, yk + 5.6)], "L1"); wire([(x5 + 3.2, yk + 4.0), (x5 + 3.2, yk + 5.6)], "N")
     dot(x5, yk + 5.6, COL["L1"]); dot(x5 + 3.2, yk + 5.6, COL["N"])
-    text(x5 + 7.8, yk + 1.0, "-K11", 1.1, bold=True); text(x5 + 7.8, yk + 2.7, "2NO+2NC 25 A", 1.0); text(x5 + 7.8, yk + 4.4, "L↔N (F7)", 1.0)
+    text(x5 + 8.3, yk + 1.0, "-K11", 1.1, bold=True); text(x5 + 8.3, yk + 2.7, "2NO+2NC", 1.0); text(x5 + 8.3, yk + 4.4, "L↔N (F7)", 1.0)
     wire([(x5, yk + 5.6), (x5, 189.5)], "L1"); wire([(x5 + 3.2, yk + 5.6), (x5 + 3.2, 189.5)], "N")
     dot(x5 + 9.6, yb["PE"], COL["PE"]); wire([(x5 + 9.6, yb["PE"]), (x5 + 9.6, 170.6), (x5 + 16.2, 170.6), (x5 + 16.2, 189.5)], "PE")
     rect(x5 - 4.5, 189.5, 21.5, 5.6, rx=0.8); text(x5 + 6.2, 191.9, "-X4a, -X4b  2× Schuko", 1.3, "middle", bold=True); text(x5 + 6.2, 194.0, "16 A (L, N, PE″) równolegle", 1.0, "middle")
@@ -435,14 +452,14 @@ def column_B():
     # P2
     rect(bx, 179.0, bw, 6.0, fill="#fcfcfc", rx=0.5); text(bx + 1.0, 181.2, "-P2a, -P2b, -P2c  3× PZEM-016", 1.3, bold=True); text(bx + 1.0, 183.2, "U: L1″/L2″/L3″ wzgl. N sprzed -K8/-K10", 0.95); text(bx + 1.0, 184.6, "I: CT L1″/L2″/L3″ · Modbus adr. 1/2/3 → -A6", 0.95)
     for i, n in enumerate(("L1", "L2", "L3")):
-        xt = 126.0 + i * 2.4
+        xt = (127.4, 129.8, 134.6)[i]
         dot(xt, yb[n], COL[n]); vwire(xt, yb[n], 179.0, n, cross=[yb[m] for m in NETS if yb[m] > yb[n]])
     # odniesienie napięciowe PZEM: N z kanału (za RCD, przed -K8/-K10) – przy F4/F5 PZEM nie widzi pływającego N″
     dot(XCH["N"], 162.4, COL["N"]); vwire(XCH["N"], 162.4, 182.0, "N", cross=[164.2]); wire([(XCH["N"], 182.0), (bx, 182.0)], "N")
     text(XCH["N"] + 0.7, 180.6, "N", 0.95, col=COL["N"], bold=True)
     for i, n in enumerate(("L1", "L2", "L3")):
-        ct(135.6 + i * 2.6, yb[n], 0.9)
-    text(138.2, yb["L1"] - 1.9, "CT -P2a/b/c", 0.95, "middle", col=COL["S"])
+        ct(152.0 + i * 2.6, yb[n], 0.9)
+    text(154.6, yb["L1"] - 1.9, "CT -P2a/b/c", 0.95, "middle", col=COL["S"])
     # P3
     rect(bx, 187.0, bw, 5.2, fill="#fcfcfc", rx=0.5); text(bx + 1.0, 189.2, "-P3 ZMPT101B", 1.3, bold=True); text(bx + 1.0, 191.2, "U(N″–PE″) → -A5 ADS1115 → RPi", 0.95)
     xc_, xd_ = 137.6, 139.4
@@ -454,7 +471,7 @@ def ladder():
     """pas dolny: sterowanie 230 V – dwie kolumny szczebli"""
     y_top = 198.0
     rect(5.0, y_top, 101.0, 92.0, fill="white", lw=0.3)
-    text(6.2, y_top + 2.6, "STEROWANIE 230 V (cewki) – zasilanie z -F6: L230 / N230", 1.6, bold=True)
+    text(6.2, y_top + 2.6, "STEROWANIE 230 V (cewki) – zasilanie z -F6 (RCBO 30 mA): L230 / N230", 1.6, bold=True)
     yc = y_top + 8.5
     xa = 7.0
     text(xa, yc + 0.5, "L230", 1.3, "start", bold=True, col=COL["C"]); wire([(xa + 7.0, yc), (xa + 10.0, yc)], "C")
@@ -466,7 +483,9 @@ def ladder():
     wire([(xa + 52.0, yc), (xa + 62.0, yc)], "C"); text(xa + 63.0, yc + 0.5, "Lc = zasilanie cewek", 1.3, bold=True, col=COL["C"])
     cols = [(8.0, 54.0), (58.0, 104.0)]
     rungs = [
-        ("—", "-H1", "lamp", "#bfe8bf", []),
+        ("-A4:CH8", "-H1", "lamp", "#bfe8bf", []),
+        ("-A11:O1", "-K1", "coil", None, []),
+        ("∥-K1", "-H2", "lamp", "#f3b7b7", []),
         ("-A4:CH7", "-K2", "coil", None, []),
         ("-A12:O1", "-K3", "coil", None, []),
         ("-A4:CH1", "-K4", "coil", None, []),
@@ -478,10 +497,9 @@ def ladder():
         ("-A13:O2", "-K10", "coil", None, []),
         ("-A13:O3", "-K11", "coil", None, []),
         ("-A4:CH4", "-K12a/b", "coil", None, []),
-        ("-A4:CH5", "-H2", "lamp", "#f3b7b7", []),
         ("-A4:CH6", "-M1", "fan", None, []),
     ]
-    per = 7; dy = 5.6
+    per = 8; dy = 5.6
     for ci, (x0, x1) in enumerate(cols):
         sub = rungs[ci * per:(ci + 1) * per]
         yl0 = y_top + 14.0
@@ -490,10 +508,16 @@ def ladder():
         text(x0, yl0 - 1.0, "Lc", 1.2, "middle", bold=True, col=COL["C"]); text(x1, yl0 - 1.0, "N230", 1.2, "middle", bold=True, col=COL["N"])
         for ri, (src, name, kind, fill, extra) in enumerate(sub):
             y = yl0 + 3.0 + ri * dy
-            dot(x0, y, COL["C"]); dot(x1, y, COL["N"])
+            dot(x1, y, COL["N"])
             xc = x0 + 2.0
-            wire([(x0, y), (xc, y)], "C")
-            if src != "—":
+            if src == "∥-K1":
+                # -H2 zasilana z węzła za stykiem -A11:O1 (równolegle z cewką -K1)
+                dot(xc + 6.0, y - dy, COL["C"]); wire([(xc + 6.0, y - dy), (xc + 6.0, y)], "C"); xc += 6.0
+            else:
+                dot(x0, y, COL["C"]); wire([(x0, y), (xc, y)], "C")
+            if src == "∥-K1":
+                pass
+            elif src != "—":
                 hcontact(xc, y, "NO", 6.0, mark="relay" if src.startswith("-A4") else None)
                 text(xc + 3.0, y - 2.4, src, 1.05, "middle")
                 if name == "-M1":
@@ -508,29 +532,29 @@ def ladder():
             xcoil = x1 - 7.0
             wire([(xc, y), (xcoil - 3.2, y)], "C")
             if kind == "lamp":
-                lamp(xcoil, y, 1.7, fill); wire([(xcoil + 1.7, y), (x1, y)], "N"); text(xcoil - 4.2, y + 0.5, name, 1.2, "end", bold=True)
+                lamp(xcoil, y, 1.7, fill); wire([(xcoil + 1.7, y), (x1, y)], "N"); text(xcoil - 4.2, y - 0.7, name, 1.2, "end", bold=True)
             elif kind == "fan":
-                fan(xcoil, y, 1.9); wire([(xcoil + 1.9, y), (x1, y)], "N"); text(xcoil - 4.2, y + 0.5, name, 1.2, "end", bold=True)
+                fan(xcoil, y, 1.9); wire([(xcoil + 1.9, y), (x1, y)], "N"); text(xcoil - 4.2, y - 0.7, name, 1.2, "end", bold=True)
             else:
                 coil(xcoil, y, 6.4, 3.0, name); wire([(xcoil + 3.2, y), (x1, y)], "N")
                 rect(xcoil - 1.2, y + 1.9, 2.4, 1.1, lw=0.2); wire([(xcoil - 3.2, y), (xcoil - 3.2, y + 2.45), (xcoil - 1.2, y + 2.45)], "C"); wire([(xcoil + 1.2, y + 2.45), (xcoil + 3.2, y + 2.45), (xcoil + 3.2, y)], "N")
-    ylist = y_top + 14.0 + dy * 7 + 6.0
-    text(6.2, ylist, "Funkcje: -H1 lampa zielona (Lc OK) · -A11 (kolumna A) stycznik główny wyjścia · -K2 zła kolejność faz (F9) · -K3 zanik L3 (F8) · -K4 luźny styk L1, impulsy 0,1–0,5 s (F11)", 1.05)
-    text(6.2, ylist + 2.2, "-K5 rezystor -R1 w tor (F12) · -K6 boost +30 V (F10b) · -K7 buck −30 V (F10a) · -K8 przerwa N (F4) · -K9 przerwa PE (F1) · -K10 zamiana N↔PE (F5) · -K11 zamiana L↔N (F7)", 1.05)
-    text(6.2, ylist + 4.4, "-K12a/b pominięcie RCD (F13) · -H2 lampa czerwona „usterka aktywna” · -M1 wentylator radiatora (z -A4:CH6 lub termostatu -B2) · -A4:CH8 rezerwa", 1.05)
-    text(6.2, ylist + 7.0, "z L230/N230 (niezależnie od kluczyka): -G1 zasilacz 5 V (RPi) · -A12…-A15 Shelly Wave Pro 3 (L, N) · -A20 DLB-A1 przez -X6 (L, N, PE).  Z Lc/N230: -A11 (stycznik główny).", 1.05)
-    text(6.2, ylist + 9.2, "wejścia zwrotne 230 V do SW Shelly Wave: Lc→-A12:SW1 (klucz+E-STOP OK) · -S0 NO→-A12:SW2 · -K13 CKF-B→-A12:SW3 · -A11: stan własnych styków przez Z-Wave", 1.0)
-    text(6.2, ylist + 11.4, "RV = warystor S10K275 równolegle do każdej cewki. -K6/-K7: blokada wzajemna stykami NC2. -K2, -K10, -K11, -K12: styczniki przełączne (nigdy oba tory). Przewody cewek 1,0 mm².", 1.0)
+    ylist = y_top + 14.0 + dy * 8 + 6.0
+    text(6.2, ylist, "Funkcje: -H1 zielona = stan bezpieczny (CH8: -K1 wył. i -K13 bez U) · -K1 stycznik główny (cewka z -A11:O1) · -H2 czerwona = -K1 załączony · -K2 zła kolejność faz (F9)", 1.05)
+    text(6.2, ylist + 2.2, "-K3 zanik L3 (F8) · -K4 luźny styk L1, impulsy 0,1–0,5 s (F11) · -K5 rezystor -R1 (F12) · -K6 boost +30 V (F10b) · -K7 buck −30 V (F10a) · -K8 przerwa N (F4) · -K9 przerwa PE (F1)", 1.05)
+    text(6.2, ylist + 4.4, "-K10 zamiana N↔PE (F5) · -K11 zamiana L↔N (F7) · -K12a/b pominięcie RCD (F13) · -M1 wentylator radiatora (CH6 lub termostat -B2) · -A4:CH5 rezerwa · -A11:O2/O3 rezerwa", 1.05)
+    text(6.2, ylist + 7.0, "z L230/N230 (za RCBO -F6, niezależnie od kluczyka): -G1 zasilacz 5 V (RPi) · -A12…-A15 Shelly Wave Pro 3 · -A20 DLB-A1 przez -X6 · -RV2 S20K275.  Z Lc/N230: -A11 (steruje -K1).", 1.05)
+    text(6.2, ylist + 9.2, "wejścia zwrotne 230 V do SW Shelly: Lc→-A12:SW1 (klucz+E-STOP OK) · -S0 NO→-A12:SW2 · -K13 CKF-B→-A12:SW3 · -K9 NO→-A13:SW1 (PE przerwane) · F16 (kombinacja) zablokowana programowo", 1.0)
+    text(6.2, ylist + 11.4, "RV = warystor S10K275 przy każdej cewce · -K6/-K7: blokada stykami NC2 · -K2/-K10/-K11/-K12 przełączne: nigdy oba tory · Shelly: auto-off 60 s · RPi: watchdog sprzętowy · cewki 1,0 mm²", 1.0)
 
 def selv_panel():
     x0, y0, w = 110.0, 198.0, 95.0
     rect(x0, y0, w, 68.0, fill="white", lw=0.3)
     text(x0 + 1.2, y0 + 2.6, "STEROWNIK I ŁĄCZNOŚĆ (SELV 5 V)", 1.6, bold=True)
     box(x0 + 1.0, y0 + 4.0, 46.0, 9.0, "-G1  Mean Well HDR-60-5", ["wej. L230/N230/PE · wyj. +5 V 6,5 A →", "-A1 (USB-C), -A4, -A5"], 1.45, 1.15, 1.75)
-    box(x0 + 48.0, y0 + 4.0, 46.0, 9.0, "Magistrala RS485 Modbus RTU", ["-A6 master → -P2a, -P2b, -P2c PZEM-016 (adr 1, 2, 3)", "LiYCY 2×0,5; 120 Ω na końcach; adresy nadane programowo"], 1.45, 1.1, 1.75)
+    box(x0 + 48.0, y0 + 4.0, 46.0, 9.0, "Magistrala RS485 Modbus RTU", ["-A6 master → -P2a, -P2b, -P2c PZEM-016 (adr 1, 2, 3)", "LiYCY 2×0,5; 120 Ω; adresy nadawać pojedynczo (0xF8 = 1 urządz.)"], 1.45, 1.1, 1.75)
     box(x0 + 1.0, y0 + 14.0, 93.0, 17.0, "-A1  Raspberry Pi 5 (4 GB)  +  -A2 Raspberry Pi Touch Display 2 (7″, DSI, w drzwiach)", [
         "USB: -A3 kontroler Z-Wave 800 EU (LR) ⇄ radio 868 MHz ⇄ -A11…-A15     USB: -A6 konwerter USB–RS485 (izolowany)",
-        "GPIO: -A4 płytka 8 przekaźników 10 A (opto) → styki CH1…CH8 drabinki (CH1 -K4, CH2 -K6, CH3 -K7, CH4 -K12, CH5 -H2, CH6 -M1, CH7 -K2, CH8 rezerwa)",
+        "GPIO: -A4 płytka 8 przekaźników 5 A (opto) → styki CH1…CH8 drabinki (CH1 -K4, CH2 -K6, CH3 -K7, CH4 -K12a+b, CH5 rezerwa, CH6 -M1, CH7 -K2, CH8 -H1)",
         "I²C: -A5 ADS1115 ← -P3 ZMPT101B (U N″–PE″)     karta microSD, aktywne chłodzenie, zasilanie USB-C z -G1",
         "oprogramowanie: Z-Wave JS UI + aplikacja nadzorcza (automat stanów usterek, blokady wzajemne, limity czasu, dziennik), opcjonalnie Home Assistant",
     ], 1.45, 1.1, 1.8)
@@ -538,9 +562,9 @@ def selv_panel():
     ty = y0 + 32.0
     rect(x0 + 1.0, ty, 93.0, 24.0, fill="#fcfcfc", lw=0.32, rx=0.6)
     text(x0 + 2.2, ty + 2.6, "-A11 … -A15  Shelly Wave Pro 3 (Z-Wave, DIN): styki bezpotencjałowe 16 A O1–O3, wejścia SW1–SW3 230 V, +1 szt. zapas", 1.25, bold=True)
-    rows = [("-A11", "O1 L1  O2 L2  O3 L3 = stycznik główny (zasilany z Lc)", "SW1–SW3 rezerwa"),
+    rows = [("-A11", "O1→cewka -K1 (stycznik główny) + -H2   O2, O3 rezerwa   (zasilany z Lc)", "SW1–SW3 rezerwa"),
             ("-A12", "O1→-K3   O2→-K5   O3→-K8", "SW1 Lc OK · SW2 -S0 NO · SW3 -K13 CKF-B"),
-            ("-A13", "O1→-K9   O2→-K10   O3→-K11", "SW1–SW3 rezerwa"),
+            ("-A13", "O1→-K9   O2→-K10   O3→-K11", "SW1 -K9 NO (PE przerwane) · SW2–SW3 rezerwa"),
             ("-A14", "O1→-R2 (F2)   O2→-R3 (F3)   O3→mostek N′–PE′ (F6)", "SW1–SW3 rezerwa"),
             ("-A15", "O1→-R4 (F14)   O2→-V1 zestaw DC (F15)   O3→rezerwa", "SW1–SW3 rezerwa")]
     yy = ty + 5.6
@@ -563,7 +587,7 @@ def legend_title():
     dot(x0 + 24.0, y0 + 5.0, "#111"); text(x0 + 26.0, y0 + 5.5, "połączenie", 1.1); line(x0 + 22.5, y0 + 7.4, x0 + 23.3, y0 + 7.4); arc(x0 + 24.0, y0 + 7.4, 0.7, 180, 360); line(x0 + 24.7, y0 + 7.4, x0 + 25.5, y0 + 7.4); text(x0 + 26.0, y0 + 7.8, "skrzyżowanie bez połączenia", 1.1)
     text(x0 + 23.0, y0 + 10.1, "-A4:CHx styk GPIO RPi", 1.05); text(x0 + 23.0, y0 + 12.4, "-A1x:Ox styk Shelly Wave", 1.05)
     text(x0 + 23.0, y0 + 14.7, "symbole IEC 60617", 1.05); text(x0 + 23.0, y0 + 17.0, "oznaczenia IEC 81346", 1.05)
-    text(x0 + 23.0, y0 + 19.6, "części + linki: str. 2–8; założenia: str. 9", 1.05, bold=True)
+    text(x0 + 23.0, y0 + 19.3, "części + linki: str. 2–8", 1.05, bold=True); text(x0 + 23.0, y0 + 21.1, "założenia: str. 9", 1.05, bold=True)
     x1 = 156.0
     rect(x1, y0, 49.0, 22.0, lw=0.4)
     line(x1, y0 + 6.0, x1 + 49, y0 + 6.0, lw=0.3); line(x1, y0 + 12.0, x1 + 49, y0 + 12.0, lw=0.3); line(x1, y0 + 17.0, x1 + 49, y0 + 17.0, lw=0.3)

@@ -1,10 +1,10 @@
 {
- "wersja": "2026-10-07 v5 – przyłącze 3×32 A, prąd testów ≤16 A, bez licznika (energia: 3× PZEM-016), bez SPD, RCD z magazynu, obudowa ABS 700×500×250, elementy montażowe poza kosztorysem; sterowanie Raspberry Pi 5 + Z-Wave (Shelly Wave Pro 3) + przekaźniki GPIO",
+ "wersja": "2026-10-07 v6 – przyłącze 3×32 A, prąd testów ≤16 A, bez licznika (3× PZEM-016), bez SPD, RCD z magazynu, RCBO sterowania, stycznik główny -K1 (styki Shelly są bistabilne), obudowa ABS 700×500×250, elementy montażowe poza kosztorysem; sterowanie Raspberry Pi 5 + Z-Wave (Shelly Wave Pro 3) + przekaźniki GPIO",
  "koszyki": {
   "K1": "Aparatura elektryczna – jedna hurtownia elektrotechniczna ze sklepem na Allegro (np. TIM, Onninen, Grodno, EL12, Kaczmarek, Likor)",
   "K2": "Elektronika i sterowanie – Botland lub Kamami (sklepy na Allegro)",
   "K3": "Transformator toroidalny – Indel / Telto / Breve (Allegro)",
-  "K5": "Z magazynu Ampere Point (0 zł): RCD 4P 40 A 30 mA, Shelly Wave Pro 3, szybkozłączki 2- i 3-wejściowe, przewody 6 i 2,5 mm²"
+  "K5": "Z magazynu Ampere Point (0 zł): RCD 4P 40 A 30 mA, Shelly Wave Pro 3, moduł DLB-A1 z przekładnikami CT, szybkozłączki 2- i 3-wejściowe, przewody 6 i 2,5 mm²"
  },
  "pozycje": [
   {
@@ -56,10 +56,10 @@
    "ozn": "-F6",
    "koszyk": "K1",
    "ilosc": 1,
-   "nazwa": "Wyłącznik nadprądowy 1P B6 – zasilanie sterowania 230 V",
-   "model": "Noark Ex9BN 1P B6 (kod 100004)",
-   "fraza": "Noark Ex9BN 1P B6",
-   "cena": 14,
+   "nazwa": "Wyłącznik różnicowo-nadprądowy (RCBO) 1P+N B6, 30 mA, typ A – zasilanie sterowania, drzwi, -G1, Shelly, -A20 (własny RCD, niezależny od -F1)",
+   "model": "Noark Ex9NL-N 1P+N B6 30 mA typ A (2 mod.) lub Eaton PFL6-6/1N/B/003-A",
+   "fraza": "RCBO 1P+N B6 30mA typ A",
+   "cena": 95,
    "zrodlo": "szac."
   },
   {
@@ -75,10 +75,10 @@
   },
   {
    "id": 8,
-   "ozn": "-K3, -K4, -K5, -K8, -K9",
+   "ozn": "-K3, -K4, -K5, -K8",
    "koszyk": "K1",
-   "ilosc": 5,
-   "nazwa": "Stycznik modułowy 25 A, 2 styki NC, cewka 230 V AC, 1 moduł (zanik L3, luźny styk, bocznik rezystora, przerwa N, przerwa PE)",
+   "ilosc": 4,
+   "nazwa": "Stycznik modułowy 25 A, 2 styki NC, cewka 230 V AC, 1 moduł (zanik L3, luźny styk, bocznik rezystora, przerwa N)",
    "model": "Noark Ex9CH25 02 230V",
    "fraza": "Noark Ex9CH25 02 230V",
    "cena": 48,
@@ -86,10 +86,10 @@
   },
   {
    "id": 9,
-   "ozn": "-K2, -K6, -K7, -K10, -K11, -K12a, -K12b",
+   "ozn": "-K2, -K6, -K7, -K9, -K10, -K11, -K12a, -K12b",
    "koszyk": "K1",
-   "ilosc": 7,
-   "nazwa": "Stycznik modułowy 25 A, 2NO+2NC (przełączny), cewka 230 V AC, 2 moduły (zamiana faz, boost, buck, zamiana N–PE, zamiana L–N, pominięcie RCD ×2)",
+   "ilosc": 8,
+   "nazwa": "Stycznik modułowy 25 A, 2NO+2NC (przełączny), cewka 230 V AC, 2 moduły (zamiana faz, boost, buck, przerwa PE z potwierdzeniem NO→-A13:SW1, zamiana N–PE, zamiana L–N, pominięcie RCD ×2)",
    "model": "Noark Ex9CH25 22 230V (kod 102414)",
    "fraza": "Noark Ex9CH25 22 230V 102414",
    "cena": 75,
@@ -107,11 +107,22 @@
    "zrodlo": "oferta"
   },
   {
+   "id": 11,
+   "ozn": "-K1",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Stycznik modułowy 25 A, 4NO, cewka 230 V AC, 2 moduły – stycznik główny wyjścia (cewka z Lc przez -A11:O1; E-STOP/kluczyk odłączają wyjście sprzętowo, bo styki Shelly Wave Pro 3 są bistabilne)",
+   "model": "Noark Ex9CH25 40 230V",
+   "fraza": "Noark Ex9CH25 40 230V",
+   "cena": 85,
+   "zrodlo": "szac."
+  },
+  {
    "id": 12,
    "ozn": "-W1, -W2",
    "koszyk": "K1",
    "ilosc": 2,
-   "nazwa": "Blok rozdzielczy 1P 125 A, 7 zacisków, na TH35 (szyna N i PE strony zasilania); płyta montażowa połączona z PE",
+   "nazwa": "Blok rozdzielczy 1P 125 A, 7 zacisków, na TH35 ×2 (-W1 szyna N, -W2 szyna PE strony zasilania: płyta montażowa, drzwi, radiator, -G1, -X6)",
    "model": "blok rozdzielczy 1P 125 A 7 otworów (Elektro-Plast / Pawbol)",
    "fraza": "blok rozdzielczy 125A 1P 7 otworów",
    "cena": 12,
@@ -177,7 +188,7 @@
    "ozn": "-S0",
    "koszyk": "K1",
    "ilosc": 1,
-   "nazwa": "Przycisk bezpieczeństwa grzybkowy Ø22, 1NC+1NO, odblokowanie przez obrót",
+   "nazwa": "Przycisk bezpieczeństwa grzybkowy Ø22, 1NC+1NO (blok NO dokupić, jeśli wersja ma tylko 1NC), odblokowanie przez obrót",
    "model": "XB2-BS542 (klon) / Spamel ST22-B",
    "fraza": "przycisk grzybkowy bezpieczeństwa 22mm 1NC 1NO",
    "cena": 20,
@@ -189,9 +200,9 @@
    "koszyk": "K1",
    "ilosc": 1,
    "nazwa": "Przełącznik kluczykowy Ø22, 2 położenia, 1NO, kluczyk wyjmowany w 0",
-   "model": "XB2-BG21 (klon)",
+   "model": "XB2-BG21 / LAY5-BG21 (klon), 1NO",
    "fraza": "przełącznik kluczykowy 22mm 2 pozycje 1NO",
-   "cena": 20,
+   "cena": 25,
    "zrodlo": "szac."
   },
   {
@@ -254,7 +265,7 @@
    "ozn": "-A4",
    "koszyk": "K2",
    "ilosc": 1,
-   "nazwa": "Płytka 8 przekaźników 10 A na GPIO RPi z optoizolacją (K2, K4, K6, K7, K12, lampka, wentylator)",
+   "nazwa": "Płytka 8 przekaźników 5 A/250 V AC na GPIO RPi z optoizolacją (K2, K4, K6, K7, K12a+b, -H1, wentylator)",
    "model": "Waveshare RPi Relay Board (B) 8-ch",
    "fraza": "Waveshare RPi Relay Board B 8 kanałów",
    "cena": 120,
@@ -361,35 +372,35 @@
   },
   {
    "id": 44,
-   "ozn": "-V1, -C1, -R5, -R6",
+   "ozn": "-V1, -C1, -R5, -R6, -R7",
    "koszyk": "K2",
    "ilosc": 1,
-   "nazwa": "Zestaw upływu DC 6 mA: 2× dioda 1N4007 (szeregowo), kondensator 22 µF 400 V, rezystor 56 kΩ 5 W, rezystor 100 kΩ 1 W",
-   "model": "1N4007, 22uF/400V, 56k 5W, 100k 1W",
+   "nazwa": "Zestaw upływu DC 6 mA: 2× dioda 1N4007 (szeregowo), kondensator 22 µF 400 V, rezystor 56 kΩ 5 W, rezystor 100 kΩ 1 W, rezystor 100 Ω 2 W (ograniczenie prądu ładowania C1)",
+   "model": "1N4007, 22uF/400V, 56k 5W, 100k 1W, 100R 2W",
    "fraza": "dioda 1N4007",
    "cena": 10,
    "zrodlo": "szac."
   },
   {
    "id": 45,
-   "ozn": "-RV1, -RT1",
+   "ozn": "-RV1, -RV2, -RT1",
    "koszyk": "K2",
    "ilosc": 1,
-   "nazwa": "Warystor S14K275 + termistor NTC 10D-20 (softstart pierwotnego T1)",
-   "model": "S14K275, NTC 10D-20",
+   "nazwa": "Warystor S14K275 (-RV1 pierwotne T1) + warystor S20K275 (-RV2 L230–N230, ochrona elektroniki bez SPD) + termistor NTC 10D-20 (softstart T1)",
+   "model": "S14K275, S20K275, NTC 10D-20",
    "fraza": "warystor S14K275",
-   "cena": 6,
+   "cena": 25,
    "zrodlo": "szac."
   },
   {
    "id": 46,
    "ozn": "RV",
    "koszyk": "K2",
-   "ilosc": 12,
-   "nazwa": "Warystor S10K275 (gasik równolegle do każdej cewki 230 V)",
+   "ilosc": 2,
+   "nazwa": "Warystor S10K275 – opakowanie 10 szt. (gasik równolegle do każdej z 13 cewek 230 V → 2 opakowania)",
    "model": "S10K275",
    "fraza": "warystor S10K275",
-   "cena": 1,
+   "cena": 5,
    "zrodlo": "szac."
   },
   {
@@ -455,7 +466,7 @@
    "nazwa": "Karta microSD 32 GB A2 + Raspberry Pi Active Cooler + kabel USB-C z otwartymi końcami (zasilanie z -G1)",
    "model": "microSD 32GB A2, RPi Active Cooler, kabel USB-C",
    "fraza": "Raspberry Pi 5 Active Cooler",
-   "cena": 75,
+   "cena": 85,
    "zrodlo": "szac."
   },
   {
@@ -493,7 +504,7 @@
   },
   {
    "id": 62,
-   "ozn": "-X1, -X5, -X6",
+   "ozn": "-X1, -X6",
    "koszyk": "K5",
    "ilosc": 1,
    "nazwa": "Szybkozłączki 2- i 3-wejściowe (zestaw w magazynie) – połączenia N/PE wyjścia, rozgałęzienia sterowania, zaciski DLB",
@@ -501,10 +512,32 @@
    "fraza": "",
    "cena": 0,
    "zrodlo": "magazyn"
+  },
+  {
+   "id": 63,
+   "ozn": "-A20",
+   "koszyk": "K5",
+   "ilosc": 1,
+   "nazwa": "Moduł DLB-A1 (dynamiczne równoważenie obciążenia) – montaż na zewnątrz obudowy, zasilanie z -X6, antena 433 MHz",
+   "model": "DLB-A1",
+   "fraza": "",
+   "cena": 0,
+   "zrodlo": "magazyn"
+  },
+  {
+   "id": 64,
+   "ozn": "-",
+   "koszyk": "K5",
+   "ilosc": 1,
+   "nazwa": "Przewody 6 mm² (tor 32 A: -X1 → -Q1 → -F1 → -F3) i 2,5 mm² (sekcja usterek, gniazda) – z magazynu",
+   "model": "LgY / H07V-K 6 i 2,5 mm²",
+   "fraza": "",
+   "cena": 0,
+   "zrodlo": "magazyn"
   }
  ],
  "poza_kosztorysem": {
-  "opis": "Elementy montażowe – dobór na etapie montażu (poza tabelą i podsumowaniem kosztów, na życzenie D.C.)",
+  "opis": "elementy montażowe, dobór na etapie montażu",
   "pozycje": [
    {
     "id": 13,

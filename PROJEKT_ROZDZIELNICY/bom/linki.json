@@ -26,18 +26,18 @@
   "tytul_oferty": "Noark Ex9BN 2P B16 (listing)",
   "cena_pln": null,
   "sprzedawca": null,
-  "uwagi": "Brak oferty 2P B16 Noark w wynikach (4 zapytania). Alternatywa: 1P B16 Noark 100008 oferta 10483551886 lub RCBO 2P B16 107622.",
+  "uwagi": "Brak oferty 2P B16 Noark w wynikach (4 zapytania). Alternatywa pełnowartościowa: RCBO/wyłącznik 2P B16 innej marki (Eaton, Hager, ETI) – aparat musi rozłączać L i N.",
   "pewnosc": "niska"
  },
  "6": {
   "id": 6,
-  "url": "https://allegro.pl/oferta/noark-wylacznik-nadpradowy-1p-b6a-6ka-ac-100004-8947967503",
-  "url_typ": "oferta",
-  "tytul_oferty": "NOARK Wyłącznik nadprądowy 1P B6A 6kA AC 100004",
-  "cena_pln": 10.96,
+  "url": "https://allegro.pl/listing?string=RCBO+1P%2BN+B6+30mA+typ+A",
+  "url_typ": "listing",
+  "tytul_oferty": "RCBO 1P+N B6 30 mA typ A (listing)",
+  "cena_pln": null,
   "sprzedawca": null,
-  "uwagi": "Dokładny kod 100004. Inna oferta 17765801626 ok. 9,85 zł.",
-  "pewnosc": "wysoka"
+  "uwagi": "Dowolna marka z hurtowni K1 (Noark Ex9NL-N, Eaton PFL6, Hager ADA, ETI KZS-2M) – 1P+N, B6, 30 mA, typ A; 2 moduły. Zastępuje -F6 1P B6 i daje sterowaniu własne RCD.",
+  "pewnosc": "srednia"
  },
  "7": {
   "id": 7,
@@ -78,6 +78,16 @@
   "sprzedawca": null,
   "uwagi": "Dokładny model F&F CKF-B, 1NO 10 A, TH35. Inne oferty 70-82 zł (np. 6842090330).",
   "pewnosc": "wysoka"
+ },
+ "11": {
+  "id": 11,
+  "url": "https://allegro.pl/listing?string=Noark+Ex9CH25+40+230V",
+  "url_typ": "listing",
+  "tytul_oferty": "Noark Ex9CH25 40 230V – stycznik modułowy 25 A 4NO (listing)",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Ten sam sprzedawca co poz. 8/9 (Ex9CH25 02/22). Zamiennik: dowolny stycznik modułowy 4NO 25 A z cewką 230 V AC (Hager ESC425, Eaton Z-SCH230/25-40).",
+  "pewnosc": "srednia"
  },
  "12": {
   "id": 12,
@@ -144,19 +154,19 @@
   "url": "https://allegro.pl/oferta/przycisk-bezpieczenstwa-grzybek-xb2-bs542-metalowy-5006849653",
   "url_typ": "oferta",
   "tytul_oferty": "PRZYCISK BEZPIECZEŃSTWA GRZYBEK XB2 BS542 METALOWY",
-  "cena_pln": 11.99,
+  "cena_pln": 20.0,
   "sprzedawca": null,
-  "uwagi": "Adelid, kołnierz metal, odblok. obrotem. Standardowo tylko 1NC - dla 1NC+1NO dokupić blok styku NO lub wybrać wersję BS545.",
+  "uwagi": "Adelid XB2-BS542 11,99 zł ma tylko 1NC – dokupić blok styku NO (ok. 8 zł) albo wybrać wersję BS545 (1NC+1NO). Odblokowanie obrotem, kołnierz metalowy.",
   "pewnosc": "srednia"
  },
  "21": {
   "id": 21,
-  "url": "https://allegro.pl/oferta/przelacznik-2-polozeniowy-klucz-22mm-czarny-1z-bez-samopowrotu-st22-saa-10-14569609102",
-  "url_typ": "oferta",
-  "tytul_oferty": "Przełącznik 2 położeniowy klucz 22mm czarny 1Z bez samopowrotu ST22-SAA-10",
-  "cena_pln": 88.6,
+  "url": "https://allegro.pl/listing?string=prze%C5%82%C4%85cznik+kluczykowy+22mm+BG21+1NO",
+  "url_typ": "listing",
+  "tytul_oferty": "Przełącznik kluczykowy 22 mm BG21 (klon XB2/LAY5), 2 położenia, 1NO (listing)",
+  "cena_pln": null,
   "sprzedawca": null,
-  "uwagi": "Spamel, drogi. XB2/LAY5-BG21 tylko w archiwum; tanie klony BG21 (~16-30 zł) szukać: listing 'przełącznik kluczykowy 22mm BG21'.",
+  "uwagi": "Klony BG21 16–30 zł; oryginał Spamel ST22-SAA-10 ok. 89 zł (oferta 14569609102), jeśli wolisz markowy. Kluczyk wyjmowany w położeniu 0.",
   "pewnosc": "srednia"
  },
  "22": {
@@ -297,7 +307,7 @@
   "tytul_oferty": "Rezystor mocy 6,8 kohm 25W z radiatorem",
   "cena_pln": null,
   "sprzedawca": null,
-  "uwagi": "Brak oferty 6K8 25W w wynikach (znaleziono tylko 6R8=6,8 ohm 25W, 8-11 zł). Alternatywa: 2x 3k3 25W w szereg lub 2x 6k8 10W ceramiczne równolegle.",
+  "uwagi": "Brak oferty 6K8 25W w wynikach (tylko 6R8 = 6,8 Ω). Alternatywa: 2× 3,3 kΩ 25 W szeregowo (=6,6 kΩ, 35 mA) albo 2× 13 kΩ 10 W równolegle (=6,5 kΩ). NIE 2× 6,8 kΩ równolegle (3,4 kΩ → 68 mA).",
   "pewnosc": "niska"
  },
  "44": {
@@ -305,9 +315,9 @@
   "url": "https://allegro.pl/oferta/dioda-prostownicza-1n4007-1000v-1a-10szt-7641932208",
   "url_typ": "oferta",
   "tytul_oferty": "Dioda Prostownicza 1N4007 1000V 1A 10szt",
-  "cena_pln": 2.2,
+  "cena_pln": 10.0,
   "sprzedawca": null,
-  "uwagi": "Cena za 10 szt. diod. Kondensator 22uF 400V ok. 2-5 zł (produkt), rezystor 56k 5W cementowy ok. 1-2,5 zł – osobne pozycje.",
+  "uwagi": "Cena = suma składników: diody 1N4007 10 szt. 2,20 zł (oferta) + kondensator 22 µF/400 V ok. 3 zł + 56 kΩ 5 W ok. 2 zł + 100 kΩ 1 W ok. 1 zł + 100 Ω 2 W ok. 1 zł – szukać u tego samego sprzedawcy elektroniki.",
   "pewnosc": "srednia"
  },
  "45": {
@@ -315,9 +325,9 @@
   "url": "https://allegro.pl/oferta/warystor-14mm-tnt-s14k275-430v-275v-ac-350v-dc-275vac-14471524822",
   "url_typ": "oferta",
   "tytul_oferty": "WARYSTOR 14mm TNT S14K275 430V 275V AC 350V DC 275VAC",
-  "cena_pln": 5.49,
+  "cena_pln": 25.0,
   "sprzedawca": null,
-  "uwagi": "Cena za 5 szt. (ok. 1,10 zł/szt). NTC 10D-20 osobno, ok. 17 zł (drogo); tańsza alternatywa NTC 10D-11 (3A) lub 10D-15.",
+  "uwagi": "Cena = suma: S14K275 5 szt. 5,49 zł (oferta) + S20K275 ok. 2,5 zł + NTC 10D-20 ok. 17 zł (tańsza alternatywa NTC 10D-15 ok. 5 zł).",
   "pewnosc": "srednia"
  },
  "46": {
@@ -357,7 +367,7 @@
   "tytul_oferty": "Transformator toroidalny Indel TST600 2x30V 10A 600VA (listing 2x30V)",
   "cena_pln": 569.45,
   "sprzedawca": null,
-  "uwagi": "Brak oferty 630VA 2x30V; TST600 600VA 2x30V ok. 569 zł (cena ze snippetu, bez URL). Alt. 630VA 2x24V ok. 190 zł; TR-150W 2x30V ok. 190 zł.",
+  "uwagi": "Brak oferty 630 VA 2×30 V w wynikach; TST600 2×30 V 10 A ok. 569 zł (cena ze snippetu, bez URL). Alternatywa 630 VA 2×24 V ok. 190 zł daje ±24 V (206/254 V zamiast 200/260 V). Transformatory ≤300 VA NIE nadają się – wtórne w szeregu z L1 musi przenieść 16 A ciągle.",
   "pewnosc": "niska"
  },
  "56": {
@@ -395,9 +405,9 @@
   "url": "https://allegro.pl/oferta/aktywna-chlodnica-raspberry-pi-sc1148-dla-raspberry-pi-5-17640490481",
   "url_typ": "oferta",
   "tytul_oferty": "Aktywna chłodnica Raspberry Pi SC1148 dla Raspberry Pi 5 (Active Cooler)",
-  "cena_pln": 42.25,
+  "cena_pln": 85.0,
   "sprzedawca": null,
-  "uwagi": "Cooler 24-42 zł zależnie od oferty. microSD Adata Premier Pro 32GB A2: oferta 8277242848 za 36,90 zł. Kabel USB-C otwarte końce: szukać osobno.",
+  "uwagi": "Cena = suma: Active Cooler 42,25 zł (oferta) + microSD Adata Premier Pro 32 GB A2 36,90 zł (oferta 8277242848) + kabel USB-C z otwartymi końcami ok. 6 zł.",
   "pewnosc": "srednia"
  },
  "60": {

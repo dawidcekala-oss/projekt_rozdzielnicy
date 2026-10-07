@@ -9,5 +9,105 @@
   "alternatywa_url": "https://allegro.pl/oferta/obudowa-abs-plastikowa-skrzynka-przezroczysta-700x500x250-ip65-9787503614",
   "uwagi": "Komplet: obudowa, zamek, płyta ocynkowana, uchwyty. Alternatywa: ta sama obudowa z drzwiami przezroczystymi ok. 449 zł.",
   "pewnosc": "srednia"
+ },
+ "5": {
+  "id": 5,
+  "url": "https://allegro.pl/listing?string=noark+ex9bn+2p+b16",
+  "url_typ": "listing",
+  "tytul_oferty": "Noark Ex9BN 2P B16 (listing)",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Brak oferty 2P B16 Noark w wynikach (4 zapytania). Alternatywa pełnowartościowa: RCBO/wyłącznik 2P B16 innej marki (Eaton, Hager, ETI) – aparat musi rozłączać L i N.",
+  "pewnosc": "niska"
+ },
+ "43": {
+  "id": 43,
+  "url": "https://allegro.pl/listing?string=rezystor+6%2C8k+25W",
+  "url_typ": "listing",
+  "tytul_oferty": "Rezystor mocy 6,8 kohm 25W z radiatorem",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Brak oferty 6K8 25W w wynikach (tylko 6R8 = 6,8 Ω). Alternatywa: 2× 3,3 kΩ 25 W szeregowo (=6,6 kΩ, 35 mA) albo 2× 13 kΩ 10 W równolegle (=6,5 kΩ). NIE 2× 6,8 kΩ równolegle (3,4 kΩ → 68 mA).",
+  "pewnosc": "niska"
+ },
+ "51": {
+  "id": 51,
+  "url": "https://allegro.pl/listing?string=transformator+toroidalny+2x30v",
+  "url_typ": "listing",
+  "tytul_oferty": "Transformator toroidalny Indel TST600 2x30V 10A 600VA (listing 2x30V)",
+  "cena_pln": 569.45,
+  "sprzedawca": null,
+  "uwagi": "Brak oferty 630 VA 2×30 V w wynikach; TST600 2×30 V 10 A ok. 569 zł (cena ze snippetu, bez URL). Alternatywa 630 VA 2×24 V ok. 190 zł daje ±24 V (206/254 V zamiast 200/260 V). Transformatory ≤300 VA NIE nadają się – wtórne w szeregu z L1 musi przenieść 16 A ciągle.",
+  "pewnosc": "niska"
+ },
+ "21": {
+  "id": 21,
+  "url": "https://allegro.pl/listing?string=prze%C5%82%C4%85cznik+kluczykowy+22mm+BG21+1NO",
+  "url_typ": "listing",
+  "tytul_oferty": "Przełącznik kluczykowy 22 mm BG21 (klon XB2/LAY5), 2 położenia, 1NO (listing)",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Klony BG21 16–30 zł; oryginał Spamel ST22-SAA-10 ok. 89 zł (oferta 14569609102), jeśli wolisz markowy. Kluczyk wyjmowany w położeniu 0.",
+  "pewnosc": "srednia"
+ },
+ "44": {
+  "id": 44,
+  "url": "https://allegro.pl/oferta/dioda-prostownicza-1n4007-1000v-1a-10szt-7641932208",
+  "url_typ": "oferta",
+  "tytul_oferty": "Dioda Prostownicza 1N4007 1000V 1A 10szt",
+  "cena_pln": 10.0,
+  "sprzedawca": null,
+  "uwagi": "Cena = suma składników: diody 1N4007 10 szt. 2,20 zł (oferta) + kondensator 22 µF/400 V ok. 3 zł + 56 kΩ 5 W ok. 2 zł + 100 kΩ 1 W ok. 1 zł + 100 Ω 2 W ok. 1 zł – szukać u tego samego sprzedawcy elektroniki.",
+  "pewnosc": "srednia"
+ },
+ "45": {
+  "id": 45,
+  "url": "https://allegro.pl/oferta/warystor-14mm-tnt-s14k275-430v-275v-ac-350v-dc-275vac-14471524822",
+  "url_typ": "oferta",
+  "tytul_oferty": "WARYSTOR 14mm TNT S14K275 430V 275V AC 350V DC 275VAC",
+  "cena_pln": 25.0,
+  "sprzedawca": null,
+  "uwagi": "Cena = suma: S14K275 5 szt. 5,49 zł (oferta) + S20K275 ok. 2,5 zł + NTC 10D-20 ok. 17 zł (tańsza alternatywa NTC 10D-15 ok. 5 zł).",
+  "pewnosc": "srednia"
+ },
+ "59": {
+  "id": 59,
+  "url": "https://allegro.pl/oferta/aktywna-chlodnica-raspberry-pi-sc1148-dla-raspberry-pi-5-17640490481",
+  "url_typ": "oferta",
+  "tytul_oferty": "Aktywna chłodnica Raspberry Pi SC1148 dla Raspberry Pi 5 (Active Cooler)",
+  "cena_pln": 85.0,
+  "sprzedawca": null,
+  "uwagi": "Cena = suma: Active Cooler 42,25 zł (oferta) + microSD Adata Premier Pro 32 GB A2 36,90 zł (oferta 8277242848) + kabel USB-C z otwartymi końcami ok. 6 zł.",
+  "pewnosc": "srednia"
+ },
+ "20": {
+  "id": 20,
+  "url": "https://allegro.pl/oferta/przycisk-bezpieczenstwa-grzybek-xb2-bs542-metalowy-5006849653",
+  "url_typ": "oferta",
+  "tytul_oferty": "PRZYCISK BEZPIECZEŃSTWA GRZYBEK XB2 BS542 METALOWY",
+  "cena_pln": 20.0,
+  "sprzedawca": null,
+  "uwagi": "Adelid XB2-BS542 11,99 zł ma tylko 1NC – dokupić blok styku NO (ok. 8 zł) albo wybrać wersję BS545 (1NC+1NO). Odblokowanie obrotem, kołnierz metalowy.",
+  "pewnosc": "srednia"
+ },
+ "6": {
+  "id": 6,
+  "url": "https://allegro.pl/listing?string=RCBO+1P%2BN+B6+30mA+typ+A",
+  "url_typ": "listing",
+  "tytul_oferty": "RCBO 1P+N B6 30 mA typ A (listing)",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Dowolna marka z hurtowni K1 (Noark Ex9NL-N, Eaton PFL6, Hager ADA, ETI KZS-2M) – 1P+N, B6, 30 mA, typ A; 2 moduły. Zastępuje -F6 1P B6 i daje sterowaniu własne RCD.",
+  "pewnosc": "srednia"
+ },
+ "11": {
+  "id": 11,
+  "url": "https://allegro.pl/listing?string=Noark+Ex9CH25+40+230V",
+  "url_typ": "listing",
+  "tytul_oferty": "Noark Ex9CH25 40 230V – stycznik modułowy 25 A 4NO (listing)",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Ten sam sprzedawca co poz. 8/9 (Ex9CH25 02/22). Zamiennik: dowolny stycznik modułowy 4NO 25 A z cewką 230 V AC (Hager ESC425, Eaton Z-SCH230/25-40).",
+  "pewnosc": "srednia"
  }
 }
