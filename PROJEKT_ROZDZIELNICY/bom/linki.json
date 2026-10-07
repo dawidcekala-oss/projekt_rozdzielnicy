@@ -1,15 +1,4 @@
 {
- "1": {
-  "id": 1,
-  "url": "https://allegro.pl/oferta/rozlacznik-izolacyjny-sbn463-4p-63a-hager-13951486353",
-  "url_typ": "oferta",
-  "tytul_oferty": "Rozłącznik izolacyjny SBN463 4P 63A HAGER",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/oferta/noark-rozlacznik-izolacyjny-modulowy-4p-64a-102397-8954839859",
-  "uwagi": "Noark Ex9I40 w aktywnych ofertach tylko jako 1P 40A (101392) – brak 4P 63A. Wybrano wymienioną alternatywę Hager SBN463 (4P 63A 400V AC, TH35, 4 moduły). Inne aktywne oferty SBN463: 13683395207, 9237651675. Alternatywa Noark: Ex9BI 4P 63A kod 102397 (inna seria rozłącznika Noark, parametry zgodne; '64A' w slugu to literówka sprzedawcy). ETI SV463 tylko w archiwum.",
-  "pewnosc": "wysoka"
- },
  "2": {
   "id": 2,
   "url": "https://allegro.pl/oferta/wylacznik-roznicowopradowy-4p-40a-typ-a-30ma-noark-ex9l-n-108362-13469366756",
@@ -22,17 +11,28 @@
   "pewnosc": "wysoka"
  },
  "3": {
-  "id": 3,
-  "url": "https://allegro.pl/oferta/noark-wylacznik-nadpradowy-typu-slim-6-ka-3p-c32-110794-15273429912",
+  "id": 53,
+  "url": "https://allegro.pl/oferta/noark-ogranicznik-przepiec-4p-275v-20ka-ex9ue2-10869118038",
   "url_typ": "oferta",
-  "tytul_oferty": "NOARK Wyłącznik nadprądowy SLIM 3P C32A 6kA AC (110794)",
+  "tytul_oferty": "NOARK Ogranicznik przepięć 4P 275V 20kA Ex9UE2 (103357)",
   "cena_pln": null,
   "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/listing?string=noark+ex9bn+3p+c32+100146",
-  "uwagi": "Brak w wynikach bezpośredniej aktywnej oferty Ex9BN 3P C32 (kod 100146). Podano aktywną ofertę Noark serii slim (Ex9BS) 3P C32 6 kA 400 V – parametrycznie równoważna (EN 60898-1, 3 moduły, charakterystyka C). Jeśli wymagana seria Ex9BN – użyć listingu; znaleziono też Ex9BN 4P C32 100176 (13348650375) i Ex9BN 3P B32 100056 (14770674515).",
-  "pewnosc": "srednia"
+  "alternatywa_url": "https://allegro.pl/listing?string=noark+ex9ue2",
+  "uwagi": "Kod 103357 = Ex9UE2 40 4P 275: T2, Uc 275 V, In 20 kA, Imax 40 kA, Up 1,4 kV, 4 moduły, wymienne wkładki z sygnalizacją – zgodny z opisem. Nie mylić z Ex9UE1+2 103342 (T1+T2, 13469116297).",
+  "pewnosc": "wysoka"
  },
  "4": {
+  "id": 51,
+  "url": "https://allegro.pl/oferta/noark-wylacznik-nadpradowy-3p-b-16a-100053-17401298491",
+  "url_typ": "oferta",
+  "tytul_oferty": "Wyłącznik nadprądowy Ex9BN 3P B16 Noark 100053",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "alternatywa_url": "https://allegro.pl/oferta/ps-wylacznik-nadpradowy-3-fazowy-3p-b16a-noark-s193-lxno16-15251671717",
+  "uwagi": "Dokładny model (kod 100053, 6 kA, 3 moduły). Alternatywa to ta sama pozycja u innego sprzedawcy.",
+  "pewnosc": "wysoka"
+ },
+ "5": {
   "id": 4,
   "url": "https://allegro.pl/listing?string=noark+ex9bn+1p%2Bn+b16",
   "url_typ": "listing",
@@ -43,7 +43,7 @@
   "uwagi": "W 6 zapytaniach żadna oferta Noark 1P+N B16 nie pojawiła się w wynikach (wyszukiwarka zwraca tylko 1P). Opcje: (a) Noark Ex9BN 2P B16 - funkcjonalny zamiennik 1P+N (2 moduły, oba bieguny chronione), snippet potwierdza dostępność ok. 40 zł, ale bez URL - link listing w alternatywie; (b) jeśli projekt dopuszcza ochronę tylko L: Noark Ex9BN 1P B16 100008 https://allegro.pl/oferta/wylacznik-nadpradowy-bezpiecznik-b16-16a-1p-noark-10483551886 (1 moduł). Zweryfikować ręcznie na listingu lub w sklepach LILKOR_ELECTRO / SPEC-KABLE.",
   "pewnosc": "niska"
  },
- "5": {
+ "6": {
   "id": 5,
   "url": "https://allegro.pl/oferta/wylacznik-nadpradowy-6a-1p-b-noark-s-zabezpieczenie-przeciazeniowe-100004-17765801626",
   "url_typ": "oferta",
@@ -54,40 +54,29 @@
   "uwagi": "Dokładny model (kod 100004, EAN 8592765000057), 1 moduł, 6kA. Super Sprzedawca, ocena 4.98 (321 opinii), ale nazwa sprzedawcy niewidoczna w snippetach. Ilość: 2 szt. Jeśli LILKOR_ELECTRO (poz. 3) ma B6 - kupić tam, żeby połączyć koszyk.",
   "pewnosc": "wysoka"
  },
- "6": {
-  "id": 6,
-  "url": "https://allegro.pl/oferta/schneider-stycznik-mocy-32a-3p-1no-1nc-cewka-230va-10608343589",
+ "7": {
+  "id": 52,
+  "url": "https://allegro.pl/oferta/wylaczniki-nadpradowy-ex9bn-1p-b10-a-6ka-14716199224",
   "url_typ": "oferta",
-  "tytul_oferty": "Schneider Stycznik mocy 32A 3P 1NO 1NC cewka 230VAC (LC1D32P7)",
+  "tytul_oferty": "Noark Ex9BN wyłącznik nadprądowy B10/1P 100006",
   "cena_pln": null,
   "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/oferta/stycznik-32a-przemyslowy-mocy-pradu-przemiennego-z-cewka-230v-ac-3p-1no-1nc-5990268323",
-  "uwagi": "Chint NC1-3210 230V nie występuje w aktywnych ofertach Allegro (styczniki Chint NC1 tylko w archiwum), więc blokada NC1 i bloki F4-11 też odpadają. Podano równoważnik Schneider TeSys D LC1D32P7: AC-3 32 A / 15 kW, cewka 230 V AC, wbudowane 1NO+1NC. Akcesoria do TeSys D do dokupienia: blokada mechaniczna LAD9R1 (lub LA9D4002), blok styków LADN11 (znaleziony produkt: https://allegro.pl/produkt/styk-pomocniczy-telemecanique-la1-dn-11-la1dn11-06701ec8-c065-48bb-a38d-a889b876ac6e). Alternatywa budżetowa: no-name SL-3211-230 (32 A 3P 1NO+1NC, cewka 230 V). Ilość: 2 szt.",
-  "pewnosc": "srednia"
- },
- "9": {
-  "id": 9,
-  "url": "https://allegro.pl/oferta/stycznik-modulowy-40a-2z-2r-230v-ac-esc442-17551934224",
-  "url_typ": "oferta",
-  "tytul_oferty": "Stycznik modułowy 40A 2Z 2R 230V HAGER ESC442",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/produkt/stycznik-modulowy-40a-2z-2r-230v-hager-esc442-55291606-bd71-4f9c-a61b-116d9a599020",
-  "uwagi": "Stycznik modułowy 40 A wyłącznie 2NC (Schneider A9C20846 / Noark Ex9CH40 02 / Hager ESC241) nie znaleziony w aktywnych ofertach. Zgodnie z instrukcją podano 2NO+2NC 40 A: Hager ESC442 (2Z+2R, cewka 230 V AC, 3 moduły) – ta sama pozycja co id 10, można kupić łącznie 8 szt. u jednego sprzedawcy. Noark Ex9CH25 02 (2NC) istnieje, ale tylko 25 A. Ilość: 5 szt.",
-  "pewnosc": "srednia"
- },
- "10": {
-  "id": 10,
-  "url": "https://allegro.pl/oferta/stycznik-modulowy-40a-2z-2r-230v-ac-esc442-17551934224",
-  "url_typ": "oferta",
-  "tytul_oferty": "Stycznik modułowy 40A 2Z 2R 230V HAGER ESC442",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/oferta/stycznik-mocy-pmc-40-40a-230v-2no-2nc-11kw-17087164640",
-  "uwagi": "Noark Ex9CH40 22 oraz Hager ESC448 nie znalezione w aktywnych ofertach. ESC442 to katalogowy Hager 40 A 2NO+2NC, cewka 230 V AC, 3 moduły – zgodny z opisem (ESC448 to odmiana Humfree). Alternatywa budżetowa: PMC-40 40A 230V 2NO+2NC (marka budżetowa, 6958877095 to ta sama pozycja). Ilość: 3 szt.",
+  "alternatywa_url": "https://allegro.pl/oferta/noark-wylacznik-nadpradowy-1p-b10a-6ka-ac-100006-8955242586",
+  "uwagi": "Dokładny model (kod 100006, 6 kA, 1 moduł). Alternatywa – ta sama pozycja u innego sprzedawcy.",
   "pewnosc": "wysoka"
  },
- "11": {
+ "9": {
+  "id": 54,
+  "url": "https://allegro.pl/oferta/noark-stycznik-instalacyjny-4p-220-230v-25a-2no-2nc-ex9ch25-22-102414-14601598045",
+  "url_typ": "oferta",
+  "tytul_oferty": "NOARK Stycznik instalacyjny 4P 220-230V 25A 2NO+2NC Ex9CH25 22 102414",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "alternatywa_url": "https://allegro.pl/listing?string=noark+ex9ch25+22+102414",
+  "uwagi": "Dokładny model (kod 102414, 25 A, 2NO+2NC, cewka 230 V AC, 2 moduły). Ilość: 3 szt.",
+  "pewnosc": "wysoka"
+ },
+ "10": {
   "id": 11,
   "url": "https://allegro.pl/oferta/czujnik-kolejnosci-i-zaniku-faz-ckf-b-7163227553",
   "url_typ": "oferta",
@@ -98,7 +87,7 @@
   "uwagi": "Dokładny model F&F CKF-B: 3x400/230V+N, styk 1NO 10A, asymetria 55V, opóźnienie 4s. ROZBIEŻNOŚĆ: wg karty w ofercie CKF-B zajmuje 2 moduły (35 mm), a BOM podaje 1 moduł - uwzględnić w rozmieszczeniu lub rozważyć F&F CKF-11 (1 moduł; brak bezpośredniej oferty w wynikach, listing: https://allegro.pl/listing?string=f%26f+ckf-11). Sprzedawca cdme = Super Sprzedawca 99.9% (firma CDME, Wyszków). Alternatywa CKF-BT (regulowany czas) 80.20 zł.",
   "pewnosc": "wysoka"
  },
- "12": {
+ "11": {
   "id": 12,
   "url": "https://allegro.pl/oferta/eastron-sdm630-modbus-v2-licznik-miernik-energii-elektrycznej-do-intelige-15845707319",
   "url_typ": "oferta",
@@ -109,7 +98,7 @@
   "uwagi": "Dokładny model: SDM630-Modbus V2, pomiar bezpośredni do 100A, RS485 Modbus-RTU, wyjście impulsowe, 4 moduły, EAN 5904576513931. Sprzedawca 100% pozytywnych. Alternatywa = strona produktu Allegro z porównaniem ofert (ceny 391-499 zł). UWAGA: nie mylić z ofertami SDM630MCT (12220653492, 17151215957) - wersja na przekładniki prądowe, nie pasuje do pomiaru bezpośredniego.",
   "pewnosc": "wysoka"
  },
- "23": {
+ "18": {
   "id": 23,
   "url": "https://allegro.pl/oferta/wtyczka-silowa-0253-6-32a-5p-grip-producent-pce-12767537534",
   "url_typ": "oferta",
@@ -120,18 +109,7 @@
   "uwagi": "PCE 025-6 w wersji podstawowej w wynikach tylko jako archiwum (9800336585). Podano PCE 0253-6 – ta sama wtyczka 32 A 5P 400 V IP44 w wersji z uchwytem GRIP; zaciski śrubowe 2,5–6 mm² mieszczą H07RN-F 5G6. Alternatywa 6218700644: wtyczka 32A 5P 400V IP44 bez marki w tytule (sprzedawca oferuje też PCE 015-6, prawdopodobnie PCE 025-6).",
   "pewnosc": "srednia"
  },
- "24": {
-  "id": 24,
-  "url": "https://allegro.pl/oferta/przewod-kabel-onpd-5x6mm2-h07rn-f-1m-gumowy-guma-10092582714",
-  "url_typ": "oferta",
-  "tytul_oferty": "Przewód kabel OnPd 5x6mm2 H07RN-F 1M gumowy guma",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/oferta/kabel-przewod-gumowy-h07rn-f-onpd-ow-5x6-mm2-6912015549",
-  "uwagi": "Sprzedaż na metry (1 szt. = 1 m) – zamówić 5 szt. Orientacyjnie ok. 28–30 zł/m wg wyników. Alternatywa: gotowy odcinek 10 m H07RN-F 5x6.",
-  "pewnosc": "wysoka"
- },
- "28": {
+ "23": {
   "id": 28,
   "url": "https://allegro.pl/oferta/obudowa-kompaktowa-800x1000x300mm-ax-1180-000-16422788244",
   "url_typ": "oferta",
@@ -195,72 +173,6 @@
   "sprzedawca": null,
   "alternatywa_url": "https://allegro.pl/listing?string=pzem+016",
   "uwagi": "Oferta wielowariantowa - wybrac wariant PZEM-016 z przekladnikiem otwieranym 100 A (PZEM-014 = 10 A bez przekladnika). Pomiar U/I/P/E/f/PF, 80-260 VAC, RS485 Modbus-RTU. Cena 144-145 zl (inne oferty 146-189 zl). UWAGA: PZEM-004T (czesto w wynikach) ma interfejs TTL, nie RS485 - nie pasuje bez dodatkowego konwertera.",
-  "pewnosc": "srednia"
- },
- "50": {
-  "id": 50,
-  "url": "https://allegro.pl/listing?string=transformator+toroidalny+1000VA+2x30V",
-  "url_typ": "listing",
-  "tytul_oferty": "Transformator toroidalny 1000VA 2x30V (listing)",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/listing?string=transformator+toroidalny+2x30v",
-  "uwagi": "Brak aktywnej oferty 1000 VA 2x30 V (ani 2x24 V) w wynikach. Indel TST 1000 i Breve TTS 1000 z tym uzwojeniem pojawiają się tylko w archiwum (np. TTS 1000/Z 7717514409) lub w innych napięciach (TST600 2x30V 10A; toroid 1000VA 400/230V 7496930507). Zalecenie: nawijanie na zamówienie (Indel TST 1000/xxx, Telto, Breve) poza Allegro lub 'zapytaj sprzedawcę' u nawijaczy z listingu; zestaw montażowy (miska, śruba M8, podkładki gumowe) dokupić osobno.",
-  "pewnosc": "niska"
- },
- "51": {
-  "id": 51,
-  "url": "https://allegro.pl/oferta/noark-wylacznik-nadpradowy-3p-b-16a-100053-17401298491",
-  "url_typ": "oferta",
-  "tytul_oferty": "Wyłącznik nadprądowy Ex9BN 3P B16 Noark 100053",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/oferta/ps-wylacznik-nadpradowy-3-fazowy-3p-b16a-noark-s193-lxno16-15251671717",
-  "uwagi": "Dokładny model (kod 100053, 6 kA, 3 moduły). Alternatywa to ta sama pozycja u innego sprzedawcy.",
-  "pewnosc": "wysoka"
- },
- "52": {
-  "id": 52,
-  "url": "https://allegro.pl/oferta/wylaczniki-nadpradowy-ex9bn-1p-b10-a-6ka-14716199224",
-  "url_typ": "oferta",
-  "tytul_oferty": "Noark Ex9BN wyłącznik nadprądowy B10/1P 100006",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/oferta/noark-wylacznik-nadpradowy-1p-b10a-6ka-ac-100006-8955242586",
-  "uwagi": "Dokładny model (kod 100006, 6 kA, 1 moduł). Alternatywa – ta sama pozycja u innego sprzedawcy.",
-  "pewnosc": "wysoka"
- },
- "53": {
-  "id": 53,
-  "url": "https://allegro.pl/oferta/noark-ogranicznik-przepiec-4p-275v-20ka-ex9ue2-10869118038",
-  "url_typ": "oferta",
-  "tytul_oferty": "NOARK Ogranicznik przepięć 4P 275V 20kA Ex9UE2 (103357)",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/listing?string=noark+ex9ue2",
-  "uwagi": "Kod 103357 = Ex9UE2 40 4P 275: T2, Uc 275 V, In 20 kA, Imax 40 kA, Up 1,4 kV, 4 moduły, wymienne wkładki z sygnalizacją – zgodny z opisem. Nie mylić z Ex9UE1+2 103342 (T1+T2, 13469116297).",
-  "pewnosc": "wysoka"
- },
- "54": {
-  "id": 54,
-  "url": "https://allegro.pl/oferta/noark-stycznik-instalacyjny-4p-220-230v-25a-2no-2nc-ex9ch25-22-102414-14601598045",
-  "url_typ": "oferta",
-  "tytul_oferty": "NOARK Stycznik instalacyjny 4P 220-230V 25A 2NO+2NC Ex9CH25 22 102414",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/listing?string=noark+ex9ch25+22+102414",
-  "uwagi": "Dokładny model (kod 102414, 25 A, 2NO+2NC, cewka 230 V AC, 2 moduły). Ilość: 3 szt.",
-  "pewnosc": "wysoka"
- },
- "55": {
-  "id": 55,
-  "url": "https://allegro.pl/oferta/zlaczka-przelotowa-2-przewodowa-na-szyne-din-10mm2-szara-2010-1201-wago-18043956385",
-  "url_typ": "oferta",
-  "tytul_oferty": "Złączka przelotowa 2-przewodowa na szynę DIN 10mm2 szara 2010-1201 WAGO",
-  "cena_pln": null,
-  "sprzedawca": null,
-  "alternatywa_url": "https://allegro.pl/listing?string=wago+2010-1207",
-  "uwagi": "Oferta na WAGO 2010-1201 (szara, 10 mm², 57 A) – 6 szt. Dla PE 2010-1207 (żółto-zielona, 2 szt.) brak bezpośredniej oferty w wynikach – użyć listingu; zamiennik z tej samej rodziny TOPJOB S: 2016-1207 16 mm² PE (https://allegro.pl/oferta/zlaczka-szynowa-ochronna-16mm2-2016-1207-13159845846, szerokość 12 mm zamiast 10 mm). Dokupić płytkę końcową 2010-1291 i ewentualne mostki.",
   "pewnosc": "srednia"
  },
  "56": {

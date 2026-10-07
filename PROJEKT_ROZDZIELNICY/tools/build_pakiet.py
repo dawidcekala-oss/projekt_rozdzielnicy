@@ -15,6 +15,7 @@ def listing_url(fraza):
     return "https://allegro.pl/listing?string=" + quote_plus(fraza)
 
 def esc(s): return html.escape(str(s))
+def pln(v): return f"{v:,.0f} zł".replace(",", "\u202f")
 
 rows_by_basket = {}
 total_min = 0.0; n_priced = 0
@@ -43,32 +44,34 @@ li { margin: 1pt 0; }
 H = [f"<!doctype html><html><head><meta charset='utf-8'><title>Lista zakupowa</title><style>{css}</style></head><body>"]
 H.append("<h1>Lista zakupowa z linkami Allegro – rozdzielnica testowa Ampere Point</h1>")
 H.append(f"<p class='small'>Wersja: {esc(bom['wersja'])}. Oznaczenia (-Q1, -K3 …) odpowiadają schematowi na stronie 1. "
-         "Linki: <b>oferta</b> = konkretna oferta znaleziona w październiku 2026 (sprawdź przed zakupem, oferty się zmieniają); "
+         "Linki: <b>oferta</b> = konkretna oferta znaleziona w październiku 2026 (sprawdź przed zakupem); "
          "<b>szukaj</b> = gotowe wyszukiwanie Allegro z numerem katalogowym, gdy nie udało się potwierdzić aktywnej oferty. "
          "Ceny orientacyjne, jeśli były widoczne w wynikach. Przewodów 6 mm² i 2,5 mm² nie ma na liście (są w magazynie).</p>")
 H.append("<div class='note'><b>Koszyki (minimalna liczba zamówień):</b><ul>")
 for k, v in bom["koszyki"].items():
     H.append(f"<li><b>{esc(k)}</b> – {esc(v)}</li>")
 H.append("</ul></div>")
-order = ["K1", "K4", "K2", "K3", "K5"]
+order = ["K1", "K2", "K3", "K4", "K5"]
+grand = {}
 for k in order:
     rows = rows_by_basket.get(k, [])
     if not rows: continue
     H.append(f"<h2>Koszyk {esc(k)}: {esc(bom['koszyki'][k])}</h2>")
-    H.append("<table><thead><tr><th style='width:4%'>Lp.</th><th style='width:9%'>Oznaczenie</th><th style='width:33%'>Element / parametry</th><th style='width:17%'>Model (alternatywy)</th><th style='width:4%'>Szt.</th><th style='width:33%'>Link Allegro · cena · uwagi</th></tr></thead><tbody>")
+    H.append("<table><thead><tr><th style='width:3%'>Lp.</th><th style='width:8%'>Ozn.</th><th style='width:25%'>Element / parametry</th><th style='width:13%'>Model</th><th style='width:3%'>Szt.</th><th style='width:7%'>Cena jedn.</th><th style='width:7%'>Razem</th><th style='width:34%'>Link Allegro · uwagi</th></tr></thead><tbody>")
+    subtotal = 0.0
     for p in rows:
         L = links.get(p["id"])
         if L and L.get("url"):
             typ = L.get("url_typ", "oferta")
             lab = "oferta" if typ in ("oferta", "produkt") else "szukaj"
-            cena = f" · ok. {L['cena_pln']:.0f} zł" if L.get("cena_pln") else ""
+            cena = (f" · cena rynkowa ok. {L['cena_pln']:.0f} zł" if (p.get("zrodlo") == "magazyn" or k == "K5") else f" · ok. {L['cena_pln']:.0f} zł") if L.get("cena_pln") else ""
             sprz = f" · {esc(L['sprzedawca'])}" if L.get("sprzedawca") else ""
             tyt = esc(L.get("tytul_oferty", ""))[:90]
             uw_raw = (L.get("uwagi", "") or "").strip()
-            if len(uw_raw) > 230:
-                cut = uw_raw[:230]
-                k = max(cut.rfind(". "), cut.rfind("; "))
-                uw_raw = (cut[:k + 1] if k > 80 else cut) + " …"
+            if len(uw_raw) > 170:
+                cut = uw_raw[:170]
+                cutpos = max(cut.rfind(". "), cut.rfind("; "))
+                uw_raw = (cut[:cutpos + 1] if cutpos > 60 else cut) + " …"
             uw = esc(uw_raw)
             alt = f" <a href='{esc(L['alternatywa_url'])}'>[alternatywa]</a>" if L.get("alternatywa_url") else ""
             cell = f"<a href='{esc(L['url'])}'><b>{lab}</b>: {tyt}</a>{cena}{sprz}{alt}<div class='small'>{uw}</div>"
@@ -77,26 +80,50 @@ for k in order:
                 cell = f"<a href='{esc(listing_url(p['fraza']))}'><b>szukaj</b>: {esc(p['fraza'])}</a>"
             else:
                 cell = "<span class='small'>z magazynu / w komplecie</span>"
-        H.append(f"<tr><td class='n'>{p['id']}</td><td class='tag'>{esc(p['ozn'])}</td><td>{esc(p['nazwa'])}</td><td>{esc(p['model'])}</td><td class='n'>{esc(p['ilosc'])}</td><td>{cell}</td></tr>")
+        # cena: z oferty jeśli znaleziona, inaczej szacunek z BOM
+        if p.get("zrodlo") == "magazyn" or k == "K5":
+            unit = 0.0; src = "magazyn"
+        elif L and L.get("cena_pln"):
+            unit = float(L["cena_pln"]); src = "oferta"
+        else:
+            unit = float(p.get("cena") or 0); src = p.get("zrodlo", "szac.")
+        line_total = unit * float(p["ilosc"]); subtotal += line_total
+        unit_s = ("—" if unit == 0 else pln(unit)) + ("" if src in ("oferta", "magazyn") or unit == 0 else "<br><span class='small'>szac.</span>")
+        tot_s = "—" if line_total == 0 else pln(line_total)
+        H.append(f"<tr><td class='n'>{p['id']}</td><td class='tag'>{esc(p['ozn'])}</td><td>{esc(p['nazwa'])}</td><td>{esc(p['model'])}</td><td class='n'>{esc(p['ilosc'])}</td><td class='n'>{unit_s}</td><td class='n'>{tot_s}</td><td>{cell}</td></tr>")
+    H.append(f"<tr><td colspan='6' style='text-align:right'><b>Razem koszyk {esc(k)}</b></td><td class='n'><b>{pln(subtotal)}</b></td><td class='small'>ceny z ofert tam, gdzie były widoczne; pozostałe szacunek ±25 %</td></tr>")
+    grand[k] = subtotal
     H.append("</tbody></table>")
+
+# kosztorys zbiorczy
+H.append("<h2>Kosztorys zbiorczy</h2><table><thead><tr><th>Koszyk</th><th>Zakres</th><th class='n'>Suma</th></tr></thead><tbody>")
+for k in order:
+    if k in grand:
+        H.append(f"<tr><td class='tag'>{esc(k)}</td><td>{esc(bom['koszyki'][k])}</td><td class='n'>{pln(grand[k])}</td></tr>")
+tot = sum(grand.values())
+obud = [p for p in bom['pozycje'] if p['id']==23][0]['cena']
+H.append(f"<tr><td colspan='2' style='text-align:right'><b>Razem (brutto, orientacyjnie)</b></td><td class='n'><b>{pln(tot)}</b></td></tr>")
+H.append(f"<tr><td colspan='2' style='text-align:right'>w tym obudowa</td><td class='n'>{pln(obud)}</td></tr>")
+H.append(f"<tr><td colspan='2' style='text-align:right'>bez obudowy</td><td class='n'>{pln(tot - obud)}</td></tr>")
+H.append("</tbody></table><p class='small'>Nie uwzględniono: przewodów 6 i 2,5 mm², szybkozłączek, Shelly Wave Pro 3 i przekładników DLB (magazyn) oraz kosztów wysyłki (3 paczki). Rozrzut cen na Allegro ±25 %.</p>")
 
 # strona: założenia i pytania
 H.append("<h2 class='pb'>Założenia przyjęte do schematu (do potwierdzenia) i pytania otwarte</h2>")
 H.append("""
-<p><b>Zakres i zasilanie.</b> Zasilanie 3×400/230 V, 32 A, TN-S, przewodem H07RN-F 5G6 z wtykiem CEE 32 A. Pełny zakres funkcji (F1–F15). Skrzynka na razie wolnostojąca (Rittal AX 1180.000, 1000×800×300 mm, ok. 52 kg pusta, ok. 80 kg wyposażona); sposób montażu do ustalenia później.</p>
-<p><b>Zabezpieczenia minimalne</b> (zgodnie z Twoją decyzją; pomiary i uruchomienie wykonuje elektryk z uprawnieniami E i D): rozłącznik główny 4P 63 A, SPD typu 2, jeden RCD 4P 40 A 30 mA typu A (pomijany stycznikami tylko w teście F13), MCB 3P C32 (CEE 32 A), 3P B16 (CEE 16 A), 1P+N B16 (gniazda 230 V), B6 (sterowanie), B10 (transformator). Bez RCD strażnika typu B, bez wyzwalacza wzrostowego, bez wyłącznika drzwiowego i przekaźników watchdog – te funkcje realizuje oprogramowanie na RPi i procedura obsługi (jedna usterka naraz, limity czasu, zakaz dotykania DUT w testach PE).</p>
-<p><b>Sterowanie.</b> Raspberry Pi 5 z ekranem 7″ w drzwiach; wyjścia wolne (stany usterek) na posiadanych Shelly Wave Pro 3 przez Z-Wave (kontroler USB); wyjścia szybkie i krytyczne czasowo (-K1/-K2 stycznik główny i kolejność faz, -K4 „luźny styk”, -K6/-K7 transformator, -K12 pominięcie RCD, lampka, wentylator) na płytce 8 przekaźników GPIO. Pomiary: SDM630 (Modbus) po stronie zasilania, PZEM-016 (Modbus) i ZMPT101B (ADC) po stronie wyjścia, CKF-B jako niezależne potwierdzenie kolejności faz. Wszystkie cewki 230 V AC przez kluczyk „TRYB TESTOWY” i E-STOP (sprzętowo). Zasada: cewka bez napięcia = instalacja poprawna.</p>
-<p><b>Shelly Wave Pro 3 z magazynu:</b> potrzeba 5 sztuk (plus 1 zapas). Jeśli masz mniej, brakujące wyjścia przejmie druga płytka przekaźników GPIO (ok. 40 zł) – schemat zmienia się tylko w opisach źródeł styków.</p>
-<p><b>Transformator.</b> 230 V / 2×30 V, 1000 VA, uzwojenia wtórne równolegle (30 V / 33 A) na stałe w szeregu z L1; przełączanie po stronie pierwotnej (-K6 boost, -K7 buck), w stanie spoczynku pierwotne zwarte stykami NC. Daje 200 V / 260 V przy 230 V sieci. Alternatywa 2×24 V (206/254 V) jest tańsza i łatwiej dostępna, ale progi 207/253 V łapie na styk.</p>
-<p><b>Rezystor „przepalony styk”.</b> 0,5 Ω / 600 W (2×1 Ω 300 W równolegle) na radiatorze z wentylatorem; przy 32 A to 512 W – oprogramowanie ogranicza do 15 s, przy 16 A do 60 s; termostat 85 °C w obwodzie cewki -K5 zdejmuje usterkę sprzętowo.</p>
-<p><b>Pytania, które zostały otwarte</b> (odpowiedz przy okazji akceptacji schematu):</p>
+<p><b>Zakres i zasilanie.</b> Przyłącze 3×400/230 V, 32 A (wtyk CEE 32 A, przewód H07RN-F 5G4, 5 m), ale <b>prąd testów ograniczony do 16 A na fazę</b> wyłącznikiem -F3 B16 za RCD – zgodnie z Twoją uwagą o krótkich testach. Dzięki temu styki Shelly Wave Pro 3 (16 A) mogą pełnić rolę stycznika głównego, a cała sekcja usterek jest na aparaturze 25 A i przewodach 2,5 mm². Gniazdo CEE 32 A jest mechanicznie 32 A, elektrycznie 16 A (ładowarka 22 kW będzie ograniczona). Skrzynka wolnostojąca Rittal AX 1180.000; montaż później.</p>
+<p><b>Zabezpieczenia minimalne</b> (pomiary i uruchomienie przez elektryka E/D): rozłącznik 4P 40 A, SPD T2, jeden RCD 4P 40 A 30 mA typu A (pomijany stycznikami tylko w F13), MCB 3P B16 sekcji, 2P B16 gniazd 230 V, B6 sterowania, B10 transformatora.</p>
+<p><b>Dlaczego zostały jakieś styczniki, skoro mamy Shelly:</b> styki Shelly są tylko zwierne (NO) i nie mają sprzętowej blokady między sobą. Tam, gdzie usterka musi znikać po zaniku sterowania (przerwa PE, N, L3, bocznik rezystora), potrzebny jest styk rozwierny – stycznik 2NC za ok. 48 zł. Tam, gdzie zamieniamy dwa przewody (fazy, N–PE, L–N, tor RCD), potrzebny jest styk przełączny z mechaniczną gwarancją „nigdy oba” – stycznik 2NO+2NC za ok. 75 zł. Para styczników przemysłowych Schneidera została usunięta: stycznik główny to -A11 Shelly Wave Pro 3, zamiana faz to jeden -K2. Pierwotne transformatora (-K6/-K7) dałoby się zrobić na Shelly Wave Pro 2 + Pro Shutter z blokadą programową – zostawiłem styczniki (2×75 zł), bo zwarcie uzwojenia przy błędzie oprogramowania jest zbyt kosztowne; jeśli wolisz wariant Shelly, powiedz.</p>
+<p><b>Sterowanie.</b> Raspberry Pi 5 z ekranem 7″ w drzwiach; -A11…-A15 Shelly Wave Pro 3 po Z-Wave (-A11 zasilany z Lc, więc kluczyk i E-STOP odłączają wyjście sprzętowo; pozostałe sterują cewkami i drabinką upływów); płytka 8 przekaźników GPIO na przełączenia szybkie (-K4 impulsy, -K6/-K7, -K12, -K2, lampka, wentylator). Pomiary: SDM630 (Modbus) po stronie zasilania jako smart licznik, PZEM-016 i ZMPT101B po stronie wyjścia, CKF-B jako niezależne potwierdzenie kolejności faz. Zasada: cewka bez napięcia = instalacja poprawna.</p>
+<p><b>Szybkozłączki z magazynu</b> zastępują złączki szynowe: wejście zasilania, rozgałęzienia N/PE wyjścia, zaciski DLB. Zostały tylko dwa bloki rozdzielcze 125 A na N i PE strony zasilania (po kilkanaście odpływów). Dla toru 32 A (od -X1 do -F3) użyj szybkozłączek 6 mm² (seria 221-61x) i przewodu 6 mm²; za -F3 wystarczą 2,5 mm².</p>
+<p><b>Transformator.</b> 230 V / 2×30 V, 630 VA, uzwojenia wtórne równolegle (30 V / 21 A) na stałe w szeregu z L1; przełączanie po stronie pierwotnej (-K6 boost, -K7 buck), w spoczynku pierwotne zwarte stykami NC. Daje 200 V / 260 V przy 230 V sieci.</p>
+<p><b>Rezystor „przepalony styk”.</b> 0,5 Ω / 200 W (2×1 Ω 100 W równolegle) na radiatorze z wentylatorem; przy 16 A to 128 W – oprogramowanie ogranicza do 60 s, termostat 85 °C w obwodzie cewki -K5 zdejmuje usterkę sprzętowo.</p>
+<p><b>Pytania, które zostały otwarte:</b></p>
 <ul>
-<li>Ile dokładnie Shelly Wave Pro 3 (i Wave Pro 2) jest w magazynie? Czy jest już jakikolwiek kontroler Z-Wave (stick USB)?</li>
-<li>Jak jest dziś podłączone gniazdo „AWARIA” na obecnej skrzynce – chcesz odtworzyć tę konkretną usterkę na stałe, czy wystarczy, że wszystkie usterki są przełączalne?</li>
-<li>Ładowarki testowe: egzemplarze „do zużycia” czy mają zostać sprawne? (Decyduje o dopuszczeniu 260 V i przesunięcia punktu zerowego.)</li>
-<li>Marka aparatury: lista zakłada Noark/Hager/Chint-zamienniki (dostępne na Allegro). Jeśli wolisz jedną markę premium (Hager/Eaton), podmienię pozycje 1–12.</li>
-<li>Czy oprogramowanie ma być Home Assistant (znasz) czy osobna aplikacja Python + Z-Wave JS UI (lepsze blokady)? Sprzęt jest ten sam.</li>
-<li>Gniazdo Type 2 (np. pod AmpCheck / wstrzyknięcie 6 mA DC za ładowarką) – dodać?</li>
+<li>Ile dokładnie Shelly Wave Pro 3 (i Wave Pro 2) jest w magazynie? Potrzeba 5 + 1 zapas. Czy jest już kontroler Z-Wave USB?</li>
+<li>Jak dziś jest podłączone gniazdo „AWARIA” na obecnej skrzynce – odtworzyć na stałe, czy wystarczą usterki przełączalne?</li>
+<li>Ładowarki testowe: egzemplarze „do zużycia” czy mają zostać sprawne? (260 V przez 30 s i przesunięcie punktu zerowego.)</li>
+<li>Oprogramowanie: Home Assistant (znasz) czy osobna aplikacja Python + Z-Wave JS UI (lepsze blokady)? Sprzęt ten sam.</li>
+<li>Czy jest przewód giętki 5G4 lub 5G6 do zasilania (poz. 19 można wtedy skreślić)?</li>
 </ul>
 <p class='small'>Następne etapy po akceptacji: (3) rozmieszczenie elementów na płycie montażowej 1000×800 i w drzwiach, (4) lista połączeń zacisk-po-zacisku i okablowanie, (5) oprogramowanie: automat stanów, blokady, ekran dotykowy, dziennik.</p>
 """)

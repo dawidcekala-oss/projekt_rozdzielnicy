@@ -11,10 +11,10 @@ urządzeń Shelly. Miejsce na smart licznik oraz przekładniki modułu DLB
 | Etap | Zakres | Status |
 |------|--------|--------|
 | 0 | Koncepcja, lista usterek, założenia, pytania | gotowe (v2, 2026-10-07) |
-| 1 | Dobór obudowy (checkpoint z zamawiającym) | **czeka na decyzje** – `docs/pdf/02_dobor_obudowy.pdf` |
-| 2 | Architektura elektryczna i sterowania (checkpoint) | - |
-| 3 | Lista zakupowa (BOM) z podziałem na koszyki Allegro | - |
-| 4 | Pełny schemat połączeń na jednej stronie A4 | - |
+| 1 | Dobór obudowy (checkpoint z zamawiającym) | decyzja: Rittal AX 1180.000, wolnostojąca |
+| 2 | Architektura elektryczna i sterowania | RPi 5 + Z-Wave (Shelly Wave Pro 3) + GPIO, testy ≤16 A |
+| 3 | Lista zakupowa (BOM) z podziałem na koszyki Allegro | `bom/bom.json` v3 + kosztorys w `docs/pdf/03_…` |
+| 4 | Pełny schemat połączeń na jednej stronie A4 | rew. B – `schemat/gen_schemat.py` → `docs/pdf/03_schemat_i_lista_zakupow.pdf` |
 | 5 | Rozmieszczenie w obudowie, zarys firmware HMI | - |
 
 ## Struktura
