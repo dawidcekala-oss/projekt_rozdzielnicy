@@ -1,0 +1,1374 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210.0mm" height="297.0mm" viewBox="0 0 210.0 297.0">
+<rect width="210" height="297" fill="white"/>
+<rect x="3.00" y="3.00" width="204.00" height="291.00" rx="0" fill="none" stroke="#111" stroke-width="0.5"/>
+<text x="5.00" y="7.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="2.6" text-anchor="start" fill="#111" font-weight="bold">AMPERE POINT – ROZDZIELNICA TESTOWA (SYMULATOR USTEREK INSTALACJI)</text>
+<text x="5.00" y="10.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="start" fill="#111">Schemat zasadniczy, arkusz 1/1 · 3×400/230 V TN-S, 32 A · wyjścia CEE 32 A, CEE 16 A, 2× Schuko · sterowanie Raspberry Pi 5 + Z-Wave (Shelly Wave Pro 3) + przekaźniki GPIO</text>
+<text x="5.00" y="12.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.35" text-anchor="start" fill="#111" font-style="italic">Urządzenie probiercze wg EN 50191 – obsługa wyłącznie przez osoby z uprawnieniami SEP E/D. Zasada: cewka bez napięcia = instalacja poprawna; usterka = cewka pod napięciem (wyjątek: -K1/-K2 = praca).</text>
+<text x="18.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#7a4a1e" font-weight="bold">L1</text>
+<text x="25.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#111111" font-weight="bold">L2</text>
+<text x="32.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#707070" font-weight="bold">L3</text>
+<text x="39.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#1f4fd1" font-weight="bold">N</text>
+<text x="46.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#149114" font-weight="bold">PE</text>
+<rect x="13.00" y="17.20" width="38.00" height="4.00" rx="0.8" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="32.00" y="19.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.45" text-anchor="middle" fill="#111">-W0  wtyk CEE 32 A 5P + H07RN-F 5G6 ≈5 m</text>
+<polyline points="18.00,21.20 18.00,24.10" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="18.00" cy="25.00" r="0.85" fill="white" stroke="#111" stroke-width="0.28"/>
+<polyline points="25.00,21.20 25.00,24.10" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="25.00" cy="25.00" r="0.85" fill="white" stroke="#111" stroke-width="0.28"/>
+<polyline points="32.00,21.20 32.00,24.10" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="32.00" cy="25.00" r="0.85" fill="white" stroke="#111" stroke-width="0.28"/>
+<polyline points="39.00,21.20 39.00,24.10" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="39.00" cy="25.00" r="0.85" fill="white" stroke="#111" stroke-width="0.28"/>
+<polyline points="46.00,21.20 46.00,24.10" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.00,21.20 46.00,24.10" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="46.00" cy="25.00" r="0.85" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="49.00" y="25.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="start" fill="#111" font-weight="bold">-X1 zaciski 10 mm²</text>
+<polyline points="18.00,25.90 18.00,36.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.00,25.90 25.00,36.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="32.00,25.90 32.00,36.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="39.00,25.90 39.00,36.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.00,25.90 46.00,36.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.00,25.90 46.00,36.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="18.00" cy="30.50" r="2.10" fill="none" stroke="#111" stroke-width="0.28"/>
+<polyline points="20.10,30.50 21.40,30.50 21.40,33.20" fill="none" stroke="#6a1fb3" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="17.00" y="28.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="end" fill="#6a1fb3">-T2</text>
+<circle cx="25.00" cy="30.50" r="2.10" fill="none" stroke="#111" stroke-width="0.28"/>
+<polyline points="27.10,30.50 28.40,30.50 28.40,33.20" fill="none" stroke="#6a1fb3" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="24.00" y="28.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="end" fill="#6a1fb3">-T3</text>
+<circle cx="32.00" cy="30.50" r="2.10" fill="none" stroke="#111" stroke-width="0.28"/>
+<polyline points="34.10,30.50 35.40,30.50 35.40,33.20" fill="none" stroke="#6a1fb3" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="31.00" y="28.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="end" fill="#6a1fb3">-T4</text>
+<text x="49.00" y="29.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.45" text-anchor="start" fill="#111">-T2, -T3, -T4  CT 100 A modułu DLB-A1</text>
+<text x="49.00" y="31.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">listwa CT: proste odcinki ≥100 mm; przewody → -A20</text>
+<line x1="18.00" y1="36.00" x2="18.00" y2="37.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.00" y1="41.60" x2="18.00" y2="43.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.00" y1="37.40" x2="20.10" y2="41.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="16.90" y1="37.40" x2="19.10" y2="37.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="36.00" x2="25.00" y2="37.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="41.60" x2="25.00" y2="43.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="37.40" x2="27.10" y2="41.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="23.90" y1="37.40" x2="26.10" y2="37.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="36.00" x2="32.00" y2="37.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="41.60" x2="32.00" y2="43.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="37.40" x2="34.10" y2="41.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="30.90" y1="37.40" x2="33.10" y2="37.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="39.00" y1="36.00" x2="39.00" y2="37.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="39.00" y1="41.60" x2="39.00" y2="43.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="39.00" y1="37.40" x2="41.10" y2="41.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="37.90" y1="37.40" x2="40.10" y2="37.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="46.00,36.00 46.00,61.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.00,36.00 46.00,61.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<line x1="18.70" y1="39.60" x2="39.70" y2="39.60" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<text x="49.00" y="39.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="start" fill="#111" font-weight="bold">-Q1  rozłącznik izolacyjny 4P 63 A</text>
+<text x="49.00" y="41.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">(blokowany kłódką)</text>
+<polyline points="18.00,43.00 18.00,62.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.00,43.00 25.00,62.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="32.00,43.00 32.00,62.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="39.00,43.00 39.00,62.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="18.00" cy="46.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="18.00,46.00 24.20,46.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M24.20,46.00 A0.80,0.80 0 0 1 25.80,46.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="25.80,46.00 31.20,46.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M31.20,46.00 A0.80,0.80 0 0 1 32.80,46.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="32.80,46.00 38.20,46.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M38.20,46.00 A0.80,0.80 0 0 1 39.80,46.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="39.80,46.00 45.20,46.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,46.00 A0.80,0.80 0 0 1 46.80,46.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,46.00 64.00,46.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="64.00,46.00 64.00,52.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="62.80" y="52.00" width="2.40" height="4.60" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<line x1="63.20" y1="55.90" x2="64.80" y2="52.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="64.80" y1="52.70" x2="65.50" y2="52.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="64.00,56.60 64.00,58.50" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="64.00,56.60 64.00,58.50" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="25.00" cy="47.40" r="0.5" fill="#111111" stroke="none"/>
+<polyline points="25.00,47.40 31.20,47.40" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M31.20,47.40 A0.80,0.80 0 0 1 32.80,47.40" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="32.80,47.40 38.20,47.40" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M38.20,47.40 A0.80,0.80 0 0 1 39.80,47.40" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="39.80,47.40 45.20,47.40" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,47.40 A0.80,0.80 0 0 1 46.80,47.40" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,47.40 69.00,47.40" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="69.00,47.40 69.00,52.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="67.80" y="52.00" width="2.40" height="4.60" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<line x1="68.20" y1="55.90" x2="69.80" y2="52.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="69.80" y1="52.70" x2="70.50" y2="52.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="69.00,56.60 69.00,58.50" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="69.00,56.60 69.00,58.50" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="32.00" cy="48.80" r="0.5" fill="#707070" stroke="none"/>
+<polyline points="32.00,48.80 38.20,48.80" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M38.20,48.80 A0.80,0.80 0 0 1 39.80,48.80" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="39.80,48.80 45.20,48.80" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,48.80 A0.80,0.80 0 0 1 46.80,48.80" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,48.80 74.00,48.80" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="74.00,48.80 74.00,52.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="72.80" y="52.00" width="2.40" height="4.60" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<line x1="73.20" y1="55.90" x2="74.80" y2="52.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="74.80" y1="52.70" x2="75.50" y2="52.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="74.00,56.60 74.00,58.50" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="74.00,56.60 74.00,58.50" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="39.00" cy="50.20" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="39.00,50.20 45.20,50.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,50.20 A0.80,0.80 0 0 1 46.80,50.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,50.20 79.00,50.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="79.00,50.20 79.00,52.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="77.80" y="52.00" width="2.40" height="4.60" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<line x1="78.20" y1="55.90" x2="79.80" y2="52.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="79.80" y1="52.70" x2="80.50" y2="52.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="79.00,56.60 79.00,58.50" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="79.00,56.60 79.00,58.50" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<polyline points="64.00,58.50 79.00,58.50" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="64.00,58.50 79.00,58.50" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<polyline points="79.00,58.50 83.00,58.50 83.00,61.00 46.00,61.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="79.00,58.50 83.00,58.50 83.00,61.00 46.00,61.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="46.00" cy="61.00" r="0.5" fill="#149114" stroke="none"/>
+<text x="85.00" y="52.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="start" fill="#111" font-weight="bold">-F2  SPD typ 2, 4P</text>
+<text x="85.00" y="54.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">Uc 275 V, In 20 kA</text>
+<rect x="14.80" y="62.00" width="27.40" height="7.60" rx="0" fill="#fcfcfc" stroke="#111" stroke-width="0.28"/>
+<circle cx="18.00" cy="63.40" r="0.60" fill="white" stroke="#111" stroke-width="0.28"/>
+<circle cx="18.00" cy="68.20" r="0.60" fill="white" stroke="#111" stroke-width="0.28"/>
+<polyline points="18.00,69.60 18.00,73.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="25.00" cy="63.40" r="0.60" fill="white" stroke="#111" stroke-width="0.28"/>
+<circle cx="25.00" cy="68.20" r="0.60" fill="white" stroke="#111" stroke-width="0.28"/>
+<polyline points="25.00,69.60 25.00,73.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="32.00" cy="63.40" r="0.60" fill="white" stroke="#111" stroke-width="0.28"/>
+<circle cx="32.00" cy="68.20" r="0.60" fill="white" stroke="#111" stroke-width="0.28"/>
+<polyline points="32.00,69.60 32.00,73.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="39.00" cy="63.40" r="0.60" fill="white" stroke="#111" stroke-width="0.28"/>
+<circle cx="39.00" cy="68.20" r="0.60" fill="white" stroke="#111" stroke-width="0.28"/>
+<polyline points="39.00,69.60 39.00,73.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="28.50" y="66.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-P1  SDM630 V2</text>
+<text x="49.00" y="65.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.45" text-anchor="start" fill="#111">licznik 3-faz. 100 A (bezpośredni)</text>
+<text x="49.00" y="67.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">RS485 A/B → magistrala (adres 1)</text>
+<polyline points="46.00,61.00 46.00,140.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.00,61.00 46.00,140.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="18.00" cy="74.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="18.00,74.00 24.20,74.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M24.20,74.00 A0.80,0.80 0 0 1 25.80,74.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="25.80,74.00 31.20,74.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M31.20,74.00 A0.80,0.80 0 0 1 32.80,74.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="32.80,74.00 38.20,74.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M38.20,74.00 A0.80,0.80 0 0 1 39.80,74.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="39.80,74.00 45.20,74.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,74.00 A0.80,0.80 0 0 1 46.80,74.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,74.00 78.00,74.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="66.00" cy="74.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<line x1="66.00" y1="74.00" x2="66.00" y2="75.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="66.00" y1="79.60" x2="66.00" y2="81.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="66.00" y1="75.40" x2="68.10" y2="79.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="65.10" y1="78.70" x2="66.90" y2="80.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="65.10" y1="80.50" x2="66.90" y2="78.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="78.00" y1="74.00" x2="78.00" y2="75.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="78.00" y1="79.60" x2="78.00" y2="81.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="78.00" y1="75.40" x2="80.10" y2="79.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="77.10" y1="78.70" x2="78.90" y2="80.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="77.10" y1="80.50" x2="78.90" y2="78.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="68.40" y="78.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="start" fill="#111" font-weight="bold">-F6 B6</text>
+<text x="80.40" y="78.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="start" fill="#111" font-weight="bold">-F7 B10</text>
+<polyline points="66.00,81.00 66.00,84.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="66.00" y="86.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="middle" fill="#b3001b" font-weight="bold">L230</text>
+<polyline points="78.00,81.00 78.00,84.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="78.00" y="86.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="middle" fill="#b3001b" font-weight="bold">LT1</text>
+<circle cx="39.00" cy="77.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="39.00,77.00 45.20,77.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,77.00 A0.80,0.80 0 0 1 46.80,77.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,77.00 90.00,77.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="90.00" y="86.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="middle" fill="#1f4fd1" font-weight="bold">N230</text>
+<polyline points="90.00,77.00 90.00,84.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="58.00" y="89.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="start" fill="#111">L230/N230: zasilanie sterowania (pas dolny); LT1: pierwotne -T1 (kolumna B)</text>
+<circle cx="18.00" cy="91.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="18.00,91.00 15.00,91.00 15.00,104.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="18.00" y1="92.00" x2="18.00" y2="93.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.00" y1="96.80" x2="18.00" y2="98.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.00" y1="93.20" x2="18.00" y2="96.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.00" y1="96.80" x2="19.50" y2="96.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="17.10" y1="96.80" x2="17.10" y2="95.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M18.80,96.10 A0.80,0.80 0 0 1 17.20,96.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="18.00,98.00 18.00,108.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="15.00" y1="104.00" x2="15.00" y2="105.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="15.00" y1="108.80" x2="15.00" y2="110.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="15.00" y1="105.20" x2="13.00" y2="108.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M15.80,108.10 A0.80,0.80 0 0 1 14.20,108.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="15.00,110.00 15.00,115.00 18.00,115.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="18.00" cy="115.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<circle cx="25.00" cy="91.00" r="0.5" fill="#111111" stroke="none"/>
+<polyline points="25.00,91.00 22.00,91.00 22.00,104.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="25.00" y1="92.00" x2="25.00" y2="93.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="96.80" x2="25.00" y2="98.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="93.20" x2="25.00" y2="96.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="96.80" x2="26.50" y2="96.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="24.10" y1="96.80" x2="24.10" y2="95.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M25.80,96.10 A0.80,0.80 0 0 1 24.20,96.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="25.00,98.00 25.00,108.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="22.00" y1="104.00" x2="22.00" y2="105.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="22.00" y1="108.80" x2="22.00" y2="110.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="22.00" y1="105.20" x2="20.00" y2="108.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M22.80,108.10 A0.80,0.80 0 0 1 21.20,108.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="22.00,110.00 22.00,115.00 25.00,115.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="25.00" cy="115.00" r="0.5" fill="#111111" stroke="none"/>
+<circle cx="32.00" cy="91.00" r="0.5" fill="#707070" stroke="none"/>
+<polyline points="32.00,91.00 29.00,91.00 29.00,104.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="32.00" y1="92.00" x2="32.00" y2="93.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="96.80" x2="32.00" y2="98.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="93.20" x2="32.00" y2="96.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="96.80" x2="33.50" y2="96.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="31.10" y1="96.80" x2="31.10" y2="95.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M32.80,96.10 A0.80,0.80 0 0 1 31.20,96.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="32.00,98.00 32.00,108.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="29.00" y1="104.00" x2="29.00" y2="105.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="29.00" y1="108.80" x2="29.00" y2="110.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="29.00" y1="105.20" x2="27.00" y2="108.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M29.80,108.10 A0.80,0.80 0 0 1 28.20,108.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="29.00,110.00 29.00,115.00 32.00,115.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="32.00" cy="115.00" r="0.5" fill="#707070" stroke="none"/>
+<circle cx="39.00" cy="91.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="39.00,91.00 36.00,91.00 36.00,104.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="39.00" y1="92.00" x2="39.00" y2="93.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="39.00" y1="96.80" x2="39.00" y2="98.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="39.00" y1="93.20" x2="39.00" y2="96.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="39.00" y1="96.80" x2="40.50" y2="96.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="38.10" y1="96.80" x2="38.10" y2="95.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M39.80,96.10 A0.80,0.80 0 0 1 38.20,96.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="39.00,98.00 39.00,108.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="36.00" y1="104.00" x2="36.00" y2="105.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="36.00" y1="108.80" x2="36.00" y2="110.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="36.00" y1="105.20" x2="34.00" y2="108.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M36.80,108.10 A0.80,0.80 0 0 1 35.20,108.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="36.00,110.00 36.00,115.00 39.00,115.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="39.00" cy="115.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<line x1="18.70" y1="95.00" x2="25.70" y2="95.00" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<line x1="32.70" y1="95.00" x2="39.70" y2="95.00" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<line x1="15.70" y1="107.00" x2="22.70" y2="107.00" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<line x1="29.70" y1="107.00" x2="36.70" y2="107.00" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<text x="49.00" y="94.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="start" fill="#111" font-weight="bold">-K12a, -K12b  2NO+2NC 40 A</text>
+<text x="49.00" y="96.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">zestyki NC: tor przez RCD;</text>
+<text x="49.00" y="98.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">zestyki NO (lewe tory): pominięcie RCD (F13)</text>
+<ellipse cx="28.50" cy="108.80" rx="12.90" ry="1.5" fill="none" stroke="#111" stroke-width="0.3"/>
+<line x1="18.00" y1="109.50" x2="18.00" y2="110.90" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.00" y1="114.60" x2="18.00" y2="116.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.00" y1="110.90" x2="20.10" y2="114.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="17.10" y1="113.70" x2="18.90" y2="115.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="17.10" y1="115.50" x2="18.90" y2="113.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="18.00,116.00 18.00,118.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="25.00" y1="109.50" x2="25.00" y2="110.90" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="114.60" x2="25.00" y2="116.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="110.90" x2="27.10" y2="114.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="24.10" y1="113.70" x2="25.90" y2="115.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="24.10" y1="115.50" x2="25.90" y2="113.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="25.00,116.00 25.00,118.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="32.00" y1="109.50" x2="32.00" y2="110.90" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="114.60" x2="32.00" y2="116.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="110.90" x2="34.10" y2="114.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="31.10" y1="113.70" x2="32.90" y2="115.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="31.10" y1="115.50" x2="32.90" y2="113.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="32.00,116.00 32.00,118.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="39.00" y1="109.50" x2="39.00" y2="110.90" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="39.00" y1="114.60" x2="39.00" y2="116.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="39.00" y1="110.90" x2="41.10" y2="114.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="38.10" y1="113.70" x2="39.90" y2="115.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="38.10" y1="115.50" x2="39.90" y2="113.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="39.00,116.00 39.00,118.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="18.70" y1="112.90" x2="39.70" y2="112.90" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<text x="49.00" y="111.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="start" fill="#111" font-weight="bold">-F1  RCD 4P 40 A, IΔn 30 mA, typ A</text>
+<text x="49.00" y="113.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">(jedyny RCD stanowiska)</text>
+<circle cx="18.00" cy="118.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="18.00,118.00 21.00,118.00 21.00,120.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="18.00" y1="120.00" x2="18.00" y2="121.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.00" y1="124.80" x2="18.00" y2="126.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.00" y1="121.20" x2="16.00" y2="124.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M18.80,124.10 A0.80,0.80 0 0 1 17.20,124.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.00" y1="120.00" x2="21.00" y2="121.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.00" y1="124.80" x2="21.00" y2="126.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.00" y1="121.20" x2="23.00" y2="124.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M21.80,124.10 A0.80,0.80 0 0 1 20.20,124.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<circle cx="25.00" cy="118.00" r="0.5" fill="#111111" stroke="none"/>
+<polyline points="25.00,118.00 28.00,118.00 28.00,120.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="25.00" y1="120.00" x2="25.00" y2="121.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="124.80" x2="25.00" y2="126.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="25.00" y1="121.20" x2="23.00" y2="124.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M25.80,124.10 A0.80,0.80 0 0 1 24.20,124.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="28.00" y1="120.00" x2="28.00" y2="121.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="28.00" y1="124.80" x2="28.00" y2="126.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="28.00" y1="121.20" x2="30.00" y2="124.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M28.80,124.10 A0.80,0.80 0 0 1 27.20,124.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<circle cx="32.00" cy="118.00" r="0.5" fill="#707070" stroke="none"/>
+<polyline points="32.00,118.00 35.00,118.00 35.00,120.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="32.00" y1="120.00" x2="32.00" y2="121.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="124.80" x2="32.00" y2="126.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="32.00" y1="121.20" x2="30.00" y2="124.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M32.80,124.10 A0.80,0.80 0 0 1 31.20,124.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="35.00" y1="120.00" x2="35.00" y2="121.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="35.00" y1="124.80" x2="35.00" y2="126.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="35.00" y1="121.20" x2="37.00" y2="124.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M35.80,124.10 A0.80,0.80 0 0 1 34.20,124.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.70" y1="123.00" x2="32.70" y2="123.00" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<polyline points="21.00,126.00 21.00,134.00 18.00,134.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="28.00,126.00 28.00,127.20 32.00,133.00 32.00,134.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="35.00,126.00 35.00,127.20 25.00,133.00 25.00,134.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="18.00,126.00 18.00,134.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="18.00" cy="134.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="25.00,126.00 25.00,134.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="25.00" cy="134.00" r="0.5" fill="#111111" stroke="none"/>
+<polyline points="32.00,126.00 32.00,134.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="32.00" cy="134.00" r="0.5" fill="#707070" stroke="none"/>
+<polyline points="39.00,118.00 39.00,140.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="49.00" y="121.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="start" fill="#111" font-weight="bold">-K1 (lewe zestyki) / -K2 (prawe zestyki)</text>
+<text x="49.00" y="123.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">styczniki 3P 32 A AC-3 z blokadą mechaniczną</text>
+<text x="49.00" y="125.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">-K1: kolejność zgodna = stycznik główny wyjścia</text>
+<text x="49.00" y="127.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">-K2: zamiana L2↔L3 = zła kolejność faz (F9)</text>
+<text x="49.00" y="130.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">-K13 CKF-B (kolejność/zanik faz) na L1″ L2″ L3″ N″</text>
+<polyline points="18.00,134.00 18.00,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="18.00,141.00 24.20,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M24.20,141.00 A0.80,0.80 0 0 1 25.80,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="25.80,141.00 31.20,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M31.20,141.00 A0.80,0.80 0 0 1 32.80,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="32.80,141.00 38.20,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M38.20,141.00 A0.80,0.80 0 0 1 39.80,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="39.80,141.00 45.20,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,141.00 A0.80,0.80 0 0 1 46.80,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,141.00 100.00,141.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="100.00,141.00 100.00,20.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="100.00,20.00 118.00,20.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.00,134.00 25.00,142.80" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="25.00,142.80 31.20,142.80" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M31.20,142.80 A0.80,0.80 0 0 1 32.80,142.80" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="32.80,142.80 38.20,142.80" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M38.20,142.80 A0.80,0.80 0 0 1 39.80,142.80" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="39.80,142.80 45.20,142.80" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,142.80 A0.80,0.80 0 0 1 46.80,142.80" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,142.80 102.00,142.80" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="102.00,142.80 102.00,21.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="102.00,21.00 125.00,21.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="32.00,134.00 32.00,144.60" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="32.00,144.60 38.20,144.60" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M38.20,144.60 A0.80,0.80 0 0 1 39.80,144.60" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="39.80,144.60 45.20,144.60" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,144.60 A0.80,0.80 0 0 1 46.80,144.60" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,144.60 104.00,144.60" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="104.00,144.60 104.00,22.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="104.00,22.00 132.00,22.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="39.00,140.00 39.00,146.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="39.00,146.40 45.20,146.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M45.20,146.40 A0.80,0.80 0 0 1 46.80,146.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="46.80,146.40 106.00,146.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="106.00,146.40 106.00,23.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="106.00,23.00 139.00,23.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.00,140.00 46.00,148.20" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.00,140.00 46.00,148.20" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<polyline points="46.00,148.20 108.00,148.20" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="46.00,148.20 108.00,148.20" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<polyline points="108.00,148.20 108.00,24.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="108.00,148.20 108.00,24.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<polyline points="108.00,24.00 146.00,24.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="108.00,24.00 146.00,24.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<text x="104.00" y="152.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="middle" fill="#111" font-style="italic">do kolumny B ↑</text>
+<text x="104.00" y="17.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="middle" fill="#111" font-style="italic">z kolumny A</text>
+<text x="118.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#7a4a1e" font-weight="bold">L1′</text>
+<text x="125.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#111111" font-weight="bold">L2′</text>
+<text x="132.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#707070" font-weight="bold">L3′</text>
+<text x="139.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#1f4fd1" font-weight="bold">N′</text>
+<text x="146.00" y="16.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#149114" font-weight="bold">PE′</text>
+<polyline points="118.00,20.00 118.00,28.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="125.00,21.00 125.00,28.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="132.00,22.00 132.00,28.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="139.00,23.00 139.00,28.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,24.00 146.00,28.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,24.00 146.00,28.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<line x1="118.00" y1="28.00" x2="118.00" y2="29.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="118.00" y1="32.80" x2="118.00" y2="34.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="118.00" y1="29.20" x2="118.00" y2="32.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="118.00" y1="32.80" x2="116.50" y2="32.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="118.90" y1="32.80" x2="118.90" y2="31.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M118.80,32.10 A0.80,0.80 0 0 1 117.20,32.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="132.00" y1="28.00" x2="132.00" y2="29.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="132.00" y1="32.80" x2="132.00" y2="34.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="132.00" y1="29.20" x2="132.00" y2="32.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="132.00" y1="32.80" x2="133.50" y2="32.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="131.10" y1="32.80" x2="131.10" y2="31.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M132.80,32.10 A0.80,0.80 0 0 1 131.20,32.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="125.00,28.00 125.00,158.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="132.00,34.00 132.00,158.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="150.00" y="30.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="start" fill="#111" font-weight="bold">-K4  2NC 40 A (L1): luźny styk – impulsy (F11)</text>
+<text x="150.00" y="32.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="start" fill="#111" font-weight="bold">-K3  2NC 40 A (L3): zanik fazy (F8)</text>
+<polyline points="118.00,34.00 118.00,38.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="118.00" cy="38.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<rect x="116.80" y="39.50" width="2.40" height="7.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<polyline points="118.00,46.50 118.00,49.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="118.00" cy="49.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="118.00,38.00 114.00,38.00 114.00,39.50" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="114.00" y1="39.50" x2="114.00" y2="40.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="114.00" y1="44.80" x2="114.00" y2="46.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="114.00" y1="40.70" x2="114.00" y2="44.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="114.00" y1="44.80" x2="112.50" y2="44.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="114.90" y1="44.80" x2="114.90" y2="43.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M114.80,44.10 A0.80,0.80 0 0 1 113.20,44.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="114.00,46.00 114.00,49.00 118.00,49.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="150.00" y="40.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="start" fill="#111" font-weight="bold">-R1  0,5 Ω / 600 W (2×1 Ω 300 W ∥) na radiatorze</text>
+<text x="150.00" y="42.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="start" fill="#111" font-weight="bold">-K5  2NC 40 A: bocznik -R1 (F12 – przepalony styk)</text>
+<text x="150.00" y="44.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">-B1 θ 85 °C NC w obwodzie cewki -K5; -M1 wentylator radiatora</text>
+<text x="111.50" y="43.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="end" fill="#111">-K5</text>
+<text x="119.60" y="43.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="start" fill="#111">-R1</text>
+<polyline points="118.00,49.00 118.00,53.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M118.00,54.90 A0.90,0.90 0 0 1 118.00,53.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M118.00,56.70 A0.90,0.90 0 0 1 118.00,54.90" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M118.00,58.50 A0.90,0.90 0 0 1 118.00,56.70" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M118.00,60.30 A0.90,0.90 0 0 1 118.00,58.50" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="116.30" y1="53.30" x2="116.30" y2="61.00" stroke="#111" stroke-width="0.35" stroke-linecap="round"/>
+<line x1="115.70" y1="53.30" x2="115.70" y2="61.00" stroke="#111" stroke-width="0.35" stroke-linecap="round"/>
+<path d="M114.00,53.10 A0.90,0.90 0 0 1 114.00,54.90" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M114.00,54.90 A0.90,0.90 0 0 1 114.00,56.70" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M114.00,56.70 A0.90,0.90 0 0 1 114.00,58.50" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M114.00,58.50 A0.90,0.90 0 0 1 114.00,60.30" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="118.00,61.20 118.00,158.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="150.00" y="55.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="start" fill="#111" font-weight="bold">-T1  transformator toroidalny 1000 VA, 230 V / 2×30 V</text>
+<text x="150.00" y="57.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">wtórne (2 uzwojenia ∥, 30 V / 33 A) w szereg z L1: ±30 V (F10a/b)</text>
+<text x="150.00" y="59.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">pierwotne P1–P2 zasilane przez -K6/-K7 (ramka poniżej)</text>
+<polyline points="114.00,54.00 111.50,54.00 111.50,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="114.00,60.00 109.50,60.00 109.50,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="112.30" y="72.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">P1</text>
+<text x="108.90" y="72.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="end" fill="#111">P2</text>
+<polyline points="111.50,74.00 117.20,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M117.20,74.00 A0.80,0.80 0 0 1 118.80,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="118.80,74.00 124.20,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M124.20,74.00 A0.80,0.80 0 0 1 125.80,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="125.80,74.00 131.20,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M131.20,74.00 A0.80,0.80 0 0 1 132.80,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="132.80,74.00 138.20,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M138.20,74.00 A0.80,0.80 0 0 1 139.80,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="139.80,74.00 145.20,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M145.20,74.00 A0.80,0.80 0 0 1 146.80,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="146.80,74.00 155.20,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M155.20,74.00 A0.80,0.80 0 0 1 156.80,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="156.80,74.00 164.00,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="109.50,76.00 117.20,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M117.20,76.00 A0.80,0.80 0 0 1 118.80,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="118.80,76.00 124.20,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M124.20,76.00 A0.80,0.80 0 0 1 125.80,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="125.80,76.00 131.20,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M131.20,76.00 A0.80,0.80 0 0 1 132.80,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="132.80,76.00 138.20,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M138.20,76.00 A0.80,0.80 0 0 1 139.80,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="139.80,76.00 145.20,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M145.20,76.00 A0.80,0.80 0 0 1 146.80,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="146.80,76.00 155.20,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M155.20,76.00 A0.80,0.80 0 0 1 156.80,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="156.80,76.00 164.00,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="152.00" y="66.00" width="52.00" height="27.00" rx="0.6" fill="#fcfcfc" stroke="#111" stroke-width="0.28"/>
+<text x="153.20" y="68.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="start" fill="#111" font-weight="bold">-K6 boost / -K7 buck – pierwotne -T1 (2× 2NO+2NC 25 A)</text>
+<text x="153.20" y="70.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">oba bez napięcia: NC(K6)·NC(K7) zwierają P1–P2 → bocznik magnetyczny</text>
+<polyline points="156.00,72.00 156.00,91.50" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="156.00" y="91.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1" text-anchor="start" fill="#111"></text>
+<polyline points="200.00,72.00 200.00,91.50" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="156.00" y="71.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="middle" fill="#b3001b">LT1 (z -F7)</text>
+<text x="200.00" y="71.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="middle" fill="#1f4fd1">N230</text>
+<rect x="155.00" y="73.00" width="2.00" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.22"/>
+<text x="154.40" y="75.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="end" fill="#111">-RT1 NTC</text>
+<polyline points="164.00,74.00 174.00,74.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="164.00,76.00 182.00,76.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="174.00,74.00 174.00,91.50" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="182.00,76.00 182.00,91.50" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="174.00" y="94.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">P1</text>
+<text x="182.00" y="94.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">P2</text>
+<line x1="156.00" y1="78.50" x2="157.20" y2="78.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="160.80" y1="78.50" x2="162.00" y2="78.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="157.20" y1="78.50" x2="160.40" y2="76.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="162.00,78.50 174.00,78.50" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.00" cy="78.50" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="156.00" cy="78.50" r="0.5" fill="#b3001b" stroke="none"/>
+<text x="159.00" y="76.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">K6</text>
+<line x1="188.00" y1="78.50" x2="189.20" y2="78.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="192.80" y1="78.50" x2="194.00" y2="78.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="189.20" y1="78.50" x2="192.40" y2="76.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="200.00,78.50 194.00,78.50" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="188.00,78.50 182.00,78.50" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="182.00" cy="78.50" r="0.5" fill="#1f4fd1" stroke="none"/>
+<circle cx="200.00" cy="78.50" r="0.5" fill="#1f4fd1" stroke="none"/>
+<text x="191.00" y="76.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">K6</text>
+<line x1="156.00" y1="84.00" x2="157.20" y2="84.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="160.80" y1="84.00" x2="162.00" y2="84.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="157.20" y1="84.00" x2="160.40" y2="82.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="162.00,84.00 173.20,84.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M173.20,84.00 A0.80,0.80 0 0 1 174.80,84.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="174.80,84.00 182.00,84.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="182.00" cy="84.00" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="156.00" cy="84.00" r="0.5" fill="#b3001b" stroke="none"/>
+<text x="159.00" y="81.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">K7</text>
+<line x1="188.00" y1="84.00" x2="189.20" y2="84.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="192.80" y1="84.00" x2="194.00" y2="84.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="189.20" y1="84.00" x2="192.40" y2="82.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="200.00,84.00 194.00,84.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="188.00,84.00 182.80,84.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M181.20,84.00 A0.80,0.80 0 0 1 182.80,84.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="181.20,84.00 174.00,84.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.00" cy="84.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<circle cx="200.00" cy="84.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<text x="191.00" y="81.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">K7</text>
+<line x1="174.00" y1="89.50" x2="175.20" y2="89.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="176.60" y1="89.50" x2="177.80" y2="89.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="175.20" y1="89.50" x2="176.60" y2="89.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="176.60" y1="89.50" x2="176.60" y2="88.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="176.60" y1="90.40" x2="175.20" y2="90.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="178.20" y1="89.50" x2="179.40" y2="89.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="180.80" y1="89.50" x2="182.00" y2="89.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="179.40" y1="89.50" x2="180.80" y2="89.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="180.80" y1="89.50" x2="180.80" y2="88.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="180.80" y1="90.40" x2="179.40" y2="90.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="182.00,89.50 182.00,89.50" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.00" cy="89.50" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="182.00" cy="89.50" r="0.5" fill="#b3001b" stroke="none"/>
+<text x="175.90" y="87.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">K6</text>
+<text x="180.10" y="87.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">K7</text>
+<rect x="196.00" y="85.50" width="2.00" height="3.40" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<line x1="196.20" y1="88.20" x2="197.80" y2="86.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="197.80" y1="86.20" x2="198.50" y2="86.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="193.50" y="88.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="end" fill="#111">-RV1</text>
+<polyline points="139.00,23.00 139.00,106.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,24.00 146.00,106.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,24.00 146.00,106.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<line x1="139.00" y1="106.00" x2="139.00" y2="107.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="139.00" y1="110.80" x2="139.00" y2="112.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="139.00" y1="107.20" x2="139.00" y2="110.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="139.00" y1="110.80" x2="140.50" y2="110.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="138.10" y1="110.80" x2="138.10" y2="109.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M139.80,110.10 A0.80,0.80 0 0 1 138.20,110.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<circle cx="146.00" cy="106.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="146.00,106.00 149.00,106.00 149.00,106.40" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,106.00 149.00,106.00 149.00,106.40" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<line x1="146.00" y1="106.40" x2="146.00" y2="107.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.00" y1="111.20" x2="146.00" y2="112.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.00" y1="107.60" x2="146.00" y2="111.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.00" y1="111.20" x2="144.50" y2="111.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.90" y1="111.20" x2="146.90" y2="109.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M146.80,110.50 A0.80,0.80 0 0 1 145.20,110.50" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="149.00" y1="106.40" x2="149.00" y2="107.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="149.00" y1="111.20" x2="149.00" y2="112.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="149.00" y1="107.60" x2="149.00" y2="111.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="149.00" y1="111.20" x2="150.50" y2="111.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="148.10" y1="111.20" x2="148.10" y2="109.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M149.80,110.50 A0.80,0.80 0 0 1 148.20,110.50" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="149.00,112.40 149.00,113.00 146.00,113.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="149.00,112.40 149.00,113.00 146.00,113.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="146.00" cy="113.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="139.00,112.00 139.00,134.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,113.00 146.00,134.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,113.00 146.00,134.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<text x="137.60" y="104.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="end" fill="#111">-K8</text>
+<text x="151.20" y="104.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="start" fill="#111">-K9</text>
+<text x="156.00" y="100.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111" font-weight="bold">-K8 2NC 40 A: przerwa N (F4)</text>
+<text x="156.00" y="102.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111" font-weight="bold">-K9 2NC 40 A: przerwa PE (F1), 2 bieguny ∥</text>
+<circle cx="146.00" cy="97.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="146.00,97.00 151.00,97.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,97.00 151.00,97.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<polyline points="151.00,97.00 151.00,115.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="151.00,97.00 151.00,115.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<polyline points="151.00,115.00 203.00,115.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="151.00,115.00 203.00,115.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="118.00" cy="119.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="118.00,119.00 124.20,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M124.20,119.00 A0.80,0.80 0 0 1 125.80,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="125.80,119.00 131.20,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M131.20,119.00 A0.80,0.80 0 0 1 132.80,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="132.80,119.00 138.20,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M138.20,119.00 A0.80,0.80 0 0 1 139.80,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="139.80,119.00 145.20,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M145.20,119.00 A0.80,0.80 0 0 1 146.80,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="146.80,119.00 150.20,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M150.20,119.00 A0.80,0.80 0 0 1 151.80,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="151.80,119.00 203.00,119.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="139.00" cy="124.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="139.00,124.00 145.20,124.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M145.20,124.00 A0.80,0.80 0 0 1 146.80,124.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="146.80,124.00 150.20,124.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M150.20,124.00 A0.80,0.80 0 0 1 151.80,124.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="151.80,124.00 203.00,124.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="146.00" cy="129.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="146.00,129.00 150.20,129.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,129.00 150.20,129.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<path d="M150.20,129.00 A0.80,0.80 0 0 1 151.80,129.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="151.80,129.00 203.00,129.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="151.80,129.00 203.00,129.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<text x="203.60" y="115.55" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#149114">PE (sieć)</text>
+<text x="203.60" y="119.55" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#7a4a1e">L1′</text>
+<text x="203.60" y="124.55" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#1f4fd1">N′</text>
+<text x="203.60" y="129.55" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#149114">PE′</text>
+<circle cx="156.00" cy="115.00" r="0.5" fill="#149114" stroke="none"/>
+<line x1="156.00" y1="115.20" x2="156.00" y2="116.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="156.00" y1="118.20" x2="156.00" y2="119.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="156.00" y1="116.40" x2="158.00" y2="117.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="158.30" y="118.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">-A13:O1</text>
+<rect x="155.00" y="119.60" width="2.00" height="4.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="157.60" y="122.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="start" fill="#111">-R2 100 Ω 50 W</text>
+<polyline points="156.00,123.60 156.00,129.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="156.00,123.60 156.00,129.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="156.00" cy="129.00" r="0.5" fill="#149114" stroke="none"/>
+<text x="156.00" y="113.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="middle" fill="#111" font-weight="bold">F2 słabe PE</text>
+<circle cx="168.00" cy="119.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<line x1="168.00" y1="119.20" x2="168.00" y2="120.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="168.00" y1="121.80" x2="168.00" y2="123.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="168.00" y1="120.40" x2="170.00" y2="121.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="170.30" y="121.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">-A13:O2</text>
+<rect x="167.00" y="123.20" width="2.00" height="3.60" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="169.60" y="125.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="start" fill="#111">-R3 220 kΩ 2 W</text>
+<polyline points="168.00,126.80 168.00,129.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="168.00,126.80 168.00,129.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="168.00" cy="129.00" r="0.5" fill="#149114" stroke="none"/>
+<text x="168.00" y="113.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="middle" fill="#111" font-weight="bold">F3 PE pod U</text>
+<circle cx="179.00" cy="124.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<line x1="179.00" y1="124.10" x2="179.00" y2="125.30" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="179.00" y1="127.70" x2="179.00" y2="128.90" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="179.00" y1="125.30" x2="181.00" y2="127.30" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="181.30" y="127.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">-A13:O3</text>
+<circle cx="179.00" cy="129.00" r="0.5" fill="#149114" stroke="none"/>
+<text x="179.00" y="113.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="middle" fill="#111" font-weight="bold">F6 mostek N′–PE′</text>
+<circle cx="193.00" cy="119.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<line x1="193.00" y1="119.20" x2="193.00" y2="120.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="193.00" y1="121.80" x2="193.00" y2="123.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="193.00" y1="120.40" x2="195.00" y2="121.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="195.30" y="121.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">-A14:O1</text>
+<rect x="192.00" y="123.20" width="2.00" height="3.60" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="194.60" y="125.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="start" fill="#111">-R4 6,8 kΩ 25 W</text>
+<polyline points="193.00,126.80 193.00,129.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="193.00,126.80 193.00,129.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="193.00" cy="129.00" r="0.5" fill="#149114" stroke="none"/>
+<text x="194.00" y="113.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="middle" fill="#111" font-weight="bold">F14 upływ 34 mA~</text>
+<text x="154.00" y="133.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111" font-weight="bold">F15 upływ 6 mA= (oślepianie RCD typu A):</text>
+<text x="154.00" y="135.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="start" fill="#111">L1′ → styk → dioda -V1 (1 kV) → węzeł A; -C1 22 µF/400 V ∥ -R6 100 kΩ</text>
+<text x="154.00" y="137.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="start" fill="#111">między A a N′ (≈ 325 V=); -R5 56 kΩ 5 W z A do PE′ → ≈ 6 mA prądu stałego</text>
+<circle cx="200.50" cy="119.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="200.50,119.00 200.50,123.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200.50,124.80 A0.80,0.80 0 0 1 200.50,123.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="200.50,124.80 200.50,128.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200.50,129.80 A0.80,0.80 0 0 1 200.50,128.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="200.50,129.80 200.50,134.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="200.50" y1="134.00" x2="200.50" y2="135.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="200.50" y1="136.40" x2="200.50" y2="137.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="200.50" y1="135.20" x2="198.50" y2="136.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="198.30" y="136.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="end" fill="#111">-A14:O2</text>
+<polyline points="200.50,137.60 200.50,139.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="199.20,139.00 201.80,139.00 200.50,141.20" fill="none" stroke="#111" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="199.20" y1="141.20" x2="201.80" y2="141.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="202.30" y="140.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="start" fill="#111">-V1</text>
+<polyline points="200.50,141.20 200.50,143.00" fill="none" stroke="#6a1fb3" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="200.50" cy="143.00" r="0.5" fill="#6a1fb3" stroke="none"/>
+<polyline points="200.50,143.00 196.50,143.00" fill="none" stroke="#6a1fb3" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="191.50" y="142.00" width="5.00" height="2.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="194.00" y="141.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">-R5</text>
+<polyline points="191.50,143.00 188.50,143.00 188.50,129.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="191.50,143.00 188.50,143.00 188.50,129.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="188.50" cy="129.00" r="0.5" fill="#149114" stroke="none"/>
+<circle cx="203.00" cy="124.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="203.00,124.00 203.00,128.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M203.00,129.80 A0.80,0.80 0 0 1 203.00,128.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="203.00,129.80 203.00,149.50" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="200.50,143.00 200.50,144.20" fill="none" stroke="#6a1fb3" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="199.00" y1="144.20" x2="202.00" y2="144.20" stroke="#111" stroke-width="0.4" stroke-linecap="round"/>
+<line x1="199.00" y1="145.20" x2="202.00" y2="145.20" stroke="#111" stroke-width="0.4" stroke-linecap="round"/>
+<polyline points="200.50,145.20 200.50,149.50 203.00,149.50" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="198.50" y="145.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="end" fill="#111">-C1</text>
+<polyline points="200.50,143.00 197.50,143.00" fill="none" stroke="#6a1fb3" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="198.50,143.00 198.50,146.00" fill="none" stroke="#6a1fb3" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="197.50" y="146.00" width="2.00" height="2.00" rx="0" fill="white" stroke="#111" stroke-width="0.22"/>
+<polyline points="198.50,148.00 198.50,149.50 200.50,149.50" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="196.90" y="147.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="end" fill="#111">-R6</text>
+<line x1="139.00" y1="134.00" x2="139.00" y2="135.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="139.00" y1="138.80" x2="139.00" y2="140.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="139.00" y1="135.20" x2="139.00" y2="138.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="139.00" y1="138.80" x2="140.50" y2="138.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="138.10" y1="138.80" x2="138.10" y2="137.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M139.80,138.10 A0.80,0.80 0 0 1 138.20,138.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.00" y1="134.00" x2="146.00" y2="135.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.00" y1="138.80" x2="146.00" y2="140.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.00" y1="135.20" x2="146.00" y2="138.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.00" y1="138.80" x2="147.50" y2="138.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="145.10" y1="138.80" x2="145.10" y2="137.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M146.80,138.10 A0.80,0.80 0 0 1 145.20,138.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<circle cx="139.00" cy="134.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="139.00,134.00 141.60,134.60 141.60,135.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="141.60" y1="135.20" x2="141.60" y2="136.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="141.60" y1="138.40" x2="141.60" y2="139.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="141.60" y1="136.40" x2="143.60" y2="138.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M142.40,137.70 A0.80,0.80 0 0 1 140.80,137.70" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="141.60,139.60 141.60,141.60 146.00,144.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="146.00" cy="134.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="146.00,134.00 143.40,134.60 143.40,135.20" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,134.00 143.40,134.60 143.40,135.20" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<line x1="143.40" y1="135.20" x2="143.40" y2="136.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="143.40" y1="138.40" x2="143.40" y2="139.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="143.40" y1="136.40" x2="141.40" y2="138.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M144.20,137.70 A0.80,0.80 0 0 1 142.60,137.70" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="143.40,139.60 143.40,141.60 139.00,144.40" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="143.40,139.60 143.40,141.60 139.00,144.40" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<path d="M141.80,143.00 A0.70,0.70 0 0 1 143.20,143.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="139.00,140.00 139.00,160.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,140.00 146.00,160.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,140.00 146.00,160.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<circle cx="139.00" cy="144.40" r="0.5" fill="#1f4fd1" stroke="none"/>
+<circle cx="146.00" cy="144.40" r="0.5" fill="#149114" stroke="none"/>
+<text x="152.00" y="150.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111" font-weight="bold">-K10  2NO+2NC 40 A: NC: N′→N″, PE′→PE″ · NO: zamiana N↔PE (F5)</text>
+<text x="152.00" y="152.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">N″ / PE″ = przewody neutralny i ochronny do gniazd wyjściowych</text>
+<polyline points="118.00,158.00 118.00,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="125.00,158.00 125.00,160.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="132.00,158.00 132.00,160.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="118.00" cy="160.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="118.00,160.00 124.20,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M124.20,160.00 A0.80,0.80 0 0 1 125.80,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="125.80,160.00 131.20,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M131.20,160.00 A0.80,0.80 0 0 1 132.80,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="132.80,160.00 138.20,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M138.20,160.00 A0.80,0.80 0 0 1 139.80,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="139.80,160.00 145.20,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M145.20,160.00 A0.80,0.80 0 0 1 146.80,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="146.80,160.00 203.00,160.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="203.60" y="160.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#7a4a1e">L1″</text>
+<circle cx="125.00" cy="162.00" r="0.5" fill="#111111" stroke="none"/>
+<polyline points="125.00,162.00 131.20,162.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M131.20,162.00 A0.80,0.80 0 0 1 132.80,162.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="132.80,162.00 138.20,162.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M138.20,162.00 A0.80,0.80 0 0 1 139.80,162.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="139.80,162.00 145.20,162.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M145.20,162.00 A0.80,0.80 0 0 1 146.80,162.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="146.80,162.00 203.00,162.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="203.60" y="162.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111111">L2″</text>
+<circle cx="132.00" cy="164.00" r="0.5" fill="#707070" stroke="none"/>
+<polyline points="132.00,164.00 138.20,164.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M138.20,164.00 A0.80,0.80 0 0 1 139.80,164.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="139.80,164.00 145.20,164.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M145.20,164.00 A0.80,0.80 0 0 1 146.80,164.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="146.80,164.00 203.00,164.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="203.60" y="164.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#707070">L3″</text>
+<circle cx="139.00" cy="166.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="139.00,166.00 145.20,166.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M145.20,166.00 A0.80,0.80 0 0 1 146.80,166.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="146.80,166.00 203.00,166.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="203.60" y="166.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#1f4fd1">N″</text>
+<circle cx="146.00" cy="168.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="146.00,168.00 203.00,168.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146.00,168.00 203.00,168.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<text x="203.60" y="168.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#149114">PE″</text>
+<circle cx="141.00" cy="160.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="141.00,160.00 141.00,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M141.00,162.80 A0.80,0.80 0 0 1 141.00,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="141.00,162.80 141.00,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M141.00,164.80 A0.80,0.80 0 0 1 141.00,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="141.00,164.80 141.00,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M141.00,166.80 A0.80,0.80 0 0 1 141.00,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="141.00,166.80 141.00,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M141.00,168.80 A0.80,0.80 0 0 1 141.00,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="141.00,168.80 141.00,174.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="141.00" y1="174.00" x2="141.00" y2="175.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="141.00" y1="178.60" x2="141.00" y2="180.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="141.00" y1="175.40" x2="143.10" y2="178.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="140.10" y1="177.70" x2="141.90" y2="179.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="140.10" y1="179.50" x2="141.90" y2="177.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="141.00,180.00 141.00,187.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="144.20" cy="162.00" r="0.5" fill="#111111" stroke="none"/>
+<polyline points="144.20,162.00 144.20,163.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M144.20,164.80 A0.80,0.80 0 0 1 144.20,163.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="144.20,164.80 144.20,165.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M144.20,166.80 A0.80,0.80 0 0 1 144.20,165.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="144.20,166.80 144.20,167.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M144.20,168.80 A0.80,0.80 0 0 1 144.20,167.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="144.20,168.80 144.20,174.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="144.20" y1="174.00" x2="144.20" y2="175.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="144.20" y1="178.60" x2="144.20" y2="180.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="144.20" y1="175.40" x2="146.30" y2="178.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="143.30" y1="177.70" x2="145.10" y2="179.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="143.30" y1="179.50" x2="145.10" y2="177.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="144.20,180.00 144.20,187.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="147.40" cy="164.00" r="0.5" fill="#707070" stroke="none"/>
+<polyline points="147.40,164.00 147.40,165.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M147.40,166.80 A0.80,0.80 0 0 1 147.40,165.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="147.40,166.80 147.40,167.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M147.40,168.80 A0.80,0.80 0 0 1 147.40,167.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="147.40,168.80 147.40,174.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="147.40" y1="174.00" x2="147.40" y2="175.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="147.40" y1="178.60" x2="147.40" y2="180.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="147.40" y1="175.40" x2="149.50" y2="178.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.50" y1="177.70" x2="148.30" y2="179.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="146.50" y1="179.50" x2="148.30" y2="177.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="147.40,180.00 147.40,187.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="141.70" y1="177.00" x2="148.10" y2="177.00" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<circle cx="150.60" cy="166.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="150.60,166.00 150.60,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M150.60,168.80 A0.80,0.80 0 0 1 150.60,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="150.60,168.80 150.60,187.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="153.80" cy="168.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="153.80,168.00 153.80,187.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="153.80,168.00 153.80,187.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<text x="151.40" y="178.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.25" text-anchor="start" fill="#111" font-weight="bold">-F3 C32 3P</text>
+<rect x="139.00" y="187.00" width="17.00" height="5.00" rx="0.8" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="147.50" y="190.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="middle" fill="#111" font-weight="bold">-X2  CEE 32 A 5P</text>
+<circle cx="163.00" cy="160.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="163.00,160.00 163.00,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M163.00,162.80 A0.80,0.80 0 0 1 163.00,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="163.00,162.80 163.00,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M163.00,164.80 A0.80,0.80 0 0 1 163.00,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="163.00,164.80 163.00,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M163.00,166.80 A0.80,0.80 0 0 1 163.00,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="163.00,166.80 163.00,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M163.00,168.80 A0.80,0.80 0 0 1 163.00,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="163.00,168.80 163.00,174.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="163.00" y1="174.00" x2="163.00" y2="175.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="163.00" y1="178.60" x2="163.00" y2="180.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="163.00" y1="175.40" x2="165.10" y2="178.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="162.10" y1="177.70" x2="163.90" y2="179.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="162.10" y1="179.50" x2="163.90" y2="177.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="163.00,180.00 163.00,187.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="166.20" cy="162.00" r="0.5" fill="#111111" stroke="none"/>
+<polyline points="166.20,162.00 166.20,163.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M166.20,164.80 A0.80,0.80 0 0 1 166.20,163.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="166.20,164.80 166.20,165.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M166.20,166.80 A0.80,0.80 0 0 1 166.20,165.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="166.20,166.80 166.20,167.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M166.20,168.80 A0.80,0.80 0 0 1 166.20,167.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="166.20,168.80 166.20,174.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="166.20" y1="174.00" x2="166.20" y2="175.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="166.20" y1="178.60" x2="166.20" y2="180.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="166.20" y1="175.40" x2="168.30" y2="178.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="165.30" y1="177.70" x2="167.10" y2="179.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="165.30" y1="179.50" x2="167.10" y2="177.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="166.20,180.00 166.20,187.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="169.40" cy="164.00" r="0.5" fill="#707070" stroke="none"/>
+<polyline points="169.40,164.00 169.40,165.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M169.40,166.80 A0.80,0.80 0 0 1 169.40,165.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="169.40,166.80 169.40,167.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M169.40,168.80 A0.80,0.80 0 0 1 169.40,167.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="169.40,168.80 169.40,174.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="169.40" y1="174.00" x2="169.40" y2="175.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="169.40" y1="178.60" x2="169.40" y2="180.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="169.40" y1="175.40" x2="171.50" y2="178.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="168.50" y1="177.70" x2="170.30" y2="179.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="168.50" y1="179.50" x2="170.30" y2="177.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="169.40,180.00 169.40,187.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="163.70" y1="177.00" x2="170.10" y2="177.00" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<circle cx="172.60" cy="166.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="172.60,166.00 172.60,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M172.60,168.80 A0.80,0.80 0 0 1 172.60,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="172.60,168.80 172.60,187.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="175.80" cy="168.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="175.80,168.00 175.80,187.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="175.80,168.00 175.80,187.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<text x="173.40" y="178.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.25" text-anchor="start" fill="#111" font-weight="bold">-F4 B16 3P</text>
+<rect x="161.00" y="187.00" width="17.00" height="5.00" rx="0.8" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="169.50" y="190.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.4" text-anchor="middle" fill="#111" font-weight="bold">-X3  CEE 16 A 5P</text>
+<circle cx="187.00" cy="160.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="187.00,160.00 187.00,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M187.00,162.80 A0.80,0.80 0 0 1 187.00,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="187.00,162.80 187.00,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M187.00,164.80 A0.80,0.80 0 0 1 187.00,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="187.00,164.80 187.00,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M187.00,166.80 A0.80,0.80 0 0 1 187.00,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="187.00,166.80 187.00,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M187.00,168.80 A0.80,0.80 0 0 1 187.00,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="187.00,168.80 187.00,173.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="190.20" cy="166.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="190.20,166.00 190.20,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M190.20,168.80 A0.80,0.80 0 0 1 190.20,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="190.20,168.80 190.20,173.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="187.00" y1="173.00" x2="187.00" y2="174.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="187.00" y1="176.60" x2="187.00" y2="178.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="187.00" y1="174.40" x2="189.10" y2="176.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="186.10" y1="175.70" x2="187.90" y2="177.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="186.10" y1="177.50" x2="187.90" y2="175.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="190.20" y1="173.00" x2="190.20" y2="174.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="190.20" y1="176.60" x2="190.20" y2="178.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="190.20" y1="174.40" x2="192.30" y2="176.10" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="189.30" y1="175.70" x2="191.10" y2="177.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="189.30" y1="177.50" x2="191.10" y2="175.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="187.70" y1="175.50" x2="190.90" y2="175.50" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.9,0.7"/>
+<text x="192.60" y="175.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="start" fill="#111" font-weight="bold">-F5 B16</text>
+<text x="192.60" y="177.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="start" fill="#111" font-weight="bold">1P+N</text>
+<circle cx="187.00" cy="179.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<circle cx="190.20" cy="179.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<line x1="187.00" y1="179.00" x2="187.00" y2="180.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="187.00" y1="181.80" x2="187.00" y2="183.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="187.00" y1="180.20" x2="187.00" y2="181.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="187.00" y1="181.80" x2="185.50" y2="181.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="187.90" y1="181.80" x2="187.90" y2="180.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M187.80,181.10 A0.80,0.80 0 0 1 186.20,181.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="190.20" y1="179.00" x2="190.20" y2="180.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="190.20" y1="181.80" x2="190.20" y2="183.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="190.20" y1="180.20" x2="190.20" y2="181.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="190.20" y1="181.80" x2="191.70" y2="181.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="189.30" y1="181.80" x2="189.30" y2="180.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M191.00,181.10 A0.80,0.80 0 0 1 189.40,181.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="187.00,179.00 184.40,179.00 184.40,179.60" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="184.40" y1="179.60" x2="184.40" y2="180.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="184.40" y1="181.80" x2="184.40" y2="183.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="184.40" y1="180.80" x2="182.40" y2="181.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M185.20,181.10 A0.80,0.80 0 0 1 183.60,181.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="184.40,183.00 184.40,184.60 190.20,184.60" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="190.20,179.00 192.80,179.00 192.80,179.60" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="192.80" y1="179.60" x2="192.80" y2="180.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="192.80" y1="181.80" x2="192.80" y2="183.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="192.80" y1="180.80" x2="194.80" y2="181.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M193.60,181.10 A0.80,0.80 0 0 1 192.00,181.10" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="192.80,183.00 192.80,184.60 187.00,184.60" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M188.00,184.60 A0.60,0.60 0 0 1 189.20,184.60" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="187.00,183.00 187.00,184.60" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="190.20,183.00 190.20,184.60" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="187.00" cy="184.60" r="0.5" fill="#7a4a1e" stroke="none"/>
+<circle cx="190.20" cy="184.60" r="0.5" fill="#1f4fd1" stroke="none"/>
+<text x="195.00" y="180.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111" font-weight="bold">-K11 2NO+2NC</text>
+<text x="195.00" y="182.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">25 A: L↔N (F7)</text>
+<polyline points="187.00,184.60 187.00,189.50" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="190.20,184.60 190.20,189.50" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="196.60" cy="168.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="196.60,168.00 196.60,171.00 201.50,171.00 201.50,189.50" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="196.60,168.00 196.60,171.00 201.50,171.00 201.50,189.50" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<rect x="182.50" y="189.50" width="21.50" height="5.60" rx="0.8" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="193.20" y="191.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="middle" fill="#111" font-weight="bold">-X4a, -X4b  2× Schuko</text>
+<text x="193.20" y="194.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">16 A (L, N, PE″) równolegle</text>
+<rect x="110.00" y="172.00" width="26.00" height="5.20" rx="0.5" fill="#fcfcfc" stroke="#111" stroke-width="0.28"/>
+<text x="111.00" y="174.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111" font-weight="bold">-K13 CKF-B</text>
+<text x="111.00" y="176.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">kolejność/zanik faz → styk → -A12:SW2</text>
+<circle cx="112.50" cy="160.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="112.50,160.00 112.50,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M112.50,162.80 A0.80,0.80 0 0 1 112.50,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="112.50,162.80 112.50,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M112.50,164.80 A0.80,0.80 0 0 1 112.50,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="112.50,164.80 112.50,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M112.50,166.80 A0.80,0.80 0 0 1 112.50,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="112.50,166.80 112.50,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M112.50,168.80 A0.80,0.80 0 0 1 112.50,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="112.50,168.80 112.50,172.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="115.10" cy="162.00" r="0.5" fill="#111111" stroke="none"/>
+<polyline points="115.10,162.00 115.10,163.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M115.10,164.80 A0.80,0.80 0 0 1 115.10,163.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="115.10,164.80 115.10,165.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M115.10,166.80 A0.80,0.80 0 0 1 115.10,165.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="115.10,166.80 115.10,167.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M115.10,168.80 A0.80,0.80 0 0 1 115.10,167.20" fill="none" stroke="#111111" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="115.10,168.80 115.10,172.00" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="117.70" cy="164.00" r="0.5" fill="#707070" stroke="none"/>
+<polyline points="117.70,164.00 117.70,165.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M117.70,166.80 A0.80,0.80 0 0 1 117.70,165.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="117.70,166.80 117.70,167.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M117.70,168.80 A0.80,0.80 0 0 1 117.70,167.20" fill="none" stroke="#707070" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="117.70,168.80 117.70,172.00" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="120.30" cy="166.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="120.30,166.00 120.30,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M120.30,168.80 A0.80,0.80 0 0 1 120.30,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="120.30,168.80 120.30,172.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="110.00" y="179.00" width="26.00" height="6.00" rx="0.5" fill="#fcfcfc" stroke="#111" stroke-width="0.28"/>
+<text x="111.00" y="181.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111" font-weight="bold">-P2 PZEM-016</text>
+<text x="111.00" y="183.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">U(L1″–N″), I przez CT na L1″</text>
+<text x="111.00" y="184.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">RS485 adres 2</text>
+<circle cx="128.00" cy="160.00" r="0.5" fill="#7a4a1e" stroke="none"/>
+<polyline points="128.00,160.00 128.00,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M128.00,162.80 A0.80,0.80 0 0 1 128.00,161.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="128.00,162.80 128.00,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M128.00,164.80 A0.80,0.80 0 0 1 128.00,163.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="128.00,164.80 128.00,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M128.00,166.80 A0.80,0.80 0 0 1 128.00,165.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="128.00,166.80 128.00,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M128.00,168.80 A0.80,0.80 0 0 1 128.00,167.20" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="128.00,168.80 128.00,179.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="135.00" cy="166.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="135.00,166.00 135.00,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M135.00,168.80 A0.80,0.80 0 0 1 135.00,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="135.00,168.80 135.00,179.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="135.50" cy="160.00" r="1.60" fill="none" stroke="#111" stroke-width="0.28"/>
+<text x="135.50" y="157.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="middle" fill="#6a1fb3">CT -P2</text>
+<rect x="110.00" y="187.00" width="26.00" height="5.20" rx="0.5" fill="#fcfcfc" stroke="#111" stroke-width="0.28"/>
+<text x="111.00" y="189.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111" font-weight="bold">-P3 ZMPT101B</text>
+<text x="111.00" y="191.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">U(N″–PE″) → -A5 ADS1115 → RPi</text>
+<circle cx="137.60" cy="166.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="137.60,166.00 137.60,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M137.60,168.80 A0.80,0.80 0 0 1 137.60,167.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linecap="round"/>
+<polyline points="137.60,168.80 137.60,190.50" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="137.60,190.50 136.00,190.50" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="139.40" cy="168.00" r="0.5" fill="#149114" stroke="none"/>
+<polyline points="139.40,168.00 139.40,191.70 136.00,191.70" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="139.40,168.00 139.40,191.70 136.00,191.70" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<text x="110.00" y="195.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111" font-style="italic">DUT na osobnej płycie izolacyjnej; gniazda opisane „TYLKO DUT – PE PRZEŁĄCZANE”</text>
+<rect x="5.00" y="198.00" width="101.00" height="92.00" rx="0" fill="white" stroke="#111" stroke-width="0.3"/>
+<text x="6.20" y="200.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.6" text-anchor="start" fill="#111" font-weight="bold">STEROWANIE 230 V (cewki) – zasilanie z -F6: L230 / N230</text>
+<text x="7.00" y="207.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#b3001b" font-weight="bold">L230</text>
+<polyline points="14.00,206.50 17.00,206.50" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="17.00" y1="206.50" x2="18.20" y2="206.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="206.50" x2="23.00" y2="206.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.20" y1="206.50" x2="21.40" y2="204.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<rect x="18.00" y="201.70" width="2.40" height="1.60" rx="0" fill="white" stroke="#111" stroke-width="0.22"/>
+<line x1="19.20" y1="203.30" x2="19.20" y2="205.30" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.5,0.4"/>
+<text x="21.60" y="203.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">-S1 kluczyk „TRYB TESTOWY” (NO)</text>
+<polyline points="23.00,206.50 53.00,206.50" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="53.00" y1="206.50" x2="54.20" y2="206.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="57.80" y1="206.50" x2="59.00" y2="206.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="54.20" y1="206.50" x2="57.80" y2="206.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="57.80" y1="206.50" x2="57.80" y2="205.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="57.80" y1="207.40" x2="56.40" y2="207.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M54.70,202.30 A1.30,1.30 0 0 1 57.30,202.30" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="56.00" y1="202.30" x2="56.00" y2="205.10" stroke="#111" stroke-width="0.22" stroke-linecap="round" stroke-dasharray="0.5,0.4"/>
+<text x="60.00" y="203.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">-S0 E-STOP (NC)</text>
+<polyline points="59.00,206.50 69.00,206.50" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="70.00" y="207.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#b3001b" font-weight="bold">Lc = zasilanie cewek</text>
+<polyline points="8.00,212.00 8.00,255.70" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="54.00,212.00 54.00,255.70" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="8.00" y="211.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="middle" fill="#b3001b" font-weight="bold">Lc</text>
+<text x="54.00" y="211.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="middle" fill="#1f4fd1" font-weight="bold">N230</text>
+<circle cx="8.00" cy="215.00" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="54.00" cy="215.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="8.00,215.00 10.00,215.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="10.00,215.00 16.00,215.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="16.00,215.00 43.80,215.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="47.00" cy="215.00" r="1.70" fill="#bfe8bf" stroke="#111" stroke-width="0.28"/>
+<line x1="45.81" y1="213.81" x2="48.19" y2="216.19" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="45.81" y1="216.19" x2="48.19" y2="213.81" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="48.70,215.00 54.00,215.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="42.80" y="215.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="end" fill="#111" font-weight="bold">-H1</text>
+<circle cx="8.00" cy="220.40" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="54.00" cy="220.40" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="8.00,220.40 10.00,220.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="10.00" y1="220.40" x2="11.20" y2="220.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="14.80" y1="220.40" x2="16.00" y2="220.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="11.20" y1="220.40" x2="14.40" y2="218.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M14.40,221.20 A0.80,0.80 0 0 1 14.40,219.60" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="13.00" y="218.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A4:CH1</text>
+<polyline points="16.00,220.40 17.00,220.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="17.00" y1="220.40" x2="18.20" y2="220.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="220.40" x2="23.00" y2="220.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.20" y1="220.40" x2="21.80" y2="220.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="220.40" x2="21.80" y2="218.90" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="221.30" x2="20.40" y2="221.30" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="20.00" y="218.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">-K2 F4-11</text>
+<polyline points="23.00,220.40 43.80,220.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="43.80" y="218.90" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="47.00" y="221.05" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K1</text>
+<text x="44.00" y="218.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="50.00" y="218.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="50.20,220.40 54.00,220.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="45.80" y="222.30" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="43.80,220.40 43.80,222.85 45.80,222.85" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="48.20,222.85 50.20,222.85 50.20,220.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="8.00" cy="225.80" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="54.00" cy="225.80" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="8.00,225.80 10.00,225.80" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="10.00" y1="225.80" x2="11.20" y2="225.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="14.80" y1="225.80" x2="16.00" y2="225.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="11.20" y1="225.80" x2="14.40" y2="223.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M14.40,226.60 A0.80,0.80 0 0 1 14.40,225.00" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="13.00" y="223.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A4:CH2</text>
+<polyline points="16.00,225.80 17.00,225.80" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="17.00" y1="225.80" x2="18.20" y2="225.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="225.80" x2="23.00" y2="225.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.20" y1="225.80" x2="21.80" y2="225.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="225.80" x2="21.80" y2="224.30" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="226.70" x2="20.40" y2="226.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="20.00" y="223.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">-K1 F4-11</text>
+<polyline points="23.00,225.80 43.80,225.80" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="43.80" y="224.30" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="47.00" y="226.45" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K2</text>
+<text x="44.00" y="223.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="50.00" y="223.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="50.20,225.80 54.00,225.80" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="45.80" y="227.70" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="43.80,225.80 43.80,228.25 45.80,228.25" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="48.20,228.25 50.20,228.25 50.20,225.80" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="8.00" cy="231.20" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="54.00" cy="231.20" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="8.00,231.20 10.00,231.20" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="10.00" y1="231.20" x2="11.20" y2="231.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="14.80" y1="231.20" x2="16.00" y2="231.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="11.20" y1="231.20" x2="14.40" y2="229.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M14.40,232.00 A0.80,0.80 0 0 1 14.40,230.40" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="13.00" y="228.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A4:CH6</text>
+<polyline points="16.00,231.20 43.80,231.20" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="43.80" y="229.70" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="47.00" y="231.85" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K12a/b</text>
+<text x="44.00" y="229.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="50.00" y="229.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="50.20,231.20 54.00,231.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="45.80" y="233.10" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="43.80,231.20 43.80,233.65 45.80,233.65" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="48.20,233.65 50.20,233.65 50.20,231.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="8.00" cy="236.60" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="54.00" cy="236.60" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="8.00,236.60 10.00,236.60" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="10.00" y1="236.60" x2="11.20" y2="236.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="14.80" y1="236.60" x2="16.00" y2="236.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="11.20" y1="236.60" x2="14.40" y2="234.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="13.00" y="234.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A11:O1</text>
+<polyline points="16.00,236.60 43.80,236.60" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="43.80" y="235.10" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="47.00" y="237.25" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K3</text>
+<text x="44.00" y="234.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="50.00" y="234.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="50.20,236.60 54.00,236.60" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="45.80" y="238.50" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="43.80,236.60 43.80,239.05 45.80,239.05" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="48.20,239.05 50.20,239.05 50.20,236.60" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="8.00" cy="242.00" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="54.00" cy="242.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="8.00,242.00 10.00,242.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="10.00" y1="242.00" x2="11.20" y2="242.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="14.80" y1="242.00" x2="16.00" y2="242.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="11.20" y1="242.00" x2="14.40" y2="240.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M14.40,242.80 A0.80,0.80 0 0 1 14.40,241.20" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="13.00" y="239.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A4:CH3</text>
+<polyline points="16.00,242.00 43.80,242.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="43.80" y="240.50" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="47.00" y="242.65" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K4</text>
+<text x="44.00" y="240.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="50.00" y="240.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="50.20,242.00 54.00,242.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="45.80" y="243.90" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="43.80,242.00 43.80,244.45 45.80,244.45" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="48.20,244.45 50.20,244.45 50.20,242.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="8.00" cy="247.40" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="54.00" cy="247.40" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="8.00,247.40 10.00,247.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="10.00" y1="247.40" x2="11.20" y2="247.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="14.80" y1="247.40" x2="16.00" y2="247.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="11.20" y1="247.40" x2="14.40" y2="245.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="13.00" y="245.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A11:O2</text>
+<polyline points="16.00,247.40 17.00,247.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="17.00" y1="247.40" x2="18.20" y2="247.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="247.40" x2="23.00" y2="247.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.20" y1="247.40" x2="21.80" y2="247.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="247.40" x2="21.80" y2="245.90" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="248.30" x2="20.40" y2="248.30" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="20.00" y="245.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">-B1 θ85°C</text>
+<polyline points="23.00,247.40 43.80,247.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="43.80" y="245.90" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="47.00" y="248.05" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K5</text>
+<text x="44.00" y="245.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="50.00" y="245.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="50.20,247.40 54.00,247.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="45.80" y="249.30" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="43.80,247.40 43.80,249.85 45.80,249.85" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="48.20,249.85 50.20,249.85 50.20,247.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="8.00" cy="252.80" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="54.00" cy="252.80" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="8.00,252.80 10.00,252.80" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="10.00" y1="252.80" x2="11.20" y2="252.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="14.80" y1="252.80" x2="16.00" y2="252.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="11.20" y1="252.80" x2="14.40" y2="250.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M14.40,253.60 A0.80,0.80 0 0 1 14.40,252.00" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="13.00" y="250.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A4:CH7</text>
+<polyline points="16.00,252.80 17.00,252.80" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="17.00" y1="252.80" x2="18.20" y2="252.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="252.80" x2="23.00" y2="252.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="18.20" y1="252.80" x2="21.80" y2="252.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="252.80" x2="21.80" y2="251.30" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="21.80" y1="253.70" x2="20.40" y2="253.70" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="20.00" y="250.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">-K7 NC2</text>
+<polyline points="23.00,252.80 43.80,252.80" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="43.80" y="251.30" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="47.00" y="253.45" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K6</text>
+<text x="44.00" y="250.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="50.00" y="250.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="50.20,252.80 54.00,252.80" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="45.80" y="254.70" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="43.80,252.80 43.80,255.25 45.80,255.25" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="48.20,255.25 50.20,255.25 50.20,252.80" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="58.00,212.00 58.00,250.30" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="104.00,212.00 104.00,250.30" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="58.00" y="211.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="middle" fill="#b3001b" font-weight="bold">Lc</text>
+<text x="104.00" y="211.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="middle" fill="#1f4fd1" font-weight="bold">N230</text>
+<circle cx="58.00" cy="215.00" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="104.00" cy="215.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="58.00,215.00 60.00,215.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="60.00" y1="215.00" x2="61.20" y2="215.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="64.80" y1="215.00" x2="66.00" y2="215.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="61.20" y1="215.00" x2="64.40" y2="213.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M64.40,215.80 A0.80,0.80 0 0 1 64.40,214.20" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="63.00" y="212.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A4:CH8</text>
+<polyline points="66.00,215.00 67.00,215.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="67.00" y1="215.00" x2="68.20" y2="215.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="71.80" y1="215.00" x2="73.00" y2="215.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="68.20" y1="215.00" x2="71.80" y2="215.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="71.80" y1="215.00" x2="71.80" y2="213.50" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="71.80" y1="215.90" x2="70.40" y2="215.90" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="70.00" y="212.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">-K6 NC2</text>
+<polyline points="73.00,215.00 93.80,215.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="93.80" y="213.50" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="97.00" y="215.65" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K7</text>
+<text x="94.00" y="213.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="100.00" y="213.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="100.20,215.00 104.00,215.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="95.80" y="216.90" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="93.80,215.00 93.80,217.45 95.80,217.45" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="98.20,217.45 100.20,217.45 100.20,215.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="58.00" cy="220.40" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="104.00" cy="220.40" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="58.00,220.40 60.00,220.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="60.00" y1="220.40" x2="61.20" y2="220.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="64.80" y1="220.40" x2="66.00" y2="220.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="61.20" y1="220.40" x2="64.40" y2="218.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="63.00" y="218.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A11:O3</text>
+<polyline points="66.00,220.40 93.80,220.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="93.80" y="218.90" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="97.00" y="221.05" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K8</text>
+<text x="94.00" y="218.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="100.00" y="218.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="100.20,220.40 104.00,220.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="95.80" y="222.30" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="93.80,220.40 93.80,222.85 95.80,222.85" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="98.20,222.85 100.20,222.85 100.20,220.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="58.00" cy="225.80" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="104.00" cy="225.80" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="58.00,225.80 60.00,225.80" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="60.00" y1="225.80" x2="61.20" y2="225.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="64.80" y1="225.80" x2="66.00" y2="225.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="61.20" y1="225.80" x2="64.40" y2="223.80" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="63.00" y="223.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A12:O1</text>
+<polyline points="66.00,225.80 93.80,225.80" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="93.80" y="224.30" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="97.00" y="226.45" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K9</text>
+<text x="94.00" y="223.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="100.00" y="223.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="100.20,225.80 104.00,225.80" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="95.80" y="227.70" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="93.80,225.80 93.80,228.25 95.80,228.25" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="98.20,228.25 100.20,228.25 100.20,225.80" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="58.00" cy="231.20" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="104.00" cy="231.20" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="58.00,231.20 60.00,231.20" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="60.00" y1="231.20" x2="61.20" y2="231.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="64.80" y1="231.20" x2="66.00" y2="231.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="61.20" y1="231.20" x2="64.40" y2="229.20" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="63.00" y="228.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A12:O2</text>
+<polyline points="66.00,231.20 93.80,231.20" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="93.80" y="229.70" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="97.00" y="231.85" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K10</text>
+<text x="94.00" y="229.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="100.00" y="229.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="100.20,231.20 104.00,231.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="95.80" y="233.10" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="93.80,231.20 93.80,233.65 95.80,233.65" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="98.20,233.65 100.20,233.65 100.20,231.20" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="58.00" cy="236.60" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="104.00" cy="236.60" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="58.00,236.60 60.00,236.60" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="60.00" y1="236.60" x2="61.20" y2="236.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="64.80" y1="236.60" x2="66.00" y2="236.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="61.20" y1="236.60" x2="64.40" y2="234.60" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="63.00" y="234.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A12:O3</text>
+<polyline points="66.00,236.60 93.80,236.60" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="93.80" y="235.10" width="6.40" height="3.00" rx="0" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="97.00" y="237.25" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111" font-weight="bold">-K11</text>
+<text x="94.00" y="234.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="start" fill="#111">A1</text>
+<text x="100.00" y="234.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="0.95" text-anchor="end" fill="#111">A2</text>
+<polyline points="100.20,236.60 104.00,236.60" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="95.80" y="238.50" width="2.40" height="1.10" rx="0" fill="white" stroke="#111" stroke-width="0.2"/>
+<polyline points="93.80,236.60 93.80,239.05 95.80,239.05" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="98.20,239.05 100.20,239.05 100.20,236.60" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="58.00" cy="242.00" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="104.00" cy="242.00" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="58.00,242.00 60.00,242.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="60.00" y1="242.00" x2="61.20" y2="242.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="64.80" y1="242.00" x2="66.00" y2="242.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="61.20" y1="242.00" x2="64.40" y2="240.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M64.40,242.80 A0.80,0.80 0 0 1 64.40,241.20" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="63.00" y="239.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A4:CH4</text>
+<polyline points="66.00,242.00 93.80,242.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="97.00" cy="242.00" r="1.70" fill="#f3b7b7" stroke="#111" stroke-width="0.28"/>
+<line x1="95.81" y1="240.81" x2="98.19" y2="243.19" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="95.81" y1="243.19" x2="98.19" y2="240.81" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<polyline points="98.70,242.00 104.00,242.00" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="92.80" y="242.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="end" fill="#111" font-weight="bold">-H2</text>
+<circle cx="58.00" cy="247.40" r="0.5" fill="#b3001b" stroke="none"/>
+<circle cx="104.00" cy="247.40" r="0.5" fill="#1f4fd1" stroke="none"/>
+<polyline points="58.00,247.40 60.00,247.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="60.00" y1="247.40" x2="61.20" y2="247.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="64.80" y1="247.40" x2="66.00" y2="247.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="61.20" y1="247.40" x2="64.40" y2="245.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M64.40,248.20 A0.80,0.80 0 0 1 64.40,246.60" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="63.00" y="245.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="middle" fill="#111">-A4:CH5</text>
+<polyline points="60.00,247.40 60.00,250.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="66.00,247.40 66.00,250.00" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="60.00" y1="250.00" x2="61.20" y2="250.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="64.80" y1="250.00" x2="66.00" y2="250.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="61.20" y1="250.00" x2="64.40" y2="248.00" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="63.00" y="252.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="middle" fill="#111">-B2 θ60°C</text>
+<polyline points="66.00,247.40 93.80,247.40" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="97.00" cy="247.40" r="1.90" fill="white" stroke="#111" stroke-width="0.28"/>
+<text x="97.00" y="248.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.7" text-anchor="middle" fill="#111">M</text>
+<text x="98.50" y="246.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.5" text-anchor="middle" fill="#111">~</text>
+<polyline points="98.90,247.40 104.00,247.40" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="92.80" y="247.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.2" text-anchor="end" fill="#111" font-weight="bold">-M1</text>
+<text x="6.20" y="260.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">Funkcje: -H1 lampa zielona (Lc OK) · -K1 stycznik główny / kolejność zgodna · -K2 zła kolejność faz (F9) · -K12a/b pominięcie RCD (F13) · -K3 zanik L3 (F8)</text>
+<text x="6.20" y="262.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">-K4 luźny styk L1, impulsy 0,1–0,5 s (F11) · -K5 rezystor -R1 w tor (F12) · -K6 boost +30 V (F10b) · -K7 buck −30 V (F10a) · -K8 przerwa N (F4) · -K9 przerwa PE (F1)</text>
+<text x="6.20" y="265.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">-K10 zamiana N↔PE (F5) · -K11 zamiana L↔N gniazd 230 V (F7) · -H2 lampa czerwona „usterka aktywna” · -M1 wentylator radiatora (z -A4:CH5 lub termostatu -B2)</text>
+<text x="6.20" y="267.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">z L230/N230 (niezależnie od kluczyka): -G1 zasilacz 5 V (RPi) · -A11…-A15 Shelly Wave Pro 3 (L, N) · -A20 DLB-A1 przez -X6 (L, N, PE)</text>
+<text x="6.20" y="269.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="start" fill="#111">wejścia zwrotne 230 V do SW Shelly Wave: Lc→-A11:SW1 (klucz+E-STOP OK) · -S0 NO→-A11:SW2 · -K1 F4-11 NO→-A11:SW3 · -K2 F4-11 NO→-A12:SW1 · -K13→-A12:SW2</text>
+<text x="6.20" y="272.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="start" fill="#111">RV = warystor S10K275 równolegle do każdej cewki. -K1/-K2: blokada elektryczna (NC bloków F4-11) + mechaniczna. -K6/-K7: blokada NC2. Przewody cewek 1,0 mm².</text>
+<rect x="110.00" y="198.00" width="95.00" height="68.00" rx="0" fill="white" stroke="#111" stroke-width="0.3"/>
+<text x="111.20" y="200.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.6" text-anchor="start" fill="#111" font-weight="bold">STEROWNIK I ŁĄCZNOŚĆ (SELV 5 V)</text>
+<rect x="111.00" y="202.00" width="46.00" height="9.00" rx="0.6" fill="#fcfcfc" stroke="#111" stroke-width="0.32"/>
+<text x="112.20" y="204.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.45" text-anchor="start" fill="#111" font-weight="bold">-G1  Mean Well HDR-60-5</text>
+<text x="112.20" y="206.65" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">wej. L230/N230/PE · wyj. +5 V 6,5 A →</text>
+<text x="112.20" y="208.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">-A1 (USB-C), -A4, -A5</text>
+<rect x="158.00" y="202.00" width="46.00" height="9.00" rx="0.6" fill="#fcfcfc" stroke="#111" stroke-width="0.32"/>
+<text x="159.20" y="204.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.45" text-anchor="start" fill="#111" font-weight="bold">Magistrala RS485 Modbus RTU</text>
+<text x="159.20" y="206.65" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">-A6 master → -P1 SDM630 (adr 1) → -P2 PZEM-016</text>
+<text x="159.20" y="208.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">(adr 2); LiYCY 2×0,5; 120 Ω na końcach</text>
+<rect x="111.00" y="212.00" width="93.00" height="17.00" rx="0.6" fill="#fcfcfc" stroke="#111" stroke-width="0.32"/>
+<text x="112.20" y="214.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.45" text-anchor="start" fill="#111" font-weight="bold">-A1  Raspberry Pi 5 (4 GB)  +  -A2 Raspberry Pi Touch Display 2 (7″, DSI, w drzwiach)</text>
+<text x="112.20" y="216.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">USB: -A3 kontroler Z-Wave 800 EU (LR) ⇄ radio 868 MHz ⇄ -A11…-A15     USB: -A6 konwerter USB–RS485 (izolowany)</text>
+<text x="112.20" y="218.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">GPIO: -A4 płytka 8 przekaźników 10 A (opto) → styki CH1…CH8 w drabince sterowania (szybkie i krytyczne czasowo: -K1, -K2, -K4, -K6, -K7, -K12, -H2, -M1)</text>
+<text x="112.20" y="220.30" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">I²C: -A5 ADS1115 ← -P3 ZMPT101B (U N″–PE″)     karta microSD, aktywne chłodzenie, zasilanie USB-C z -G1</text>
+<text x="112.20" y="222.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">oprogramowanie: Z-Wave JS UI + aplikacja nadzorcza (automat stanów usterek, blokady wzajemne, limity czasu, dziennik), opcjonalnie Home Assistant</text>
+<rect x="111.00" y="230.00" width="93.00" height="24.00" rx="0.6" fill="#fcfcfc" stroke="#111" stroke-width="0.32"/>
+<text x="112.20" y="232.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.35" text-anchor="start" fill="#111" font-weight="bold">-A11 … -A15  Shelly Wave Pro 3 (Z-Wave, DIN, L230/N230): styki bezpotencjałowe 16 A O1–O3, wejścia SW1–SW3 230 V</text>
+<text x="112.20" y="235.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.25" text-anchor="start" fill="#111" font-weight="bold">-A11</text>
+<text x="120.00" y="235.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">O1→-K3   O2→-K5   O3→-K8</text>
+<text x="166.00" y="235.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">SW1 Lc OK · SW2 -S0 NO · SW3 -K1 zał.</text>
+<text x="112.20" y="239.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.25" text-anchor="start" fill="#111" font-weight="bold">-A12</text>
+<text x="120.00" y="239.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">O1→-K9   O2→-K10   O3→-K11</text>
+<text x="166.00" y="239.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">SW1 -K2 zał. · SW2 -K13 CKF-B · SW3 rezerwa</text>
+<text x="112.20" y="242.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.25" text-anchor="start" fill="#111" font-weight="bold">-A13</text>
+<text x="120.00" y="242.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">O1→-R2 (F2)   O2→-R3 (F3)   O3→mostek N′–PE′ (F6)</text>
+<text x="166.00" y="242.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">SW1–SW3 rezerwa</text>
+<text x="112.20" y="245.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.25" text-anchor="start" fill="#111" font-weight="bold">-A14</text>
+<text x="120.00" y="245.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">O1→-R4 (F14)   O2→-V1 zestaw DC (F15)   O3→rezerwa</text>
+<text x="166.00" y="245.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">SW1–SW3 rezerwa</text>
+<text x="112.20" y="249.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.25" text-anchor="start" fill="#111" font-weight="bold">-A15</text>
+<text x="120.00" y="249.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">zapas (O1–O3 rezerwa)</text>
+<text x="166.00" y="249.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">SW1–SW3 rezerwa</text>
+<rect x="111.00" y="255.50" width="93.00" height="9.50" rx="0.6" fill="#fcfcfc" stroke="#111" stroke-width="0.32"/>
+<text x="112.20" y="258.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.45" text-anchor="start" fill="#111" font-weight="bold">-A20  moduł DLB-A1 – NA ZEWNĄTRZ obudowy</text>
+<text x="112.20" y="260.15" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">zasilanie L, N, PE z zacisków -X6 (L230/N230/PE) · wejścia CT ← -T2, -T3, -T4 przez dławik M25 wielootworowy</text>
+<text x="112.20" y="261.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">antena 433 MHz na zewnątrz · łączność radiowa z wallboxem</text>
+<rect x="110.00" y="268.00" width="44.00" height="22.00" rx="0" fill="white" stroke="#111" stroke-width="0.3"/>
+<text x="111.20" y="270.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.6" text-anchor="start" fill="#111" font-weight="bold">Legenda</text>
+<polyline points="111.50,273.00 116.50,273.00" fill="none" stroke="#7a4a1e" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="117.50" y="273.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">L1</text>
+<polyline points="111.50,275.25 116.50,275.25" fill="none" stroke="#111111" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="117.50" y="275.75" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">L2</text>
+<polyline points="111.50,277.50 116.50,277.50" fill="none" stroke="#707070" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="117.50" y="278.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">L3</text>
+<polyline points="111.50,279.75 116.50,279.75" fill="none" stroke="#1f4fd1" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="117.50" y="280.25" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">N</text>
+<polyline points="111.50,282.00 116.50,282.00" fill="none" stroke="#149114" stroke-width="0.42" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="111.50,282.00 116.50,282.00" fill="none" stroke="#e3cf00" stroke-width="0.21" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1.1,1.1"/>
+<text x="117.50" y="282.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">PE</text>
+<polyline points="111.50,284.25 116.50,284.25" fill="none" stroke="#b3001b" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="117.50" y="284.75" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">230 V cewki/sterowanie</text>
+<polyline points="111.50,286.50 116.50,286.50" fill="none" stroke="#6a1fb3" stroke-width="0.28" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="117.50" y="287.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">sygnały / CT</text>
+<circle cx="134.00" cy="273.00" r="0.5" fill="#111" stroke="none"/>
+<text x="136.00" y="273.50" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">połączenie</text>
+<line x1="132.50" y1="275.40" x2="133.30" y2="275.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<path d="M133.30,275.40 A0.70,0.70 0 0 1 134.70,275.40" fill="none" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<line x1="134.70" y1="275.40" x2="135.50" y2="275.40" stroke="#111" stroke-width="0.28" stroke-linecap="round"/>
+<text x="136.00" y="275.80" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">skrzyżowanie bez połączenia</text>
+<text x="133.00" y="278.10" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">-A4:CHx styk GPIO RPi</text>
+<text x="133.00" y="280.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">-A1x:Ox styk Shelly Wave</text>
+<text x="133.00" y="282.70" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">symbole IEC 60617</text>
+<text x="133.00" y="285.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111">oznaczenia IEC 81346</text>
+<text x="133.00" y="287.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.05" text-anchor="start" fill="#111" font-weight="bold">części + linki: str. 2–4</text>
+<rect x="156.00" y="268.00" width="49.00" height="22.00" rx="0" fill="white" stroke="#111" stroke-width="0.4"/>
+<line x1="156.00" y1="274.00" x2="205.00" y2="274.00" stroke="#111" stroke-width="0.3" stroke-linecap="round"/>
+<line x1="156.00" y1="280.00" x2="205.00" y2="280.00" stroke="#111" stroke-width="0.3" stroke-linecap="round"/>
+<line x1="156.00" y1="285.00" x2="205.00" y2="285.00" stroke="#111" stroke-width="0.3" stroke-linecap="round"/>
+<text x="157.20" y="270.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="2.3" text-anchor="start" fill="#111" font-weight="bold">AMPERE POINT</text>
+<text x="157.20" y="272.90" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.3" text-anchor="start" fill="#111">Rozdzielnica testowa – symulator usterek</text>
+<text x="157.20" y="276.40" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.35" text-anchor="start" fill="#111" font-weight="bold">Schemat zasadniczy: tor mocy, sterowanie, pomiary</text>
+<text x="157.20" y="278.60" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.15" text-anchor="start" fill="#111">Arkusz 1/1 · A4 · wszystkie elementy i połączenia</text>
+<text x="157.20" y="282.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">3×400/230 V 32 A · CEE 32/16 A · 2× Schuko · cewki 230 V AC</text>
+<text x="157.20" y="284.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">RPi 5 + Z-Wave (Shelly Wave Pro 3) + GPIO · DLB-A1 zewn.</text>
+<text x="157.20" y="287.20" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.1" text-anchor="start" fill="#111">Rev. A · 2026-10-07 · do weryfikacji przez elektryka SEP E/D</text>
+<text x="157.20" y="289.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="1.0" text-anchor="start" fill="#111">Opracowanie: Claude dla D. Cękała / Ampere Point</text>
+</svg>
