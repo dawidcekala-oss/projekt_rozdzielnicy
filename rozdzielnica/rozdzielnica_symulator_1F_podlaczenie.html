@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rozdzielnica-symulator 1F — podłączenie nowych komponentów</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b313d;
+    --tx:#e8ebf0; --tx2:#a8b0be; --acc:#4da3ff; --ok:#3fbf7f; --warn:#ffb547; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);
+       font:15px/1.6 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;}
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 22px 80px}
+  h1{font-size:29px;line-height:1.25;margin:0 0 6px}
+  h2{font-size:21px;margin:44px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  h3{font-size:16px;margin:22px 0 8px;color:var(--acc)}
+  .sub{color:var(--tx2);margin:0 0 24px;font-size:14px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--panel2);font-weight:600;color:var(--tx2);font-size:12.5px;
+     text-transform:uppercase;letter-spacing:.03em}
+  tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+        padding:16px 18px;margin:14px 0}
+  .card h3{margin-top:0}
+  code,.mono{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:13px}
+  .tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11.5px;
+       font-weight:600;letter-spacing:.03em}
+  .t1{background:rgba(77,163,255,.16);color:#8cc6ff;border:1px solid rgba(77,163,255,.35)}
+  .t2{background:rgba(63,191,127,.14);color:#7fdcaa;border:1px solid rgba(63,191,127,.35)}
+  .t3{background:rgba(255,181,71,.14);color:#ffcf85;border:1px solid rgba(255,181,71,.35)}
+  .box{border-left:3px solid var(--acc);background:var(--panel);padding:12px 16px;
+       margin:14px 0;border-radius:0 8px 8px 0}
+  .box.w{border-left-color:var(--warn)}
+  .box.b{border-left-color:var(--bad)}
+  .box.g{border-left-color:var(--ok)}
+  .box p{margin:6px 0}
+  ol,ul{padding-left:22px} li{margin:5px 0}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+        padding:14px 18px;margin:10px 0}
+  .step .n{display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
+        border-radius:50%;background:var(--acc);color:#08101c;font-weight:700;font-size:13px;
+        margin-right:8px}
+  .k{color:var(--tx2)} .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+  svg{width:100%;height:auto;background:#fff;border-radius:10px;margin:12px 0}
+  .rail{display:flex;gap:3px;margin:16px 0;flex-wrap:wrap}
+  .m{background:var(--panel2);border:1px solid var(--line);border-radius:5px;
+     padding:10px 6px;text-align:center;font-size:11.5px;line-height:1.35}
+  .m b{display:block;font-size:12.5px;color:var(--tx)}
+  .m.f{background:rgba(255,255,255,.02);color:var(--tx2);border-style:dashed}
+  .label{background:#fff;color:#000;border:2px solid #000;border-radius:6px;
+         padding:14px 18px;margin:14px 0;font-family:Arial,sans-serif;text-align:center}
+  .label .t{font-size:19px;font-weight:800;letter-spacing:.02em}
+  .label .l2{font-size:14px;font-weight:700;margin-top:6px}
+  .label .l3{font-size:12.5px;margin-top:6px;line-height:1.5}
+  .foot{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);
+        color:var(--tx2);font-size:12.5px}
+  @media print{
+    body{background:#fff;color:#000}.wrap{max-width:none;padding:0}
+    .card,.step,.box,.m{background:#fff;border-color:#bbb;break-inside:avoid}
+    th{background:#eee;color:#000} h2{border-color:#999}
+    .tag{border-color:#999;color:#000;background:#eee}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Rozdzielnica-symulator zasilana z jednej fazy</h1>
+<p class="sub">AMPERE_POINT · układ zbudowany <b>wyłącznie z czterech nowych aparatów</b> ·
+zasilanie 230 V z gniazda sieciowego · gniazda CEE służą do symulacji obecności trzech faz ·
+10.08.2026</p>
+
+<h2>Założenia, z których wynika ten układ</h2>
+<table>
+<tbody>
+<tr><td class="k" style="width:230px">Zasilanie</td>
+    <td>230 V, jedna faza, z gniazda sieciowego (kabel + wtyczka). <b>Maksymalny prąd całej
+    rozdzielnicy: 16 A</b> — ogranicza go FAZ-Z16/1.</td></tr>
+<tr><td class="k">Gniazda CEE 32 A i 16 A</td>
+    <td>Nie są zasilaniem siłowym. Na wszystkie trzy styki fazowe podawana jest
+    <b>ta sama faza</b> z wyjścia jednobiegunowego wyłącznika — żeby badane urządzenie
+    „zobaczyło” napięcie na L1, L2 i L3.</td></tr>
+<tr><td class="k">Wyjścia</td>
+    <td>Bez zmian: CEE 32 A, CEE 16 A, 3 × gniazdo 230 V.</td></tr>
+<tr><td class="k">Aparatura</td>
+    <td>Tylko cztery nowe aparaty. Wszystkie muszą zostać użyte. Nic nie dokupujemy.
+    Stare GACIA wychodzą z rozdzielnicy.</td></tr>
+</tbody>
+</table>
+
+<h2>1. Rola każdego z czterech aparatów</h2>
+<p>Zestaw wymusza jednoznaczny podział ról — nie ma tu dowolności:</p>
+
+<table>
+<thead><tr><th>Aparat</th><th>Rola w tym układzie</th><th>Dlaczego akurat tak</th></tr></thead>
+<tbody>
+<tr>
+  <td><b>Eaton FAZ-Z16/1</b><br>16 A, char. Z, 1 mod.<br><span class="tag t1">zabezpieczenie główne</span></td>
+  <td>Wyłącznik główny całej rozdzielnicy, pierwszy za kablem zasilającym. Zabezpiecza
+      nadprądowo <b>wszystko</b>, łącznie z różnicówką.</td>
+  <td>KRD6 ma In = 16 A i <b>nie ma własnego członu nadprądowego</b> — musi mieć przed sobą
+      wyłącznik ≤ 16 A. Z dwóch posiadanych MCB tylko Z16 spełnia ten warunek
+      (B32 by go nie ochronił).</td>
+</tr>
+<tr>
+  <td><b>IDEAL KRD6-2/16/10-A</b><br>RCD 2P, 16 A, 10 mA, typ A, 2 mod.<br><span class="tag t2">ochrona różnicowa całości</span></td>
+  <td>Zaraz za wyłącznikiem głównym. Przez niego przechodzi L i N <b>wszystkich</b> obwodów.</td>
+  <td>To jedyna różnicówka w komplecie, więc musi stać jak najbliżej wejścia, żeby objąć
+      ochroną także gniazda CEE. Typ A wykrywa też pulsujący prąd stały — istotne przy
+      ładowarkach.</td>
+</tr>
+<tr>
+  <td><b>Noark Ex9BN B32/1</b><br>32 A, char. B, 1 mod.<br><span class="tag t3">łącznik obwodu CEE</span></td>
+  <td>Załącza / wyłącza <b>symulację trzech faz</b>. Z jego zacisku 2 rozchodzi się mostek
+      na sześć styków fazowych (3 w gnieździe 32 A + 3 w gnieździe 16 A).</td>
+  <td>32 A przy 16 A obwodu nigdy nie zadziała jako zabezpieczenie — i nie musi, bo chroni
+      go Z16. Pełni funkcję <b>rozłącznika</b>: jednym ruchem odcinasz oba gniazda CEE,
+      zostawiając czynne gniazda 230 V.</td>
+</tr>
+<tr>
+  <td><b>IDEAL KLI-G</b><br>lampka LED zielona, 1 mod.<br><span class="tag t1">sygnalizacja</span></td>
+  <td>Świeci, gdy rozdzielnica jest pod napięciem i różnicówka jest załączona.
+      Podpięta L i N <b>za</b> KRD6.</td>
+  <td>To najbardziej użyteczna informacja: samoczynne wyłączenie RCD widać od razu, bez
+      otwierania drzwiczek. Podpięcie za RCD jest też konieczne, żeby prąd lampki płynął
+      przez przekładnik symetrycznie i nie dokładał się do prądu upływu.</td>
+</tr>
+</tbody>
+</table>
+
+<div class="box g">
+<p><b>Kolejność jest wymuszona, nie uznaniowa:</b>
+<span class="mono">kabel → FAZ-Z16/1 → KRD6 → (rozdział) → B32 → gniazda CEE / bezpośrednio →
+gniazda 230 V</span>.
+Gdyby zamienić Z16 z B32, różnicówka 16 A byłaby zabezpieczona bezpiecznikiem 32 A —
+przy przeciążeniu spaliłaby się, zanim wyłącznik zadziała.</p>
+</div>
+
+<h2>2. Rozmieszczenie na szynie</h2>
+<div class="rail">
+  <div class="m" style="flex:1"><b>FAZ-Z16/1</b>1 mod<br><span class="k">główny 16 A</span></div>
+  <div class="m" style="flex:2"><b>KRD6-2/16/10-A</b>2 mod<br><span class="k">RCD 10 mA typ A</span></div>
+  <div class="m" style="flex:1"><b>KLI-G</b>1 mod<br><span class="k">lampka</span></div>
+  <div class="m" style="flex:1"><b>Ex9BN B32/1</b>1 mod<br><span class="k">łącznik CEE</span></div>
+  <div class="m f" style="flex:7">wolne ≈ 7 modułów<br><span class="k">rezerwa na przyszłe moduły symulacyjne</span></div>
+</div>
+<p class="k">Zajęte 5 modułów z ok. 12. Wolną część szyny zostaw pod przyszłe moduły
+symulacji wad instalacji — a do czasu ich montażu przykryj zaślepkami albo osłoną
+z pleksi, żeby nie było dostępu do zacisków.</p>
+
+<h2>3. Schemat</h2>
+
+<svg viewBox="0 0 1160 620" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <style>
+    .w1{stroke:#111;stroke-width:2.2;fill:none}
+    .wn{stroke:#2f6fd0;stroke-width:2.2;fill:none}
+    .wpe{stroke:#3a9a3a;stroke-width:2.2;fill:none}
+    .bx{fill:#fff;stroke:#111;stroke-width:1.6}
+    .bxg{fill:#f2f7ff;stroke:#111;stroke-width:1.6}
+    .lb{font-size:12px;fill:#111}
+    .lbb{font-size:12.5px;fill:#111;font-weight:bold}
+    .sm{font-size:10.5px;fill:#555}
+    .nd{fill:#111}
+  </style>
+
+  <text class="lbb" x="14" y="22">ZASILANIE 230 V — gniazdo sieciowe, wtyczka 16 A</text>
+
+  <!-- incoming -->
+  <line class="w1"  x1="20" y1="60"  x2="120" y2="60"/>
+  <line class="wn"  x1="20" y1="86"  x2="120" y2="86"/>
+  <line class="wpe" x1="20" y1="112" x2="1000" y2="112"/>
+  <text class="lb" x="24" y="54">L</text>
+  <text class="lb" x="24" y="80" fill="#2f6fd0">N</text>
+  <text class="lb" x="24" y="132" fill="#3a9a3a">PE — z pominięciem RCD i wyłączników, prosto na listwę PE</text>
+
+  <!-- MCB main -->
+  <rect class="bx" x="120" y="38" width="112" height="46" rx="5"/>
+  <text class="lbb" x="130" y="57">FAZ-Z16/1</text>
+  <text class="sm"  x="130" y="73">16 A · char. Z · 1→2</text>
+  <line class="w1" x1="232" y1="60" x2="290" y2="60"/>
+
+  <!-- RCD -->
+  <rect class="bxg" x="290" y="30" width="150" height="72" rx="5"/>
+  <text class="lbb" x="300" y="50">KRD6-2/16/10-A</text>
+  <text class="sm"  x="300" y="66">RCD 2P · 16 A · 10 mA · typ A</text>
+  <text class="sm"  x="300" y="80">góra 1 | N</text>
+  <text class="sm"  x="300" y="94">dół  2 | N</text>
+  <line class="wn" x1="120" y1="86" x2="290" y2="86"/>
+
+  <!-- outputs of RCD -->
+  <line class="w1" x1="440" y1="55" x2="520" y2="55"/>
+  <line class="wn" x1="440" y1="88" x2="520" y2="88"/>
+
+  <!-- distribution blocks -->
+  <rect class="bx" x="520" y="40" width="120" height="30" rx="5"/>
+  <text class="lbb" x="529" y="60">złączka L</text>
+  <rect class="bx" x="520" y="74" width="120" height="30" rx="5"/>
+  <text class="lbb" x="529" y="94" fill="#2f6fd0">złączka N</text>
+  <text class="sm" x="520" y="122">SIDL-SET-5S — obie za RCD</text>
+
+  <!-- lamp -->
+  <line class="w1" x1="640" y1="55" x2="672" y2="55"/>
+  <line class="w1" x1="672" y1="55" x2="672" y2="172"/>
+  <line class="w1" x1="672" y1="172" x2="720" y2="172"/>
+  <line class="wn" x1="640" y1="88" x2="700" y2="88"/>
+  <line class="wn" x1="700" y1="88" x2="700" y2="200"/>
+  <line class="wn" x1="700" y1="200" x2="720" y2="200"/>
+  <rect class="bx" x="720" y="152" width="150" height="60" rx="5"/>
+  <text class="lbb" x="730" y="173">KLI-G</text>
+  <text class="sm"  x="730" y="189">zacisk 1 ← L (za RCD)</text>
+  <text class="sm"  x="730" y="204">zacisk 2 ← N (za RCD)</text>
+
+  <!-- B32 -->
+  <line class="w1" x1="672" y1="270" x2="720" y2="270"/>
+  <line class="w1" x1="672" y1="172" x2="672" y2="270"/>
+  <rect class="bx" x="720" y="248" width="150" height="46" rx="5"/>
+  <text class="lbb" x="730" y="267">Ex9BN B32/1</text>
+  <text class="sm"  x="730" y="283">łącznik obwodu CEE · 1→2</text>
+
+  <!-- bridge -->
+  <line class="w1" x1="870" y1="271" x2="905" y2="271"/>
+  <circle class="nd" cx="905" cy="271" r="3.5"/>
+  <line class="w1" x1="905" y1="271" x2="905" y2="470"/>
+  <text class="sm" x="880" y="262">mostek</text>
+
+  <!-- CEE 32 -->
+  <rect class="bx" x="930" y="200" width="200" height="96" rx="5"/>
+  <text class="lbb" x="940" y="221">GNIAZDO 1 — CEE 32 A</text>
+  <text class="sm"  x="940" y="238">L1 = L2 = L3 = ta sama faza</text>
+  <text class="sm"  x="940" y="253">N ← złączka N (za RCD)</text>
+  <text class="sm"  x="940" y="268">PE ← listwa PE</text>
+  <text class="sm"  x="940" y="286" fill="#b00">napięcie L-L = 0 V, max 16 A</text>
+  <line class="w1" x1="905" y1="232" x2="930" y2="232"/>
+  <line class="w1" x1="905" y1="244" x2="930" y2="244"/>
+  <line class="w1" x1="905" y1="256" x2="930" y2="256"/>
+  <circle class="nd" cx="905" cy="232" r="3"/>
+  <circle class="nd" cx="905" cy="244" r="3"/>
+  <circle class="nd" cx="905" cy="256" r="3"/>
+
+  <!-- CEE 16 -->
+  <rect class="bx" x="930" y="330" width="200" height="96" rx="5"/>
+  <text class="lbb" x="940" y="351">GNIAZDO 2 — CEE 16 A</text>
+  <text class="sm"  x="940" y="368">L1 = L2 = L3 = ta sama faza</text>
+  <text class="sm"  x="940" y="383">N ← złączka N (za RCD)</text>
+  <text class="sm"  x="940" y="398">PE ← listwa PE</text>
+  <text class="sm"  x="940" y="416" fill="#b00">napięcie L-L = 0 V, max 16 A</text>
+  <line class="w1" x1="905" y1="362" x2="930" y2="362"/>
+  <line class="w1" x1="905" y1="374" x2="930" y2="374"/>
+  <line class="w1" x1="905" y1="386" x2="930" y2="386"/>
+  <circle class="nd" cx="905" cy="362" r="3"/>
+  <circle class="nd" cx="905" cy="374" r="3"/>
+  <circle class="nd" cx="905" cy="386" r="3"/>
+
+  <!-- schuko -->
+  <line class="w1" x1="672" y1="270" x2="672" y2="520"/>
+  <line class="w1" x1="672" y1="520" x2="930" y2="520"/>
+  <circle class="nd" cx="672" cy="270" r="3.5"/>
+  <rect class="bx" x="930" y="470" width="200" height="96" rx="5"/>
+  <text class="lbb" x="940" y="491">GNIAZDA 3 — 3 × 230 V</text>
+  <text class="sm"  x="940" y="508">L ← złączka L (za RCD)</text>
+  <text class="sm"  x="940" y="523">N ← złączka N (za RCD)</text>
+  <text class="sm"  x="940" y="538">PE ← listwa PE</text>
+  <text class="sm"  x="940" y="556">bez własnego wyłącznika — chroni Z16</text>
+
+  <!-- N runs -->
+  <line class="wn" x1="700" y1="200" x2="700" y2="590"/>
+  <line class="wn" x1="700" y1="590" x2="880" y2="590"/>
+  <line class="wn" x1="880" y1="590" x2="880" y2="540"/>
+  <line class="wn" x1="880" y1="540" x2="930" y2="540"/>
+  <line class="wn" x1="880" y1="590" x2="880" y2="590"/>
+  <line class="wn" x1="700" y1="410" x2="880" y2="410"/>
+  <line class="wn" x1="880" y1="410" x2="880" y2="400"/>
+  <line class="wn" x1="880" y1="400" x2="930" y2="400"/>
+  <line class="wn" x1="700" y1="300" x2="880" y2="300"/>
+  <line class="wn" x1="880" y1="300" x2="880" y2="272"/>
+  <line class="wn" x1="880" y1="272" x2="930" y2="272"/>
+
+  <!-- PE runs -->
+  <line class="wpe" x1="1000" y1="112" x2="1000" y2="196"/>
+  <line class="wpe" x1="1020" y1="112" x2="1020" y2="326"/>
+  <line class="wpe" x1="1040" y1="112" x2="1040" y2="466"/>
+</svg>
+
+<h2>4. Podłączenie — zacisk po zacisku</h2>
+
+<div class="box b">
+<p><b>Przed pracą:</b> wyjmij wtyczkę, sprawdź brak napięcia próbnikiem dwubiegunowym,
+trzymaj wtyczkę przy sobie. Rozdzielnica przenośna — każdy może ją wpiąć w gniazdo.</p>
+</div>
+
+<div class="step"><span class="n">1</span><b>Kabel zasilający.</b>
+Jeśli to nadal kabel 5-żyłowy: użyj brązowej jako <b>L</b>, niebieskiej jako <b>N</b>,
+żółto-zielonej jako <b>PE</b>. Dwie pozostałe żyły <b>obetnij i zaizoluj po obu stronach</b>
+oraz opisz — nie zostawiaj ich luzem w obudowie. Wtyczka: schuko 16 A (albo CEE 16 A 1-fazowa,
+jeśli takie jest gniazdo w zakładzie).</p></div>
+
+<div class="step"><span class="n">2</span><b>Listwy rozdzielcze.</b>
+Zamontuj listwę <b>PE</b> (przykręconą, metalową) — na nią idzie żyła żółto-zielona wprost
+z kabla. Na złączki <b>SIDL-SET-5S</b>, które już macie, zrób dwie szyny: jedną dla
+<b>L za RCD</b>, drugą dla <b>N za RCD</b>. Opisz je trwale. Sprawdź na opakowaniu
+dopuszczalny prąd złączki — musi być ≥ 16 A.</p></div>
+
+<div class="box b">
+<p><b>Zasada, od której zależy działanie różnicówki:</b> szyna neutralna, z której zasilane
+są odbiory, musi być <b>za</b> KRD6 — czyli zasilana z jego <b>dolnego</b> zacisku
+<span class="mono">N</span>. Dopuszczalne są dwa układy, wybierz wygodniejszy fizycznie:</p>
+<p><b>A</b> — kabel → szyna N (tylko tranzyt) → góra <span class="mono">N</span> KRD6;
+dół <span class="mono">N</span> KRD6 → druga złączka → wszystkie odbiory.
+Na szynie tranzytowej wiszą wtedy <b>dokładnie dwa przewody</b> i ani jednego więcej.</p>
+<p><b>B</b> — kabel → góra <span class="mono">N</span> KRD6 bezpośrednio;
+dół <span class="mono">N</span> KRD6 → istniejąca szyna N → wszystkie odbiory.</p>
+<p>Jeśli choć jeden przewód neutralny odbioru zostanie wpięty po stronie wejściowej, jego
+prąd ominie przekładnik: RCD wyłączy przy pierwszym załączonym odbiorniku, a obwód wpięty
+w tę szynę nie ma żadnej ochrony różnicowej.</p>
+</div>
+
+<div class="step"><span class="n">3</span><b>FAZ-Z16/1 — wyłącznik główny.</b><br>
+zacisk <b>1</b> (góra) ← <b>L</b> z kabla zasilającego, 2,5 mm² z tulejką<br>
+zacisk <b>2</b> (dół) → zacisk <b>1</b> różnicówki KRD6</div>
+
+<div class="step"><span class="n">4</span><b>KRD6-2/16/10-A — różnicówka.</b>
+Zaciski: góra <span class="mono">1 | N</span>, dół <span class="mono">2 | N</span>,
+przy czym <b class="warn">N jest po prawej stronie</b> (w starym GACIA było po lewej — nie
+powtarzaj nawyku).<br>
+góra <b>1</b> ← z FAZ-Z16/1 zacisk 2<br>
+góra <b>N</b> ← <b>N</b> z kabla zasilającego — wprost albo przez szynę tranzytową
+(wariant A z ramki wyżej)<br>
+dół <b>2</b> → złączka <b>L</b><br>
+dół <b>N</b> → złączka <b>N</b><br>
+<span class="k">Cały N rozdzielnicy jest za różnicówką. Żaden przewód neutralny nie może
+omijać KRD6 — inaczej RCD wyłączy natychmiast po podłączeniu obciążenia.</span></div>
+
+<div class="step"><span class="n">5</span><b>KLI-G — lampka.</b><br>
+zacisk <b>1</b> ← złączka <b>L</b> (1,5 mm²)<br>
+zacisk <b>2</b> ← złączka <b>N</b> (1,5 mm²)<br>
+<span class="k">Oba przewody za RCD — prąd lampki płynie wtedy przez przekładnik w obie
+strony i nie zwiększa prądu różnicowego.</span></div>
+
+<div class="step"><span class="n">6</span><b>Ex9BN B32/1 — łącznik obwodu CEE.</b><br>
+zacisk <b>1</b> ← złączka <b>L</b>, 2,5 mm²<br>
+zacisk <b>2</b> → mostek do sześciu styków fazowych</div>
+
+<div class="step"><span class="n">7</span><b>Mostek na styki fazowe gniazd CEE.</b>
+Z zacisku 2 wyłącznika B32 wyprowadź jeden przewód 2,5 mm² do złączki 5-torowej
+(nazwij ją <b>„L-CEE”</b>). Z niej:<br>
+• 3 przewody 2,5 mm² → styki <b>L1, L2, L3 gniazda CEE 32 A</b><br>
+• 1 przewód 2,5 mm² → druga złączka 5-torowa → stamtąd 3 przewody →
+  <b>L1, L2, L3 gniazda CEE 16 A</b><br>
+<span class="k">Każdy z tych sześciu przewodów może teoretycznie przenieść całe 16 A,
+więc żaden nie może być cieńszy niż 2,5 mm².</span></div>
+
+<div class="step"><span class="n">8</span><b>N i PE gniazd CEE.</b><br>
+styk <b>N</b> obu gniazd CEE ← złączka <b>N</b> (za RCD), 2,5 mm²<br>
+styk <b>PE</b> obu gniazd CEE ← listwa <b>PE</b>, 2,5 mm²<br>
+<b class="warn">Uwaga na przekrój N:</b> ponieważ wszystkie trzy styki fazowe są na tej samej
+fazie, prądy w przewodzie neutralnym <b>sumują się</b> zamiast się znosić, jak w prawdziwym
+układzie trójfazowym. Przewód N gniazda musi być tak samo gruby jak fazowy.</div>
+
+<div class="step"><span class="n">9</span><b>Gniazda 230 V (3 szt.).</b><br>
+<b>L</b> ← złączka <b>L</b> (za RCD), 2,5 mm² — bez własnego wyłącznika, chroni je Z16<br>
+<b>N</b> ← złączka <b>N</b> (za RCD)<br>
+<b>PE</b> ← listwa <b>PE</b><br>
+<span class="k">Faza na prawym styku patrząc na czoło gniazda, N na lewym, PE na kołkach.</span></div>
+
+<div class="step"><span class="n">10</span><b>Dokręcenie i opisy.</b>
+Wszystkie żyły linkowe w tulejkach. Dokręć zgodnie z instrukcją producenta (orientacyjnie
+2,0–2,5 N·m), a po kilku minutach dokręć powtórnie. Opisz aparaty na płycie czołowej:
+<span class="mono">GŁÓWNY 16 A · RCD 10 mA · SYMULACJA 3F · SYGNALIZACJA</span>.</div>
+
+<h2>5. Tabliczka na płytę czołową</h2>
+<p>Ta rozdzielnica <b>wygląda</b> jak trójfazowa i nią nie jest. Bez trwałego opisu ktoś
+prędzej czy później wepnie w czerwone gniazdo prawdziwy odbiornik siłowy. Wydrukuj
+i naklej:</p>
+
+<div class="label">
+  <div class="t">⚠ SYMULATOR — NIE JEST ZASILANIEM SIŁOWYM</div>
+  <div class="l2">Gniazda CEE zasilane z JEDNEJ fazy 230 V</div>
+  <div class="l3">
+    Napięcie międzyfazowe L-L = <b>0 V</b> · brak kolejności faz · brak pola wirującego<br>
+    <b>Maksymalny prąd całej rozdzielnicy: 16 A</b> (niezależnie od oznaczenia gniazd)<br>
+    Ochrona: RCD 10 mA typ A · wyłącznik główny 16 A char. Z<br>
+    <b>ZAKAZ podłączania silników i odbiorników trójfazowych</b><br>
+    Wyłącznie do testów na stanowisku — AMPERE_POINT
+  </div>
+</div>
+
+<h2>6. Co trzeba wiedzieć, żeby to działało przewidywalnie</h2>
+
+<div class="box b">
+<p><b>Silnik trójfazowy się spali.</b> Przy zwartych fazach silnik w gwieździe z podłączonym
+N dostaje 230 V na każde uzwojenie <i>w tej samej fazie</i> — nie powstaje pole wirujące,
+wirnik stoi, uzwojenia grzeją się jak przy zablokowanym wale. To jedyny scenariusz w tym
+układzie, w którym można coś realnie zniszczyć. Stąd zakaz na tabliczce.</p>
+</div>
+
+<div class="box w">
+<p><b>Jak zachowa się ładowarka.</b> Zobaczy 230 V między każdą fazą a N i 0 V między fazami.
+Typowe reakcje: błąd kolejności faz, błąd zaniku fazy, zejście do trybu jednofazowego albo
+odmowa startu. Każda z tych reakcji jest wynikiem testu, nie usterką stanowiska — warto
+je od razu wpisać do katalogu scenariuszy jako osobną pozycję („objaw przy zasilaniu
+z jednej fazy”).</p>
+</div>
+
+<div class="box w">
+<p><b>10 mA wyłączy częściej, niż przywykłeś.</b> Pojedynczy zasilacz impulsowy ma
+normatywnie dopuszczony upływ do 3,5 mA. Trzy urządzenia w gniazdach 230 V i jesteś na progu
+bez żadnej usterki. Zasada pracy: <b>w rozdzielnicy pracuje tylko badane urządzenie</b>,
+reszta odłączona. Wyzwolenie przy podłączaniu ładowarki to nie awaria stanowiska, tylko
+pomiar — dowód na upływ przez kondensatory przeciwzakłóceniowe.</p>
+</div>
+
+<div class="box w">
+<p><b>Charakterystyka Z wyłączy przy ok. 32–48 A chwilowych.</b> Odkurzacz warsztatowy,
+sprężarka albo załączający się stycznik ładowarki mogą to przekroczyć. Zalety są dwie
+i obie pasują do stanowiska: Z16 zadziała jeszcze przy impedancji pętli do ok. 4,8 Ω
+(B16 wymaga ≤ 2,9 Ω), czyli <b>przetrwa symulację „miękkiej sieci”</b> i długich
+przedłużaczy, oraz szybciej odetnie badane urządzenie przy zwarciu wewnętrznym.</p>
+</div>
+
+<div class="box">
+<p><b>B32 nie zabezpiecza — on tylko łączy.</b> Przy obwodzie 16 A wyłącznik 32 A nigdy nie
+zadziała pierwszy. Opisz go na płycie czołowej jako <span class="mono">SYMULACJA 3F —
+ZAŁ / WYŁ</span>, nie jako „bezpiecznik 32 A”, żeby nikt nie wyciągnął wniosku, że gniazdo
+CEE 32 A wytrzyma 32 A.</p>
+</div>
+
+<div class="box g">
+<p><b>Co zyskujesz operacyjnie.</b> Wyłącznikiem B32 odcinasz obie CEE, zostawiając czynne
+gniazda 230 V — czyli możesz odłączyć badaną ładowarkę bez wyłączania oświetlenia stanowiska,
+laptopa czy oscyloskopu wpiętego w gniazda 230 V. To jedyny sensowny podział, jaki dają
+cztery posiadane aparaty.</p>
+</div>
+
+<h2>7. Sprawdzenie po montażu</h2>
+<table>
+<thead><tr><th>#</th><th>Próba</th><th>Kryterium</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Ciągłość PE: kołek wtyczki → PE każdego z 5 gniazd</td><td>&lt; 0,3 Ω</td></tr>
+<tr><td>2</td><td>Rezystancja izolacji L-N, L-PE, N-PE (500 V DC, aparaty załączone, odbiorniki odłączone)</td><td>≥ 1 MΩ</td></tr>
+<tr><td>3</td><td>Napięcie L1-L2, L2-L3, L1-L3 w obu gniazdach CEE</td><td><b>0 V</b> — potwierdzenie, że mostek wykonany poprawnie</td></tr>
+<tr><td>4</td><td>Napięcie L1-N, L2-N, L3-N w obu gniazdach CEE</td><td>230 V na każdym</td></tr>
+<tr><td>5</td><td>Przycisk TEST na KRD6</td><td>wyłączenie natychmiastowe</td></tr>
+<tr><td>6</td><td>Pomiar prądu wyzwolenia RCD</td><td>5–10 mA (0,5–1,0 × I∆n)</td></tr>
+<tr><td>7</td><td>Czas wyzwolenia przy I∆n i 5 × I∆n</td><td>≤ 300 ms / ≤ 40 ms</td></tr>
+<tr><td>8</td><td>Impedancja pętli zwarcia na każdym gnieździe</td><td>≤ 4,79 Ω (Z16 przy 230 V)</td></tr>
+<tr><td>9</td><td>B32 w pozycji WYŁ</td><td>gniazda CEE bez napięcia, gniazda 230 V nadal czynne</td></tr>
+<tr><td>10</td><td>Polaryzacja gniazd 230 V</td><td>L / N nie zamienione, PE na kołkach</td></tr>
+<tr><td>11</td><td>Lampka KLI-G</td><td>świeci przy załączonym RCD, gaśnie po jego wyłączeniu</td></tr>
+<tr><td>12</td><td>Obciążenie 16 A przez 15 min</td><td>brak grzania zacisków i złączek SIDL</td></tr>
+</tbody>
+</table>
+
+<div class="box">
+<p><b>Próba 3 jest tu najważniejsza.</b> Zerowe napięcie międzyfazowe to jedyny szybki dowód,
+że mostek trafił we właściwe styki, a nie że przypadkiem zostały podłączone stare przewody
+z poprzedniej konfiguracji.</p>
+</div>
+
+<h2>8. Stare aparaty</h2>
+<p>Wszystkie cztery GACIA wychodzą z rozdzielnicy. Wyłączników SB6L można użyć gdzie indziej,
+natomiast różnicówki <b>PR8NM typu AC nie warto już nigdzie montować</b> — nie wykrywa
+pulsującego prądu stałego, więc w obwodzie z jakąkolwiek elektroniką jest ochroną pozorną.
+Zachowaj ją najwyżej jako eksponat do pokazywania różnicy typ AC / typ A.</p>
+
+<div class="foot">
+Opracowano na podstawie zdjęć z folderu <span class="mono">AMPERE_POINT\rozdzielnica</span>
+oraz ustaleń: zasilanie jednofazowe z gniazda sieciowego, gniazda CEE wyłącznie do symulacji
+obecności trzech faz, wykorzystanie wyłącznie czterech nowych aparatów. Wartości odczytane
+z tabliczek — zweryfikuj na aparatach fizycznie. Dokument nie zastępuje pomiarów odbiorczych
+wykonanych przez osobę z uprawnieniami.
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pełna integracja ładowarki Ampere Point serii Q z Home Assistant — przewodnik krok po kroku</title>
+<meta name="description" content="Kompletny przewodnik integracji ładowarek Ampere Point Q11/Q22/Q37/Q74 z Home Assistant: instalacja HA, HACS, integracja Tuya, xtend_tuya, pełny zestaw danych, panel Energia i automatyzacje.">
+<style>
+  :root{
+    --ink:#1c1c1c; --muted:#5a5a5a; --line:#e5e5e5;
+    --accent:#0e7a3d; --accent-soft:#eaf5ee;
+    --warn:#b23b00; --warn-soft:#fdf1e7;
+    --info-soft:#eef3f9; --code-bg:#f5f5f5;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.65;font-size:17px}
+  .wrap{max-width:820px;margin:0 auto;padding:32px 20px 64px}
+  header.art{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:28px}
+  .kicker{color:var(--accent);font-size:14px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px}
+  h1{font-size:34px;line-height:1.2;margin:0 0 12px;font-weight:700}
+  .lead{font-size:19px;color:var(--muted);margin:0}
+  .meta{font-size:14px;color:var(--muted);margin-top:14px}
+  h2{font-size:26px;margin:44px 0 10px;padding-top:8px}
+  h3{font-size:20px;margin:28px 0 8px}
+  p{margin:10px 0}
+  ol,ul{margin:10px 0 10px 22px;padding:0}
+  li{margin:6px 0}
+  a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+  code{background:var(--code-bg);border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-family:Consolas,"DejaVu Sans Mono",monospace;font-size:.9em}
+  pre{background:#20262b;color:#e8edf2;border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:14px;line-height:1.5}
+  pre code{background:none;border:none;color:inherit;padding:0}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15.5px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+  th{background:#fafafa;font-weight:600}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:6px;padding:14px 18px;margin:18px 0}
+  .box.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+  .box.info{border-left-color:#33597f;background:var(--info-soft)}
+  .box p:first-child{margin-top:0}.box p:last-child{margin-bottom:0}
+  .toc{border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin:24px 0;background:#fafafa}
+  .toc p{margin:0 0 6px;font-weight:600}
+  .toc ol{margin:0 0 0 20px}
+  figure{margin:22px 0}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{font-size:14px;color:var(--muted);margin-top:6px;text-align:center}
+  .links{border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin:24px 0}
+  .links h3{margin-top:0}
+  .links ul{margin-left:20px}
+  .footer-cta{margin-top:48px;border-top:1px solid var(--line);padding-top:22px;color:var(--muted);font-size:15.5px}
+  .step-label{display:inline-block;background:var(--accent);color:#fff;border-radius:4px;font-size:13px;padding:2px 8px;vertical-align:middle;margin-right:8px;letter-spacing:.04em}
+  details.acc{border:1px solid var(--line);border-radius:8px;margin:14px 0;background:#fafafa}
+  details.acc summary{cursor:pointer;padding:12px 16px;font-weight:600}
+  details.acc summary:hover{background:var(--accent-soft)}
+  details.acc[open] summary{border-bottom:1px solid var(--line)}
+  details.acc > :not(summary){margin:12px 16px}
+  details.acc table{font-size:15px;background:#fff}
+  @media (max-width:600px){h1{font-size:27px}body{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="art">
+  <p class="kicker">Poradniki Ampere Point</p>
+  <h1>Pełna integracja ładowarki Ampere Point serii&nbsp;Q z&nbsp;Home Assistant</h1>
+  <p class="lead">Przewodnik krok po kroku: od instalacji Home Assistant, przez HACS i xtend_tuya, po pełny zestaw danych ładowarki, panel Energia i automatyzacje. Napisany tak, aby poradziła sobie osoba, która nigdy wcześniej nie używała Home Assistant.</p>
+  <p class="meta">Modele: Q11, Q22, Q37, Q74 &nbsp;·&nbsp; aktualizacja: lipiec 2026 · wersja 2</p>
+</header>
+
+<p>Ładowarki Ampere Point serii Q to urządzenia Wi-Fi zbudowane na platformie Tuya. Dzięki temu można je połączyć z Home Assistant — najpopularniejszym darmowym systemem inteligentnego domu — i uzyskać znacznie więcej niż w aplikacji mobilnej:</p>
+<ul>
+  <li>podgląd na żywo: moc, prąd i napięcie każdej fazy, energia sesji i energia całkowita, status ładowania,</li>
+  <li>sterowanie: start i stop ładowania, zmiana limitu prądu,</li>
+  <li>automatyzacje: ładowanie tylko w taniej taryfie, przy nadwyżce energii z fotowoltaiki albo według dynamicznych cen prądu,</li>
+  <li>historia i statystyki zużycia w panelu Energia — wygodne do rozliczeń.</li>
+</ul>
+
+<figure>
+<svg viewBox="0 0 840 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schemat połączenia: ładowarka, router, chmura Tuya, Home Assistant">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8aa3b8"/>
+    </marker>
+  </defs>
+  <rect x="10" y="60" width="150" height="80" rx="10" fill="#eaf5ee" stroke="#0e7a3d" stroke-width="1.5"/>
+  <text x="85" y="95" text-anchor="middle" font-size="15" font-weight="600" fill="#1c1c1c">Ładowarka Q</text>
+  <text x="85" y="117" text-anchor="middle" font-size="12.5" fill="#5a5a5a">Wi-Fi 2,4 GHz</text>
+  <rect x="230" y="60" width="130" height="80" rx="10" fill="#fafafa" stroke="#b9c4cc" stroke-width="1.5"/>
+  <text x="295" y="105" text-anchor="middle" font-size="15" font-weight="600" fill="#1c1c1c">Router</text>
+  <rect x="430" y="60" width="160" height="80" rx="10" fill="#eef3f9" stroke="#33597f" stroke-width="1.5"/>
+  <text x="510" y="95" text-anchor="middle" font-size="15" font-weight="600" fill="#1c1c1c">Chmura Tuya</text>
+  <text x="510" y="117" text-anchor="middle" font-size="12.5" fill="#5a5a5a">centrum danych UE</text>
+  <rect x="660" y="60" width="170" height="80" rx="10" fill="#eaf5ee" stroke="#0e7a3d" stroke-width="1.5"/>
+  <text x="745" y="95" text-anchor="middle" font-size="15" font-weight="600" fill="#1c1c1c">Home Assistant</text>
+  <text x="745" y="117" text-anchor="middle" font-size="12.5" fill="#5a5a5a">Twój komputer / serwer</text>
+  <line x1="160" y1="100" x2="228" y2="100" stroke="#8aa3b8" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)"/>
+  <line x1="360" y1="100" x2="428" y2="100" stroke="#8aa3b8" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)"/>
+  <line x1="590" y1="100" x2="658" y2="100" stroke="#8aa3b8" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)"/>
+  <rect x="430" y="160" width="160" height="30" rx="15" fill="#fff" stroke="#b9c4cc"/>
+  <text x="510" y="180" text-anchor="middle" font-size="12.5" fill="#5a5a5a">aplikacja Smart Life</text>
+  <line x1="510" y1="160" x2="510" y2="142" stroke="#8aa3b8" stroke-width="2" marker-end="url(#arr)"/>
+</svg>
+<figcaption>Integracja działa przez chmurę Tuya — ładowarka i Home Assistant muszą mieć dostęp do internetu.</figcaption>
+</figure>
+
+<div class="toc">
+  <p>Spis treści</p>
+  <ol>
+    <li><a href="#wymagania">Co będzie potrzebne</a></li>
+    <li><a href="#ha">Instalacja Home Assistant (jeśli jeszcze go nie masz)</a></li>
+    <li><a href="#hacs">Instalacja HACS</a></li>
+    <li><a href="#tuya">Oficjalna integracja Tuya</a></li>
+    <li><a href="#xtend">Dodatek xtend_tuya — więcej danych z ładowarki</a></li>
+    <li><a href="#openapi">Pełny zestaw danych — klucze chmury deweloperskiej Tuya</a></li>
+    <li><a href="#efekty">Co zyskujesz po integracji: pełna lista encji + panel Energia</a></li>
+    <li><a href="#automatyzacje">Przykładowe automatyzacje</a></li>
+    <li><a href="#problemy">Najczęstsze problemy i ich rozwiązania</a></li>
+    <li><a href="#lokalnie">Alternatywa: sterowanie lokalne (tuya-local)</a></li>
+    <li><a href="#linki">Wszystkie linki w jednym miejscu</a></li>
+  </ol>
+</div>
+
+<h2 id="wymagania">1. Co będzie potrzebne</h2>
+<ul>
+  <li>Ładowarka Ampere Point serii Q dodana do aplikacji <a href="https://play.google.com/store/apps/details?id=com.tuya.smartlife">Smart Life (Android)</a> / <a href="https://apps.apple.com/app/smart-life-smart-living/id1115101477">Smart Life (iPhone)</a> i działająca w niej poprawnie.</li>
+  <li>Sieć Wi-Fi w paśmie 2,4 GHz — moduły Tuya nie łączą się z sieciami 5 GHz. Jeśli router rozgłasza obie częstotliwości pod jedną nazwą, na czas parowania warto tymczasowo wydzielić sieć 2,4 GHz.</li>
+  <li>Komputer lub mikrokomputer, na którym będzie działał Home Assistant — całodobowo, jeśli automatyzacje mają działać zawsze. Najczęstsze wybory: Raspberry Pi, mini-PC albo zwykły komputer z Windows.</li>
+  <li>Darmowe konto <a href="https://github.com">GitHub</a> — potrzebne jednorazowo do uruchomienia HACS.</li>
+  <li>Telefon z aplikacją Smart Life pod ręką — będzie skanować kody QR podczas konfiguracji.</li>
+  <li>Około 1–2 godzin czasu. Większość kroków to klikanie według instrukcji.</li>
+</ul>
+
+<h2 id="ha">2. Instalacja Home Assistant (jeśli jeszcze go nie masz)</h2>
+<p>Jeżeli Home Assistant już u Ciebie działa, przejdź od razu do <a href="#hacs">punktu 3</a>.</p>
+
+<h3>Wariant A — dedykowane urządzenie (zalecany docelowo)</h3>
+<p>Na Raspberry Pi, mini-PC lub starszym laptopie najprościej zainstalować Home Assistant OS — kompletny system, który zajmuje się wszystkim sam (w tym aktualizacjami i kopiami zapasowymi). Oficjalne instrukcje dla każdej platformy znajdziesz tutaj: <a href="https://www.home-assistant.io/installation/">home-assistant.io/installation</a>. Po instalacji panel dostępny jest w przeglądarce pod adresem <code>http://homeassistant.local:8123</code>.</p>
+
+<h3>Wariant B — komputer z Windows (kontener Docker)</h3>
+<p>Dobry na start i do testów: Home Assistant uruchamiany jest w tzw. kontenerze na Twoim zwykłym komputerze. Pamiętaj tylko, że automatyzacje działają wyłącznie wtedy, gdy komputer jest włączony, a Docker uruchomiony.</p>
+<ol>
+  <li>Zainstaluj WSL2 (mechanizm Windows potrzebny Dockerowi): kliknij prawym przyciskiem na menu Start → <em>Terminal (administrator)</em>, wpisz <code>wsl --install</code>, zatwierdź i po zakończeniu zrestartuj komputer. Instrukcja Microsoftu: <a href="https://learn.microsoft.com/pl-pl/windows/wsl/install">learn.microsoft.com/pl-pl/windows/wsl/install</a>.</li>
+  <li>Zainstaluj Docker Desktop: <a href="https://www.docker.com/products/docker-desktop/">docker.com/products/docker-desktop</a> (przycisk <em>Download for Windows</em>). Podczas instalacji zostaw zaznaczoną opcję WSL 2. Po uruchomieniu poczekaj, aż w oknie pojawi się status <em>running</em>; zakładanie konta Docker można pominąć.</li>
+  <li>Uruchom Home Assistant. Otwórz <em>Terminal</em> (już bez uprawnień administratora) i wklej:
+<pre><code>mkdir C:\HomeAssistant\config
+docker run -d --name homeassistant --restart=unless-stopped -e TZ=Europe/Warsaw -v "C:\HomeAssistant\config:/config" -p 8123:8123 ghcr.io/home-assistant/home-assistant:stable</code></pre>
+  Pierwsze uruchomienie pobiera ok. 1,5 GB — zwykle kilka minut.</li>
+  <li>Otwórz w przeglądarce <code>http://localhost:8123</code>. Jeśli strona nie wstaje od razu, odczekaj minutę–dwie i odśwież.</li>
+</ol>
+<div class="box info">
+  <p>W wariancie B restart Home Assistant wykonuje się w Docker Desktop: zakładka <em>Containers</em> → wiersz <code>homeassistant</code> → ikona restartu (lub poleceniem <code>docker restart homeassistant</code>). W menu samego Home Assistant przycisku restartu w tej wersji nie ma — to normalne. Restart będzie potrzebny kilka razy w dalszych krokach.</p>
+</div>
+
+<h3>Pierwsze uruchomienie (oba warianty)</h3>
+<p>Kreator powitalny poprosi o utworzenie konta (loginu i hasła — zapisz je w bezpiecznym miejscu; konto jest wyłącznie lokalne), lokalizację i jednostki. Listę automatycznie wykrytych urządzeń możesz na tym etapie pominąć.</p>
+
+<h2 id="hacs">3. Instalacja HACS</h2>
+<p>HACS (Home Assistant Community Store) to sklep z dodatkami tworzonymi przez społeczność — z niego zainstalujemy xtend_tuya. Oficjalna instrukcja: <a href="https://www.hacs.xyz/docs/use/download/download/">hacs.xyz/docs/use/download/download</a> (wybierz kartę zgodną z Twoją instalacją).</p>
+<ul>
+  <li>Home Assistant OS: dodaj repozytorium dodatków <code>https://github.com/hacs/addons</code> zgodnie z instrukcją powyżej, zainstaluj i uruchom dodatek <em>Get HACS</em>, a następnie zrestartuj Home Assistant.</li>
+  <li>Wariant Docker: w terminalu wykonaj
+<pre><code>docker exec homeassistant bash -c "wget -O - https://get.hacs.xyz | bash -"
+docker restart homeassistant</code></pre></li>
+</ul>
+<p>Po restarcie dodaj integrację: <em>Ustawienia → Urządzenia i usługi → Dodaj integrację</em> → wyszukaj <em>HACS</em> → zaakceptuj warunki. Home Assistant pokaże kod, który należy wpisać na stronie <a href="https://github.com/login/device">github.com/login/device</a> po zalogowaniu na swoje konto GitHub, i zatwierdzić przyciskiem <em>Authorize</em>. Po chwili w menu bocznym pojawi się pozycja HACS.</p>
+
+<h2 id="tuya">4. Oficjalna integracja Tuya</h2>
+<p>Ten krok łączy Home Assistant z Twoim kontem Smart Life.</p>
+<ol>
+  <li><em>Ustawienia → Urządzenia i usługi → Dodaj integrację</em> → wyszukaj <em>Tuya</em>.</li>
+  <li>Kreator poprosi o kod użytkownika (User Code). Znajdziesz go w aplikacji: <em>Smart Life → Ja → Ustawienia (ikona zębatki) → Konto i bezpieczeństwo → Kod użytkownika</em>. Przepisz go dokładnie — wielkość liter ma znaczenie.</li>
+  <li>Na ekranie pojawi się kod QR. W aplikacji Smart Life wybierz <em>Ja → ikona skanera</em> (prawy górny róg), zeskanuj kod i zatwierdź logowanie na telefonie.</li>
+  <li>Po chwili na liście urządzeń pojawi się Twoja ładowarka.</li>
+</ol>
+<div class="box">
+  <p>Czego się spodziewać: oficjalna integracja pokazuje ładowarkę zwykle tylko z jedną encją — przełącznikiem ładowania. Pełne dane (moce, prądy, energie, statusy) doda dopiero xtend_tuya w kolejnych krokach. Brak czujników na tym etapie nie jest więc błędem i nie wymaga naprawiania.</p>
+</div>
+
+<h2 id="xtend">5. Dodatek xtend_tuya — więcej danych z ładowarki</h2>
+<p>xtend_tuya to rozszerzenie, które działa obok oficjalnej integracji Tuya i dokłada do tych samych urządzeń brakujące encje. Strona projektu: <a href="https://github.com/azerty9971/xtend_tuya">github.com/azerty9971/xtend_tuya</a>.</p>
+
+<h3>5.1. Pobranie w HACS</h3>
+<ol>
+  <li>Otwórz HACS z menu bocznego i wyszukaj <em>Xtend Tuya</em> (możesz też użyć bezpośredniego odnośnika: <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=azerty9971&amp;repository=xtend_tuya&amp;category=integration">otwórz Xtend Tuya w moim Home Assistant</a>).</li>
+  <li>Na stronie dodatku kliknij przycisk pobierania (Download) i potwierdź.</li>
+  <li>Zrestartuj Home Assistant.</li>
+</ol>
+<div class="box warn">
+  <p>Pobranie w HACS to dopiero połowa drogi — kopiuje ono wyłącznie pliki na dysk. Encje pojawią się dopiero po dodaniu integracji (punkt 5.2). To najczęstsze nieporozumienie w całym procesie: po pobraniu przycisk Download znika, ekran dodatku pokazuje tylko opis, a liczba encji nie rośnie mimo restartów. Jeśli tak to u Ciebie wygląda — wszystko jest w porządku, po prostu przejdź dalej.</p>
+</div>
+
+<h3>5.2. Dodanie integracji</h3>
+<ol>
+  <li><em>Ustawienia → Urządzenia i usługi → Dodaj integrację</em> → wyszukaj <em>Xtend Tuya</em>.</li>
+  <li>Podaj ten sam kod użytkownika co w punkcie 4 i ponownie zeskanuj kod QR aplikacją Smart Life.</li>
+  <li>Po zatwierdzeniu kodu QR pojawi się dodatkowe okno „Add Tuya OpenAPI credentials” — przeczytaj ramkę poniżej, zanim cokolwiek klikniesz.</li>
+</ol>
+<div class="box warn">
+  <p><strong>Najważniejsza wskazówka tego przewodnika.</strong> Okna „Add Tuya OpenAPI credentials” nie wolno zamykać krzyżykiem. Zamknięcie go przerywa cały kreator bez żadnego komunikatu — integracja nie zostaje dodana, a wygląda, jakby wszystko zostało zrobione. Jeżeli nie masz jeszcze kluczy chmury deweloperskiej (zdobędziemy je w punkcie 6):</p>
+  <ol>
+    <li>zaznacz pole <em>Don't ask for OpenAPI credentials</em>,</li>
+    <li>mimo zaznaczenia wybierz też kraj (<em>Poland</em>) i endpoint (<em>Europe</em>) — formularz tego wymaga, a bez tych pól pokaże niejasny błąd walidacji,</li>
+    <li>zatwierdź, a w kolejnym oknie (nazwy i obszary) kliknij <em>Zakończ</em>.</li>
+  </ol>
+</div>
+
+<figure>
+<svg viewBox="0 0 840 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Poglądowy wygląd okna Add Tuya OpenAPI credentials z zaznaczonymi polami">
+  <rect x="140" y="14" width="560" height="290" rx="12" fill="#ffffff" stroke="#c9d2d9" stroke-width="1.5"/>
+  <rect x="140" y="14" width="560" height="46" rx="12" fill="#f4f6f8"/>
+  <rect x="140" y="46" width="560" height="14" fill="#f4f6f8"/>
+  <text x="166" y="43" font-size="16" font-weight="600" fill="#1c1c1c">Add Tuya OpenAPI credentials</text>
+  <g>
+    <line x1="668" y1="28" x2="686" y2="46" stroke="#9aa4ad" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="686" y1="28" x2="668" y2="46" stroke="#9aa4ad" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="677" cy="37" r="16" fill="none" stroke="#b23b00" stroke-width="3"/>
+    <line x1="665" y1="49" x2="689" y2="25" stroke="#b23b00" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <text x="700" y="80" font-size="13.5" fill="#b23b00" text-anchor="end">nie zamykaj krzyżykiem!</text>
+  <rect x="170" y="96" width="18" height="18" rx="3" fill="#0e7a3d"/>
+  <path d="M173.5 105 l4.5 5 8-9" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="198" y="110" font-size="14.5" fill="#1c1c1c">Don't ask for OpenAPI credentials</text>
+  <rect x="170" y="136" width="500" height="38" rx="6" fill="#fafafa" stroke="#c9d2d9"/>
+  <text x="184" y="151" font-size="11.5" fill="#5a5a5a">Country</text>
+  <text x="184" y="167" font-size="14.5" fill="#1c1c1c">Poland</text>
+  <rect x="170" y="186" width="500" height="38" rx="6" fill="#fafafa" stroke="#c9d2d9"/>
+  <text x="184" y="201" font-size="11.5" fill="#5a5a5a">Tuya OpenAPI endpoint</text>
+  <text x="184" y="217" font-size="14.5" fill="#1c1c1c">Europe (openapi.tuyaeu.com)</text>
+  <rect x="170" y="240" width="500" height="1" fill="#e5e5e5"/>
+  <rect x="546" y="254" width="124" height="36" rx="18" fill="#0e7a3d"/>
+  <text x="608" y="277" font-size="14.5" fill="#ffffff" text-anchor="middle">Zatwierdź</text>
+  <text x="170" y="277" font-size="13" fill="#5a5a5a">pola Country i endpoint są wymagane zawsze</text>
+</svg>
+<figcaption>Okno kluczy OpenAPI (widok poglądowy). Zaznacz pole u góry, wybierz kraj i endpoint, zatwierdź — nie zamykaj okna krzyżykiem.</figcaption>
+</figure>
+
+<p>Po zakończeniu kreatora na liście integracji pojawi się wpis Xtend Tuya, a Twoja ładowarka zyska kilkanaście–dwadzieścia kilka nowych encji (czujniki napięć, prądów, mocy, energii, statusu). Jeśli wpisu nie ma — kreator został przerwany; powtórz punkt 5.2.</p>
+
+<h2 id="openapi">6. Pełny zestaw danych — klucze chmury deweloperskiej Tuya</h2>
+<p>Ten etap jest opcjonalny, ale zalecany: bez niego część encji może nie być dostępna lub aktualizować się wolniej. Zakładamy darmowy projekt na platformie deweloperskiej Tuya i podajemy jego klucze do xtend_tuya. Oficjalny opis procedury prowadzi też dokumentacja dodatku: <a href="https://github.com/azerty9971/xtend_tuya/blob/main/docs/cloud_credentials.md">instrukcja uzyskania kluczy</a>.</p>
+
+<h3>6.1. Projekt na platformie Tuya</h3>
+<ol>
+  <li>Wejdź na <a href="https://platform.tuya.com">platform.tuya.com</a> i załóż darmowe konto (może być ten sam e-mail co w Smart Life).</li>
+  <li>Przejdź do <em>Cloud → Development → Create Cloud Project</em>. Wpisz dowolną nazwę, w polach Industry i Development Method wybierz <em>Smart Home</em>, a jako Data Center — <em>Central Europe Data Center</em>. Wybór centrum danych musi odpowiadać regionowi Twojego konta Smart Life; dla Polski jest to Europa Środkowa. Darmowy plan pozwala na jedno centrum danych.</li>
+  <li>W oknie <em>Authorize API Services</em> zatwierdź proponowane usługi bez zmian.</li>
+  <li>Powiąż konto aplikacji: zakładka <em>Devices → Link App Account → Add App Account</em> → zeskanuj wyświetlony kod QR aplikacją Smart Life i zatwierdź. Wybierz tryb <em>Automatic Link</em> — wtedy nowe urządzenia będą dołączać same. Po chwili na liście zobaczysz swoją ładowarkę.</li>
+  <li>Klucze projektu znajdziesz na karcie <em>Overview</em> w sekcji Authorization Key: <em>Access ID/Client ID</em> oraz <em>Access Secret/Client Secret</em> (odsłania go ikona oka).</li>
+</ol>
+<div class="box warn">
+  <p>Client Secret pełni rolę hasła do Twojego projektu. Nie udostępniaj go nikomu i nie wklejaj w publiczne miejsca. W razie potrzeby możesz go zresetować na karcie Overview — po resecie zaktualizuj klucz w Home Assistant.</p>
+</div>
+
+<h3>6.2. Tryb pełnych punktów danych (DP Instruction)</h3>
+<p>Domyślnie chmura Tuya udostępnia urządzenia w trybie uproszczonym, który potrafi ukrywać część danych. Aby wystawić komplet, przełącz produkt na tryb DP Instruction: zakładka <em>Devices → All Devices</em> → przycisk „…” przy pasku <em>View Devices by Product</em> → najedź na kafelek produktu → ikona ołówka → zaznacz <em>DP Instruction</em> → <em>Save Configuration</em>. Ostrzeżenie, które wyświetli platforma, dotyczy wyłącznie tego projektu API — aplikacja Smart Life i sama ładowarka działają bez zmian. Procedura z ilustracjami: <a href="https://github.com/azerty9971/xtend_tuya/blob/main/docs/enable_all_dpcodes.md">dokumentacja xtend_tuya</a>. Na ekranie edycji produktu zobaczysz dwie kolumny nazw (DP Instruction i Standard Instruction) — to właśnie punkty danych ładowarki; ich kompletną, objaśnioną listę znajdziesz w <a href="#encje">ściądze w sekcji 7</a>.</p>
+
+<h3>6.3. Wpisanie kluczy w Home Assistant</h3>
+<ol>
+  <li><em>Ustawienia → Urządzenia i usługi → Xtend Tuya → Konfiguruj</em> — otworzy się znane już okno kluczy OpenAPI.</li>
+  <li>Tym razem odznacz pole <em>Don't ask for OpenAPI credentials</em>, wybierz kraj <em>Poland</em> i endpoint <em>Europe</em>, a w pola Access ID i Access Secret wklej klucze z karty Overview. Zatwierdź.</li>
+  <li>Zrestartuj Home Assistant i odczekaj minutę–dwie. Liczba encji ładowarki powinna jeszcze wzrosnąć. Jeśli nie — użyj opcji <em>Załaduj ponownie</em> w menu „…” przy wpisie Xtend Tuya.</li>
+</ol>
+
+<h2 id="efekty">7. Co zyskujesz po integracji: pełna lista encji + panel Energia</h2>
+<p>Dokładny zestaw encji zależy od modelu ładowarki, ale typowo obejmuje:</p>
+<table>
+  <tr><th>Odczyty</th><th>Sterowanie</th></tr>
+  <tr>
+    <td>status ładowania (wolna / ładowanie / zakończone / błąd), moc chwilowa, prąd i napięcie faz L1–L3, energia bieżącej sesji, energia całkowita, kody błędów</td>
+    <td>start i stop ładowania (przełącznik), limit prądu ładowania (np. obniżenie z 16 A do 10 A), tryby pracy urządzenia</td>
+  </tr>
+</table>
+<p>Encjom warto nadać czytelne nazwy (<em>Ustawienia → Urządzenia i usługi → zakładka Encje</em>). Jeżeli jakiś element (np. przełącznik) występuje podwójnie — raz z integracji Tuya i raz z xtend_tuya — to normalne; jeden z duplikatów można po prostu wyłączyć.</p>
+<h3 id="encje">Ściąga: pełna lista encji ładowarek Q11 i Q37</h3>
+<p>Poniższa lista pochodzi wprost z konfiguracji produktu w chmurze Tuya — to komplet punktów danych, które ładowarka raportuje po włączeniu trybu DP Instruction (punkt 6.2). W Home Assistant każda pozycja staje się jedną lub kilkoma encjami (np. pakiet fazy jest rozpakowywany na osobne czujniki napięcia, prądu i mocy). Serie różnią się szablonami: Q11 używa standardowego szablonu ładowarki EV platformy Tuya, natomiast Q37 — własnego szablonu producenta (punkty z przedrostkiem <code>x_</code>), dlatego listy wyglądają zupełnie inaczej. Dokładny zestaw może się też minimalnie różnić między wersjami oprogramowania.</p>
+<details class="acc">
+<summary>Encje ładowarki Q11 — 17 punktów danych</summary>
+<table>
+<tr><th>Punkt danych</th><th>Co oznacza</th><th>Jak pojawia się w HA</th></tr>
+<tr><td><code>switch</code></td><td>Główny włącznik ładowania: start i stop sesji.</td><td>przełącznik</td></tr>
+<tr><td><code>work_state</code></td><td>Aktualny stan pracy. Typowe wartości: <code>charger_free</code> (wolna), <code>charger_insert</code> (wtyczka włożona, czeka na start), <code>charger_wait</code> (oczekiwanie, np. na harmonogram), <code>charger_charging</code> (ładowanie), <code>charger_pause</code> (pauza), <code>charger_end</code> (sesja zakończona), <code>charger_fault</code> / <code>charger_free_fault</code> (błąd). Tych wartości używa się w automatyzacjach.</td><td>czujnik statusu</td></tr>
+<tr><td><code>connection_state</code></td><td>Stan połączenia z pojazdem — czy wtyczka jest wpięta i czy auto zgłasza gotowość.</td><td>czujnik</td></tr>
+<tr><td><code>power_total</code></td><td>Moc całkowita pobierana przez pojazd, raportowana bezpośrednio przez ładowarkę. To jest „faktyczna moc z urządzenia” — Home Assistant jej nie wylicza, pokazuje raport ładowarki.</td><td>czujnik mocy (W/kW)</td></tr>
+<tr><td><code>phase_a</code>, <code>phase_b</code>, <code>phase_c</code></td><td>Pakiet pomiarów jednej fazy: napięcie, prąd i moc wysyłane razem w jednym punkcie danych; integracja rozpakowuje je na osobne czujniki.</td><td>po 3 czujniki na fazę (V, A, W)</td></tr>
+<tr><td><code>forward_energy_total</code></td><td>Licznik energii narastający od pierwszego uruchomienia — jak licznik w rozdzielnicy. Tę encję podaje się panelowi Energia.</td><td>czujnik energii (kWh)</td></tr>
+<tr><td><code>energy_charge</code></td><td>Energia przekazana w bieżącej sesji ładowania (rośnie od zera przy każdym starcie).</td><td>czujnik energii (kWh)</td></tr>
+<tr><td><code>charge_cur_set</code></td><td>Zadany limit prądu ładowania; zakres zależy od modelu. Zmiana limitu w trakcie sesji działa od razu — podstawa sterowania „ładowaniem z nadwyżki PV”.</td><td>pole liczbowe (A)</td></tr>
+<tr><td><code>work_mode</code></td><td>Tryb uruchamiania ładowania: natychmiast, według harmonogramu albo „na porcję energii”.</td><td>lista wyboru</td></tr>
+<tr><td><code>mode_set</code></td><td>Nastawa powiązana z trybem pracy (wybór wariantu trybu; rola zależy od wersji oprogramowania).</td><td>lista wyboru</td></tr>
+<tr><td><code>charge_energy_once</code></td><td>Porcja energii dla trybu „naładuj określoną liczbę kWh”; w części wersji oprogramowania służy też jako odczyt energii pojedynczej sesji.</td><td>pole liczbowe (kWh)</td></tr>
+<tr><td><code>local_timer</code></td><td>Harmonogram zapisany lokalnie w ładowarce (działa bez internetu). W praktyce wygodniejsze są automatyzacje HA.</td><td>encja techniczna (zwykle ukryta)</td></tr>
+<tr><td><code>temp_current</code></td><td>Temperatura wewnątrz urządzenia — nadzór termiczny; przy przegrzaniu ładowarka sama ogranicza pracę.</td><td>czujnik (°C)</td></tr>
+<tr><td><code>fault</code></td><td>Rejestr błędów — pojedyncze pozycje oznaczają m.in. upływ prądu, zwarcie, nieprawidłowe napięcie, przegrzanie. Wartość pusta lub 0 = wszystko w porządku.</td><td>czujnik alarmowy</td></tr>
+<tr><td><code>system_version</code></td><td>Wersja oprogramowania (firmware) ładowarki.</td><td>czujnik diagnostyczny</td></tr>
+</table>
+</details>
+<details class="acc">
+<summary>Encje ładowarki Q37 — 26 punktów danych (szablon producenta)</summary>
+<p>Q37 nie używa standardowego zestawu z Q11 — ma własny szablon producenta. Tam, gdzie istnieje odpowiednik z Q11, podajemy go w opisie.</p>
+<table>
+<tr><th>Punkt danych</th><th>Co oznacza</th><th>Jak pojawia się w HA</th></tr>
+<tr><th colspan="3">Sterowanie</th></tr>
+<tr><td><code>switch_led</code></td><td>Główny włącznik ładowania. Nietypowa nazwa pochodzi z definicji produktu u producenta — w praktyce to zwykły start/stop (odpowiednik <code>switch</code>).</td><td>przełącznik</td></tr>
+<tr><td><code>x_do_charge</code></td><td>Polecenie rozpoczęcia/zatrzymania ładowania wysyłane do urządzenia.</td><td>przełącznik / przycisk</td></tr>
+<tr><td><code>x_charge_current</code></td><td>Zadany prąd ładowania (odpowiednik <code>charge_cur_set</code>).</td><td>pole liczbowe (A)</td></tr>
+<tr><td><code>x_adjust_current</code></td><td>Korekta prądu w trakcie trwającej sesji — płynna regulacja bez przerywania ładowania.</td><td>pole liczbowe (A)</td></tr>
+<tr><td><code>x_charge_mode</code></td><td>Tryb ładowania: natychmiast / harmonogram / porcja energii (odpowiednik <code>work_mode</code>/<code>mode_set</code>).</td><td>lista wyboru</td></tr>
+<tr><td><code>work_mode</code></td><td>Tryb pracy urządzenia — pozycja pokrywająca się rolą z <code>x_charge_mode</code>.</td><td>lista wyboru</td></tr>
+<tr><td><code>x_max_current_cfg</code></td><td>Górny limit prądu, powyżej którego nie da się ustawić prądu ładowania — zabezpieczenie np. pod przekrój instalacji.</td><td>pole liczbowe (A)</td></tr>
+<tr><th colspan="3">Status i pomiary</th></tr>
+<tr><td><code>x_work_state</code></td><td>Stan pracy: wolna / wtyczka włożona / ładowanie / zakończone / błąd (odpowiednik <code>work_state</code>).</td><td>czujnik statusu</td></tr>
+<tr><td><code>x_metrics</code></td><td>Zbiorczy pakiet pomiarów: napięcie, prąd, moc i energia w jednym punkcie danych (odpowiednik <code>phase_a</code> + <code>power_total</code> + energii z Q11); integracja rozpakowuje go na osobne czujniki.</td><td>kilka czujników (V, A, W, kWh)</td></tr>
+<tr><td><code>x_alarm</code></td><td>Alarmy i błędy: upływ prądu, zwarcie, napięcie poza zakresem, przegrzanie (odpowiednik <code>fault</code>).</td><td>czujnik alarmowy</td></tr>
+<tr><td><code>x_selftest</code></td><td>Wynik autotestu zabezpieczeń wykonywanego przy uruchomieniu.</td><td>czujnik diagnostyczny</td></tr>
+<tr><td><code>x_wifi_signal</code></td><td>Siła sygnału Wi-Fi ładowarki — bardzo przydatna przy diagnozowaniu zrywającego się połączenia.</td><td>czujnik</td></tr>
+<tr><td><code>x_downcounter</code></td><td>Licznik odliczania (np. do opóźnionego startu ładowania).</td><td>czujnik</td></tr>
+<tr><td><code>x_charge_history</code></td><td>Zapis historii sesji ładowania (pakiet danych producenta).</td><td>encja tekstowa / diagnostyczna</td></tr>
+<tr><td><code>x_heartbeat</code></td><td>Okresowy sygnał „żyję” potwierdzający łączność urządzenia z chmurą.</td><td>encja techniczna</td></tr>
+<tr><th colspan="3">Konfiguracja</th></tr>
+<tr><td><code>x_lang_cfg</code></td><td>Język wyświetlacza urządzenia.</td><td>lista wyboru</td></tr>
+<tr><td><code>x_socket_cfg</code></td><td>Konfiguracja gniazda / typu przyłącza.</td><td>lista wyboru</td></tr>
+<tr><td><code>x_nfc_cfg</code></td><td>Ustawienia NFC — karty i breloki do autoryzacji ładowania.</td><td>lista wyboru / przełącznik</td></tr>
+<tr><td><code>x_earch_free_cfg</code></td><td>Tryb pracy w sieci bez uziemienia (nazwa z literówką producenta, od „earth-free”). Do szczególnych instalacji, np. zasilania z agregatu — włączać wyłącznie świadomie.</td><td>przełącznik</td></tr>
+<tr><th colspan="3">Serwisowe i techniczne</th></tr>
+<tr><td><code>x_do_reset</code></td><td>Polecenie resetu ustawień urządzenia.</td><td>przycisk</td></tr>
+<tr><td><code>x_do_reboot</code></td><td>Polecenie ponownego uruchomienia ładowarki — zdalny restart bez podchodzenia do urządzenia.</td><td>przycisk</td></tr>
+<tr><td><code>x_work_st_debug</code></td><td>Rozszerzony, diagnostyczny stan pracy (dla serwisu).</td><td>encja diagnostyczna</td></tr>
+<tr><td><code>x_charger_info</code></td><td>Informacje o urządzeniu: model, wersje podzespołów i oprogramowania.</td><td>encja diagnostyczna</td></tr>
+<tr><td><code>current_for_cjsz</code></td><td>Techniczny parametr prądu używany wewnętrznie przez oprogramowanie producenta.</td><td>encja techniczna</td></tr>
+<tr><td><code>x_product_varient</code></td><td>Wariant produktu — identyfikacja wersji sprzętowej (pisownia „varient” pochodzi z szablonu).</td><td>encja diagnostyczna</td></tr>
+<tr><td><code>dp_num</code></td><td>Techniczny punkt danych producenta (diagnostyka wewnętrzna); nie ma zastosowania w codziennym użyciu.</td><td>encja techniczna — można wyłączyć</td></tr>
+</table>
+<p>Punkty <code>x_</code> to rozszerzenia własne producenta — część ma format pakietowy i w Home Assistant może początkowo pojawiać się jako encje tekstowe lub diagnostyczne. Do codziennego użytku kluczowe są: <code>x_work_state</code>, <code>x_metrics</code>, <code>x_charge_current</code>, <code>switch_led</code>/<code>x_do_charge</code> oraz <code>x_alarm</code>; resztę można wyłączyć w zakładce Encje.</p>
+</details>
+
+<p>Panel Energia: w <em>Ustawienia → Pulpity → Energia</em>, w sekcji „Poszczególne urządzenia”, dodaj encję energii całkowitej ładowarki. Po godzinie–dwóch Home Assistant zacznie rysować dzienne i miesięczne wykresy zużycia. Więcej o panelu: <a href="https://www.home-assistant.io/docs/energy/">home-assistant.io/docs/energy</a>.</p>
+
+<h2 id="automatyzacje">8. Przykładowe automatyzacje</h2>
+<p>Automatyzacje buduje się w <em>Ustawienia → Automatyzacje i sceny → Utwórz automatyzację</em>; poniższe przykłady można wkleić w trybie „Edytuj w YAML”. Identyfikatory encji (<code>sensor.…</code>, <code>switch.…</code>) podmień na własne — znajdziesz je w zakładce Encje. Powiadomienia na telefon wymagają darmowej aplikacji <a href="https://companion.home-assistant.io/">Home Assistant Companion</a>.</p>
+
+<p>Ładowanie tylko w taniej taryfie (22:00–6:00):</p>
+<pre><code>alias: Ladowanie w taniej taryfie
+trigger:
+  - platform: time
+    at: "22:00:00"
+    id: start
+  - platform: time
+    at: "06:00:00"
+    id: stop
+action:
+  - choose:
+      - conditions: [{ condition: trigger, id: start }]
+        sequence:
+          - service: switch.turn_on
+            target: { entity_id: switch.ladowarka_przelacznik }
+      - conditions: [{ condition: trigger, id: stop }]
+        sequence:
+          - service: switch.turn_off
+            target: { entity_id: switch.ladowarka_przelacznik }</code></pre>
+
+<p>Powiadomienie o zakończeniu ładowania:</p>
+<pre><code>alias: Koniec ladowania
+trigger:
+  - platform: state
+    entity_id: sensor.ladowarka_status
+    from: "charger_charging"
+    to: "charger_end"
+action:
+  - service: notify.mobile_app_twoj_telefon
+    data:
+      title: "Ladowarka"
+      message: "Ladowanie zakonczone."</code></pre>
+
+<p>Ładowanie nadwyżką z fotowoltaiki (jeśli masz w Home Assistant czujnik mocy oddawanej do sieci):</p>
+<pre><code>alias: Ladowanie nadwyzka PV
+trigger:
+  - platform: numeric_state
+    entity_id: sensor.moc_eksportu_do_sieci
+    above: 3000
+    for: "00:05:00"
+    id: start
+  - platform: numeric_state
+    entity_id: sensor.moc_eksportu_do_sieci
+    below: 500
+    for: "00:05:00"
+    id: stop
+action:
+  - choose:
+      - conditions: [{ condition: trigger, id: start }]
+        sequence:
+          - service: switch.turn_on
+            target: { entity_id: switch.ladowarka_przelacznik }
+      - conditions: [{ condition: trigger, id: stop }]
+        sequence:
+          - service: switch.turn_off
+            target: { entity_id: switch.ladowarka_przelacznik }</code></pre>
+
+<h2 id="problemy">9. Najczęstsze problemy i ich rozwiązania</h2>
+<table>
+  <tr><th>Objaw</th><th>Co zrobić</th></tr>
+  <tr>
+    <td>Po pobraniu xtend_tuya w HACS liczba encji nie rośnie, restarty nic nie zmieniają.</td>
+    <td>Pobranie plików to nie to samo co dodanie integracji. Sprawdź, czy na liście <em>Ustawienia → Urządzenia i usługi</em> jest wpis Xtend Tuya; jeśli nie — przejdź kreator z punktu 5.2 do samego końca.</td>
+  </tr>
+  <tr>
+    <td>Okno kluczy OpenAPI zostało zamknięte krzyżykiem i integracja „zniknęła”.</td>
+    <td>Kreator został anulowany. Uruchom go ponownie i obsłuż okno zgodnie z ramką w punkcie 5.2 (checkbox + kraj + endpoint).</td>
+  </tr>
+  <tr>
+    <td>Formularz OpenAPI pokazuje błąd „value must be one of […]”.</td>
+    <td>Mimo zaznaczonego pola „Don't ask…” trzeba wybrać kraj i endpoint. Wybierz Poland i Europe, potem zatwierdź.</td>
+  </tr>
+  <tr>
+    <td>W logach pojawia się „sign invalid”.</td>
+    <td>Klucz Access ID/Secret wklejony z literówką lub spacją, albo wybrany zły endpoint. Skopiuj klucze ponownie z karty Overview projektu; endpoint dla Polski to Europe.</td>
+  </tr>
+  <tr>
+    <td>W logach „permission deny” lub kod 1106.</td>
+    <td>W projekcie na platformie Tuya sprawdź zakładkę Service API — usługi IoT Core i Authorization muszą być aktywne (w razie potrzeby Authorize/Renew).</td>
+  </tr>
+  <tr>
+    <td>Integracja działała, ale po kilku miesiącach dane przestały się aktualizować.</td>
+    <td>Najpewniej wygasł darmowy okres usługi IoT Core. Na platformie: <em>Cloud → projekt → IoT Core → Extend Trial</em> (przedłużenie jest bezpłatne). Warto ustawić sobie przypomnienie w kalendarzu.</td>
+  </tr>
+  <tr>
+    <td>Kod QR z platformy Tuya nie działa / błąd autoryzacji przy łączeniu konta.</td>
+    <td>Konto Smart Life i projekt są w różnych centrach danych. Utwórz projekt w Central Europe Data Center (dla kont z Polski).</td>
+  </tr>
+  <tr>
+    <td>Wszystkie encje ładowarki mają stan „niedostępny”.</td>
+    <td>Integracja działa przez chmurę: sprawdź internet oraz czy ładowarka jest online w aplikacji Smart Life. Po powrocie łącza encje wrócą same.</td>
+  </tr>
+  <tr>
+    <td>Ładowarka nie łączy się z Wi-Fi po zmianie routera lub hasła.</td>
+    <td>Upewnij się, że sieć 2,4 GHz jest włączona, i sparuj ładowarkę ponownie w Smart Life. W Home Assistant pojawi się automatycznie.</td>
+  </tr>
+  <tr>
+    <td>Po aktualizacji Home Assistant integracja Xtend Tuya nie startuje.</td>
+    <td>Sprawdź w HACS, czy jest nowsza wersja dodatku, i zaktualizuj. Dodatek korzysta z niestandardowych mechanizmów i bywa wrażliwy na duże aktualizacje HA — przed aktualizacją systemu warto odczekać kilka dni i zajrzeć do zgłoszeń na stronie projektu.</td>
+  </tr>
+  <tr>
+    <td>Ten sam przełącznik widnieje dwa razy.</td>
+    <td>To normalne przy pracy xtend_tuya obok oficjalnej integracji. Zbędną encję wyłącz w zakładce Encje (nie usuwaj integracji).</td>
+  </tr>
+  <tr>
+    <td>Mimo wykonania wszystkich kroków urządzenie ma tylko jedną encję.</td>
+    <td>Zdarza się, że definicja produktu w chmurze Tuya ma ograniczony zestaw danych. Napisz do nas na <a href="mailto:hello@amperepoint.com">hello@amperepoint.com</a> — podaj model i opis problemu, sprawdzimy konfigurację produktu po stronie chmury.</td>
+  </tr>
+</table>
+
+<h2 id="lokalnie">10. Alternatywa: sterowanie lokalne (tuya-local)</h2>
+<p>Jeśli zależy Ci na niezależności od chmury (sterowanie działa wtedy nawet bez internetu), możesz zamiast tego użyć dodatku <a href="https://github.com/make-all/tuya-local">tuya-local</a>, również instalowanego przez HACS. Konfiguracja wymaga tzw. klucza lokalnego urządzenia i ręcznego dopasowania punktów danych — jest bardziej techniczna i polecamy ją użytkownikom, którzy czują się pewnie w Home Assistant. Pomocne narzędzie do odczytu danych urządzeń: <a href="https://github.com/jasonacox/tinytuya">TinyTuya</a>.</p>
+
+<h2 id="linki">11. Wszystkie linki w jednym miejscu</h2>
+<div class="links">
+  <h3>Do pobrania i instalacji</h3>
+  <ul>
+    <li>Home Assistant — instalacja: <a href="https://www.home-assistant.io/installation/">home-assistant.io/installation</a></li>
+    <li>Docker Desktop (Windows): <a href="https://www.docker.com/products/docker-desktop/">docker.com/products/docker-desktop</a></li>
+    <li>WSL2 (instrukcja Microsoftu): <a href="https://learn.microsoft.com/pl-pl/windows/wsl/install">learn.microsoft.com/pl-pl/windows/wsl/install</a></li>
+    <li>HACS — instrukcja instalacji: <a href="https://www.hacs.xyz/docs/use/download/download/">hacs.xyz/docs/use/download/download</a></li>
+    <li>Aplikacja Smart Life: <a href="https://play.google.com/store/apps/details?id=com.tuya.smartlife">Android</a> · <a href="https://apps.apple.com/app/smart-life-smart-living/id1115101477">iPhone</a></li>
+    <li>Home Assistant Companion (powiadomienia): <a href="https://companion.home-assistant.io/">companion.home-assistant.io</a></li>
+  </ul>
+  <h3>Integracje i dokumentacja</h3>
+  <ul>
+    <li>xtend_tuya: <a href="https://github.com/azerty9971/xtend_tuya">github.com/azerty9971/xtend_tuya</a> · <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=azerty9971&amp;repository=xtend_tuya&amp;category=integration">otwórz w moim Home Assistant</a></li>
+    <li>Klucze OpenAPI — procedura: <a href="https://github.com/azerty9971/xtend_tuya/blob/main/docs/cloud_credentials.md">docs/cloud_credentials.md</a></li>
+    <li>DP Instruction — procedura: <a href="https://github.com/azerty9971/xtend_tuya/blob/main/docs/enable_all_dpcodes.md">docs/enable_all_dpcodes.md</a></li>
+    <li>Platforma deweloperska Tuya: <a href="https://platform.tuya.com">platform.tuya.com</a></li>
+    <li>Oficjalna integracja Tuya w HA: <a href="https://www.home-assistant.io/integrations/tuya/">home-assistant.io/integrations/tuya</a></li>
+    <li>Panel Energia: <a href="https://www.home-assistant.io/docs/energy/">home-assistant.io/docs/energy</a></li>
+    <li>tuya-local: <a href="https://github.com/make-all/tuya-local">github.com/make-all/tuya-local</a> · TinyTuya: <a href="https://github.com/jasonacox/tinytuya">github.com/jasonacox/tinytuya</a></li>
+    <li>Autoryzacja HACS: <a href="https://github.com/login/device">github.com/login/device</a></li>
+  </ul>
+</div>
+
+<h2>Podsumowanie</h2>
+<p>Po przejściu tego przewodnika Twoja ładowarka Ampere Point serii Q jest pełnoprawnym elementem inteligentnego domu: widzisz każdą sesję ładowania, kontrolujesz koszty w panelu Energia i możesz ładować auto wtedy, kiedy prąd jest najtańszy — albo wtedy, kiedy produkuje go Twoja instalacja fotowoltaiczna.</p>
+<p>Ekrany Home Assistant i platformy Tuya bywają co jakiś czas przemeblowywane, więc pojedyncze przyciski mogą z czasem zmienić nazwę lub miejsce — ogólna kolejność kroków pozostaje jednak taka sama.</p>
+
+<div class="footer-cta">
+  <p>Utknąłeś na którymś kroku? Napisz do nas: <a href="mailto:hello@amperepoint.com">hello@amperepoint.com</a> lub zadzwoń +48 666 612 044 (pn–pt 10:00–17:00). Chętnie pomożemy.</p>
+  <p>Szukasz ładowarki gotowej do pracy z Home Assistant? Zobacz <a href="https://www.amperepoint.pl/collections/q-series">ładowarki serii Q z licznikiem energii</a>.</p>
+</div>
+
+</div>
+</body>
+</html>

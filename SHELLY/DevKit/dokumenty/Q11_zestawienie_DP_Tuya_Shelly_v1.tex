@@ -1,0 +1,246 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small AMPERE POINT — zestawienie punktów danych · Q11 z modułem Shelly · v1 · 2026-09-28}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Zestawienie punktów danych: Q11 na Tuya a Q11 na Shelly\par}
+{\large Wszystkie punkty danych Q11 z definicji Tuya, to, co sterownik naprawdę wysyła, i gdzie każdy punkt trafia po stronie Shelly · AMPERE POINT · 28 września 2026 · oprac. Dawid Cekała\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+
+\section*{W skrócie}
+
+\begin{itemize}
+\item \textbf{Tuya rozmawia punktami danych.} Sterownik Q11 i moduł wymieniają numerowane punkty: numer, typ, wartość. Definicja produktu Q11 w chmurze Tuya ma ich 17.
+\item \textbf{Shelly nie ma punktów danych, ma pola.} Pole to element modułu z nazwą i numerem, np. \texttt{number:200} „limit prądu”. Warstwa Tuya wbudowana w moduł Shelly (TMCU) rozmawia ze sterownikiem punktami danych, a nasz skrypt usługi przepisuje je na pola i z powrotem.
+\item \textbf{Stan dziś:} sterownik wysyła 14 z 17 punktów. Nasz produkt obsługuje 6 z nich: włącznik, limit prądu, stan i trzy fazy. 8 kolejnych trzeba dodać jako pola.
+\item \textbf{Licznik całkowity przychodzi tylko podczas ładowania.} Sterownik wysyła go co 90 s w stanie „ładuje”. 24–25.09 ładowarka nie ładowała, dlatego wcześniej uznaliśmy, że go nie wysyła (\emph{korekta 29.09}). Na naszym egzemplarzu licznik stoi na 0, bo przy symulatorze bez obciążenia energia nie płynie.
+\end{itemize}
+
+\textbf{Źródła:}
+
+\begin{itemize}
+\item definicja produktu z chmury Tuya (produkt „Ampere Point EV Charger”, ta sama co Q11 PRO),
+\item zrzut stanu z chmury,
+\item kodowanie z naszej integracji Home Assistant,
+\item logi modułu z 24–25.09 (około 10 godzin rozmowy ze sterownikiem),
+\item skrypt usługi v3,
+\item dokumentacja Shelly dla TopAC.
+\end{itemize}
+
+\textbf{Oznaczenia:} \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} działa albo widziane w logu · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} częściowo · \leavevmode{\symbolfont\color{apred}\textbf{✘}} nie ma albo nie widziane · ? nie wiadomo.
+
+
+\section{Punkty danych Q11 w definicji Tuya}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{2.08cm}>{\raggedright\arraybackslash}p{1.76cm}>{\raggedright\arraybackslash}p{1.65cm}>{\raggedright\arraybackslash}p{2.46cm}>{\raggedright\arraybackslash}p{1.36cm}>{\raggedright\arraybackslash}p{1.21cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Nr} & \textbf{Kod Tuya} & \textbf{Co to jest} & \textbf{Typ} & \textbf{Zakres i jednostka} & \textbf{Zapis z zewnątrz} & \textbf{Na łączu} \\
+\midrule\endhead
+\bottomrule\endfoot
+1 & \texttt{forward\_\allowbreak{}energy\_\allowbreak{}total} & licznik całkowity energii & liczba & 0–99 999 999, setne kWh & \leavevmode{\symbolfont\color{apred}\textbf{✘}} tylko odczyt & 4 B \\
+3 & \texttt{work\_state} & stan ładowarki & wyliczenie & 8 stanów, tabela w rozdz. 4 & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & 1 B, numer pozycji \\
+4 & \texttt{charge\_\allowbreak{}cur\_\allowbreak{}set} & limit prądu & liczba & 6–32 A w definicji; Q11 ma 16 A & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & 4 B \\
+6 & \texttt{phase\_a} & faza L1: napięcie, prąd, moc & surowe & napięcie ×0,1 V (2 B), prąd ×0,001 A (3 B), moc w W (2 B) & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & 7 B \\
+7 & \texttt{phase\_b} & faza L2 & surowe & jak L1 & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & 7 B \\
+8 & \texttt{phase\_c} & faza L3 & surowe & jak L1 & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & 7 B \\
+9 & \texttt{power\_total} & moc całkowita & liczba & tysięczne kW, czyli W & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & 4 B \\
+10 & \texttt{fault} & błędy & mapa bitowa & 17 błędów, tabela w rozdz. 4 & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & w logu 2 B \\
+13 & \texttt{connection\_\allowbreak{}state} & sygnał z auta (Control Pilot) & wyliczenie & 7 wartości, tabela w rozdz. 4 & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & 1 B, numer pozycji \\
+14 & \texttt{work\_mode} & tryb pracy & wyliczenie & natychmiast, do limitu energii, w oknie godzin & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & 1 B, numer pozycji \\
+17 & \texttt{energy\_\allowbreak{}charge} & limit energii sesji & liczba & 1–200 kWh & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & 4 B \\
+18 & \texttt{switch} & ładowanie włączone & logiczne & tak, nie & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & 1 B \\
+19 & \texttt{local\_timer} & okno godzin ładowania & surowe & 2 B: godzina startu, godzina końca, 0–23, bez minut & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & 2 B \\
+23 & \texttt{system\_\allowbreak{}version} & wersja programu sterownika & tekst & do 255 znaków; w chmurze „V1” & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & tekst \\
+24 & \texttt{temp\_current} & temperatura & liczba & −40–200 °C & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & 4 B \\
+25 & \texttt{charge\_\allowbreak{}energy\_\allowbreak{}once} & energia ostatniej sesji & liczba & setne kWh & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & 4 B \\
+33 & \texttt{mode\_set} & nieznane & surowe & znaczenie nieznane; w chmurze puste & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & ? \\
+\end{longtable}
+
+\textbf{Jak to czytać:}
+
+\begin{itemize}
+\item „Zapis z zewnątrz” mówi, czy Tuya pozwala zmienić punkt z aplikacji. Pozostałe punkty sterownik tylko zgłasza.
+\item Wyliczenia idą po łączu jako numer pozycji. Nazwy i ich kolejność są tylko w definicji w chmurze, dlatego nasz skrypt ma własną tablicę nazw.
+\item Okno godzin jest zapisane w dwóch bajtach, bez minut. Tak koduje je nasza integracja Home Assistant; w zrzucie z chmury ma wartość \texttt{AAA=}, czyli 00 i 00.
+\end{itemize}
+
+\textbf{Inny produkt, dla porządku.} Eksport Q21 z repozytorium (inna definicja w Tuya) ma tylko 11 punktów, a punkt 8 znaczy tam „zdarzenia ładowarki”. Ma też punkty 41–49, których Q11 nie ma. Tłumacz po stronie Shelly trzeba więc pisać osobno dla każdej definicji produktu. Q11 na biurku mówi zestawem z tabeli powyżej.
+
+
+\section{Q11 a Shelly, punkt po punkcie}
+
+„Q11 wysyła” to wynik z logów modułu z 24–25.09. „Nasz produkt” to produkt „Q11 DevKit test” na DevKicie. „TopAC” to ładowarka na Shelly X, wzorzec pól po stronie Shelly.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{1.81cm}>{\raggedright\arraybackslash}p{2.10cm}>{\raggedright\arraybackslash}p{2.59cm}>{\raggedright\arraybackslash}p{1.95cm}>{\raggedright\arraybackslash}p{2.51cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Nr} & \textbf{Co} & \textbf{Q11 wysyła} & \textbf{Nasz produkt Shelly} & \textbf{TopAC} & \textbf{Stan} \\
+\midrule\endhead
+\bottomrule\endfoot
+1 & licznik całkowity & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} co 90 s, tylko w stanie „ładuje”; wartość 0 (\emph{korekta 29.09}; 24–25.09 ładowarka nie ładowała) & \texttt{phase\_\allowbreak{}info.\allowbreak{}total\_\allowbreak{}act\_\allowbreak{}energy} i podstawa energii sesji & \texttt{total\_\allowbreak{}act\_\allowbreak{}energy} & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} dochodzi; wartość i przyrost do sprawdzenia pod obciążeniem \\
+3 & stan ładowarki & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \texttt{enum:200} „mode”, skrypt tłumaczy numer na nazwę & \texttt{work\_state} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+4 & limit prądu & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \texttt{number:200} „current\_limit”, 6–16 A, zapamiętywane & \texttt{current\_\allowbreak{}limit} 6–16 A & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} w obie strony \\
+6–8 & fazy L1–L3 & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \texttt{object:200} „phase\_info”: \texttt{phase\_a/b/c} & \texttt{phase\_info} & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} napięcia sprawdzone; prąd i moc pod obciążeniem nie \\
+9 & moc całkowita & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} wartość 0 & nieużywany; skrypt sumuje moc faz w \texttt{total\_power} & \texttt{total\_power} & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} \\
+10 & błędy & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} wartość 0 & brak & brak w API & do dodania \\
+13 & sygnał z auta & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} 12 V, 9 V, 6 V & brak & brak & do dodania \\
+14 & tryb pracy & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} „natychmiast” & brak & brak jawnego pola & do dodania, z zapisem \\
+17 & limit energii sesji & \leavevmode{\symbolfont\color{apred}\textbf{✘}} nie widziany & brak & \texttt{global\_\allowbreak{}charge\_\allowbreak{}limit} 0–1000 kWh & do dodania; sprawdzić w teście T3 \\
+18 & ładowanie włączone & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \texttt{boolean:200} „state”, zapamiętywane & \texttt{start\_\allowbreak{}charging} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} w obie strony \\
+19 & okno godzin & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \texttt{0000} & brak & brak; zamiast tego harmonogram modułu & do dodania, z zapisem \\
+23 & wersja sterownika & \leavevmode{\symbolfont\color{apred}\textbf{✘}} nie widziana & brak & ? & do dodania; ustalić, kiedy sterownik ją wysyła \\
+24 & temperatura & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} 18–19 °C & brak & brak & do dodania \\
+25 & energia ostatniej sesji & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} raz, wartość 0 (24.09, 11:23) & brak & \texttt{energy\_\allowbreak{}charge} & do dodania; możliwe źródło energii sesji \\
+33 & nieznane & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & brak & — & do ustalenia z fabryką \\
+\end{longtable}
+
+\section{Pola Shelly bez własnego punktu danych}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{3.34cm}>{\raggedright\arraybackslash}p{2.41cm}>{\raggedright\arraybackslash}p{6.08cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Pole} & \textbf{Nasz produkt} & \textbf{TopAC} & \textbf{Skąd wartość} \\
+\midrule\endhead
+\bottomrule\endfoot
+Czas sesji & \texttt{number:201} „session\_duration”, minuty & \texttt{time\_charge} & liczy skrypt z czasu w stanie „ładuje”; ginie przy restarcie modułu \\
+Energia sesji & \texttt{number:202} „session\_energy”, kWh & \texttt{energy\_\allowbreak{}charge} & przyrost licznika całkowitego; dziś 0, bo bez obciążenia licznik nie rośnie \\
+Prąd całkowity & \texttt{phase\_\allowbreak{}info.\allowbreak{}total\_\allowbreak{}current} & \texttt{total\_\allowbreak{}current} & suma prądów faz w skrypcie \\
+Limit czasu sesji & brak & \texttt{global\_\allowbreak{}time\_\allowbreak{}limit} 0–1440 min & Q11 ma go w menu, bez punktu danych \\
+Autoryzacja startu & brak & ustawienie „auto charge” & ustawienie usługi Shelly, nie punkt danych \\
+\end{longtable}
+
+\section{Wartości wyliczeń i mapa błędów}
+
+\textbf{Stan ładowarki, sygnał z auta, tryb pracy.} Numer pozycji to wartość na łączu.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{4.00cm}>{\raggedright\arraybackslash}p{5.79cm}>{\raggedright\arraybackslash}p{2.06cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Nr pozycji} & \textbf{Stan ładowarki (3)} & \textbf{Sygnał z auta (13)} & \textbf{Tryb pracy (14)} \\
+\midrule\endhead
+\bottomrule\endfoot
+0 & \texttt{charger\_free} wolna & \texttt{controlpi\_\allowbreak{}12v}: 12 V, brak auta & \texttt{charge\_now} natychmiast \\
+1 & \texttt{charger\_\allowbreak{}insert} auto podłączone & \texttt{controlpi\_\allowbreak{}12v\_\allowbreak{}pwm}: 12 V z sygnałem prądu & \texttt{charge\_\allowbreak{}energy} do limitu energii \\
+2 & \texttt{charger\_\allowbreak{}free\_\allowbreak{}fault} wolna, błąd & \texttt{controlpi\_9v}: 9 V, auto podłączone, nie chce ładować & \texttt{charge\_\allowbreak{}schedule} w oknie godzin \\
+3 & \texttt{charger\_wait} czeka & \texttt{controlpi\_\allowbreak{}9v\_\allowbreak{}pwm}: 9 V z sygnałem prądu & — \\
+4 & \texttt{charger\_\allowbreak{}charging} ładuje & \texttt{controlpi\_6v}: 6 V, auto chce ładować & — \\
+5 & \texttt{charger\_\allowbreak{}pause} pauza & \texttt{controlpi\_\allowbreak{}6v\_\allowbreak{}pwm}: 6 V z sygnałem prądu, ładowanie & — \\
+6 & \texttt{charger\_end} zakończone & \texttt{controlpi\_\allowbreak{}error}: błąd sygnału & — \\
+7 & \texttt{charger\_\allowbreak{}fault} błąd & — & — \\
+\end{longtable}
+
+Sygnał z auta to napięcie na przewodzie Control Pilot: 12 V bez auta, 9 V po podłączeniu, 6 V gdy auto chce ładować. „Z sygnałem prądu” znaczy, że ładowarka nadaje auto dozwolony prąd przebiegiem prostokątnym.
+
+
+\textbf{Mapa błędów (10).} Nazwy po polsku to tłumaczenie kodów z definicji Tuya.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{6.01cm}>{\raggedright\arraybackslash}p{6.27cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Bit} & \textbf{Kod} & \textbf{Znaczenie} \\
+\midrule\endhead
+\bottomrule\endfoot
+0 & \texttt{ov\_cr} & nadprąd \\
+1 & \texttt{ov2\_cr\_fault} & nadprąd, drugi próg \\
+2 & \texttt{ov\_vol} & przepięcie \\
+3 & \texttt{undervoltage\_\allowbreak{}alarm} & podnapięcie \\
+4 & \texttt{contactor\_\allowbreak{}adhesion} & sklejony stycznik \\
+5 & \texttt{contactor\_\allowbreak{}fault} & awaria stycznika \\
+6 & \texttt{earth\_fault} & błąd uziemienia \\
+7 & \texttt{meter\_\allowbreak{}hardware\_\allowbreak{}alarm} & awaria układu pomiaru energii \\
+8 & \texttt{scram\_fault} & wyłącznik awaryjny \\
+9 & \texttt{cp\_fault} & błąd sygnału z auta \\
+10 & \texttt{meter\_\allowbreak{}commu\_\allowbreak{}fault} & brak łączności z układem pomiaru \\
+11 & \texttt{card\_\allowbreak{}reader\_\allowbreak{}fault} & awaria czytnika kart \\
+12 & \texttt{cir\_\allowbreak{}short\_\allowbreak{}fault} & zwarcie \\
+13 & \texttt{adhesion\_\allowbreak{}fault} & sklejenie styków \\
+14 & \texttt{self\_\allowbreak{}test\_\allowbreak{}alarm} & błąd autotestu \\
+15 & \texttt{leakagecurr\_\allowbreak{}alarm} & prąd upływu \\
+16 & \texttt{ov\_\allowbreak{}Temp\_\allowbreak{}fault} & przegrzanie \\
+\end{longtable}
+
+\textbf{Uwaga do mapy błędów.}
+
+\begin{itemize}
+\item \textbf{Kolejność bitów to założenie:} bit 0 = pierwszy kod w definicji, według zwyczaju Tuya. Potwierdzi ją dopiero prawdziwy błąd w logu.
+\item \textbf{17. kod nie mieści się w tym, co sterownik wysyła.} W logu mapa ma 2 bajty, czyli 16 bitów, więc bit 16 („przegrzanie”) nie ma gdzie trafić. Albo sterownik wysyła dłuższą mapę tylko przy tym błędzie, albo przegrzanie idzie inaczej. To pytanie do fabryki.
+\end{itemize}
+
+\section{Polecenia protokołu Tuya poza punktami danych}
+
+Oprócz punktów danych sterownik i moduł wymieniają polecenia usługowe. Liczby z logów z 24–25.09.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{2.29cm}>{\raggedright\arraybackslash}p{3.82cm}>{\raggedright\arraybackslash}p{1.66cm}>{\raggedright\arraybackslash}p{3.63cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Kod} & \textbf{Kierunek} & \textbf{Co to jest} & \textbf{Jak często} & \textbf{Q11 na Shelly} \\
+\midrule\endhead
+\bottomrule\endfoot
+0x00 & moduł {\symbolfont→} sterownik & znak życia & co 15 s & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+0x01 & moduł {\symbolfont→} sterownik & zapytanie o informacje o produkcie & przy starcie & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} nie złapane, leci przed połączeniem logu \\
+0x03 & moduł {\symbolfont→} sterownik & stan sieci: 2 brak routera, 3 router, 4 chmura & co 30 s & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} moduł zawsze wysyła 4, także przy wyłączonej chmurze \\
+0x04 & sterownik {\symbolfont→} moduł & reset Wi-Fi, z menu ładowarki & na żądanie & ? test T6 \\
+0x06 & moduł {\symbolfont→} sterownik & ustaw punkt danych & na polecenie & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} 75 razy w logach \\
+0x07 & sterownik {\symbolfont→} moduł & meldunek punktu danych & przy zmianie i na zapytanie & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+0x08 & moduł {\symbolfont→} sterownik & zapytanie o wszystkie punkty & po starcie & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+0x0A, 0x0B & moduł {\symbolfont→} sterownik & aktualizacja programu sterownika & na żądanie & ? oprogramowanie modułu ma tę funkcję; niesprawdzone, wymaga pliku od fabryki \\
+0x1C & sterownik {\symbolfont→} moduł & prośba o czas lokalny & co 30 s & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} po synchronizacji z serwerem czasu; wcześniej zerowa data \\
+0x24 & sterownik {\symbolfont→} moduł & prośba o siłę sygnału Wi-Fi & co około 18 s & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+0x34 & moduł {\symbolfont→} sterownik & usługi rozszerzone; w logu niesie datę i godzinę & 41 razy w logach & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} dokładne znaczenie do ustalenia \\
+\end{longtable}
+
+\section{Co z tego wynika}
+
+\textbf{Sterownik wysyła 14 z 17 punktów.} Nie widzieliśmy dotąd limitu energii (17), wersji (23) ani punktu nieznanego (33). Mogą się pojawić dopiero po zmianie w menu, przy starcie albo w innym stanie ładowarki, tak jak licznik całkowity, który przychodzi tylko w stanie „ładuje”. Sprawdzą to testy C6, C8 i D7.
+
+
+\textbf{Licznik całkowity dochodzi, ale tylko w stanie „ładuje”} (\emph{korekta 29.09}; wcześniej uznany za brak). Energię sesji liczymy z jego przyrostu, jak w integracji Home Assistant. Czy rośnie poprawnie, pokaże dopiero test pod obciążeniem. Źródła zastępcze na wypadek, gdyby nie rósł:
+
+\begin{itemize}
+\item \textbf{energia ostatniej sesji (25):} wartość ze sterownika, dokładna, ale dostępna dopiero po sesji;
+\item \textbf{suma mocy z punktu 9 w skrypcie:} na żywo, ale przybliżona. Przy 6,9 kW każdy 30-sekundowy krok dodaje 0,0575 kWh, a zmiana mocy między odczytami wprowadza błąd.
+\end{itemize}
+
+Rekomendacja: zostać przy przyroście licznika i sprawdzić go pod obciążeniem; punkt 25 dodać jako kontrolę po każdej sesji.
+
+
+\textbf{Do dodania jest 8 pól:} błędy, sygnał z auta, tryb pracy, limit energii, okno godzin, wersja, temperatura, energia ostatniej sesji. Moc całkowitą wystarczy dopisać do istniejącego pola faz. Razem z obecnymi 6 polami daje to 14. Pamięć na pola w module ma 5376 B i przy 17 polach użytkownika była prawie pełna, więc po dodaniu trzeba zmierzyć, ile zostało.
+
+
+\textbf{Pytania do fabryki:} 17. bit mapy błędów, znaczenie punktu 33, kiedy sterownik wysyła wersję i limit energii.
+
+
+\end{document}

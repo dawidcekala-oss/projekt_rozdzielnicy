@@ -1,0 +1,39 @@
+Kopia zapasowa Shelly DevKit M1, stan przy dostawie
+====================================================
+
+Data:            2026-09-24, przed jakąkolwiek zmianą
+Urządzenie:      shellyxc3-543204516334, model S3XT-0S, partia XC3-dev-001
+Chip:            ESP32-C3 (Shelly-C38F), 8 MB flash, MAC 54:32:04:51:63:34
+Oprogramowanie:  2.0.0-xc3-lightexpoGZ2026 (20260603-121402, g1546f4b)
+Zabezpieczenia:  secure boot wyłączony, szyfrowanie flash wyłączone
+                 (kopię można wgrać z powrotem bajt w bajt)
+
+Pliki
+-----
+devkit_m1_flash_8MB_543204516334.bin   cała pamięć flash, 8 388 608 bajtów
+  SHA-256: 2B7277B22153F94D53BB14D4D675CB9C3C18D95EC007FAB2DA0AE0BD7212B7E2
+  zgodność z płytką potwierdzona poleceniem verify-flash tuż po odczycie
+konfiguracja_rpc_przed_zmianami.json   konfiguracja, stan, komponenty i lista 176 metod
+log_startu_przed_zmianami.txt          log startu z portu szeregowego
+efuse_summary.txt                      stan bezpieczników chipu
+
+UWAGA: plik .bin zawiera dane fabryczne urządzenia, w tym klucz (282 bajty).
+Nie wrzucać go do repozytorium ani nigdzie nie wysyłać.
+
+Powrót do stanu z dostawy
+-------------------------
+1. DevKit podłączony przez USB, port COM5 (sprawdzić w Menedżerze urządzeń:
+   "Silicon Labs CP210x USB to UART Bridge").
+2. W PowerShell, w tym folderze:
+
+   & "$env:LOCALAPPDATA\Arduino15\packages\esp32\tools\esptool_py\5.3.0\esptool.exe" --chip esp32c3 -p COM5 -b 921600 write-flash 0x0 devkit_m1_flash_8MB_543204516334.bin
+
+3. Sprawdzenie:
+
+   & "$env:LOCALAPPDATA\Arduino15\packages\esp32\tools\esptool_py\5.3.0\esptool.exe" --chip esp32c3 -p COM5 -b 921600 verify-flash 0x0 devkit_m1_flash_8MB_543204516334.bin
+
+   Oczekiwany wynik: "Verification successful (digest matched)".
+
+Zapis trwa około 2 minut. Przywraca wszystko: oprogramowanie, konfigurację,
+Wi-Fi, skrypty i pola. Samo usunięcie symulatora bez wgrywania całej pamięci
+robi skrypt ..\symulator_q11\usun_symulator.py.

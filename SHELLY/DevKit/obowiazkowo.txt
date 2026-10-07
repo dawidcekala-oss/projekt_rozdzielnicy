@@ -1,0 +1,1 @@
+co da się zrobić offline bez chmury, co devkit przechowuje w pamięci. Co można zrobić lokalnie. Jakoś spróbować wykorzystać MQTT i emulować OCPP.

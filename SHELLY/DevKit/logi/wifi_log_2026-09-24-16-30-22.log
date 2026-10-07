@@ -1,0 +1,33 @@
+{"seq":358, "ts":1790267423.143, "level":2, "data":"shelly_debug.cpp:245    Streaming logs to 192.168.0.57:56047", "fd":2}
+{"seq":359, "ts":1790267423.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":360, "ts":1790267423.316, "level":2, "data":"shos_rpc_inst.c:241     boolean.set [1790267421513@ShellyApp] via HTTP_in POST from 192.168.0.146:54234 via ws0", "fd":2}
+{"seq":361, "ts":1790267423.321, "level":2, "data":"ly_virtual_base.cpp:488 Persistent status save", "fd":2}
+{"seq":362, "ts":1790267423.366, "level":1, "data":"shelly_tmcu.cpp:1027    Setting unknown datapoint 18", "fd":2}
+{"seq":363, "ts":1790267423.369, "level":2, "data":"shelly_script.cpp:204   service:0 0.2% CPU utilization", "fd":2}
+{"seq":364, "ts":1790267423.373, "level":2, "data":"y_notifications.cpp:168 Status change of boolean:200: {\"value\":true}", "fd":2}
+{"seq":365, "ts":1790267424.182, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":366, "ts":1790267424.662, "level":2, "data":"shos_rpc_inst.c:241     boolean.set [1790267422877@ShellyApp] via HTTP_in POST from 192.168.0.146:54238 via ws0", "fd":2}
+{"seq":367, "ts":1790267424.667, "level":2, "data":"ly_virtual_base.cpp:488 Persistent status save", "fd":2}
+{"seq":368, "ts":1790267424.704, "level":1, "data":"shelly_tmcu.cpp:1027    Setting unknown datapoint 18", "fd":2}
+{"seq":369, "ts":1790267424.707, "level":2, "data":"y_notifications.cpp:168 Status change of boolean:200: {\"value\":false}", "fd":2}
+{"seq":370, "ts":1790267425.179, "level":0, "data":"shelly_tmcu.cpp:942     Initialization failed at init_state 0 Expecting heartbeat", "fd":2}
+{"seq":371, "ts":1790267425.187, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":372, "ts":1790267426.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":373, "ts":1790267427.014, "level":0, "data":"shelly_tmcu.cpp:942     Initialization failed at init_state 0 Expecting heartbeat", "fd":2}
+{"seq":374, "ts":1790267427.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":375, "ts":1790267428.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":376, "ts":1790267429.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":377, "ts":1790267430.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":378, "ts":1790267431.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":379, "ts":1790267432.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":380, "ts":1790267433.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":381, "ts":1790267434.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":382, "ts":1790267435.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":383, "ts":1790267436.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":384, "ts":1790267437.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":385, "ts":1790267438.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":386, "ts":1790267438.523, "level":2, "data":"shelly_script.cpp:204   service:0 0.2% CPU utilization", "fd":2}
+{"seq":387, "ts":1790267439.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":388, "ts":1790267440.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":389, "ts":1790267441.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":390, "ts":1790267442.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}

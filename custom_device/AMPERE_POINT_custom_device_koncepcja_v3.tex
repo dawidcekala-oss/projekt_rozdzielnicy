@@ -1,0 +1,416 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\small\bfseries}{\thesubsubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+\title{\textbf{AMPERE POINT --- Wielofunkcyjne urządzenie pomiarowe (custom device)}\\[4pt]
+\large Koncepcja budowy --- wersja 3 (pełna, scalona)\\
+stacja testowa EVSE z rekuperacją energii i wariantem własnego falownika}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{8 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+
+\noindent\textbf{Status dokumentu:} pełna, samodzielna koncepcja --- scala v1 (2026-07-03, zatwierdzoną
+z punktami Z1--Z6), poprawki przeglądu schematów (v3) i rewizję rekuperacyjną v2 (Z7--Z10), oraz
+\textbf{rozszerza} je o: blok zarządzania energią (B11), analizę ,,falownik: kupić czy zbudować''
+z \textbf{przepisem krok po kroku na własny falownik wyspowy 48~V/230~V} (rozdz.~\ref{sec:diy}),
+pełny kosztorys wariantowy, scalony rejestr ryzyk R1--R15 i skonsolidowaną listę decyzji Z1--Z12.
+Dokumenty powiązane: schemat elektryczny v4 (EPLAN), objaśnienie schematów v1, wizualizacje 3D v1/v2.
+Po zatwierdzeniu Z11--Z12 dokument zastępuje v1/v2 jako podstawa dalszych prac (v1/v2 pozostają w folderze).
+
+\tableofcontents
+
+\section{Cel i zasady projektowe}
+Celem projektu jest zautomatyzowana stacja testowa ładowarek AC (EVSE), umożliwiająca wykonanie
+wszystkich pięciu obowiązkowych pomiarów z ,,Przewodnika w zakresie wykonywania pomiarów elektrycznych
+stacji ładowania'' (Warszawa 2024) oraz prób funkcjonalnych pod realnym obciążeniem --- bez użycia
+samochodu testowego. Urządzenie pełni rolę pojazdu: symuluje stany złącza wg IEC~61851-1, pobiera
+zadany prąd testowy i rejestruje wyniki.
+
+Zasady projektowe (1--4 przejęte z v1, 5 nowa):
+\begin{enumerate}
+\item \textbf{Spójność na poziomie realnych połączeń} --- każdy blok opisany do poziomu złączy,
+przewodów i sygnałów, przenośny 1:1 na schemat elektryczny.
+\item \textbf{Bezpieczeństwo sprzętowe, nie programowe} --- rozłączanie mocy realizuje sprzętowy
+łańcuch bezpieczeństwa niezależny od mikrokontrolera; firmware może wyłącznie zezwalać.
+\item \textbf{Praktyczna wykonalność} --- komponenty dostępne rynkowo, budowa etapowa, każdy etap
+kończy się urządzeniem użytecznym w warsztacie.
+\item \textbf{Wiarygodność protokołów} --- pomiary urzędowe wykonują przyrządy wzorcowane
+(UT595/UT522); bloki własne pokrywają to, czego przyrządy gotowe nie umieją.
+\item \textbf{Energia testów jest odzyskiwana} (nowa, v2) --- moc pobierana od badanej ładowarki
+nie jest zamieniana w bezużyteczne ciepło, lecz buforowana i zwracana do odbiorów zakładu;
+ciepło powstaje tylko jako straty przemiany (0,5--1,2~kW zamiast 11~kW).
+\end{enumerate}
+
+\section{Historia decyzji i stan ustaleń}
+\label{sec:historia}
+\begin{itemize}
+\item \textbf{Z1--Z6 (v1, zatwierdzone):} topologia ,,przelot mocy z odczepem sterującym''
+(PM701E poza torem prądu obciążenia, na 7-żyłowym odczepie -X3), architektura dwumodułowa,
+mapowanie gniazd panelu, strategia pomiarów protokołowych (UT595/UT522 w sekwencji prowadzonej),
+etapowanie 0$\to$3, budżet kierunkowy.
+\item \textbf{Przegląd schematów (v3):} 9 poprawek, w tym -K4 (przerwanie CP przy E-STOP/zaniku
+24~V --- DUT sam gasi magistralę), rozdzielone DO, -K3 wentylatorów, doprecyzowanie separacji
+-K30..-K33, adnotacja o -Q0.
+\item \textbf{Z7--Z10 (v2):} moduł obciążenia jako \textbf{rekuperacyjny} (PFC + LiFePO4 +
+falownik) zamiast banku grzałek; parametry bufora; tryb bez eksportu; delta budżetu.
+\item \textbf{Nowe w v3:} blok B11 (zarządzanie energią), warianty falownika W1--W3 z przepisem
+DIY (rozdz.~\ref{sec:falownik}--\ref{sec:diy}), decyzje Z11--Z12.
+\end{itemize}
+Odniesienie sprzętowe bez zmian: PeakMeter PM701E (pokrętła stanu i prądu obracane serwami
+-M1/-M2, weryfikacja pozycji przez odczyt CP), UT890C, mikrooscyloskop, kamera UTi120S,
+tester Type~1 + przejściówka; plan pomostowy UT595 + UT210E + UT522 pozostaje zasadny.
+
+\section{Architektura systemu}
+\subsection{Dwa moduły}
+\textbf{Moduł A --- jednostka sterująco-pomiarowa} (rozdzielnica przenośna IP54, $\sim$600$\times$400$\times$250~mm,
+uchylna przezroczysta pokrywa z HMI): gniazdo pojazdowe Type~2, odczep -X3 do PM701E z ramą serw,
+magistrala mocy ze stycznikiem głównym -K1, bloki pomiarowe, logika, panel. \textbf{Moduł B v2 ---
+szafa rekuperacji energii} (szafa przemysłowa na kółkach, $\sim$600$\times$1200$\times$400~mm):
+prostowniki PFC, szyna DC 48~V, bateria LiFePO4, falownik; połączenie przewodem 5$\times$6~mm$^2$
+CEE 32~A~5p + przewód sterowniczy -X5 + magistrala CAN.
+
+\subsection{Przepływ energii}
+\begin{center}\small
+instalacja $\to$ \textbf{DUT (ładowarka)} $\to$ Type~2 $\to$ moduł A (tor mocy: -B1/-T/-K1) $\to$
+CEE $\to$ \textbf{-K11..-K14} $\to$ \textbf{-PR1..-PR6} (AC$\to$DC 48~V, sterowane CAN) $\to$
+szyna DC (-F13, -KB, -Q1) $\to$ \textbf{-GB1 LiFePO4} $\to$ \textbf{falownik} $\to$
+odbiory zakładu \emph{(W1: również oddawanie ESS; W2/W3: wydzielone obwody wyspy)};
+nadmiar $\to$ -K5 $\to$ grzałka -E13 w zasobniku CWU.
+\end{center}
+Odzysk energii $\sim$85--92\% (PFC $\sim$96\% $\times$ akumulacja $\sim$95\% $\times$ falownik
+$\sim$90--95\%). Pobór z ładowarki jest sinusoidalny (PF$>$0,99) --- elektrycznie wierniejsza
+symulacja pokładowej ładowarki auta (OBC = PFC + bateria) niż rezystory, z płynną regulacją
+0--100\%, rampami i zadawaną asymetrią faz.
+
+\subsection{Poziomy automatyzacji}
+Bez zmian względem v1: automatyczne (stany złącza serwami + weryfikacja CP, zadawanie poboru ---
+teraz po CAN, soak z logowaniem, test RDC-DD, termowizja, RCM, zapis), półautomatyczne (UT595/UT522
+prowadzone przez HMI, wyniki wpisywane ręcznie), ręczne (przyciski PM701E, oględziny).
+
+\section{Bloki funkcjonalne B1--B11}
+\subsection{B1 --- wejście DUT i magistrala mocy}
+Jak v1 + poprawki v3: gniazdo pojazdowe Type~2 32~A~3F z blokadą -Y1; odczep -X3 \textbf{7-żyłowy}
+(L1/L2/L3/N/PE/CP/PP) do PM701E, z zestykiem \textbf{-K4 w linii CP} (E-STOP/zanik 24~V $\Rightarrow$
+przerwanie CP $\Rightarrow$ DUT otwiera stycznik); mostek serwisowy CP na listwie; magistrala 6~mm$^2$;
+-Q0 (4P, nie odłącza odczepu --- tabliczka), -F1..-F3 gG 32~A (N bez wkładki, rozłączany 4-biegunowo),
+-B1 CDSR (RCM, okno L1+L2+L3+N), -T1..-T3 (40~A/1~V), -K1 (4P 40~A AC-1), -X2 CEE.
+\subsection{B2 --- sterowanie stanami złącza (PM701E + serwa)}
+Bez zmian względem v1: 2$\times$ DS3218 na ramie nieinwazyjnej (adapter + sprzęgło Oldham),
+kalibracja 5+5 pozycji, weryfikacja każdej zmiany odczytem CP; przyciski Touch/PE Pre-Test/CP~Error/PE~Error
+w etapie 1 ręczne.
+\subsection{B3 --- rekuperacyjny moduł obciążenia (zamiast banku grzałek)}
+\label{sec:b3}
+\begin{itemize}
+\item \textbf{-PR1..-PR6} --- 6$\times$ prostownik telekomunikacyjny 48~V klasy \textbf{Huawei
+R4850G2} (3~kW, sprawność $\sim$96\%, PF$>$0,99, THD niskie), prąd wyjściowy zadawany po CAN
+(0--100\%, rozdzielczość $\ll$1~A). Alternatywa z oficjalną dokumentacją CAN: Eltek Flatpack2~HE.
+\item \textbf{Konfiguracja faz}: -K11..-K13 załączają pary prostowników na L1/L2/L3 (3F do
+2$\times$3~kW/fazę $>$ 3,7~kW przy 16~A); \textbf{-K14} przełącza jedną parę z L2 na L1 dla testu
+1F 32~A (3$\times$3~kW $=$ 9~kW $>$ 7,4~kW). Margines 3$\times$32~A wymagałby 12 szt. (opcja).
+\item \textbf{Szyna DC 48~V}: bezpieczniki -F13.1/-F13.2 (mega), rozłącznik serwisowy -Q1,
+kontaktor BMS -KB (odcięcie niezależne od MCU); przekroje 50--70~mm$^2$ (przy 11~kW płynie
+$\sim$230~A!).
+\item \textbf{-GB1} --- bateria LiFePO4 48~V, 10--14~kWh (16S, BMS z balansowaniem, komunikacja
+CAN/RS485 do -A1, czujniki temperatury na 1-Wire). Soak 30~min @ 11~kW $\approx$ 5,5~kWh;
+ładowanie $\sim$0,8--1,1C --- dopuszczalne dla LFP z nadzorem temperatur; przed testem SOC
+$\le$60\% (B11).
+\item \textbf{Falownik} --- warianty W1--W3, rozdz.~\ref{sec:falownik}; zrzut nadmiaru: stycznik
+-K5 $\to$ grzałka -E13 w zasobniku CWU (odbiornik gwarantowany).
+\item \textbf{Chłodzenie}: tylko straty (0,5--1,2~kW) --- 2 małe wentylatory (-M3/-M4 z -F5/-K3,
+potwierdzenie prądowe -K2 w łańcuchu); termiki KSD301 (-F11.1..8) na radiatorach prostowników
+i falownika.
+\end{itemize}
+\subsection{B4 --- pomiar parametrów sieci}
+Bez zmian: ATM90E36A (SPI) + -T1..-T3 + dzielniki za -K31..-K33; optotransoptory obecności faz
+(pomiar czasów zadziałania). Pomiar prądu z -U2 jest \emph{niezależną weryfikacją} toru CAN
+(zadane vs pobrane).
+\subsection{B5 --- blok testu RCD/RDC-DD}
+Bez zmian: generator upływu -A3 (rampa 0--20~mA DC, bocznik + AMC1301, przyłącze L1 \emph{za}
+oknem -B1 przez -K30) --- automatyczny test RDC-DD 6~mA (IEC~62955); RCD typ~A protokołowo UT595;
+CDSR jako RCM i weryfikacja krzyżowa.
+\subsection{B6 --- akwizycja CP/PP}
+Bez zmian: dzielnik $\pm$12~V$\to$0--3,3~V + bufor + ograniczniki; ADC (poziomy stanów) +
+komparator$\to$wejście przechwytujące (duty 1~kHz $\Rightarrow$ I $=$ duty$\times$0,6~A); PP kod kabla.
+\subsection{B7 --- termika}
+Jak v1 + zmiany B3: MLX90640 nad zatoką gniazda (soak wtyku, $\Delta$T), 2$\times$ MLX90614,
+DS18B20: szyny, -K1, \textbf{radiatory PR/INV, ogniwa -GB1}, otoczenie.
+\subsection{B8 --- rdzeń przetwarzający, HMI, rejestracja}
+Jak v1 + \textbf{port CAN}: ESP32-S3 (sprzętowy TWAI + transceiver izolowany, np. SN65HVD230
+za izolatorem) --- zadawanie prądu -PR1..6, odczyt telemetrii PR/BMS/INV. Pozostałe magistrale
+bez zmian (SPI: -B1, -U2, SD; I2C: MLX-y, MCP23017, DS3231; UART: DWIN; 1-Wire: DS18B20;
+PWM: serwa; DO1--DO3: -K10/-A2/-Y1; DI: łańcuch + fazy). HMI DWIN 7$''$ w pokrywie; WiFi/MQTT $\to$ HA.
+\subsection{B9 --- obwód bezpieczeństwa}
+Łańcuch 24~V bez zmian (S0 z -K4, F11.x, S1, K2, K10, A2, S2/RB, RB$\to$K1) + \textbf{strona DC}:
+-F13.1/2, -Q1, -KB (BMS może odciąć baterię niezależnie od wszystkiego), blokady programowe SOC/temperatur.
+\subsection{B10 --- zaciski i gniazda pomocnicze}
+Bez zmian: E/S/H (uziom), gniazda bananowe pomiarowe (tabliczka ostrzegawcza v3), sekcja bench-test
+(opcja Z3), USB/SD.
+\subsection{B11 --- zarządzanie energią (nowy)}
+\label{sec:b11}
+Tryby pracy szafy: \textbf{TEST} (prostowniki ładują -GB1 prądem zadanym sekwencerem; falownik
+może równolegle zasilać odbiory), \textbf{MAGAZYN/UPS} (poza testami: falownik zasila wydzielone
+obwody warsztatu; W1 dodatkowo ESS), \textbf{ZRZUT} (SOC$>$95\% lub brak odbioru: -K5 $\to$ -E13
+w zasobniku CWU), \textbf{SERWIS} (-Q1 otwarty). Reguły: przed soak SOC $\le$60\%; przerwanie
+ładowania przy T$_{ogniwa}>$45~$^\circ$C; priorytet zrzutu nad przerwaniem testu (test ma dokończyć
+się mimo pełnej baterii). Nadzór: -A1 (CAN do BMS/INV) + niezależnie BMS.
+
+\section{Falownik: kupić czy zbudować? (analiza wariantów)}
+\label{sec:falownik}
+\textbf{Twarde ograniczenie formalne:} falownik pracujący \emph{równolegle z siecią} (oddawanie
+energii do instalacji połączonej z siecią OSD --- tryb ESS/grid-tie) musi spełniać wymagania
+przyłączeniowe NC~RfG / PN-EN~50549-1 (certyfikowana ochrona anty-wyspowa, profile U/f) i podlega
+zgłoszeniu mikroinstalacji. \textbf{Falownika do pracy równoległej nie budujemy sami} --- brak
+certyfikatu wyklucza legalne przyłączenie, a odpowiedzialność (ubezpieczeniowa, BHP) spada na zakład.
+Samodzielna budowa jest natomiast \textbf{w pełni zasadna dla falownika wyspowego} (off-grid),
+zasilającego \emph{wydzielone obwody odbiorcze} bez jakiegokolwiek połączenia równoległego z siecią
+(rozdział przełącznikiem sieć--0--wyspa z przerwą powietrzną). Praca wyspowa nie wymaga zgłoszenia
+do OSD; pozostaje odpowiedzialność za wykonanie (osoba z uprawnieniami E/D, RCD na wyjściu,
+oznakowanie, użytek własny zakładu).
+
+\begin{longtable}{@{}p{0.205\textwidth}p{0.24\textwidth}p{0.24\textwidth}p{0.235\textwidth}@{}}
+\toprule
+ & \textbf{W1: hybrydowy fabryczny} & \textbf{W2: falownik z używanego UPS on-line} & \textbf{W3: własny falownik wyspowy LF (przepis, rozdz.~\ref{sec:diy})}\\
+\midrule
+zasada & gotowy ESS 48 V (Victron/Deye itp.) & tor falownikowy UPS 5--6 kVA z szyną baterii 48 V (typowe w tej klasie --- zweryfikować model!), zasilany wprost z -GB1 & most H 48 V, SPWM (EG8010), filtr LC, transformator toroidalny LF\\
+praca z siecią & \textbf{tak} (ESS, oddawanie, UPS) & nie (wyspa; sekcja bypass tylko jako przełącznik źródła) & nie (wyspa)\\
+moc ciągła & 5--12 kW & 4--5 kW (z 6 kVA) & 3--5 kW (wg trafo/radiatora)\\
+sprawność & 93--96\% & 88--92\% & 85--90\%; pobór jałowy 25--70 W\\
+koszt & 4000--7000 zł (nowy); 2500--3500 zł (używany) & 500--1500 zł + 1 dzień pracy & 1200--2000 zł części + 2--4 dni pracy\\
+udary/rozruchy & dobre & dobre & \textbf{bardzo dobre} (toroid LF)\\
+serwisowalność & zamknięta & średnia & \textbf{pełna} (własna konstrukcja)\\
+ryzyka & koszt & stan egzemplarza, dokumentacja & jakość wykonania, czas (R14/R15)\\
+\bottomrule
+\end{longtable}
+
+\textbf{Oszczędność:} W3 względem nowego W1 to $\sim$3000--5500~zł mniej (W2: podobnie), kosztem
+rezygnacji z oddawania do sieci --- energia testów jest wtedy zużywana \emph{na bieżąco} na
+wydzielonych obwodach warsztatu (oświetlenie, ładowarki narzędziowe, stanowisko lutownicze,
+bench-test) z buforem w -GB1, a nadmiar grzeje CWU. \textbf{Rekomendacja:} start od
+\textbf{W3 (lub W2)} --- architektura szyny DC czyni falownik wymiennym klockiem, więc upgrade do
+W1 (pełne ESS) to później tylko wymiana jednego urządzenia, bez zmian w -GB1/-PR/sterowaniu
+(decyzje Z11/Z12).
+
+\section{Przepis krok po kroku: własny falownik wyspowy 48 V / 230 V, 3--5 kW (W3)}
+\label{sec:diy}
+\subsection{Zasada działania i dlaczego topologia LF}
+Most H na MOSFET-ach kluczuje napięcie baterii 48~V sygnałem SPWM (nośna 23,4~kHz) generowanym
+przez dedykowany sterownik \textbf{EG8010} (gotowy moduł \textbf{EGS002} z driverami IR2110S);
+filtr LC usuwa nośną, zostaje sinus $\sim$30--33~V RMS, który \textbf{transformator toroidalny}
+podnosi do 230~V. Topologia LF (low frequency, trafo po stronie wyjściowej) jest cięższa i mniej
+sprawna od HF, ale: znosi udary rozruchowe (silniki, zasilacze impulsowe), separuje galwanicznie
+wyjście od baterii, jest prosta diagnostycznie i serwisowalna --- właściwy wybór dla warsztatu.
+Regulacja RMS: sprzężenie z wyjścia 230~V (dzielnik na wejście FB EGS002, nastawa trymerem);
+zabezpieczenia EG8010: soft-start, podnapięciowe/nadnapięciowe DC, nadprądowe, termiczne (NTC).
+
+\subsection{Lista materiałów (BOM, ceny orientacyjne PL)}
+\begin{longtable}{@{}p{0.56\textwidth}p{0.20\textwidth}r@{}}
+\toprule
+\textbf{Pozycja} & \textbf{Przykład} & \textbf{zł}\\
+\midrule
+moduł sterownika EGS002 (EG8010 + 2$\times$IR2110S) + zapas 2 szt. & --- & 60--120\\
+16$\times$ MOSFET 80--100 V, R$_{DS(on)}\le$3 m\ohm{} (4 równolegle/klucz) & HY4008W / IRFP4468 & 160--320\\
+rezystory bramkowe 10 \ohm{} (16), diody, TVS, drobnica & --- & 40--80\\
+bank kondensatorów DC: 8--10$\times$ 4700 µF/63 V low-ESR + MKP 1 µF & --- & 150--250\\
+dławik filtru 0,7--1 mH / 30 A (rdzeń proszkowy) + MKP 4,7--10 µF/250 VAC & --- & 80--150\\
+transformator toroidalny 3 kVA, wtórne 30--32 V (np. 2$\times$15 V szeregowo), użyty ,,odwrotnie'' & nowy/używany & 500--900\\
+radiator z wentylatorem 12 V + KSD301 90 $^\circ$C (do łańcucha -F11.x) & --- & 80--150\\
+przekaźnik prekursorowy (precharge): rezystor 47 \ohm{}/50 W + stycznik DC & --- & 60--120\\
+bezpiecznik mega 150--200 A + podstawa, szyny/oczka M8, przewody 50 mm$^2$ & --- & 100--180\\
+wyjście AC: RCD 30 mA typ A + B16 + gniazda, obudowa/montaż w szafie & --- & 120--220\\
+\midrule
+\textbf{Razem W3} & & \textbf{$\sim$1350--2490}\\
+\bottomrule
+\end{longtable}
+Narzędzia już posiadane wystarczą: mikrooscyloskop (podgląd SPWM/sinusa), UT890C, cęgi UT210E,
+wkrętak dynamometryczny; \textbf{grzałki z wariantu v1 znajdują drugie życie jako obciążenie
+probiercze falownika} (kroki 0,5--3 kW).
+
+\subsection{Montaż krok po kroku}
+\begin{enumerate}
+\item \textbf{Mechanika i szyny DC.} Zaplanuj rozmieszczenie: bank kondensatorów \emph{jak
+najbliżej} mostka (pętla prądowa $\le$5~cm), trafo osobno (waga $\sim$15~kg, dół szafy).
+Wykonaj szyny +48/0 z płaskownika Cu, otwory M8.
+\item \textbf{Radiator.} Rozmieść 16 MOSFET-ów (4/klucz) na wspólnym radiatorze przez podkładki
+izolacyjne (miki/silpad) + pasta; sprawdź omomierzem izolację dren--radiator każdej sztuki.
+Przykręć KSD301 (NC 90~$^\circ$C) --- \textbf{wepnij go później szeregowo w pętlę -F11.x} (spójność
+z łańcuchem bezpieczeństwa stacji).
+\item \textbf{Most H.} Połącz klucze krótkimi odcinkami plecionki/blachy; każda bramka przez
+własny rezystor 10~\ohm{} do wyjść driverów EGS002; source'y kluczy dolnych do szyny 0~V możliwie
+krótko. Dołóż TVS 15~V bramka--source (opcjonalnie, zalecane).
+\item \textbf{Bank kondensatorów} na szynach, biegunowość!; równolegle MKP 1~µF przy każdej parze.
+\item \textbf{Precharge.} W plus baterii: bezpiecznik mega $\to$ rezystor 47~\ohm{}/50~W z
+przyciskiem/przekaźnikiem czasowym $\to$ stycznik główny DC (bypass rezystora). Nigdy nie łącz
+baterii wprost na rozładowany bank ($>$1000~A udaru).
+\item \textbf{EGS002.} Zasilanie 12~V (przetwornica z 48~V) i 5~V; NTC z radiatora do wejścia
+temperatury; wyjście wentylatora do wentylatora radiatora. Ustaw zworki: 50~Hz, tryb
+unipolarny/bipolarny wg noty (domyślnie unipolarny).
+\item \textbf{Filtr LC i trafo.} Wyjście mostka $\to$ dławik 0,7--1~mH $\to$ uzwojenie 30--32~V
+toroidu; kondensator MKP 4,7--10~µF równolegle z uzwojeniem. Dobór przełożenia: RMS mostka
+$\approx V_{bat,min}/\sqrt{2}$ (44~V $\to$ $\sim$31~V), więc wtórne 30--32~V gwarantuje 230~V
+w całym zakresie SOC.
+\item \textbf{Sprzężenie zwrotne.} Z wyjścia 230~V przez dzielnik/płytkę FB EGS002; trymerem
+ustawisz RMS po uruchomieniu.
+\item \textbf{Strona AC.} Uzwojenie 230~V $\to$ B16 $\to$ RCD 30~mA typ~A $\to$ gniazda wyspy.
+\textbf{Uziemienie i punkt N--PE:} w pracy wyspowej połącz N wyjścia z PE szafy (jeden punkt,
+przy falowniku) --- inaczej RCD nie zadziała; PE wyspy $=$ PE zakładu. Obwody wyspy prowadź jako
+\emph{wydzielone} (osobne gniazda, oznakowane ,,ZASILANIE Z FALOWNIKA''), przełączanie
+źródła wyłącznie przełącznikiem \textbf{sieć--0--wyspa} (z przerwą), nigdy równolegle.
+\item \textbf{Montaż w szafie:} przedział falownika w miejscu -INV ze schematu v4 (E3), trafo na
+dnie; separacja od strefy baterii przegrodą; dławiki kablowe.
+\end{enumerate}
+
+\subsection{Uruchomienie i testy (procedura)}
+\begin{enumerate}
+\item \textbf{Test sterownika bez mocy:} zasil tylko EGS002 (12/5~V), mostek odpięty od 48~V;
+mikrooscyloskopem sprawdź na bramkach komplementarne SPWM i deadtime ($\ge$300~ns, wg zworek).
+\item \textbf{Niskie napięcie:} zasil szynę DC z zasilacza laboratoryjnego 20~V z limitem 1~A
+(przez żarówkę 12~V/21~W w szereg); bez obciążenia sprawdź sinus na wtórnym --- kształt, 50~Hz.
+\item \textbf{Praca jałowa 48~V:} przez precharge; zmierz pobór jałowy ($\le$1,5~A@48~V);
+trymerem FB ustaw 230~V; oscyloskopem oceń THD (wizualnie: gładki sinus, bez płaskich szczytów).
+\item \textbf{Obciążenie rezystancyjne schodkowo:} 0,5 / 1 / 2 / 3~kW (grzałki z v1); przy każdym
+kroku: U$_{wy}$ (spadek $\le$5\%), prąd DC (UT210E), temperatura radiatora (UTi120S), 15~min soak.
+\item \textbf{Obciążenie indukcyjne/udarowe:} silnik $\sim$1~kW (wiertarka/szlifierka), zasilacz
+impulsowy, świetlówki LED --- start bez zapadu resetującego.
+\item \textbf{Zabezpieczenia:} próba zwarciowa przez bezpiecznik dobiegowy (falownik ma przeżyć ---
+OCP EG8010), zadziałanie KSD301 (zasłoń wentylator --- łańcuch -F11.x ma rozpiąć zezwolenie),
+test RCD wyspy przyciskiem i UT595 (I$_{\Delta n}$, czas).
+\item \textbf{Soak końcowy:} 1~h przy 60--70\% mocy znamionowej, log temperatur (DS18B20 na
+radiatorze i trafo przez -A1); kryteria: $\Delta$T radiatora $\le$40~K, trafo $\le$60~K.
+\item \textbf{Dokumentacja:} protokół uruchomienia (wyniki kroków 1--7) do dokumentacji stacji;
+tabliczka: moc, napięcia, ,,praca wyspowa --- nie łączyć z siecią''.
+\end{enumerate}
+
+\subsection{Ograniczenia W3 i kiedy przejść na W1}
+Brak oddawania do sieci i brak automatycznego przełączania (SZR $=$ opcja rozbudowy); moc 3--5~kW
+(wystarcza: falownik \emph{nie} musi mieć mocy testu --- test ładuje baterię, falownik tylko
+rozładowuje ją na odbiory); pobór jałowy LF. Jeśli funkcja magazynu zakładowego okaże się cenna
+(np. taryfy, PV) --- wymiana na W1 bez zmian reszty szafy (Z12).
+
+\section{Sekwencja pomiarowa}
+Bez zmian względem v1 (kroki 0--10 z bramkami: izolacja $\to$ ciągłość PE $\to$ stan B/C $\to$
+RCD/RDC-DD $\to$ Zs $\to$ obciążenie/soak $\to$ testy błędów $\to$ uziom $\to$ raport); różnica
+wykonawcza: krok obciążenia realizowany \textbf{zadaniem prądu po CAN} (kombinacje $\le$ deklaracji
+CP, rampy 25/50/75/100\%), warunki ciągłe rozszerzone o: SOC/temperatury -GB1, telemetrię -PR
+(zgodność zadane/pobrane), stan -KB.
+
+\section{Obudowy i rozmieszczenie}
+\textbf{Moduł A}: bez zmian (trzy strefy, półka PM701E, panel; wizualizacja 3D v1/v2).
+\textbf{Szafa B v2} (wizualizacja 3D v2): dół --- -GB1 (przedział bateryjny z przegrodą
+i wentylacją grawitacyjną), środek --- szyna DC, -F13, -KB, -Q1, BMS, wyżej --- 6$\times$ -PR
+(2 rzędy), przedział -INV (W1: urządzenie fabryczne; W3: mostek+trafo, trafo na dnie obok baterii),
+góra --- -K11..-K14, rozdział AC, wentylatory strat; przód przeszklony; wejścia: CEE (moc), -X5
+(sterowanie), CAN; wyjścia: obwody wyspy / rozdzielnia (W1), przewód zrzutu do zasobnika CWU.
+
+\section{Kosztorys pełny (orientacyjny, PL, lipiec 2026, $\pm$30\%)}
+\begin{longtable}{@{}p{0.60\textwidth}r@{}}
+\toprule
+\textbf{Moduł A (jak v1, ze zmianami v3)} & \textbf{zł}\\
+\midrule
+gniazdo pojazdowe Type 2 32 A 3F z blokadą + odczep 7-żyłowy z wtykiem & 400--900\\
+magistrala, szyny, gG, rozłącznik, stycznik główny, łańcuch bezp. (w tym -K4) & 800--1450\\
+czujnik CDSR / RCM14 + generator upływu -A3 & 350--800\\
+serwa + rama + sprzęgła (PM701E) & 150--300\\
+termowizja i temperatury (MLX90640, 2$\times$MLX90614, DS18B20) & 400--600\\
+metering (ATM90E36A + 3$\times$CT + dzielniki) & 150--300\\
+logika (ESP32-S3, ekspandery, opto, RTC, SD, zasilacz, CAN) & 300--500\\
+HMI DWIN 7$''$ + LED + START/E-STOP & 300--500\\
+obudowa IP54 + przegrody + PCB + drobnica & 900--1700\\
+\midrule
+\textbf{Moduł A razem} & \textbf{3750--7050}\\
+\midrule
+\textbf{Szafa B v2 (rekuperacja)} & \\
+\midrule
+6$\times$ prostownik PFC 48 V (R4850G2, rynek wtórny) & 2100--3000\\
+-K11..-K14 + rozdział AC + okablowanie & 300--500\\
+szyna DC, -F13.x, -Q1, -KB, przewody 50--70 mm$^2$ & 800--1500\\
+bateria LiFePO4 48 V 10--14 kWh z BMS & 4000--6500\\
+szafa na kółkach, wentylatory strat, złącza (-X5, CAN), CWU: -K5 + grzałka -E13 & 900--1500\\
+falownik --- \textbf{W1} hybrydowy & 4000--7000\\
+falownik --- \textbf{W2} z używanego UPS & 500--1500\\
+falownik --- \textbf{W3} własny LF (BOM rozdz.~\ref{sec:diy}) & 1350--2490\\
+\midrule
+\textbf{Stacja razem (z W1)} & \textbf{$\sim$16850--27050}\\
+\textbf{Stacja razem (z W3)} & \textbf{$\sim$14200--22540}\\
+\textbf{Stacja razem (z W2)} & \textbf{$\sim$13350--21550}\\
+\bottomrule
+\end{longtable}
+Dla porównania: wariant grzałkowy v1 zamykał się w $\sim$6,3--11,6 tys. zł, ale energię testów
+tracił bezpowrotnie; różnica finansuje bufor 10--14 kWh o wartości użytkowej poza testami.
+
+\section{Rejestr ryzyk (scalony)}
+\textbf{R1--R8 (v1, w mocy):} praca PM701E na odczepie; mechanika serw; dostępność czujnika AC/DC;
+cieplne (teraz zredukowane do strat); bezpieczeństwo generatora upływu; wzorcowanie; zgodność
+formalna (IEC 61010/61851, SEP); spójność CP$\leftrightarrow$pobór.
+\begin{enumerate}[label=\textbf{R\arabic*.},start=9]
+\item Protokół CAN R4850G2 nieoficjalny --- weryfikacja w etapie 0; fallback: Eltek Flatpack2.
+\item Dynamika prostowników przy skokach zadania (rampy; test z DUT).
+\item Koordynacja SOC/BMS podczas soak (start $\le$60\%; zrzut CWU gwarantowany).
+\item Formalności oddawania energii --- W1 wymaga zgłoszenia mikroinstalacji; W2/W3 (wyspa) nie.
+\item Duże prądy DC przy 48 V (przekroje, momenty, ochrona zwarciowa baterii).
+\item \textbf{(nowe)} Jakość własnego falownika W3: THD/stabilność pod odbiory elektroniczne ---
+procedura testowa rozdz.~\ref{sec:diy}; do czasu zaliczenia testów wyspa zasila tylko odbiory
+niekrytyczne.
+\item \textbf{(nowe)} Błędne wykonanie punktu N--PE/RCD wyspy --- odbiór przez osobę z uprawnieniami,
+pomiar RCD wyspy UT595 przed oddaniem do użytku.
+\end{enumerate}
+
+\section{Etapy realizacji}
+\begin{description}[style=nextline]
+\item[Etap 0 --- prototyp weryfikacyjny.] Jak v1 (serwa na PM701E, tor CP, próbka CDSR, R1--R3)
++ \textbf{1 szt. R4850G2 ze sterowaniem CAN z ESP32} (R9/R10) + \textbf{prototyp W3 małej mocy}
+(EGS002 + 4 MOSFET-y + trafo 300 VA --- nauka na 500 W zanim powstanie 3--5 kW) + mały pakiet LFP.
+\item[Etap 1 --- stacja użyteczna 1F.] Moduł A kompletny + szafa B: 3$\times$PR (L1), -GB1,
+falownik W2/W3, wyspa warsztatowa, zrzut CWU. Pełny test P/B do 32 A z odzyskiem energii.
+\item[Etap 2 --- rozbudowa 3F.] Pary PR na L2/L3 + -K14, testy asymetrii, aktuatory przycisków
+PM701E, ewentualnie upgrade falownika do W1 (ESS) --- decyzja Z12.
+\item[Etap 3 --- rozszerzenia.] Front-endy przesiewowe (izolacja/ciągłość/Zs/RCD własne), SZR
+wyspy, wzorcowanie bloków własnych, pełna automatyzacja protokołu.
+\end{description}
+
+\section{Punkty do zatwierdzenia (skonsolidowane)}
+\begin{longtable}{@{}p{0.08\textwidth}p{0.62\textwidth}p{0.22\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Decyzja} & \textbf{Status}\\
+\midrule
+Z1--Z6 & topologia odczepu, dwa moduły, gniazda, strategia pomiarów, etapy, budżet v1 & zatwierdzone (v1)\\
+Z7 & moduł B jako rekuperacyjny (PFC + LiFePO4 + falownik) & rekomendacja: tak (v2)\\
+Z8 & parametry: bateria 10--14 kWh, 6$\times$PR, falownik 5--12 kW & do akceptacji\\
+Z9 & tryb pracy z siecią: bez eksportu (start) vs ESS & rekomendacja: bez eksportu\\
+Z10 & budżet delta rekuperacji & do akceptacji\\
+\textbf{Z11} & \textbf{wariant falownika: W1 / W2 / W3} & \textbf{rekomendacja: W3 lub W2 na start}\\
+\textbf{Z12} & praca wyłącznie wyspowa do czasu ew. upgrade'u W1 (wtedy zgłoszenie mikroinstalacji) & \textbf{rekomendacja: tak}\\
+\bottomrule
+\end{longtable}
+
+\section{Źródła (uzupełnienie do v1)}
+\begin{itemize}\small
+\item EG8010 --- nota katalogowa (EGmicro): pure sine wave inverter ASIC; moduł EGS002.
+\item PN-EN 50549-1 / NC RfG --- wymagania dla wytwórczych jednostek przyłączanych równolegle do sieci.
+\item IEC 62955 --- RDC-DD 6 mA DC; IEC 61851-1 --- interfejs CP/PP (jak v1).
+\item Huawei R4850G2 / Eltek Flatpack2 HE --- prostowniki telekom 48 V ze sterowaniem CAN.
+\item PN-HD 60364-4-41/-5-55 --- ochrona przeciwporażeniowa, źródła zastępcze i wyspowe (punkt N--PE, RCD).
+\end{itemize}
+
+\end{document}

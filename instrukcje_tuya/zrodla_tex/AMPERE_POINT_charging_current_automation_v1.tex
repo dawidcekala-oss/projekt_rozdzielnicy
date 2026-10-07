@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+\newcommand{\DOCFOOT}{AMPERE POINT — setting the charging current automatically}
+\newcommand{\DOCAUTH}{by Dawid Cekała}
+\input{preambula.tex}
+\graphicspath{{screeny/en/}}
+
+\begin{document}
+
+\apheader{Setting the charging current automatically}{A short guide for the Tuya app\\ Rule: whenever charging starts,\\ set the current to the value you want}
+
+{\large\color{apink} If your charger begins every session at 6~A instead of the value you selected, this guide solves it. You will create one automation that watches the charger and sets your chosen current the moment charging starts. It takes about two minutes and requires no changes to your existing schedule.}
+
+\apinfo{What this rule does}{Charging will still start at 6~A, but within a few seconds the automation raises the current to the value you choose — 13~A in this example. Your schedule stays exactly as it is; the automation simply corrects the current afterwards.}
+
+\vspace{0.3cm}
+
+\krok{1}{Open the Automation tab}{In the app, go to the \emph{Smart} tab at the bottom, then \emph{Automation} at the top. Press \emph{Create}, or the + button in the top right corner if you already have other rules.}{en01.jpg}
+\hfill
+\krok{2}{Choose the trigger type}{Select \emph{When device status changes}. This makes the rule watch the charger, rather than fire at a fixed hour.}{en02.jpg}
+
+\clearpage
+\apheader{Setting the charging current automatically}{continued — defining the condition}
+
+\krok{3}{Choose how to pick the device}{Press \emph{Select a single device}.}{en03.jpg}
+\hfill
+\krok{4}{Pick your charger}{Select your charger from the list of devices in your account.}{en04.jpg}
+
+\vspace{0.42cm}
+
+\krok{5}{Choose the parameter to watch}{A list of the charger's parameters appears. Select \emph{Work State}.}{en05.jpg}
+\hfill
+\krok{6}{Select the state}{From the list of states, choose \emph{Charger Charging} and confirm. The rule will now fire the moment the charger begins charging.}{en06.jpg}
+
+\clearpage
+\apheader{Setting the charging current automatically}{continued — defining the action}
+
+\krok{7}{The condition is saved}{You return to the scene screen. The condition is visible under \emph{If}. Now press the + button next to \emph{Then} to add the action.}{en07.jpg}
+\hfill
+\krok{8}{Choose the device again}{Press \emph{Select a single device} and pick the same charger.}{en08.jpg}
+
+\vspace{0.42cm}
+
+\krok{9}{Choose what to change}{From the list, select \emph{Charge Current Set}. This rule is only about the current — leave the charger's own switch and work mode alone, so that your schedule keeps controlling when charging starts.}{en09.jpg}
+\hfill
+\krok{10}{Set your current}{Use the slider or type the value directly. Set the current you normally want to charge with — 13~A in this example — and confirm.}{en10.jpg}
+
+\clearpage
+\apheader{Setting the charging current automatically}{continued — the city setting}
+
+\apwarnbox{The app will not save the rule without a city}{Before you can save, the app needs to know your location. It uses it to calculate local time. If you have never set it, the \emph{Confirm} button stays greyed out and nothing happens when you press it. The next three steps take care of this once — later rules will not ask again.}
+
+\vspace{0.3cm}
+
+\krok{11}{Open Precondition}{On the scene screen, press \emph{Precondition}, then \emph{Effective Period}.}{en12.jpg}
+\hfill
+\krok{12}{Check the city}{Leave the period set to \emph{All day}. At the bottom you will see \emph{City}. If it says \emph{Not Set} in red, press it — without this the \emph{Confirm} button will not work.}{en13.jpg}
+
+\clearpage
+\apheader{Setting the charging current automatically}{finishing — saving the rule}
+
+\vspace{0.2cm}
+
+\krok{13}{Select your location}{Zoom to your area on the map and confirm. Any nearby point is fine — the app only needs it for the local time zone.}{en14.jpg}
+\hfill
+\krok{14}{Confirm and return}{Press \emph{Confirm}, then \emph{Done}. You return to the scene screen with \emph{Precondition} showing \emph{All day}.}{en11.jpg}
+
+\vspace{0.42cm}
+
+
+
+\vspace{0.2cm}
+
+{\fontspec{DejaVu Sans}\bfseries\color{apnavy}\large Check the finished rule before saving}
+
+\vspace{0.2cm}
+The rule should read:
+
+\vspace{0.15cm}
+\textbf{If} — Work State : Charger Charging \qquad \textbf{Then} — Charge Current Set : 13\,A \qquad \textbf{Precondition} — All day
+
+\vspace{0.25cm}
+Press \textbf{Save} and make sure the rule appears in the list with its toggle switched on.
+
+\vspace{0.5cm}
+
+\apokbox{That is all}{From now on, every charging session will begin at 6~A and switch to your chosen current within a few seconds. Nothing else needs to be changed — your existing schedule keeps working as before.}
+
+\apwarnbox{One thing to avoid}{Do not add \emph{Switch : ON} as a second action. The rule fires when charging has already begun, so switching the charger on again changes nothing — and if you also have a rule that stops charging during certain hours, the two will work against each other. If you want different currents on different days, create several such rules and switch them on or off as needed.}
+
+\vspace{0.25cm}
+{\color{apline}\rule{\textwidth}{0.8pt}}\\[0.15cm]
+{\footnotesize\color{apmuted} If anything is unclear, please write to us: hello@amperepoint.com}
+
+\end{document}

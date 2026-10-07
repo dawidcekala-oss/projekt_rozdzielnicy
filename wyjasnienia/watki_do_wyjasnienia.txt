@@ -1,0 +1,39 @@
+sęk w macierzy
+250 v - rezystancja miedzy pinami
+to w miarę proste
+główny problem to sprawdzenia jak będą działały przekaźniki macierzowo
+
+
+wylaczone falowniki, auto niepodlaczone - blad od razu overvoltage
+
+później podlaczeni, naladowanie auta i blad cp
+
+Podejrzenia:
+asymetria(np. przetarty kabel)
+
+falowniki - piki w sieci??
+
+samochód dostosował się d tego co falownik podawał
+
+problemy z tuya ~ konflikty w sieci 24 - aktualizowanie/reintegrowanie tuya
+
+wymiana tokenów tuya
+
+dużo sprzętów smart home 24 - najczęstszy problem to konflikty w sieci 24
+
+Nowe ładowarki:
+
+-zabezpieczenia emc - w nowych ładowarkach w rcd
+
+-dużo zmian w firmware
+
+\\\\
+
+auto 3 fazowe może ładowa z 2 faz ale to zależy od auta, nie musi na to pozwolić
+
+
+
+
+
+
+ 

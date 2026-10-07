@@ -1,0 +1,100 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "TuyaExtend AmperePoint",
+        "description": "Wybierz model AmperePoint i zmapuj encje zrodlowe z natywnej integracji Tuya.",
+        "data": {
+          "model": "Model AmperePoint",
+          "name": "Nazwa wyswietlana",
+          "source_status": "Encja statusu Tuya",
+          "source_connected": "Encja podlaczenia auta",
+          "source_power": "Encja mocy",
+          "source_session_energy": "Encja energii sesji",
+          "source_total_energy": "Encja energii calkowitej",
+          "session_energy_mode": "Tryb liczenia energii sesji",
+          "source_current_limit": "Encja limitu pradu",
+          "source_charge_switch": "Encja start/stop",
+          "source_error": "Encja bledu",
+          "tariff_value": "Stawka energii",
+          "tariff_entity": "Encja dynamicznej stawki",
+          "currency": "Waluta",
+          "complete_power_threshold_kw": "Prog wykrycia konca ladowania",
+          "complete_idle_minutes": "Minuty bezczynnosci do konca ladowania",
+          "source_voltage_l1": "Encja napiecia L1",
+          "source_voltage_l2": "Encja napiecia L2",
+          "source_voltage_l3": "Encja napiecia L3",
+          "source_current_l1": "Encja pradu L1",
+          "source_current_l2": "Encja pradu L2",
+          "source_current_l3": "Encja pradu L3"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "To zrodlo AmperePoint jest juz skonfigurowane."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opcje TuyaExtend AmperePoint",
+        "description": "Zmien model, mapowanie encji zrodlowych i ustawienia taryfy.",
+        "data": {
+          "model": "Model AmperePoint",
+          "name": "Nazwa wyswietlana",
+          "source_status": "Encja statusu Tuya",
+          "source_connected": "Encja podlaczenia auta",
+          "source_power": "Encja mocy",
+          "source_session_energy": "Encja energii sesji",
+          "source_total_energy": "Encja energii calkowitej",
+          "session_energy_mode": "Tryb liczenia energii sesji",
+          "source_current_limit": "Encja limitu pradu",
+          "source_charge_switch": "Encja start/stop",
+          "source_error": "Encja bledu",
+          "tariff_value": "Stawka energii",
+          "tariff_entity": "Encja dynamicznej stawki",
+          "currency": "Waluta",
+          "complete_power_threshold_kw": "Prog wykrycia konca ladowania",
+          "complete_idle_minutes": "Minuty bezczynnosci do konca ladowania",
+          "source_voltage_l1": "Encja napiecia L1",
+          "source_voltage_l2": "Encja napiecia L2",
+          "source_voltage_l3": "Encja napiecia L3",
+          "source_current_l1": "Encja pradu L1",
+          "source_current_l2": "Encja pradu L2",
+          "source_current_l3": "Encja pradu L3"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "status": { "name": "Status" },
+      "power": { "name": "Moc" },
+      "session_energy": { "name": "Energia sesji" },
+      "total_energy": { "name": "Energia calkowita" },
+      "session_cost": { "name": "Koszt sesji" },
+      "tariff": { "name": "Taryfa" },
+      "phase_count": { "name": "Liczba faz" },
+      "error": { "name": "Blad" },
+      "voltage_l1": { "name": "Napiecie L1" },
+      "voltage_l2": { "name": "Napiecie L2" },
+      "voltage_l3": { "name": "Napiecie L3" },
+      "current_l1": { "name": "Prad L1" },
+      "current_l2": { "name": "Prad L2" },
+      "current_l3": { "name": "Prad L3" }
+    },
+    "binary_sensor": {
+      "vehicle_connected": { "name": "Auto podlaczone" },
+      "charging_complete": { "name": "Ladowanie zakonczone" }
+    },
+    "number": {
+      "current_limit": { "name": "Limit pradu" }
+    },
+    "select": {
+      "model": { "name": "Model" }
+    },
+    "switch": {
+      "charging": { "name": "Ladowanie" }
+    }
+  }
+}

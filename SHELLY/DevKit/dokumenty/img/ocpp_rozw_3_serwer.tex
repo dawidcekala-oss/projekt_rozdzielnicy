@@ -1,0 +1,67 @@
+% !TEX program = xelatex
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\usepackage{xcolor}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc,shapes.geometric}
+\definecolor{tuya}{HTML}{B45309}
+\definecolor{shelly}{HTML}{0E7C86}
+\definecolor{ocpp}{HTML}{15803D}
+\definecolor{inny}{HTML}{1D4ED8}
+\definecolor{szary}{HTML}{6B7280}
+\definecolor{nasz}{HTML}{7C3AED}
+\tikzset{
+  box/.style={draw=#1, fill=#1!9, rounded corners=3pt, line width=0.8pt, align=center, font=\small, inner sep=4pt, minimum height=1.25cm, minimum width=2.9cm},
+  grp/.style={draw=#1, dashed, rounded corners=7pt, line width=0.8pt, inner sep=7pt},
+  glab/.style={font=\scriptsize\bfseries, text=#1, anchor=south west, inner sep=2pt},
+  lang/.style={font=\scriptsize, text=#1, fill=white, inner sep=1.5pt, align=center},
+  link/.style={{Stealth[length=2.4mm]}-{Stealth[length=2.4mm]}, line width=1.3pt, #1},
+  note/.style={font=\scriptsize, text=szary, align=left},
+}
+\newcommand{\legenda}[2]{%
+  \node[anchor=north west, font=\scriptsize, align=left] at (#1,#2) {%
+  {\color{tuya}\rule[0.5ex]{0.7cm}{1.3pt}}\ język Tuya\quad
+  {\color{shelly}\rule[0.5ex]{0.7cm}{1.3pt}}\ język Shelly\quad
+  {\color{ocpp}\rule[0.5ex]{0.7cm}{1.3pt}}\ OCPP\quad
+  {\color{szary}\rule[0.5ex]{0.7cm}{0.8pt}}\ niezależne od OCPP\quad
+  {\color{nasz}\rule{0.32cm}{0.32cm}}\ tu działa tłumacz OCPP};}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[box=tuya] (mcu1) at (0,2.2) {\textbf{Sterownik Q11}\\mikrokontroler\\ładuje auto};
+\node[box=shelly] (mod1) at (3.6,2.2) {\textbf{Moduł X1}\\system Shelly\\+ nasz skrypt};
+\draw[link=tuya] (mcu1) -- node[lang=tuya, above=1pt] {Tuya} node[lang=tuya, below=1pt] {przewód} (mod1);
+\begin{scope}[on background layer]
+\node[grp=tuya, fit=(mcu1)(mod1)] (q1) {};
+\end{scope}
+\node[glab=tuya] at (q1.north west) {Q11 nr 1, u różnych klientów};
+
+\node[box=tuya] (mcu2) at (0,0) {\textbf{Sterownik Q11}\\mikrokontroler\\ładuje auto};
+\node[box=shelly] (mod2) at (3.6,0) {\textbf{Moduł X1}\\system Shelly\\+ nasz skrypt};
+\draw[link=tuya] (mcu2) -- node[lang=tuya, above=1pt] {Tuya} node[lang=tuya, below=1pt] {przewód} (mod2);
+\begin{scope}[on background layer]
+\node[grp=tuya, fit=(mcu2)(mod2)] (q2) {};
+\end{scope}
+\node[glab=tuya] at (q2.north west) {Q11 nr 2, u różnych klientów};
+
+\node[box=tuya] (mcu3) at (0,-2.2) {\textbf{Sterownik Q11}\\mikrokontroler\\ładuje auto};
+\node[box=shelly] (mod3) at (3.6,-2.2) {\textbf{Moduł X1}\\system Shelly\\+ nasz skrypt};
+\draw[link=tuya] (mcu3) -- node[lang=tuya, above=1pt] {Tuya} node[lang=tuya, below=1pt] {przewód} (mod3);
+\begin{scope}[on background layer]
+\node[grp=tuya, fit=(mcu3)(mod3)] (q3) {};
+\end{scope}
+\node[glab=tuya] at (q3.north west) {Q11 nr 3, u różnych klientów};
+
+\node[box=nasz, minimum width=3.6cm, minimum height=2.6cm] (srv) at (9.8,0) {\textbf{Serwer AmperePoint}\\w internecie\\[3pt]bramka OCPP\\dla wszystkich ładowarek\\+ historia sesji};
+\foreach \i in {1,2,3} {\draw[link=shelly] (mod\i.east) -- (srv.west);}
+\node[lang=shelly] at (6.9,1.55) {Shelly, wychodzący\\WebSocket, internet};
+\node[box=ocpp, minimum width=3.0cm] (op1) at (14.6,1.3) {\textbf{Operator A}\\CSMS};
+\node[box=ocpp, minimum width=3.0cm] (op2) at (14.6,-1.3) {\textbf{Operator B}\\CSMS};
+\draw[link=ocpp] (srv) -- node[lang=ocpp, above=2pt, sloped] {OCPP} (op1);
+\draw[link=ocpp] (srv) -- node[lang=ocpp, below=2pt, sloped] {OCPP} (op2);
+\node[note, anchor=north west] at (-1.5,-3.5) {Moduł łączy się sam, więc router klienta nie przeszkadza. W X1 nic się nie zmienia; tłumacz działa na naszym serwerze.};
+\legenda{-1.5}{-4.1}
+
+\end{tikzpicture}
+\end{document}

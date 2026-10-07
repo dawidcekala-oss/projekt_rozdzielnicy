@@ -1,0 +1,130 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\newfontfamily\cjkfont{Microsoft YaHei}[Scale=0.9]
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small AMPERE POINT — ustalenia z testów · Q11 z modułem Shelly · v1 · 2026-09-30}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Ustalenia z testów Q11 z modułem Shelly X\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+
+\emph{Stan na 30 września 2026, po poziomie B (bez chmury). Podstawa pełnego zestawienia poziomów B, C i D · AMPERE POINT · oprac. Dawid Cekała}
+
+
+Każde ustalenie ma źródło: numer testu (dokument 01) albo numer w rejestrze usterek (S-xx, \texttt{DevKit\textbackslash{}REJESTR\_\allowbreak{}USTEREK.\allowbreak{}pdf}). \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} sprawdzone na module, \leavevmode{\symbolfont\color{apamber}\textbf{◐}} częściowo, \leavevmode{\symbolfont\color{apred}\textbf{✘}} nie działa.
+
+
+\section*{Sterowanie bez chmury}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{1.12cm}>{\raggedright\arraybackslash}p{9.24cm}>{\raggedright\arraybackslash}p{1.47cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Droga} & \textbf{Stan} & \textbf{Co ustalono} & \textbf{Źródło} \\
+\midrule\endhead
+\bottomrule\endfoot
+Strona WWW modułu & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Działa z laptopa i telefonu, bez hasła. Pokazuje tylko 6 pól szablonu, fazy jako „N/A A” & B2, S-10, S-11 \\
+Home Assistant & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} z łatką & Oficjalna integracja widzi tylko fazy. Z łatką 33 encje, sterowanie limitem, włącznikiem, trybem, oknem i limitem energii działa lokalnie & B3, S-33 \\
+HTTP i WebSocket (API) & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Odczyt 40–150 ms, zapis dociera do sterownika & B2, B7 \\
+MQTT przez broker w sieci lokalnej & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Polecenia i odpowiedzi przez broker na laptopie, także bez internetu & C4 \\
+MQTT przez broker w internecie & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Publiczny broker testowy: moduł połączony stabilnie, polecenie i odpowiedź w około 1,1 s, sterownik potwierdza & B13 (01.10) \\
+OCPP przez nasz most & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Serwer OCPP w sieci lokalnej, także bez internetu: rejestracja, stan, pomiary, limit prądu, pełna transakcja. Serwera OCPP w internecie nie testowaliśmy & C4c (25.09, 01.10) \\
+Wychodzący WebSocket do naszego serwera & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Moduł sam się łączy, wykonuje polecenia serwera, wraca po zaniku serwera najpóźniej po około minucie. Podstawa mostu OCPP bez otwierania portów u klienta & B8 \\
+Harmonogram w module & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Zadania odpalają co do sekundy, przetrwały restart & B4 \\
+Webhooki & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Zmiana stanu ładowarki, limitu i włącznika sama wywołuje nasz program w około 1 s, także z warunkiem (np. tylko start ładowania); przetrwały restart & B5 \\
+Kanał UDP & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Działa, ale bez hasła; wyłączony & B12, S-42 \\
+Aplikacja Shelly & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & Steruje wyłącznie przez chmurę; w sieci lokalnej tylko sprawdza moduł. Z chmurą włączoną na 2 min działała od razu & B1, S-30 \\
+\end{longtable}
+
+\section*{Moduł Shelly}
+
+\begin{itemize}
+\item \textbf{Granic pilnuje moduł:} limit spoza 6–16 A odrzucony, zanim cokolwiek pójdzie do sterownika. Kroku nie pilnuje (10,5 A przechodzi, skrypt zaokrągla) (B7).
+\item \textbf{Połączenia naraz:} 6 ponad HA, monitor, stronę i połączenie wychodzące. Przy komplecie moduł zamknął połączenie Home Assistant (B9, S-40).
+\item \textbf{Pamięć (dokument 04):} po zaniku zasilania wraca wszystko, co moduł zapisuje: ustawienia, pamięć klucz-wartość, harmonogram, webhooki, usługa, definicje pól, wartości pól zapamiętywanych. Zapis wartości pól najwyżej raz na około 3 s, więc przepadają zmiany z ostatnich około 3 s; częsta zmiana limitu zużywa pamięć (S-44). Pozostałe pola i stan skryptu (czas, energia sesji) giną.
+\item \textbf{Zegar po zaniku:} do czasu synchronizacji moduł wykonuje harmonogram według zapamiętanej, nieaktualnej godziny (S-45).
+\item \textbf{Kopia konfiguracji} niezaszyfrowana, z hasłem Wi-Fi i tokenem chmury, bez plików usługi (B10, S-41).
+\item \textbf{Ponowienia zapisu} po 0,3 s potrafią przestawić kolejność poleceń do sterownika: 13, 12, 13, 13, 12 A (S-13).
+\item \textbf{Stan sieci dla sterownika:} moduł zgłasza „połączony z chmurą”, choć chmura wyłączona; ikona na wyświetlaczu miga co kilkadziesiąt sekund (S-39).
+\item \textbf{Fałszywy start ładowania po restarcie modułu:} webhook „start ładowania” przychodzi po każdym restarcie, choć ładowanie trwa (S-50).
+\item \textbf{Czas:} bez baterii zegara. Serwer czasu na laptopie działa, także bez internetu (C4 przygotowanie). Po starcie sterownik dostaje godzinę po około 24 s.
+\item \textbf{Log:} log UDP pokazuje start od 23. sekundy; pierwszych sekund nie widać przez sieć (S-31).
+\item \textbf{Powitanie ze sterownikiem może utknąć} po restarcie modułu (ponad 3 min w stanie „Fetching Config”, bez danych i sterowania); pomógł kolejny restart (S-46).
+\end{itemize}
+
+\section*{Sterownik Q11}
+
+\begin{itemize}
+\item \textbf{Tryb wynika z ostatnio ustawionego parametru:} limit energii > 0 przełącza na „do limitu energii”, okno godzin na „harmonogram”, „od razu” zeruje limit energii; „do limitu energii” przy limicie 0 odrzucony (S-21).
+\item \textbf{Okno o równych godzinach odrzucane} (0–0, 1–1) (S-22).
+\item \textbf{Odpowiedź na zapis:} po 0,3–3 s, najpierw zwykle poprzednia wartość; potwierdzenie nowej przychodzi osobno albo wcale. Brak potwierdzenia nie znaczy odmowy: tryb „od razu” przyjęty bez odpowiedzi (S-23, S-38).
+\item \textbf{Po zapisie limitu energii} kilkusekundowy zalew meldunków (około 10 na sekundę) i chwilowy brak odpowiedzi na sygnał życia (S-20).
+\item \textbf{Po starcie} odpowiada na odpytanie wszystkich punktów po 21–30 s. \textbf{Po zaniku zasilania pamięta limit prądu, a traci ustawienie jednej sesji na czas: okno godzin z trybem „harmonogram” oraz opóźnienie i czas trwania z menu} (wraca „od razu”) (S-47). To nie jest harmonogram Tuya — ten ustawia się w aplikacji. Opóźnienie ustawiane w stanie C pokazuje się z innymi wartościami, także z modułem Tuya: usterka sterownika (S-49). Zgłasza wtedy wersję „V1” (S-27). W menu ładowarki jest opóźnienie i czas trwania ładowania; moduł ich nie widzi — sterownik ich nie zgłasza ani sam, ani przy odpytaniu. Widać tylko skutek: stan „czeka” (S-48).
+\item \textbf{Restart modułu nie przerywa ładowania} (5 restartów przy ładowaniu, C9). Stanu „podłączone” nie zgłasza: z „wolna” od razu „ładuje”.
+\item \textbf{Wyłączenia ładowania nie przyjmuje} od 29.09 13:44 (3 próby, z aplikacji i przez API); o 12:03 przyjmował; przyczyna nieustalona. Włącznik sam przechodzi na „wł.” po włączeniu zasilania i na „wył.” po zakończeniu sesji (S-24).
+\end{itemize}
+
+\section*{Nasz skrypt w module}
+
+\begin{itemize}
+\item Wersja \textbf{v4.3.1} (usługa 13109-3815): 15 pól, 16 punktów danych; do sterownika tylko zmiany z zewnątrz, po 1 s ciszy; znane odrzucenia nie idą na łącze. Atrapa 51/51, próby na żywo \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} (S-02, S-03, S-04, S-08).
+\item \textbf{Otwarte:} pole może pokazywać co innego niż sterownik, bo moduł nie przekazuje skryptowi odpowiedzi równej zapamiętanej wartości (S-01). Propozycja: polecenie diagnostyczne w skrypcie, które pokaże, co moduł wie o punktach sterownika.
+\end{itemize}
+
+\section*{Bezpieczeństwo}
+
+\begin{itemize}
+\item Bez hasła każdy w sieci steruje ładowarką przez stronę, HTTP, WebSocket i MQTT (S-18). Test hasła (B11) czeka na Dawida.
+\item Kopia konfiguracji zawiera hasło Wi-Fi jawnie (S-41).
+\item \textbf{Punkt dostępowy modułu nie włączy się bez hasła}, gdy moduł ma skonfigurowaną sieć (30.09: \texttt{WiFi.\allowbreak{}SetConfig} z \texttt{ap.enable} i \texttt{is\_open} {\symbolfont→} błąd „pass: should not be empty”). Otwarty był tylko przed konfiguracją Wi-Fi. Hasło wpisuje Dawid; test przez telefon.
+\item „Development Wi-Fi” w portalu zapisuje hasło w tokenie produktu (S-17); wgrywamy samą usługę.
+\end{itemize}
+
+\section*{Co zostało}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{6.57cm}>{\raggedright\arraybackslash}p{6.69cm}>{\raggedright\arraybackslash}p{2.02cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Co} & \textbf{Kto} & \textbf{Dokument} \\
+\midrule\endhead
+\bottomrule\endfoot
+B5b webhook przy przejściach stanu & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} zrobiony 30.09 & 01 \\
+B11 hasło & Dawid (wpisanie hasła) & 01 \\
+Test pamięci modułu & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} zrobiony 30.09 & 04 \\
+Poziom C: bez internetu & Dawid (reguła w routerze albo kabel) & 02 \\
+Poziom D: bez Wi-Fi & Dawid & 03 \\
+Rozjazd pola i sterownika & laptop, po decyzji o poleceniu diagnostycznym & S-01 \\
+Pełne zestawienie B, C, D & po testach C i D & ten dokument jako podstawa \\
+\end{longtable}
+
+\end{document}

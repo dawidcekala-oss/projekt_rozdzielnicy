@@ -1,0 +1,652 @@
+% !TeX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+% Polski bez babel/polyglossia (brak texlive-lang-polish w środowisku kompilacji):
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\renewcommand{\figurename}{Rysunek}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\definecolor{granat}{RGB}{12,35,88}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=granat,urlcolor=granat]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries\sffamily\color{granat}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily\color{granat}}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\sffamily\color{granat!80!black}}{\thesubsubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcommand{\ohm}{$\Omega$}
+\newcommand{\popr}[1]{\textbf{\color{granat}[POPRAWKA v3 --- #1]}}
+
+\title{\textbf{\color{granat}AMPERE POINT --- custom device}\\[4pt]
+\large Objaśnienie schematów elektrycznych (arkusze E1--E3)\\
+z przeglądem poprawności i wykazem poprawek wprowadzonych w wersji 3\\[2pt]
+\normalsize wersja 1}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{6 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.6em}
+
+\noindent\textbf{Status dokumentu:} objaśnienie techniczne do schematu elektrycznego custom device
+(\texttt{schemat\_elektryczny\_v1}, \texttt{v2\_EPLAN} z 2026-07-03 oraz \texttt{v3\_EPLAN} z 2026-07-06
+--- wersja 3 powstała razem z niniejszym dokumentem i wprowadza poprawki opisane w rozdz.~\ref{sec:poprawki}).
+Dokument pisany dla osoby z podstawami elektrotechniki; wyjaśnia \emph{każdy} aparat na schemacie:
+co to jest, po co jest, jak działa i jak jest podłączony --- ze szczególnym naciskiem na wszystkie
+urządzenia dołączone do mikrokontrolera (rozdz.~\ref{sec:mcu}).
+
+\tableofcontents
+
+% =====================================================================
+\section{Czym jest ten schemat i skąd się wziął}
+\label{sec:wstep}
+
+Custom device to zautomatyzowana stacja testowa ładowarek AC (EVSE), która wobec badanej ładowarki
+\textbf{udaje samochód elektryczny}: symuluje stany złącza wg IEC~61851-1, pobiera realny prąd
+testowy (do 32~A na fazę) i rejestruje wyniki. Umożliwia wykonanie pięciu obowiązkowych pomiarów
+z ,,Przewodnika w zakresie wykonywania pomiarów elektrycznych stacji ładowania'' (Warszawa 2024)
+oraz prób funkcjonalnych pod obciążeniem --- bez użycia auta testowego.
+
+Schemat elektryczny jest bezpośrednim przełożeniem zatwierdzonej koncepcji
+(\texttt{AMPERE\_POINT\_custom\_device\_koncepcja\_v1.pdf}, punkty Z1--Z6) i schematów ideowych v1.
+Kluczowe decyzje, które ukształtowały topologię:
+
+\begin{itemize}
+\item \textbf{Z1 --- przelot mocy z odczepem sterującym.} Prąd obciążenia \emph{nie płynie} przez
+tester PM701E (adaptery tej klasy nie są projektowane na ciągłe 32~A; porównywalny EVSE-200
+dopuszcza $\sim$10~A). Urządzenie ma własne gniazdo pojazdowe Type~2 i własny tor mocy 6~mm$^2$,
+a PM701E wisi na krótkim odczepie i steruje wyłącznie sygnałami.
+\item \textbf{Z2 --- architektura dwumodułowa.} Moduł~A (sterowanie + pomiary, rozdzielnica IP54)
+i moduł~B (obciążenie --- grzałki z wentylatorami) połączone przewodem 5$\times$6~mm$^2$ z wtykiem
+CEE 32~A~5p oraz osobnym przewodem sterowniczym (złącze -X5).
+\item \textbf{Bezpieczeństwo sprzętowe, nie programowe.} Załączenie mocy warunkuje szeregowy
+łańcuch styków 24~V (arkusz E2), którego firmware nie może zmostkować --- mikrokontroler może
+jedynie \emph{zezwalać} i \emph{rozłączać}.
+\end{itemize}
+
+Schemat składa się z trzech arkuszy, które odpowiadają trzem warstwom urządzenia:
+\textbf{E1} --- tor mocy (prąd testowy), \textbf{E2} --- łańcuch bezpieczeństwa (zezwolenie na moc),
+\textbf{E3} --- sterowanie, pomiary i moduł obciążenia (mózg i mięśnie).
+
+% =====================================================================
+\section{Jak czytać schemat --- konwencje}
+\label{sec:konwencje}
+
+Wersja 2/3 schematu odwzorowuje konwencję dokumentacji EPLAN (symbole IEC~60617):
+
+\begin{itemize}
+\item \textbf{Rama arkusza} ma siatkę odniesień: kolumny 1--10 i wiersze A--F. Pozycję aparatu
+opisuje się jako \emph{/arkusz.kolumna}, np. \texttt{/E2.3} = arkusz E2, kolumna 3.
+\item \textbf{Odsyłacze krzyżowe}: przy styku podany jest adres cewki, która nim porusza; pod cewką
+znajduje się \emph{lustro styków} --- spis wszystkich styków danego aparatu z adresami, gdzie
+zostały narysowane. Dzięki temu aparat rozrysowany na kilku arkuszach (np. stycznik -K1: cewka na
+E2, styki główne na E1) pozostaje jednoznaczny.
+\item \textbf{Oznaczenia referencyjne} (litera wg IEC~81346): \texttt{-X}~złącza/zaciski,
+\texttt{-Q}~łączniki mocy, \texttt{-F}~zabezpieczenia, \texttt{-K}~styczniki/przekaźniki,
+\texttt{-B}~czujniki, \texttt{-T}~przekładniki, \texttt{-E}~grzałki, \texttt{-M}~silniki/serwa/wentylatory,
+\texttt{-A}~zespoły (płyta logiki, moduły), \texttt{-G}~zasilacze, \texttt{-P}~HMI/wskaźniki,
+\texttt{-S}~łączniki sterownicze, \texttt{-U}~układy scalone/przetworniki, \texttt{-Y}~elektromagnesy.
+\item \textbf{Numeracja zacisków}: tory główne łączników 1-2, 3-4, 5-6, 7-8; styki pomocnicze
+zwierne x3-x4 (np. 13-14, 23-24), rozwierne x1-x2 (np. 11-12, 21-22); cewka A1-A2.
+\emph{Uwaga: zaciski cewki A1/A2 to co innego niż oznaczenia urządzeń -A1 (płyta ESP32) i -A2
+(watchdog) --- zbieżność jest przypadkowa i wynika z normy.}
+\item \textbf{Stany aparatów} rysowane są zawsze w stanie beznapięciowym/spoczynkowym
+(cewki niewzbudzone, przyciski niewciśnięte).
+\end{itemize}
+
+% =====================================================================
+\section{Arkusz E1 --- tor mocy 3F}
+\label{sec:e1}
+
+Tor mocy prowadzi energię z badanej ładowarki (DUT) do modułu obciążenia:
+\[
+\text{-X1 (Type 2)} \;\to\; \text{-Q0} \;\to\; \text{-F1..3} \;\to\; \text{-B1} \;\to\;
+\text{-T1..3} \;\to\; \text{-K1} \;\to\; \text{-X2 (CEE)} \;\to\; \text{moduł B}
+\]
+z odczepem \textbf{-X3} do PM701E pobranym bezpośrednio przy gnieździe -X1.
+
+\subsection{-X1 --- gniazdo pojazdowe Type 2 32 A 3F}
+\textbf{Funkcja:} wejście urządzenia --- tu wpina się wtyk kabla badanej ładowarki, dokładnie tak,
+jak wpinałby się w gniazdo samochodu. \textbf{Styki:} L1, L2, L3, N, PE (tor mocy) oraz CP i PP
+(sygnałowe). \textbf{Działanie:} gniazdo jest stroną ,,pojazdową'' złącza wg IEC~62196 --- dzięki
+temu z punktu widzenia ładowarki urządzenie jest elektrycznie nieodróżnialne od auta. Wersja
+z \textbf{blokadą elektromagnesową -Y1} (rozdz.~\ref{sec:y1}) uniemożliwia wyciągnięcie wtyku
+w trakcie testu pod napięciem. Dla ładowarek z gniazdem (zamiast kabla) używa się przewodu
+Type~2--Type~2; dla Type~1 --- posiadanej przejściówki.
+
+\subsection{-X3 --- odczep sterujący do PM701E}
+\label{sec:x3}
+\textbf{Funkcja:} przenosi sygnały i zasilanie własne do testera PM701E, który jest ,,symulatorem
+stanów pojazdu'' całego układu. \textbf{Działanie:} PM701E swoimi pokrętłami (stan BB/C/A/B/D,
+prąd NC/13/20/32/63~A) ustawia rezystancje na linii CP zgodnie z IEC~61851-1 --- ładowarka
+,,widzi'' samochód w zadanym stanie. Pokrętłami fizycznie obracają serwa -M1/-M2 (rozdz.~\ref{sec:serwa}).
+Gniazda bananowe PM701E (L1/N/PE/L2/L3) pozostają dostępne z zewnątrz jako punkt przyłączenia
+miernika UT595 do pomiarów protokołowych --- elektrycznie to ten sam węzeł co magistrala mocy,
+bo odczep łączy się z nią wprost na zaciskach -X1. Para SIGNAL~OUTPUT (CP + masa) biegnie do toru
+akwizycji CP mikrokontrolera (rozdz.~\ref{sec:cp}).
+
+\textbf{Pobór prądu:} przez odczep płynie tylko pobór własny PM701E (pomijalny) i prądy pomiarowe
+przyrządów --- \emph{nie} prąd obciążenia. Dlatego wystarcza przewód 1,5~mm$^2$ o długości
+$\le$1~m.
+
+\popr{odczep 7-żyłowy} W v1/v2 odczep miał 5 żył (L1, N, PE, CP, PP) --- gniazda bananowe L2/L3
+PM701E byłyby martwe, wbrew koncepcji (rozdz.~B1: ,,przewód 5$\times$1,5~mm$^2$ + CP/PP'', czyli
+7 żył) i wbrew sensowi pomiarów 3-fazowych przy Q11. W v3 odczep prowadzi
+\textbf{L1, L2, L3, N, PE + CP, PP}.
+
+\subsection{-Q0 --- rozłącznik izolacyjny 4P 40 A}
+\textbf{Funkcja:} ręczne, widoczne odcięcie toru mocy do prac przyłączeniowych (wymiana modułu~B,
+prace na CEE). \textbf{Działanie:} rozłącznik (nie wyłącznik) --- służy do przerywania obwodu,
+rozłącza wszystkie 4 bieguny (L1/L2/L3/N) jednocześnie; nie ma zdolności wyłączania zwarć (od tego
+są -F1..3). \textbf{Ważne:} -Q0 leży \emph{za} odczepem -X3, więc \textbf{nie odłącza PM701E ani
+gniazd bananowych} --- przy wpiętym DUT w stanie~C pozostają one pod napięciem niezależnie od
+położenia -Q0 i stanu -K1. To cecha topologii (gniazda bananowe muszą widzieć napięcie do pomiarów
+Zs/RCD przy otwartym -K1), ale wymaga świadomości operatora. \popr{adnotacja} W v3 dodano
+adnotację ostrzegawczą na arkuszu i wymóg tabliczki przy gniazdach bananowych; pełną,
+sprzętową odpowiedź na ten problem daje też nowy przekaźnik -K4 (rozdz.~\ref{sec:k4}).
+
+\subsection{-F1, -F2, -F3 --- bezpieczniki topikowe gG 32 A}
+\textbf{Funkcja:} zabezpieczenie zwarciowe i przeciążeniowe toru mocy urządzenia.
+\textbf{Działanie:} wkładka topikowa gG (pełnozakresowa, ogólnego przeznaczenia) przepala się
+przy przeciążeniu/zwarciu. Po jednej na fazę; \textbf{przewód N celowo bez zabezpieczenia} ---
+przerwanie samego N pod obciążeniem 3F wywołałoby niebezpieczne przepięcia asymetryczne;
+N jest za to rozłączany razem z fazami (czterobiegunowe -Q0 i -K1). PE nie wolno przerywać niczym
+--- biegnie nieprzerwanie od -X1 do -X2.
+
+\subsection{-B1 --- czujnik prądu różnicowego AC/DC (CDSR, funkcja RCM)}
+\label{sec:b1}
+\textbf{Funkcja:} ciągły monitor prądu różnicowego (Residual Current Monitor) własnych torów
+urządzenia --- ochrona operatora i sprzętu; dodatkowo weryfikacja krzyżowa generatora upływu -A3.
+\textbf{Zasada działania:} przez okno czujnika przechodzą \emph{wszystkie} przewody robocze
+(L1+L2+L3+N --- \textbf{bez PE!}). W obwodzie sprawnym suma chwilowych prądów = 0; każda różnica
+oznacza, że część prądu wraca poza torem (np. przez PE lub człowieka). Zwykły przekładnik widzi
+tylko różnicę przemienną; CDSR to czujnik \textbf{fluxgate} (bramka strumieniowa): rdzeń jest
+cyklicznie wprowadzany w nasycenie przebiegiem pomocniczym, a składowa stała prądu różnicowego
+przesuwa symetrię nasycania --- dzięki temu czujnik widzi także \textbf{gładki prąd stały}
+(technologia z prawdziwych RCD typu~B / modułów RDC-DD). Typ: LEM \textbf{CDSR~0.07-TP},
+zakres $\pm$70~mA, rozdzielczość $\sim$0,5~mA, zasilanie 3,3~V, wyjście \textbf{SPI} (+ analogowe)
+wprost do -A1 (rozdz.~\ref{sec:mcu-spi}).
+\textbf{Reakcja:} przekroczenie progu (np. 20~mA AC / 5~mA DC nieoczekiwanego pochodzenia)
+$\to$ firmware zdejmuje zezwolenie -K10 $\to$ rozpad łańcucha $\to$ -K1 otwiera. Podczas testu
+RDC-DD (celowe wymuszanie upływu przez -A3) firmware podnosi/maskuje próg i jednocześnie
+\emph{porównuje} odczyt CDSR z prądem zadanym --- to weryfikacja krzyżowa obu bloków.
+
+\subsection{-T1, -T2, -T3 --- przekładniki prądowe 40 A / 1 V}
+\textbf{Funkcja:} pomiar prądów fazowych pobieranych przez moduł obciążenia.
+\textbf{Działanie:} klasyczne przekładniki przelotowe z wyjściem napięciowym (wbudowany rezystor
+obciążający): 40~A po stronie pierwotnej $\to$ 1~V na wyjściu. Wyjścia idą do wejść prądowych
+układu pomiaru energii -U2 (ATM90E36A, rozdz.~\ref{sec:u2}). Uwaga: CT mierzy tylko AC --- to
+wystarcza, bo prąd obciążenia jest sinusoidalny; składową DC upływu mierzy -B1 i bocznik -A3.
+
+\subsection{-K1 --- stycznik główny 4P 40 A (AC-1)}
+\textbf{Funkcja:} jedyny aparat, który podaje moc do modułu obciążenia; wykonawczy element
+łańcucha bezpieczeństwa. \textbf{Działanie:} cztery styki główne (L1/L2/L3/N) zamykane
+elektromagnesem; cewka 24~V zasilana \emph{wyłącznie} przez styk przekaźnika bezpieczeństwa -RB
+(arkusz E2, rozdz.~\ref{sec:e2}). Kategoria \textbf{AC-1} (obciążenia rezystancyjne) jest właściwa,
+bo grzałki nie mają udarów rozruchowych ani indukcyjności; 40~A daje zapas względem 32~A.
+Rozpad łańcucha = otwarcie -K1 = moduł~B beznapięciowy. Magistrala \emph{przed} -K1 (gniazda
+bananowe, -B1, -T) pozostaje pod napięciem, jeśli DUT jest w stanie~C --- patrz -Q0 i -K4.
+
+\subsection{-X2 --- gniazdo CEE 32 A 5p (interfejs modułu B)}
+\textbf{Funkcja:} wyjście toru mocy do modułu obciążenia. Przewód gumowy \textbf{5$\times$6~mm$^2$
+H07RN-F} z wtykiem CEE 32~A~5p --- standard przemysłowy, jednoznaczne przyporządkowanie
+L1/L2/L3/N/PE, odporność mechaniczna. Przekrój 6~mm$^2$ z zapasem dla 32~A pracy ciągłej.
+
+\subsection{Nowe elementy E1 w wersji 3}
+\label{sec:k4}
+\popr{-K4, przerwanie CP} \textbf{Problem:} E-STOP w v1/v2 otwierał tylko -K1 --- odcinał moduł~B,
+ale magistrala i gniazda bananowe pozostawały pod napięciem od DUT będącego w stanie~C.
+\textbf{Rozwiązanie:} przekaźnik \textbf{-K4} z zestykiem w linii \textbf{CP odczepu -X3}.
+Cewka -K4 jest zasilana z 24~V przez \emph{drugi} zestyk rozwierny E-STOPu (-S0:21-22).
+Wciśnięcie E-STOP (albo zanik 24~V) $\to$ -K4 odpada $\to$ linia CP zostaje przerwana $\to$
+ładowarka widzi odłączenie pojazdu (stan~A) i \textbf{sama otwiera swój stycznik} --- magistrala
+L1/L2/L3/N robi się martwa w czasie wymaganym przez IEC~61851 (typ.\ $\le$100~ms dla utraty CP).
+To ten sam mechanizm, którego używa przycisk ,,CP~Error~E'' na PM701E, tylko wpięty na stałe
+w obwód bezpieczeństwa. Konsekwencja eksploatacyjna: przy niezasilonym urządzeniu nie da się
+osiągnąć stanu~C (CP przerwane) --- zachowanie celowe i bezpieczne; na listwie -X3 przewidziano
+mostek serwisowy do świadomego obejścia (np. użycie samego PM701E bez custom device).
+
+\popr{punkt przyłączenia -A3} Doprecyzowano miejsce odczepu generatora upływu: \textbf{L1 za oknem
+-B1} (między -B1 a -T1). Powód: prąd upływu wymuszany przez -A3 musi przechodzić przez okno -B1,
+inaczej niemożliwa byłaby weryfikacja krzyżowa generatora czujnikiem CDSR (wymóg koncepcji,
+rozdz.~B5b) i nadzór RCM nad testem. Dla samego DUT miejsce odczepu za -B1 niczego nie zmienia
+(upływ i tak wraca przez PE poza czujnikiem RDC-DD ładowarki, więc ładowarka go widzi).
+
+% =====================================================================
+\section{Arkusz E2 --- łańcuch bezpieczeństwa 24 V}
+\label{sec:e2}
+
+\subsection{Zasada: obwód prądu spoczynkowego}
+Cewka stycznika głównego -K1 może dostać 24~V \textbf{wyłącznie} przez szereg styków fizycznych
+aparatów. To obwód \emph{prądu spoczynkowego} (fail-safe): przerwa w dowolnym miejscu ---
+zadziałanie zabezpieczenia, awaria aparatu, urwany przewód, zanik 24~V, zawieszenie firmware ---
+zawsze prowadzi do stanu bezpiecznego (rozpad -RB $\to$ otwarcie -K1). Nie istnieje pojedyncza
+usterka, która ,,sama z siebie'' załączy moc; firmware nie jest w stanie zmostkować żadnego członu,
+bo jego jedyny wpływ na łańcuch to styki -K10 i -A2 (oba mogą obwód tylko \emph{rozewrzeć}).
+
+\subsection{Człony łańcucha (szczebel 1: zezwolenie $\to$ cewka -RB)}
+Kolejno od szyny +24~V:
+\begin{enumerate}
+\item \textbf{-S0 E-STOP} --- grzybek dłoniowy, zestyk rozwierny (NC) z ryglowaniem; na panelu
+modułu~A. Wciśnięcie = natychmiastowa przerwa. Od v3 drugi zestyk -S0:21-22 zwalnia też -K4
+(przerwanie CP, rozdz.~\ref{sec:k4}), więc E-STOP gasi \emph{całą} magistralę, nie tylko moduł~B.
+\item \textbf{-F11.1 \ldots -F11.12 --- termiki KSD301} --- bimetalowe wyłączniki termiczne
+($\sim$90~$^\circ$C, NC) przykręcone do każdej sekcji grzałek w module~B, połączone szeregowo;
+sygnał wraca do modułu~A przewodem sterowniczym przez złącze -X5. Przegrzanie \emph{którejkolwiek}
+sekcji (np. zatrzymany wentylator, zasłonięty wylot) $\to$ przerwa $\to$ moc odcięta sprzętowo,
+bez udziału procesora.
+\item \textbf{-S1 --- krańcówka pokrywy} strefy mocy modułu~A (NC z napędem rolkowym): otwarcie
+pokrywy nad częścią 230/400~V przerywa łańcuch.
+\item \textbf{-K2 --- potwierdzenie pracy wentylatorów} --- zestyk przekaźnika \emph{prądowego}
+(cewka pomiarowa I$>$ w szereg z zasilaniem -M3/-M4). Styk zamyka się tylko, gdy wentylatory
+\emph{fizycznie pobierają prąd} --- czyli realnie się kręcą, a nie tylko ,,dostały rozkaz''.
+Wybór przekaźnika prądowego zamiast zwykłego stycznika pomocniczego eliminuje fałszywe
+potwierdzenie przy przepalonym silniku lub urwanym przewodzie.
+\item \textbf{-K10 --- zezwolenie MCU} --- przekaźnik, którego cewkę zasila wyjście cyfrowe -A1
+(przez optoizolację). Firmware zamyka -K10 dopiero po pozytywnym self-teście i tylko na czas
+kroków wymagających mocy; każda anomalia programowa = zdjęcie zezwolenia.
+\item \textbf{-A2 --- watchdog impulsowy} --- człon sprzętowy (ładowanie kondensatora ciągiem
+impulsów z -A1, typ.\ kilka Hz; kondensator trzyma tranzystor/przekaźnik zamknięty). Gdy firmware
+się zawiesi, impulsy znikają, kondensator się rozładowuje, styk -A2 otwiera łańcuch --- nawet
+jeśli ,,zamrożone'' wyjście -K10 zostało w stanie wysokim. To zabezpieczenie przed najgroźniejszą
+awarią programową: nie crashem, lecz zawieszeniem z zatrzaśniętymi wyjściami.
+\item \textbf{-S2 START $\parallel$ -RB:13-14 samopodtrzymanie} --- przycisk zwierny (NO)
+równolegle ze stykiem pomocniczym -RB. Po skompletowaniu całego łańcucha operator musi
+\emph{fizycznie} nacisnąć START, by wzbudzić -RB; potem -RB trzyma się własnym stykiem.
+Po każdym rozpadzie (E-STOP, termik, watchdog\ldots) łańcuch \textbf{nie wraca sam} --- wymaga
+świadomej akcji człowieka. To eliminuje samoczynny restart mocy np. po ostygnięciu termika.
+\item \textbf{-RB --- przekaźnik bezpieczeństwa} ze stykami \emph{prowadzonymi wymuszenie}
+(mechanically linked): styki NO i NC są sprzężone mechanicznie tak, że nie mogą być jednocześnie
+zamknięte; sklejenie styku głównego jest wykrywalne po styku lustrzanym. Klasa wyżej niż zwykły
+przekaźnik; tańsza alternatywa dla pełnego modułu PNOZ (do decyzji przy doborze finalnym).
+\end{enumerate}
+
+\subsection{Szczebel 2: styk -RB $\to$ cewka -K1}
+Osobny szczebel: +24~V $\to$ zestyk -RB:23-24 (wymuszony) $\to$ cewka -K1 $\to$ 0~V.
+Rozdzielenie ,,łańcuch zbiera zezwolenia'' / ,,styk mocy steruje stycznikiem'' pozwala
+w przyszłości dołożyć redundancję (drugi tor, kontrola sklejenia) bez przebudowy.
+
+\subsection{Diagnostyka łańcucha przez MCU}
+Stan członów -S0, -F11.x, -S1, -K2 jest czytany przez -A1 \emph{przez optoizolację} wyłącznie
+informacyjnie (komunikat na HMI ,,otwarta pokrywa'', ,,termik sekcji L2''\ldots). Wejścia odczytowe
+nie ingerują w tor prądowy łańcucha --- podsłuchują napięcie między członami. Uzupełniająco,
+\emph{poza} łańcuchem, działają: -B1 jako RCM (przez -K10), bezpieczniki gG, rozłącznik -Q0
+i blokada wtyku -Y1.
+
+% =====================================================================
+\section{Arkusz E3 --- zasilanie, sterowanie, moduł obciążenia}
+\label{sec:e3}
+
+\subsection{-X4 / -G1 --- zasilanie logiki}
+Własny przewód z wtykiem Schuko (-X4) do gniazda instalacji zakładu; zasilacz -G1 daje
+\textbf{24~V} (łańcuch bezpieczeństwa, cewki przekaźników/styczników, -Y1) oraz \textbf{5~V
+i 3,3~V} (ESP32, czujniki, HMI, serwa). \textbf{Logika nigdy nie jest zasilana z badanej
+ładowarki} --- urządzenie musi żyć i nadzorować także wtedy, gdy DUT jest odłączony lub właśnie
+zadziałało jego zabezpieczenie. Zanik 24~V = rozpad łańcucha = stan bezpieczny (spójność
+z zasadą fail-safe). \popr{-F4, -F5} Dodano zabezpieczenia: -F4 (T2A) przed -G1
+i -F5 (T2A) toru wentylatorów --- przewód Schuko chroni instalacja budynku (B16), ale zwarcie
+wewnętrzne w zasilaczu/wentylatorze nie powinno czekać na wyłącznik obiektu.
+
+\subsection{Moduł B --- bank obciążenia (K11--K22, E1--E12)}
+\label{sec:loadbank}
+\textbf{Funkcja:} kontrolowany, rezystancyjny pobór prądu --- urządzenie ,,konsumuje'' energię
+jak samochód, zamieniając ją na ciepło w grzałkach żebrowanych 230~V umieszczonych w kanale
+z wymuszonym przepływem. \textbf{Struktura:} na każdą fazę cztery stopnie
+\textbf{1,0 / 1,5 / 2,0 / 3,0~kW} załączane stycznikami modułowymi 25~A:
+L1: -K11..-K14/-E1..-E4, L2: -K15..-K18/-E5..-E8, L3: -K19..-K22/-E9..-E12.
+Prądy stopni przy 230~V: 4,3 / 6,5 / 8,7 / 13,0~A; kombinacje dają ok.\ 4,3--32,6~A z krokiem
+$\le$2,2~A --- pokrywają typowe progi EVSE 6/10/13/16/20/25/32~A. Uwaga praktyczna: komplet
+czterech stopni to nominalnie $\sim$32,6~A ($>$32~A); sekwencer i tak dobiera kombinację
+$\le$ deklaracji CP i pilnuje prądu zmierzonego (-T/-U2), a rzeczywisty prąd zależy od napięcia
+sieci i tolerancji grzałek --- dobór finalny mocy grzałek doprecyzuje etap zamówień.
+\textbf{Dlaczego styczniki, nie SSR:} separacja galwaniczna, odporność na przepięcia, zero
+radiatorów; rozdzielczość skokowa wystarcza, a modulacja sekundowa (duty-cycle) też jest możliwa.
+\popr{bezpieczniki stopni} Koncepcja (B3) wymagała bezpieczników na stopniach --- na schemacie
+ich nie było. W v3 każda gałąź ma wkładkę \textbf{-F12.1..-F12.12} (gG, dobrana do mocy stopnia,
+np. 6/10/16~A): zwarcie w pojedynczej grzałce/przewodzie gałęzi przerywa tę gałąź, zamiast czekać
+na gG~32~A całej fazy.
+
+\textbf{Wentylatory -M3/-M4} (kanałowe, 2$\times\sim$500~m$^3$/h): przy 11~kW ciągłego grzania
+przyrost temperatury powietrza $\sim$33~K --- chłodzenie jest elementem konstrukcyjnym, nie
+dodatkiem. \popr{-K3} W v1 zestyk załączający wentylatory był nieopisany, w v2 zniknął zupełnie
+(wentylatory pracowałyby zawsze). W v3: \textbf{-K3} (przekaźnik 24~V, sterowany z -A1 przez
+ekspander/ULN) załącza wentylatory, a przekaźnik prądowy \textbf{-K2} niezależnie potwierdza
+w łańcuchu, że naprawdę pobierają prąd. Sekwencja: firmware włącza -K3 przed testem obciążenia;
+bez potwierdzenia -K2 łańcuch nie zamknie -K1.
+
+\textbf{-X5 --- złącze sterownicze modułu B} (wielostykowe przemysłowe, np. Harting/Weipu):
+cewki styczników stopni (24~V), pętla termików -F11.x, zasilanie i potwierdzenie wentylatorów.
+Moc i sterowanie idą osobnymi przewodami --- rozłączenie CEE nie zostawia ,,żywego'' sterowania.
+
+\subsection{-A3 --- generator prądu upływu (test RDC-DD / RCD)}
+\label{sec:a3}
+\textbf{Po co:} każda ładowarka AC z RCD typu~A musi mieć układ \textbf{RDC-DD} wykrywający
+gładki prąd stały $\ge$6~mA (IEC~62955) --- gładki DC nie jest widziany przez RCD typu~A, a już
+kilkanaście mA DC potrafi zablokować (nasycić) jego przekładnik. Test tego zabezpieczenia wymaga
+\emph{wymuszenia} kontrolowanego upływu L$\to$PE i zmierzenia, przy jakim prądzie i po jakim
+czasie ładowarka się wyłączy. \textbf{Jak działa:} przetwornik DAC (MCP4725, I2C za izolatorem
+cyfrowym) zadaje napięcie sterujące; wzmacniacz operacyjny z tranzystorem MOSFET pracuje jako
+\textbf{źródło prądowe} 0--20~mA z toru L1 (odczep za -B1, przez zestyk -K30) do PE; prąd
+faktyczny mierzy \textbf{bocznik} ze wzmacniaczem izolowanym \textbf{AMC1301}, którego wyjście
+czyta ADC w -A1. Procedura: rampa (np. 0,1~mA/s w okolicy progu) $\to$ rejestracja prądu
+zadziałania ($\le$6~mA = PASS) i czasu odcięcia (znacznik: zanik faz na optotransoptorach,
+rozdz.~\ref{sec:di}). Tryb AC/pulsujący pozwala analogicznie testować RCD typu~A (15/30/150~mA);
+pomiar protokołowy RCD w etapie~1 pozostaje przy wzorcowanym UT595. \textbf{Bezpieczeństwo toru:}
+szeregowy rezystor mocy ogranicza prąd sprzętowo ($\ll$ progu fibrylacji), a -K30 odłącza
+generator zawsze poza testem.
+
+\subsection{-K30..-K33 --- przekaźniki separujące (tryb izolacji)}
+\label{sec:k30}
+\textbf{Po co:} pomiar rezystancji izolacji (UT595, 250/500~V~DC między zwartymi żyłami czynnymi
+a PE) podałby wysokie napięcie na wszystko, co wisi między L/N a PE wewnątrz urządzenia ---
+zafałszowałby wynik (równoległe rezystancje) i mógł uszkodzić elektronikę. \textbf{Działanie:}
+przed pomiarem izolacji firmware otwiera przekaźniki separujące, odłączając galwanicznie własne
+bloki od magistrali. Przyporządkowanie (doprecyzowane w v3): \textbf{-K30} --- tor L1 generatora
+-A3; \textbf{-K31/-K32/-K33} --- dzielniki napięciowe L1/L2/L3 układu -U2. Uzasadnienie zakresu:
+przy próbie L+N$\,\to\,$PE elementy włączone \emph{między} przewodami czynnymi (dzielniki L--N)
+nie widzą napięcia próby, groźne są tylko ścieżki \emph{do PE}; jedyną taką ścieżką roboczą jest
+tor -A3, a otwarcie dzielników fazowych dodatkowo zeruje wpływ próby na front-end pomiarowy.
+Tor CP/PP nie łączy się z żyłami czynnymi, więc separacji nie wymaga.
+
+\subsection{-Y1 --- blokada elektromagnesowa wtyku Type 2}
+\label{sec:y1}
+Elektromagnes/napęd rygla w gnieździe -X1, zasilany 24~V, sterowany wyjściem -A1 (opto).
+Zamykany po wejściu w stan~C (napięcie na magistrali), otwierany dopiero po potwierdzeniu
+beznapięciowości. Uniemożliwia rozłączenie złącza pod obciążeniem (łuk, uszkodzenie styków).
+
+% =====================================================================
+\section{Mikrokontroler -A1 i wszystkie urządzenia do niego podpięte}
+\label{sec:mcu}
+
+\subsection{-A1: ESP32-S3 --- rola i granice odpowiedzialności}
+Płyta logiki z modułem \textbf{ESP32-S3-WROOM} (2 rdzenie LX7 240~MHz, 45~GPIO, WiFi 2,4~GHz,
+USB~OTG, 12-bit ADC). Zadania: \textbf{sekwencer} pomiarowy (stany, bramki, blokady kolejności),
+\textbf{akwizycja} (CP/PP, metering, temperatury, prąd różnicowy, bocznik -A3),
+\textbf{sterowanie} (serwa, stopnie obciążenia, separacja, blokada wtyku, generator),
+\textbf{UI} (HMI DWIN, LED, buzzer), \textbf{rejestracja} (microSD, RTC) i \textbf{komunikacja}
+(WiFi/MQTT $\to$ Home Assistant). Granica: -A1 \emph{nie jest} barierą bezpieczeństwa --- może
+mocy zabronić (zdjąć -K10, przestać karmić -A2), ale nie może jej wymusić wbrew łańcuchowi E2.
+
+Zasilanie: 3,3~V (rdzeń, czujniki) i 5~V (serwa, HMI, przekaźniki wejściowe opto) z -G1;
+masa logiki odseparowana od obwodów 24~V (optoizolacja DI/DO) i od potencjałów sieciowych
+(izolatory cyfrowe, AMC1301, przekładniki, dzielniki za -K31..33).
+
+\subsection{Tabela zbiorcza urządzeń przy -A1}
+\label{sec:tabela-mcu}
+
+\begin{longtable}{@{}p{0.16\textwidth}p{0.13\textwidth}p{0.20\textwidth}p{0.43\textwidth}@{}}
+\toprule
+\textbf{Aparat} & \textbf{Interfejs} & \textbf{Kierunek} & \textbf{Funkcja w systemie}\\
+\midrule
+\endhead
+-B1 CDSR 0.07-TP & SPI (CS1) & czujnik $\to$ MCU & prąd różnicowy AC/DC magistrali (RCM); weryfikacja -A3\\
+-U2 ATM90E36A & SPI (CS2) & czujnik $\to$ MCU & U/I/P/Q/cos$\varphi$/f per faza (z -T1..3 i dzielników); soak\\
+karta microSD & SPI (CS3) & MCU $\leftrightarrow$ & protokoły i logi CSV/JSON\\
+-B2 MLX90640 & I2C (0x33) & czujnik $\to$ MCU & matryca IR 32$\times$24: $\Delta$T wtyku Type~2, hot-spoty\\
+-B3, -B4 MLX90614 & I2C (0x5A/0x5B) & czujnik $\to$ MCU & pirometry punktowe: korpus wtyku, dławik\\
+-U3, -U4 MCP23017 & I2C (0x20/0x21) & MCU $\to$ & ekspandery 2$\times$16 wyjść $\to$ -U5/-U6 ULN2803 $\to$ cewki\\
+RTC DS3231 & I2C (0x68) & $\leftrightarrow$ & znaczniki czasu protokołów\\
+(-A3) MCP4725 & I2C za izolatorem & MCU $\to$ & zadawanie rampy generatora upływu\\
+-B5.1..8 DS18B20 & 1-Wire & czujniki $\to$ MCU & temperatury: szyny, -K1, komora grzałek, otoczenie\\
+-P1 DWIN 7'' & UART (115200) & $\leftrightarrow$ & HMI: prowadzenie operatora, wpisy wyników, status\\
+CP (z -X3) & ADC + capture & sygnał $\to$ MCU & poziom stanu A/B/C/D + duty PWM 1~kHz (deklaracja prądu)\\
+PP (z -X3) & ADC & sygnał $\to$ MCU & kod obciążalności kabla (rezystancja)\\
+-A3 bocznik/AMC1301 & ADC & sygnał $\to$ MCU & prąd upływu faktycznie płynący\\
+-M1, -M2 DS3218 & 2$\times$PWM 50~Hz & MCU $\to$ & serwa pokręteł PM701E (stan / prąd)\\
+-K10 & DO (opto) & MCU $\to$ & zezwolenie w łańcuchu E2\\
+-A2 watchdog & DO (opto, impulsy) & MCU $\to$ & dowód życia firmware; zanik = rozpad łańcucha\\
+-Y1 & DO (opto) & MCU $\to$ & blokada wtyku Type~2\\
+-K3 (v3) & przez -U3/-U5 (ULN) & MCU $\to$ & załączenie wentylatorów modułu B\\
+-K11..-K22 & przez -U3/4+ULN & MCU $\to$ & stopnie obciążenia L1/L2/L3\\
+-K30..-K33 & przez -U3/4+ULN & MCU $\to$ & separacja bloków własnych (tryb izolacji)\\
+-S0/-F11.x/-S1/-K2 & DI (opto) & pole $\to$ MCU & diagnostyka członów łańcucha (tylko odczyt)\\
+opto faz L1/L2/L3 & 3$\times$DI (opto) & pole $\to$ MCU & obecność napięć; pomiar czasu zadziałania zabezpieczeń\\
+LED R/Y/G, buzzer & GPIO / ekspander & MCU $\to$ & sygnalizacja stanu (napięcie / test / gotowość)\\
+WiFi / MQTT & radio & $\leftrightarrow$ & podgląd i archiwizacja w Home Assistant\\
+\bottomrule
+\end{longtable}
+
+\subsection{Magistrala SPI}
+\label{sec:mcu-spi}
+
+\textbf{-B1 --- LEM CDSR 0.07-TP (czujnik różnicowy).} Opis zasady --- rozdz.~\ref{sec:b1}.
+Podłączenie: wspólne linie SCLK/MOSI/MISO, osobny chip-select; zasilanie 3,3~V wprost z płyty
+logiki (czujnik jest konstrukcyjnie izolowany od obwodu pierwotnego --- przewody mocy tylko
+przechodzą przez okno). Firmware odpytuje czujnik ciągle (watchdog pomiarowy): wartość AC i DC
+osobno; progi alarmowe zależne od kroku sekwencji (podczas testu -A3 --- maska + porównanie
+z zadanym prądem).
+
+\textbf{-U2 --- ATM90E36A (analogowy front-end pomiaru energii 3F).}
+\label{sec:u2}
+Dedykowany układ klasy licznikowej: trzy kanały napięciowe (z dzielników rezystancyjnych
+za -K31..33) i trzy prądowe (z przekładników -T1..3). Sam liczy w sprzęcie wartości skuteczne
+U/I, moce P/Q/S, cos$\varphi$, częstotliwość i THD per faza --- MCU tylko odczytuje rejestry
+po SPI, bez obciążania rdzenia próbkowaniem 50~Hz. Rola w sekwencji: weryfikacja napięć
+i kolejności faz po wejściu w stan~C, pomiar prądu każdej fazy w teście obciążenia (spójność
+z deklaracją CP), wykrycie spadków napięcia i asymetrii podczas soak, rejestracja przebiegu.
+
+\textbf{Karta microSD} --- na tej samej magistrali (osobny CS): zapis surowych logów i wyników
+(CSV/JSON) ze znacznikami RTC; nośnik przeżywa restart i pozwala wygenerować protokół PDF na PC.
+
+\subsection{Magistrala I2C}
+\label{sec:mcu-i2c}
+
+\textbf{-B2 --- MLX90640 (matryca termowizyjna 32$\times$24).} Zamontowana nad zatoką gniazda
+pojazdowego, polem widzenia ($\sim$55$^\circ$) obejmuje wtyk Type~2 DUT i odcinek kabla.
+Termopara-matryca: każdy z 768 pikseli zwraca temperaturę bezdotykowo; odczyt ramek po I2C
+(kilka Hz wystarcza --- zjawiska cieplne są wolne). Funkcja: wykrywanie \textbf{hot-spotów}
+złącza (klasa usterki U-001 z katalogu diagnostyki) i pomiar $\Delta$T wtyku względem otoczenia
+w \textbf{teście soak} (15--30~min pod prądem); kryteria: graniczne $\Delta$T oraz anomalne
+tempo narastania d$T$/d$t$ (progi do kalibracji kamerą UTi120S na etapie prototypu).
+
+\textbf{-B3, -B4 --- MLX90614 (pirometry punktowe).} Uzupełniają matrycę tam, gdzie nie sięga jej
+pole widzenia (korpus wtyku od drugiej strony, dławik kablowy). Uwaga integracyjna: fabrycznie
+oba mają adres 0x5A --- jednemu trzeba przeprogramować adres (EEPROM) albo rozdzielić je na
+osobne szyny; na schemacie przyjęto 0x5A/0x5B.
+
+\textbf{-U3, -U4 --- MCP23017 (ekspandery I/O).} Dają 2$\times$16 dodatkowych wyjść, których
+ESP32 fizycznie nie ma: 12 cewek stopni (-K11..22), 4 separujące (-K30..33), -K3, rezerwy.
+Wyjścia ekspanderów nie ciągną cewek bezpośrednio --- sterują wejściami \textbf{-U5/-U6 ULN2803}
+(bufory Darlingtona 500~mA/kanał z diodami gaszącymi), a dopiero te przełączają cewki 24~V
+(strona dolna, low-side). Między logiką 3,3~V a stroną 24~V jest optoizolacja --- przepięcia
+łączeniowe cewek nie wracają do procesora. Adresy 0x20/0x21 (piny A0--A2).
+
+\textbf{RTC DS3231} --- zegar czasu rzeczywistego z kompensacją temperaturową (TCXO): znaczniki
+czasu w protokołach i logach niezależne od WiFi.
+
+\textbf{(-A3) MCP4725} --- 12-bitowy DAC generatora upływu; wisi na I2C \emph{za izolatorem
+cyfrowym} (osobna wyspa potencjałowa generatora, rozdz.~\ref{sec:a3}).
+
+\subsection{Magistrala 1-Wire}
+\textbf{-B5.1..-B5.8 --- DS18B20 (czujniki temperatury).} Cyfrowe termometry $\pm$0,5~$^\circ$C
+na wspólnej jednej linii danych (każdy ma unikalny 64-bitowy adres fabryczny --- stąd jedna
+magistrala obsługuje wszystkie). Rozmieszczenie: szyny/listwy toru mocy, obudowa stycznika -K1,
+komora grzałek modułu~B (4~szt., po jednej na sekcję + zapas), \textbf{temperatura otoczenia}
+(czujnik odniesienia --- bez niego $\Delta$T wtyku nie ma sensu). Funkcja: trend nagrzewania
+własnych torów, kryteria pass/fail soak, dane wejściowe progów termicznych firmware (niezależnych
+od sprzętowych KSD301, które chronią ,,na twardo'').
+
+\subsection{UART --- HMI}
+\textbf{-P1 --- panel DWIN 7'' (DGUS).} Wyświetlacz z własnym kontrolerem grafiki: MCU nie rysuje
+pikseli, tylko wymienia po UART (115200) wartości zmiennych i odbiera zdarzenia dotyku ---
+ekrany projektuje się narzędziem DGUS (zakład ma je opanowane z wątku ,,chińskie zabawki'',
+folder \texttt{chinskie\_zabawki/DWIN\_SET}). HMI: prowadzi operatora krok po kroku (gdzie
+przyłączyć UT595, co zmierzyć), przyjmuje ręczne wpisy wyników z przyrządów wzorcowanych
+(UT595/UT522 nie mają interfejsów), pokazuje status/awarie. \textbf{Ważne:} fizyczny przycisk
+START (-S2) i E-STOP (-S0) są \emph{poza} HMI, w obwodzie E2 --- dotyk ekranu nigdy nie załącza
+mocy. Kolumna LED (czerwony = napięcie na magistrali, żółty = test w toku, zielony = gotowość)
+i buzzer sterowane z GPIO/ekspandera.
+
+\subsection{Tor analogowy CP/PP (ADC + wejście przechwytujące)}
+\label{sec:cp}
+Sygnał CP (z gniazd SIGNAL~OUTPUT PM701E) ma poziomy $\pm$12~V --- poza zakresem ADC 0--3,3~V.
+Kondycjonowanie: \textbf{dzielnik rezystancyjny} z przesunięciem (mapuje $-$12\ldots+12~V na
+0\ldots3,3~V), \textbf{bufor} operacyjny rail-to-rail (niska impedancja dla ADC, brak obciążania
+linii CP) i \textbf{ograniczniki diodowe/Zener} (ochrona wejścia przy stanach przejściowych).
+Dwa równoległe odbiory:
+\begin{itemize}
+\item \textbf{ADC}: pomiar poziomu szczytu dodatniego $\to$ rozpoznanie stanu złącza
+(+12 = A, +9 = B, +6 = C, +3 = D, 0/$-$12 = E/F);
+\item \textbf{komparator $\to$ wejście przechwytujące} (jednostka MCPWM-capture/PCNT):
+pomiar wypełnienia PWM 1~kHz z rozdzielczością timera sprzętowego --- z wypełnienia wynika prąd
+deklarowany ładowarce: $I\,[\mathrm{A}] = \text{duty}\,[\%]\times 0{,}6$ (np.\ 53\% $\approx$ 32~A,
+26,7\% $\approx$ 16~A).
+\end{itemize}
+Zastosowania: \textbf{weryfikacja pozycji serw} (po komendzie ,,stan C'' firmware czeka na
++6~V na CP --- niezależne potwierdzenie, że pokrętło naprawdę się przestawiło), zapis parametrów
+CP do protokołu, wykrywanie błędów zgłaszanych przez ładowarkę. \textbf{PP}: drugi kanał ADC
+czyta rezystancję kodującą obciążalność kabla (1,5~k\ohm{}=13~A, 680~\ohm{}=20~A,
+220~\ohm{}=32~A, 100~\ohm{}=63~A wg IEC~61851-1). Mikrooscyloskop pozostaje niezależnym
+podglądem ręcznym tego samego sygnału.
+
+\subsection{PWM --- serwomechanizmy pokręteł PM701E}
+\label{sec:serwa}
+\textbf{-M1 (pokrętło stanu BB/C/A/B/D), -M2 (pokrętło prądu NC/13/20/32/63~A)} --- serwa
+modelarskie klasy \textbf{DS3218} (20~kg$\cdot$cm, metalowa przekładnia; moment pokręteł
+przełączników to typowo 1--3~kg$\cdot$cm $\Rightarrow$ zapas $\ge$5$\times$). Sterowanie:
+standardowy sygnał serw 50~Hz, impuls 500--2500~µs $\to$ kąt; zasilanie 5~V z wydzielonej
+gałęzi -G1 (szczytowo $\sim$1~A/serwo --- nie z szyny czujników). Montaż nieinwazyjny: rama nad
+panelem PM701E, sprzęg przez drukowany adapter i \textbf{sprzęgło Oldham} (kompensuje
+niewspółosiowość, chroni oś przełącznika przed siłami promieniowymi). Firmware trzyma tabelę
+kalibracji \emph{kąt $\leftrightarrow$ pozycja} (5+5 pozycji dyskretnych) i \textbf{nigdy nie ufa
+samemu serwu}: każdą zmianę potwierdza odczytem CP (rozdz.~\ref{sec:cp}); brak potwierdzenia
+$\to$ przerwanie sekwencji i zdjęcie zezwolenia. PM701E pozostaje nienaruszony (gwarancja,
+kalibracja).
+
+\subsection{Wyjścia cyfrowe (DO, przez optoizolację)}
+\label{sec:do}
+Trzy bezpośrednie, rozdzielone wyjścia (każde ze swoim transoptorem, klucz low-side na 24~V):
+\begin{itemize}
+\item \textbf{DO1 $\to$ -K10}: zezwolenie --- styk w łańcuchu E2;
+\item \textbf{DO2 $\to$ -A2}: ciąg impulsów watchdog (oddzielny od DO1! zamrożenie DO1
+w stanie ,,1'' nie utrzyma mocy, bo brak impulsów rozłączy -A2);
+\item \textbf{DO3 $\to$ -Y1}: blokada wtyku.
+\end{itemize}
+\popr{rozdzielenie DO} W v2 linie DO do -K10, -A2 i -Y1 narysowano jako jeden wspólny węzeł ---
+elektrycznie oznaczałoby to jedno wyjście sterujące naraz zezwoleniem, watchdogiem i blokadą
+(bez sensu funkcjonalnie: watchdog wymaga impulsów, zezwolenie stanu ciągłego). W v3 ---
+trzy niezależne tory zgodnie z v1 i koncepcją.
+Pozostałe wyjścia (cewki -K11..22, -K30..33, -K3) idą ścieżką
+\textbf{I2C $\to$ -U3/-U4 $\to$ -U5/-U6 $\to$ cewki 24~V} (rozdz.~\ref{sec:mcu-i2c}).
+
+\subsection{Wejścia cyfrowe (DI, przez optoizolację)}
+\label{sec:di}
+\begin{itemize}
+\item \textbf{Diagnostyka łańcucha}: stany -S0, pętli -F11.x, -S1, -K2 --- wyłącznie odczyt
+(HMI pokazuje, \emph{który} człon rozłączył); tor łańcucha pozostaje nietknięty.
+\item \textbf{Optotransoptory obecności faz L1/L2/L3} (wejściowe AC, typu H11AA1, za rezystorami):
+przy obecności napięcia dają ciąg impulsów 100~Hz; zanik impulsów $=$ zanik fazy. Kluczowe dla
+pomiaru \textbf{czasu zadziałania} zabezpieczeń DUT: przy teście RDC-DD/RCD i testach błędów
+CP/PE firmware stempluje czas od bodźca do zaniku napięcia (rozdzielczość pojedynczych ms ---
+wystarczająca wobec limitów normowych rzędu dziesiątek/setek ms).
+\end{itemize}
+
+\subsection{Pozostałe zasoby -A1}
+\textbf{WiFi/MQTT} --- telemetria i archiwizacja w zakładowym Home Assistant (spójnie z wątkiem
+integracji Tuya/HA); brak sieci nie blokuje pomiarów (SD jest źródłem prawdy).
+\textbf{USB~OTG} --- serwis/aktualizacja firmware. Orientacyjny budżet wyprowadzeń: SPI(4)+3$\times$CS,
+I2C(2), UART HMI(2), 1-Wire(1), ADC(3: CP, PP, bocznik), capture(1), PWM(2), DO(3), DI($\sim$7),
+LED/buzzer(4), SD-detect itp. --- ok.\ 33--36 z 45 dostępnych GPIO; rezerwa pozostaje na aktuatory
+przycisków PM701E (etap rozszerzenia).
+
+% =====================================================================
+\section{Jak bloki grają razem --- sekwencja w ujęciu elektrycznym}
+\label{sec:sekwencja}
+
+\begin{enumerate}
+\item \textbf{Self-test}: -A1 czyta łańcuch (DI), próbuje -K3/-K2 (wentylatory), odpytuje
+-B1/-U2/-B2..5/-P1, jeździ serwami do pozycji spoczynkowych (BB/NC) z potwierdzeniem CP.
+\item \textbf{Tryb izolacji}: -K30..33 otwarte, moduł~B odłączony (-K1 otwarty) --- UT595 na
+gniazdach bananowych PM701E mierzy izolację; wynik wpisany na HMI otwiera bramkę.
+\item \textbf{Ciągłość PE}: UT595 (wyjście PE) --- wpis, bramka.
+\item \textbf{Stan B $\to$ C}: -M1 przestawia pokrętło, CP potwierdza; w stanie C ładowarka
+zamyka swój stycznik --- -U2 weryfikuje napięcia i kolejność faz, -Y1 rygluje wtyk.
+\item \textbf{Zabezpieczenia}: UT595 protokołowo (RCD~A); -A3 automatycznie (rampa 6~mA DC),
+czas zadziałania z optotransoptorów faz; po każdym zadziałaniu prowadzony reset DUT.
+\item \textbf{Pętla Zs}: UT595 --- wpis.
+\item \textbf{Obciążenie/soak}: -M2 ustawia deklarację, łańcuch zamknięty + START $\to$ -K1;
+stopnie 25/50/75/100\% deklaracji (kombinacje $\le$ CP); -U2 loguje U/I/P, -B2/-B5 temperatury;
+kryteria pass/fail.
+\item \textbf{Testy błędów}: przyciski CP~Error/PE~Error na PM701E (etap 1 ręcznie) --- czas
+reakcji DUT mierzony jak wyżej.
+\item \textbf{Uziom}: UT522 na zaciskach E/S/H (poza torem Type~2).
+\item \textbf{Raport}: SD + MQTT; protokół PDF na PC.
+\end{enumerate}
+Warunki ciągłe (każdy krok): CP zgodne z komendą, RCM poniżej progu, termiki zwarte, wentylatory
+potwierdzone, E-STOP zwolniony --- naruszenie = przerwanie i stan bezpieczny.
+
+% =====================================================================
+\section{Wykryte problemy i poprawki wprowadzone w wersji 3}
+\label{sec:poprawki}
+
+Przegląd v1/v2 wykazał sześć problemów wymagających korekty oraz trzy braki o charakterze
+uzupełnień bezpieczeństwa. Wszystkie wprowadzono w \textbf{schemacie elektrycznym v3}
+(\texttt{AMPERE\_POINT\_custom\_device\_schemat\_elektryczny\_v3\_EPLAN}); v1/v2 pozostają
+w folderze bez zmian (zasada wersjonowania).
+
+\begin{longtable}{@{}p{0.04\textwidth}p{0.06\textwidth}p{0.42\textwidth}p{0.40\textwidth}@{}}
+\toprule
+\textbf{\#} & \textbf{Ark.} & \textbf{Problem (v1/v2)} & \textbf{Poprawka (v3)}\\
+\midrule
+\endhead
+1 & E1 & Odczep -X3 tylko 5-żyłowy (L1, N, PE, CP, PP) --- gniazda L2/L3 PM701E martwe;
+niespójność z koncepcją (7 żył) i z pomiarami 3F & Odczep 7-żyłowy: L1, L2, L3, N, PE, CP, PP;
+numeracja zacisków 1--7\\
+2 & E3 & Wspólny węzeł DO dla -K10, -A2 i -Y1 (jedno wyjście sterujące zezwoleniem, watchdogiem
+i blokadą) --- błąd rysunkowy v2 sprzeczny z v1 i koncepcją & Rozdzielone wyjścia DO1..DO4
+(osobne transoptory i tory)\\
+3 & E3 & Brak aparatu załączającego wentylatory -M3/-M4 (v2: pracowałyby zawsze przy zasilonym
+-X4; v1: zestyk nieopisany) & Nowy przekaźnik \textbf{-K3} (cewka 24~V, sterowanie z -A1);
+-K2 pozostaje wyłącznie potwierdzeniem prądowym w łańcuchu\\
+4 & E3 & Brak bezpieczników gałęziowych stopni obciążenia --- wymaganych w koncepcji (B3);
+zwarcie w gałęzi czekałoby na gG~32~A całej fazy & Wkładki \textbf{-F12.1..-F12.12} w każdej
+gałęzi stopnia (dobór do mocy stopnia)\\
+5 & E1/E3 & Punkt przyłączenia generatora -A3 wskazany przy -F1 (\texttt{/E1.2}), czyli
+\emph{przed} oknem -B1 --- CDSR nie widziałby wymuszanego upływu; utrata weryfikacji krzyżowej
+i nadzoru RCM & Odczep -A3 przeniesiony \textbf{za okno -B1} (między -B1 a -T1), zaznaczony
+na E1\\
+6 & E2 & Odsyłacz styku samopodtrzymania -RB:13-14 wskazywał kolumnę 3 zamiast 4 (kosmetyka
+nawigacji) & Odsyłacze uzgodnione z siatką (13-14 \texttt{/E2.4})\\
+7 & E1/E2 & \emph{Luka bezpieczeństwa:} E-STOP otwierał tylko -K1; magistrala i gniazda bananowe
+zostawały pod napięciem od DUT w stanie C & Nowy przekaźnik \textbf{-K4}: zestyk w linii CP
+odczepu, cewka przez -S0:21-22; E-STOP/zanik 24~V $\to$ przerwanie CP $\to$ DUT sam otwiera
+stycznik (mechanizm ,,CP Error''); mostek serwisowy na -X3\\
+8 & E3 & Brak zabezpieczeń wewnętrznych toru logiki (zasilacz, wentylatory na wspólnym
+przewodzie Schuko) & Wkładki \textbf{-F4} (T2A, przed -G1) i \textbf{-F5} (T2A, tor
+wentylatorów)\\
+9 & E1 & Brak ostrzeżenia, że -Q0 nie odłącza odczepu -X3/PM701E (gniazda bananowe pod napięciem
+w stanie C) & Adnotacja na arkuszu + wymóg tabliczki ostrzegawczej na panelu; systemowo
+domyka to -K4 (poz.~7)\\
+\bottomrule
+\end{longtable}
+
+Doprecyzowania bez zmiany połączeń: przyporządkowanie -K30..33 (rozdz.~\ref{sec:k30});
+uwaga o adresach MLX90614 (rozdz.~\ref{sec:mcu-i2c}); uwaga o $\sim$32,6~A przy komplecie stopni
+(rozdz.~\ref{sec:loadbank}).
+
+\section{Uwagi końcowe i punkty otwarte}
+\begin{itemize}
+\item Wartości i typy aparatów pozostają \textbf{robocze do etapu~0} (prototyp stołowy):
+zwłaszcza test serw na fizycznym PM701E, próbka CDSR/RCM14, prototyp jednej sekcji grzałkowej.
+\item Nadal brakuje instrukcji PM701E (funkcje Touch/PE~Pre-Test, prąd znamionowy gniazd
+bananowych --- istotny dla Zs dużym prądem) --- otwarty punkt z koncepcji.
+\item Wersja formalna schematu powstanie w EPLAN (projekt \texttt{AP-CD-001}); arkusze v3
+odwzorowują docelowy układ stron, co uprości przeniesienie.
+\item Pomiary protokołowe wykonują przyrządy wzorcowane (UT595/UT522) --- bloki własne
+uzupełniają je tam, gdzie przyrządy gotowe nie sięgają (RDC-DD 6~mA~DC, obciążenie, termika,
+automatyzacja) --- zgodnie z zatwierdzonym punktem Z4.
+\end{itemize}
+
+\end{document}

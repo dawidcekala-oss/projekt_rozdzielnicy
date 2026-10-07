@@ -1,0 +1,202 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+
+\title{\textbf{AMPERE POINT --- Wielofunkcyjne urządzenie pomiarowe (custom device)}\\[4pt]
+\large Koncepcja budowy --- wersja 4 (wariant budżetowy)\\
+moduł obciążenia jako termiczny magazyn energii (zasobnik wodny z grzałkami)}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{8 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+
+\noindent\textbf{Status dokumentu:} rewizja różnicowa koncepcji v3. Kryterium nadrzędne tej wersji:
+\textbf{jedno tanie urządzenie}, które konstruktywnie wykorzystuje --- i faktycznie \textbf{magazynuje}
+--- energię testów, bez piętrzenia kosztów (bez falownika, baterii, prostowników i CAN).
+Rozwiązanie: \textbf{zasobnikowy bank obciążenia} --- grzałki stopniowane umieszczone w izolowanym
+zbiorniku wody (bufor c.w.u./CO). Moduł A, sekwencja pomiarowa, łańcuch bezpieczeństwa i decyzje
+Z1--Z6 pozostają bez zmian; rekuperacja elektryczna z v2/v3 (Z7--Z12) zostaje \textbf{odłożona jako
+opcja przyszłościowa} --- architektura v4 jej nie zamyka (rozdz.~\ref{sec:sciezka}). Nowe decyzje:
+Z13--Z15.
+
+\tableofcontents
+
+\section{Wymaganie i logika wyboru}
+Warianty v1--v3 tworzyły dylemat: grzałki kanałowe (v1) są tanie, ale energia ulatuje kominem
+wentylacyjnym; rekuperacja elektryczna (v2/v3) odzyskuje energię, ale kosztuje 11--17~tys.~zł
+i wymaga falownika \emph{oraz} awaryjnej grzałki zrzutowej --- czyli obu rzeczy naraz. Wersja 4
+rozstrzyga to jednym urządzeniem: \textbf{grzałki pozostają jedynym elementem wykonawczym, ale
+grzeją wodę w izolowanym zbiorniku zamiast powietrza wyrzucanego na zewnątrz}. Zbiornik jest
+jednocześnie chłodnicą, magazynem i odbiornikiem końcowym.
+
+Dlaczego to spełnia wszystkie wymagania:
+\begin{itemize}
+\item \textbf{Magazynowanie:} 300~l wody podgrzanej o 60~K przechowuje $\approx$\,\textbf{21~kWh}
+--- więcej niż bateria LiFePO4 10--14~kWh z v3, przy $\sim$10$\times$ niższym koszcie ,,magazynu''.
+Energia jest oddawana jako ciepła woda użytkowa (mycie, cele socjalne) lub --- przy wpięciu bufora
+w instalację CO --- jako ogrzewanie zakładu; wypiera realny koszt energii, którą zakład i tak by
+poniósł (przy podgrzewie elektrycznym oszczędność 1:1).
+\item \textbf{Wymagania testowe --- identycznie jak v1:} obciążenie czysto rezystancyjne
+(PF$\approx$1), stopnie binarne 1,0/1,5/2,0/3,0~kW na fazę (kombinacje 4,3--32,6~A, krok
+$\le$2,2~A), styczniki -K11..-K22 --- \textbf{schemat elektryczny v3 (arkusz E3) pozostaje niemal
+wprost aktualny}; sekwencja, spójność CP$\leftrightarrow$pobór i firmware bez zmian.
+\item \textbf{Taniej niż v1:} odpada cały układ wentylacji (kanał, 2 wentylatory, -K2/-K3/-F5,
+hałas $\sim$1000~m$^3$/h) --- woda chłodzi grzałki naturalnie; dochodzi tylko zbiornik i prosta
+hydraulika. Moduł B v4 $\approx$ \textbf{2,1--4,7~tys.~zł} (rozdz.~\ref{sec:koszt}); cała stacja
+wraca do zatwierdzonego budżetu Z6 ($\sim$6--11,6~tys.).
+\item \textbf{Prostota i bezpieczeństwo:} zero energoelektroniki mocy, zero strony DC; ochrona
+termiczna to standardowe, tanie aparaty bojlerowe (STB) wpinane wprost w istniejący łańcuch E2.
+\end{itemize}
+
+\section{Rozwiązanie: zasobnikowy bank obciążenia}
+\subsection{Zasada}
+Zbiornik: izolowany \textbf{bufor CO / zasobnik c.w.u. 300--500~l} (nowy lub używany, emaliowany
+albo bufor stalowy) z mufami 6/4$''$. W mufach: \textbf{4 grzałki trójfazowe} o elementach
+1,0 / 1,5 / 2,0 / 3,0~kW na fazę (typowe grzałki kołnierzowe/mufowe 3, 4,5, 6 i 9~kW --- łącznie
+22,5~kW zainstalowane, 7,5~kW/fazę jak w v1). Każdy element 230~V łączony gwiazdą z~N; elementy
+załączane indywidualnie stycznikami -K11..-K22 (12 obwodów, jak v1/schemat v3) z bezpiecznikami
+gałęziowymi -F12.x. Prąd testu płynie z badanej ładowarki przez tor mocy modułu A (CEE 32~A,
+5$\times$6~mm$^2$) --- bez żadnego przyłącza dodatkowego.
+\subsection{Magazyn ciepła --- bilans}
+\begin{longtable}{@{}p{0.34\textwidth}rrr@{}}
+\toprule
+ & \textbf{300 l} & \textbf{400 l} & \textbf{500 l}\\
+\midrule
+pojemność cieplna ($\Delta$T 60 K, 15$\to$75 $^\circ$C) & 20,9 kWh & 27,9 kWh & 34,9 kWh\\
+przyrost po soaku 30 min @ 11 kW (5,5 kWh) & +15,7 K & +11,8 K & +9,4 K\\
+przyrost po soaku 30 min @ 7,4 kW 1F (3,7 kWh) & +10,6 K & +7,9 K & +6,3 K\\
+liczba pełnych soaków 3F ,,od zimnej wody'' & $\sim$3,8 & $\sim$5,1 & $\sim$6,3\\
+\bottomrule
+\end{longtable}
+Straty postojowe dobrze izolowanego bufora to 1--2~kWh/dobę --- energia realnie czeka na zużycie.
+\textbf{Ograniczenie} (jedyne istotne): gdy woda osiągnie temperaturę maksymalną, kolejny test
+obciążeniowy wymaga jej zużycia lub schłodzenia --- sekwencer sprawdza przed soakiem, czy zapas
+$\Delta$T wystarcza (bramka programowa z czujników DS18B20 góra/dół zbiornika). Przy 1--3 testach
+dziennie i normalnym poborze c.w.u. w zakładzie bufor 300--500~l jest wystarczający; tania
+rozbudowa: drugi zbiornik równolegle.
+
+\section{Budowa krok po kroku (DIY)}
+\begin{enumerate}
+\item \textbf{Zbiornik.} Kup bufor CO 300--500 l z $\ge$4 mufami 6/4$''$ (standard w buforach;
+alternatywa: kołnierz montażowy z wiązką elementów). Używany zasobnik po przeglądzie (stan emalii/
+anody) jest w pełni wystarczający. Ustaw przy ścianie warsztatu, wypoziomuj (300 l wody $=$
+$\sim$350 kg z zbiornikiem --- posadzka, nie kółka).
+\item \textbf{Hydraulika.} Zawór bezpieczeństwa 6 bar na wejściu zimnej wody, naczynie przeponowe
+c.w.u. 8--12 l, zawory odcinające, spust. Wariant A (c.w.u.): zasilenie zimną wodą + wyjście ciepłej
+do punktów poboru zakładu. Wariant B (bufor CO): wpięcie w obieg grzewczy przez pompę/wężownicę ---
+energia idzie w ogrzewanie (sezonowo najcenniejsze). Napełnij i odpowietrz \textbf{przed}
+pierwszym testem.
+\item \textbf{Grzałki.} Wkręć 4 grzałki trójfazowe (3 / 4,5 / 6 / 9 kW) w dolnej połowie zbiornika
+(elementy zawsze zanurzone); uszczelnienia, moment wg producenta. Podłącz elementy gwiazdą z N;
+każdy element przez własny stycznik -K11..-K22 i wkładkę -F12.x w skrzynce elektrycznej przy
+zbiorniku (IP54).
+\item \textbf{Ochrona termiczna --- do łańcucha E2.} W tuleje czujnikowe zbiornika: \textbf{STB
+95 $^\circ$C} (ogranicznik z ręcznym resetem, styk NC) oraz \textbf{termostat roboczy 80 $^\circ$C}
+(NC) --- oba szeregowo w pętli, która w schemacie zastępuje dotychczasowe termiki -F11.x i
+potwierdzenie wentylatorów (wentylatorów już nie ma). Zadziałanie któregokolwiek $\Rightarrow$
+rozpad -RB $\Rightarrow$ -K1 otwiera tor mocy --- sprzętowo, bez MCU.
+\item \textbf{Czujniki do -A1.} 2$\times$ DS18B20 (góra/dół zbiornika, magistrala 1-Wire jak
+dotychczas) --- bramka programowa ,,zapas $\Delta$T przed soakiem'' + rejestracja energii oddanej
+do magazynu (licznik kWh z -U2 i tak mierzy pobór testu).
+\item \textbf{Połączenia z modułem A.} Przewód 5$\times$6 mm$^2$ z wtykiem CEE 32 A (jak dotychczas)
++ przewód sterowniczy -X5 (cewki styczników, pętla STB/termostat, 1-Wire). Bez CAN, bez DC.
+\item \textbf{Uziemienie i wyrównanie potencjałów.} Zbiornik i skrzynka do PE; połączenie
+wyrównawcze z instalacją wodną wg PN-HD 60364-5-54.
+\item \textbf{Odbiór.} Próba szczelności, pomiar ciągłości PE i rezystancji izolacji grzałek
+(UT595 --- 500 V, na zimno i gorąco), test zadziałania STB (kontrolowane przegrzanie termostatu
+roboczego wyłączonego), pierwszy soak 25\% z obserwacją UTi120S.
+\end{enumerate}
+
+\section{Kosztorys modułu B v4 i porównanie wariantów}
+\label{sec:koszt}
+\begin{longtable}{@{}p{0.56\textwidth}r@{}}
+\toprule
+\textbf{Pozycja} & \textbf{zł}\\
+\midrule
+zbiornik: bufor/zasobnik 300--500 l (używany 400--900 / nowy 1200--1800) & 400--1800\\
+4$\times$ grzałka trójfazowa 3 / 4,5 / 6 / 9 kW (elementy 1--3 kW/fazę) & 480--750\\
+12$\times$ stycznik modułowy 25 A (cewki 24 V) + -F12.x & 750--1300\\
+STB 95 $^\circ$C + termostat 80 $^\circ$C + tuleje + 2$\times$DS18B20 & 90--180\\
+hydraulika: zawór bezp. 6 bar, naczynie przeponowe, armatura & 250--450\\
+skrzynka IP54, przewody, dławiki, drobnica & 180--300\\
+\midrule
+\textbf{Moduł B v4 razem} & \textbf{$\sim$2150--4780}\\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}{@{}p{0.30\textwidth}rrp{0.30\textwidth}@{}}
+\toprule
+\textbf{Wariant modułu B} & \textbf{koszt [zł]} & \textbf{odzysk energii} & \textbf{uwagi}\\
+\midrule
+v1: grzałki + kanał went. & 2600--4600 & 0\% (ciepło w komin) & hałas, 11 kW do wydmuchania\\
+v3: rekuperacja elektr. (W1--W3) & 10850--18500 & 85--92\% (prąd) & falownik \emph{i} grzałka zrzutowa; CAN, DC, bateria\\
+\textbf{v4: zasobnik z grzałkami} & \textbf{2150--4780} & \textbf{$\sim$95\% (ciepło użyteczne)} & jedno urządzenie; magazyn 21--35 kWh; bez elektroniki mocy\\
+\midrule
+\textbf{Stacja razem (moduł A + B v4)} & \textbf{$\sim$5900--11830} & & zgodne z budżetem Z6\\
+\bottomrule
+\end{longtable}
+
+\section{Zmiany względem v3 w blokach i dokumentacji}
+\begin{itemize}
+\item \textbf{B3 v4}: bank grzałek zasobnikowy (jak wyżej); \textbf{B11 v4}: zarządzanie energią
+redukuje się do bramki $\Delta$T i harmonogramu zużycia c.w.u. Bez zmian: B1--B2, B4--B10
+(w tym -K4, generator -A3, serwa, HMI, łańcuch E2).
+\item \textbf{Schemat elektryczny}: podstawą jest \textbf{v3} (E3 ze stycznikami -K11..-K22 i
+-F12.x); do wykonania \textbf{v5}: grzałki kanałowe $\to$ elementy w zbiorniku, pętla -F11.x $\to$
+STB+termostat, usunięte -K2/-K3/-M3/-M4/-F5, dodane DS18B20 zbiornika. Wersja v4 schematu
+(rekuperacja elektryczna) pozostaje w folderze dla opcji przyszłościowej.
+\item \textbf{Wizualizacja 3D}: v1 pozostaje bazą (moduł B $\to$ zbiornik przy ścianie) --- do
+aktualizacji przy okazji.
+\item \textbf{Mobilność}: zbiornik jest stacjonarny --- testy obciążeniowe/soak to czynność
+warsztatowa (kontrola importu, serwis na stole); pomiary terenowe (5 pomiarów przewodnika)
+wykonuje sam moduł A z UT595/UT522, bez modułu B. To zgodne z dotychczasową praktyką użycia.
+\end{itemize}
+
+\section{Ścieżka przyszłościowa (nic się nie marnuje)}
+\label{sec:sciezka}
+Jeśli kiedyś zapadnie decyzja o rekuperacji elektrycznej (v3/Z7--Z12), zasobnik v4 \textbf{nie jest
+kosztem utopionym}: staje się dokładnie tym ,,zrzutem nadmiaru do CWU'' (-K5/-E13), którego
+architektura v3 i tak wymaga. Kolejność inwestycji: v4 teraz (budżet) $\to$ ewentualnie
+prostowniki+bateria+falownik później, ze zbiornikiem jako odbiornikiem gwarantowanym.
+
+\section{Ryzyka (uzupełnienie rejestru)}
+\begin{enumerate}[label=\textbf{R\arabic*.},start=16]
+\item \textbf{Nasycenie cieplne zbiornika} --- brak możliwości soaku przy gorącej wodzie:
+bramka $\Delta$T, dobór pojemności (Z14), zużycie c.w.u./CO, opcjonalny drugi zbiornik.
+\item \textbf{Suchobieg grzałek} --- praca bez zanurzenia niszczy elementy: montaż w dolnej
+strefie, procedura napełnienia/odpowietrzenia przed użyciem, STB na tulei reaguje na przegrzanie.
+\item \textbf{Kamień kotłowy / trwałość grzałek} --- przy twardej wodzie okresowa kontrola;
+elementy mufowe są tanie i wymienne w minuty.
+\item \textbf{Logistyka hydrauliczna} --- potrzebne miejsce przy instalacji wodnej i (wariant B)
+przy CO; jednorazowa praca hydrauliczna przy montażu.
+\end{enumerate}
+
+\section{Punkty do zatwierdzenia}
+\begin{enumerate}[label=\textbf{Z\arabic*.},start=13]
+\item \textbf{Moduł B v4 --- zasobnikowy bank obciążenia} zamiast rekuperacji elektrycznej
+(Z7--Z12 odłożone jako opcja). \emph{Rekomendacja przy ograniczonym budżecie: tak.}
+\item \textbf{Pojemność i integracja}: 300 l (c.w.u.) vs 400--500 l (bufor CO z wężownicą c.w.u.).
+\emph{Rekomendacja: 500 l wpięty w CO, jeśli jest miejsce --- największa użyteczność energii.}
+\item \textbf{Potwierdzenie budżetu stacji} $\sim$5,9--11,8 tys. zł (zgodny z Z6).
+\end{enumerate}
+
+\end{document}

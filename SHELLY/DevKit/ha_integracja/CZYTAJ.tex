@@ -1,0 +1,96 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small CZYTAJ.md}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Q11 w Home Assistant: łatka integracji Shelly\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+
+Autor: Dawid Cekała, 29.09.2026
+
+
+\section*{Po co}
+
+Oficjalna integracja Shelly w Home Assistant tworzy encje pól Shelly X tylko wtedy, gdy klucz pola jest na liście w jej kodzie. Z 15 pól Q11 na tej liście są tylko fazy. Limit prądu i włącznik ładowania są tam zapisane wyłącznie dla ładowarki TopAC (kod produktu EVE01). Bez łatki Home Assistant pokazuje 19 encji: 12 fazowych i 7 systemowych. Z łatką pokazuje 33 encje.
+
+
+\section*{Co zmienia łatka}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.35cm}>{\raggedright\arraybackslash}p{13.37cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Plik} & \textbf{Zmiana} \\
+\midrule\endhead
+\bottomrule\endfoot
+const.py & lista kodów produktu Ampere Point, dziś \texttt{apq11dev} \\
+entity.py & pole wyboru bez napisów opcji nie wywraca encji (dotyczy trybu pracy i sygnału pojazdu) \\
+number.py & limit prądu także dla Q11; nowe: limit energii, okno ładowania od i do \\
+switch.py & włącznik ładowania \\
+select.py & tryb ładowania (od razu, do limitu energii, w oknie godzin) \\
+sensor.py & stan ładowarki, sygnał pojazdu, energia i czas sesji, energia ostatniej sesji, temperatura sterownika, usterki, wersja sterownika \\
+translations & nazwy po polsku i angielsku \\
+\end{longtable}
+
+Pełna różnica względem Home Assistant 2026.6.4: \texttt{latka\_\allowbreak{}shelly\_\allowbreak{}q11\_\allowbreak{}HA2026.\allowbreak{}6.\allowbreak{}4.\allowbreak{}diff}.
+
+
+\section*{Jak działa}
+
+Home Assistant najpierw szuka integracji w \texttt{C:\allowbreak{}\textbackslash{}HomeAssistant\textbackslash{}config\textbackslash{}custom\_\allowbreak{}components}. Kopia integracji Shelly w tym folderze zastępuje wbudowaną. Dotyczy to wszystkich urządzeń Shelly w tym Home Assistant, ale inne urządzenia działają jak dotąd, bo łatka dopisuje wyłącznie encje dla kodu \texttt{apq11dev}.
+
+
+\section*{Po aktualizacji Home Assistant}
+
+Kopia zostaje w wersji 2026.6.4 i po aktualizacji może przestać pasować do nowego Home Assistant. Wtedy integracja Shelly się nie uruchomi. Po każdej aktualizacji:
+
+
+\begin{kodbox}
+\mbox{}docker\ exec\ homeassistant\ rm\ -rf\ /config/custom\_components/shelly\\
+\mbox{}docker\ exec\ homeassistant\ cp\ -r\ /usr/src/homeassistant/homeassistant/components/shelly\ /config/custom\_co\\
+\hspace*{1.2em}mponents/shelly\\
+\mbox{}python\ latka\_shelly\_q11.py\ C:\textbackslash{}HomeAssistant\textbackslash{}config\textbackslash{}custom\_components\textbackslash{}shelly\\
+\mbox{}docker\ restart\ homeassistant
+\end{kodbox}
+
+Jeśli łatka zgłosi błąd (zmienił się kod integracji), wystarczy usunąć folder i zrestartować Home Assistant. Wróci wtedy stan sprzed łatki z 19 encjami.
+
+
+\section*{Docelowo}
+
+Ta sama zmiana może trafić do oficjalnej integracji. Tak dopisano ładowarkę TopAC. Wymaga to ostatecznego kodu produktu zamiast \texttt{apq11dev}.
+
+
+\end{document}

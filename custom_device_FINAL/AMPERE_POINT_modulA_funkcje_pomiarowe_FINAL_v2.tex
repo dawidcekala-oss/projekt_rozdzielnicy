@@ -1,0 +1,379 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\definecolor{granat}{RGB}{12,35,88}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=1.9cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries\color{granat}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{granat}}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+\setlength{\fboxsep}{7pt}
+\newcommand{\obj}[2]{\noindent\fcolorbox{granat}{granat!4}{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{\textcolor{granat}{\textbf{#1}}\par\smallskip\small #2}}\par\vspace{7pt}}
+
+\title{\textbf{AMPERE POINT --- custom device / MODUŁ A}\\[4pt]
+\large Dodatkowe funkcje pomiarowe --- specyfikacja scalona (FINAL)\\[2pt]
+\normalsize wersja 2 (dopięta): decyzje W-A--W-D rozstrzygnięte wg rekomendacji;\\
+z wyróżnionymi objaśnieniami każdego pomiaru prostym językiem}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{13 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+\tableofcontents
+
+\section{Status, zakres i rozstrzygnięcia}
+Wersja 2 zastępuje wersję 1 (i wszystkie propozycje pomiarów v1--v4 w zakresie modułu A).
+Zmiany względem v1: \textbf{(a)} decyzje wariantowe są rozstrzygnięte zgodnie z rekomendacjami
+--- dokument nie zawiera już pozycji otwartych; \textbf{(b)} dodano rozdział~\ref{sec:objasnienia}
+z pełnymi objaśnieniami każdego pomiaru prostym językiem.
+\textbf{Rozstrzygnięcia:} \textbf{W-A}: regulacja napięcia F3 $=$ używany autotransformator
+(variac) 16~A z serwomechanizmem na pokrętle (pełna automatyka, płynna regulacja; pętlę domyka
+pomiar -U2) --- ten sam sprawdzony patent co przy pokrętłach PM701E. \textbf{W-B}: zaciski testu
+RCD (F17) wykonywane w panelu od razu, elektronika (wspólna z -A3) dokładana na końcu kolejki.
+\textbf{W-C}: układ inrush (F16) montowany od razu. \textbf{W-D}: odbiornik równoległy $=$
+grzałka 2~kW $+$ stycznik; jeśli w warsztacie jest zbędny silnik --- dokładany za 0~zł jako udar
+indukcyjny.
+\textbf{Zakres:} wyłącznie moduł A i pomiary. Poza zakresem: szafa B / magazyn energii (osobna
+decyzja), pomiary u klienta (odrzucone), testy zgodności i weryfikacja liczników (odrzucone).
+Pięć pomiarów obowiązkowych bez zmian (UT595/UT522 w sekwencji prowadzonej). Obciążenie do
+testów prądowych: przejściowo auto testowe.
+
+\section{Lista funkcji F1--F17 (definicje skrócone)}
+Pełne objaśnienia --- rozdz.~\ref{sec:objasnienia}. Mapowanie na dawne oznaczenia --- tab. na
+końcu rozdziału.
+\begin{longtable}{@{}p{0.07\textwidth}p{0.55\textwidth}p{0.30\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Funkcja} & \textbf{Wymaga}\\
+\midrule
+F1 & sesje pomiarowe $+$ zgrywanie (USB-pendrive, WWW/ZIP); karty modeli, profile, powiązanie
+z katalogiem U-xxx; formaty wersjonowane & SD, USB-C (są)\\
+F2 & symulator wad zasilania: impedancja linii per faza, upływ tła 0--40 mA AC/DC, zapady/przerwy,
+L--N, przerwa PE, drabinka R$_{PE}$, źródło U$_{N-PE}$, kolejność/utrata fazy, odbiornik
+równoległy, replay profili & sekcja bench (nowa)\\
+F3 & automatyczna regulacja napięcia zasilania DUT (variac $+$ serwo, 0--260 V) & nowy zespół\\
+F4 & karta modelu: progi napięciowe U$_{min}$/U$_{max}$, histereza, czasy & F2, F3\\
+F5 & karta: odporność na zapady i przerwy (matryca głębokość$\times$czas) & F2 ($+$F3)\\
+F6 & karta: próg detekcji wadliwego PE (R$_{PE}$, U$_{N-PE}$) & F2\\
+F7 & karta: margines upływowy (upływ własny $+$ tło do zadziałania) & F2, -B1, -A3 40 mA\\
+F8 & karta: wrażliwość na impedancję zasilania & F2, -U2\\
+F9 & karta (3F): asymetria, kolejność, utrata fazy w trakcie & F2\\
+F10 & karta: termika złącz (wzorcowe ,,złe gniazdo'') $+$ walidacja czujników temperatury DUT &
+F2, MLX/DS18B20 (są)\\
+F11 & egzemplarz: rezystancje styków wtyczki/wtyku (m\ohm, 4-przewodowo, pod prądem) & zaciski
+Kelvina $+$ wzmacniacz (nowe)\\
+F12 & egzemplarz: upływ własny AC/DC vs karta modelu & -B1 (jest)\\
+F13 & egzemplarz: impedancja toru $\Delta$U/$\Delta$I, spadki, czasy łączeń stycznika DUT &
+-U2, opto faz (są)\\
+F14 & egzemplarz: porównanie progów z kartą modelu (skrócone F4/F6/F7) & F2 (F3)\\
+F15 & nadzór długoterminowy (nocne profile, stemplowanie zdarzeń; łączność vs referencja) &
+F1, F2\\
+F16 & prąd załączeniowy (inrush) --- układ peak-hold & drobny układ (nowy)\\
+F17 & stanowiskowy test różnicówek (AC/pulsujący/gładki DC $+$ oślepianie) --- ostatni w kolejce &
+zaciski (teraz), -A3 40 mA\\
+\bottomrule
+\end{longtable}
+\textbf{Mapowanie:} F1$=$S3$+$D5; F2$=$S1; F4--F9$=$A1--A5, A7; F10$=$A8$+$P4; F11$=$B1;
+F12$=$B2; F13$=$P5(B6); F14$=$B4; F15$=$S2; F16$=$A6$+$B3; F17$=$test RCD. (B5 zawiera się
+w F10/F15.)
+
+\section{Objaśnienia pomiarów --- prostym językiem}
+\label{sec:objasnienia}
+
+\obj{F1 --- Sesje pomiarowe i zgrywanie danych}{%
+\textbf{Po co:} żeby każdy badany przypadek miał swoją kompletną ,,teczkę'' i żeby dało się ją
+zabrać na laptopa w minutę, bez żadnego instalowania.
+\textbf{Jak działa:} przed rozpoczęciem pracy wpisujesz na ekranie numer sprawy (np. numer RMA
+albo numer seryjny). Od tej chwili wszystko, co urządzenie zmierzy --- wykresy napięć i prądów,
+zdarzenia, wyniki testów, zdjęcia termowizyjne --- zapisuje się samo do jednego folderu tej
+sprawy na karcie pamięci. Po skończeniu zamykasz sesję, a urządzenie dopisuje krótkie
+podsumowanie. Gdy chcesz zabrać dane: przełączasz urządzenie w tryb ,,zgrywanie'', wpinasz kabel
+USB-C do laptopa i widzisz je jak zwykłego pendrive'a --- przeciągasz folder i gotowe (drugą
+opcją jest strona WWW urządzenia z przyciskiem ,,pobierz ZIP''). W tych samych folderach żyją
+,,karty modeli'' (wyniki pomiarów F4--F10) i ,,profile'' (nastawy symulatora), a numer sprawy
+można powiązać z wpisem w katalogu usterek.
+\textbf{Co dostajesz:} komplet dowodów w jednym miejscu; reklamacja, która wróci po pół roku,
+zaczyna się od otwarcia starej teczki, a nie od zera.}
+
+\obj{F2 --- Symulator wad zasilania (,,zepsuta instalacja na życzenie'')}{%
+\textbf{Po co:} zwrot najczęściej ,,u nas działa'', bo nasza instalacja jest zdrowa. Symulator
+pozwala na stole odtworzyć chorą instalację klienta --- kontrolowanie i powtarzalnie.
+\textbf{Jak działa:} zasilanie badanej ładowarki przechodzi przez wydzielony tor, w który
+przekaźniki mogą włączać kolejne ,,słabości'': opornik udający długi/cienki przewód (napięcie
+siada pod obciążeniem, osobno na każdej fazie), dolewkę prądu upływu (jakby w instalacji już coś
+,,przeciekało''), krótkie przerwy zasilania (mrugnięcia od 0,05 do 5 sekund), zamianę przewodów
+L--N, osłabienie lub przerwanie uziemienia, kilka woltów między N a PE, zamianę kolejności faz,
+zniknięcie jednej fazy w trakcie pracy, a nawet ,,sąsiada na tym samym obwodzie'' (dolączaną
+grzałkę 2 kW). Zestaw nastaw można zapisać jako profil i \textbf{odtworzyć jednym poleceniem}
+(replay) --- np. ,,miękka sieć $+$ wilgotny upływ''.
+\textbf{Co dostajesz:} powtarzalną reprodukcję zgłoszenia klienta i materiał do katalogu:
+,,przy tej wadzie ładowarka robi dokładnie to''.}
+
+\obj{F3 --- Automatyczna regulacja napięcia zasilania}{%
+\textbf{Po co:} część zachowań ładowarki zależy wprost od wysokości napięcia (za nisko/za wysoko).
+Żeby zmierzyć progi (F4) i głębokości zapadów (F5), trzeba płynnie ,,kręcić'' napięciem --- ręczne
+kręcenie jest nudne i niepowtarzalne.
+\textbf{Jak działa:} używany autotransformator (variac) ma pokrętło --- na pokrętle siedzi
+serwomechanizm, dokładnie tak jak na pokrętłach testera PM701E. Urządzenie samo ustawia kąt,
+a miernik -U2 na bieżąco potwierdza, jakie napięcie naprawdę wyszło (pętla: ustaw $\to$ zmierz
+$\to$ popraw). Cały przebieg --- np. ,,obniżaj o 1 V co 5 s'' --- wykonuje się automatycznie.
+\textbf{Co dostajesz:} powtarzalne rampy i skoki napięcia 0--260 V bez człowieka przy pokrętle.}
+
+\obj{F4 --- Progi napięciowe ładowarki (karta modelu)}{%
+\textbf{Po co:} klient z fotowoltaiką w okolicy ma w słoneczne południe 250--255 V, a klient na
+końcu wsi --- 200 V przy obciążeniu. Trzeba wiedzieć, \emph{przy jakim dokładnie napięciu} dany
+model przerywa pracę i kiedy wraca.
+\textbf{Jak działa:} ładowarka pracuje pod obciążeniem, a F3 powoli obniża napięcie aż do
+przerwania --- zapisujemy próg. Potem podnosi z powrotem --- zapisujemy, przy jakim napięciu
+i po jakim czasie ładowanie samo wróciło (histereza i czas wznowienia). To samo w górę
+(przepięcie).
+\textbf{Co dostajesz:} cztery liczby i dwa czasy na model, np. ,,przerywa 198 V / wraca 208 V po
+40 s; przerywa 262 V / wraca 256 V''. W rozmowie z klientem: ,,u pana w południe bywa 253 V ---
+ten model tego nie przerwie, szukamy dalej'' albo odwrotnie.}
+
+\obj{F5 --- Odporność na zapady i krótkie przerwy}{%
+\textbf{Po co:} migotanie światła u klienta to krótkie zapady napięcia --- jedne ładowarki je
+przeżywają, inne przerywają sesję i czekają. Stąd ,,rano auto nienaładowane''.
+\textbf{Jak działa:} szybki stycznik robi kontrolowane ,,mrugnięcia'': coraz dłuższe (od 50 ms do
+5 s) i --- z F3 --- coraz głębsze (nie tylko całkowite zaniki). Po każdym urządzenie sprawdza:
+ładowanie trwało dalej? przerwało się i wróciło samo (po ilu sekundach)? czy trzeba było ruszyć
+ładowarkę ręcznie?
+\textbf{Co dostajesz:} tabelkę-matrycę ,,głębokość $\times$ czas $\to$ reakcja'' dla modelu.
+Przykład wpisu do katalogu: ,,zapad dłuższy niż 150 ms $=$ restart sesji, wznowienie po 45 s''.}
+
+\obj{F6 --- Próg wykrywania wadliwego uziemienia (PE)}{%
+\textbf{Po co:} ładowarki AMPERE sprawdzają uziemienie i blokują pracę przy złym PE. Ale ,,złe''
+to pojęcie nieostre --- trzeba wiedzieć, od którego momentu dany model protestuje, bo klient
+w układzie TT ze słabym uziomem albo w starej instalacji może mieć PE ,,na granicy''.
+\textbf{Jak działa:} w przewód ochronny toru testowego włączamy kolejne oporniki z drabinki
+(0 $\to$ 10 $\to$ 50 $\to$ 200 \ohm{} $\to$ przerwa), osobno zadajemy też kilka woltów między N
+a PE (tak objawia się obciążona/uszkodzona instalacja). Po każdym kroku sprawdzamy, czy ładowarka
+jeszcze pracuje, czy już zgłasza błąd uziemienia.
+\textbf{Co dostajesz:} próg w liczbach, np. ,,błąd uziemienia przy R$_{PE}>$120 \ohm{} lub
+U$_{N-PE}>$4 V''. Diagnoza telefoniczna: ,,dom na wsi, zasilanie ze słupa, błąd od razu po
+wpięciu --- to niemal na pewno uziom, nie ładowarka''.}
+
+\obj{F7 --- Margines upływowy (ile brakuje do wyzwolenia różnicówki)}{%
+\textbf{Po co:} klasyka: ,,różnicówka wyzwala tylko nocą/po deszczu''. Każde urządzenie trochę
+,,przecieka'' do uziemienia --- pytanie, ile przecieka ładowarka z autem i ile zapasu zostaje do
+progu 30 mA, gdy w domu na tej samej różnicówce wisi pralka, zmywarka i wilgotna piwnica.
+\textbf{Jak działa:} czujnik różnicowy urządzenia (-B1) mierzy naturalny upływ badanej ładowarki
+(z symulowanym autem) w spoczynku, po podłączeniu i pod obciążeniem. Potem generator dolewa
+powoli dodatkowy ,,cudzy'' upływ --- rosnącą rampą, osobno przemienny i stały --- aż wewnętrzne
+zabezpieczenie ładowarki zadziała; zapisujemy prąd i czas.
+\textbf{Co dostajesz:} np. ,,upływ własny 3,8 mA; zadziałanie przy dolewce 19 mA AC''. Wniosek do
+katalogu: u klienta z jedną różnicówką na pół domu wystarczy 15 mA tła, by nocna lodówka
+przelała czarę --- rekomendacja: osobny obwód, a nie wymiana ładowarki.}
+
+\obj{F8 --- Wrażliwość na słabą (,,miękką'') sieć}{%
+\textbf{Po co:} długi przewód, przedłużacz, koniec linii na wsi --- napięcie siada dopiero pod
+prądem. Ładowarki różnie na to reagują: jedne grzecznie zmniejszają prąd, inne przerywają.
+\textbf{Jak działa:} włączamy kolejne oporniki szeregowe (0,15/0,3/0,6 \ohm) i patrzymy, co robi
+ładowarka przy pełnym prądzie: ile realnie płynie, jak głęboko siada napięcie, czy pojawia się
+błąd.
+\textbf{Co dostajesz:} zachowanie modelu w funkcji ,,twardości'' sieci, np. ,,przy 0,6 \ohm{}
+redukuje do 10 A bez błędu''. To wprost tłumaczy ,,czemu u klienta ładuje wolniej niż ustawił''.}
+
+\obj{F9 --- Zachowania trójfazowe (asymetria, kolejność, zniknięcie fazy)}{%
+\textbf{Po co:} w instalacjach 3F zdarzają się: jedna słaba faza, zamieniona kolejność po pracach
+elektryka, przepalona wkładka jednej fazy w trakcie ładowania. Modele 3F reagują różnie --- od
+kontynuacji na jednej fazie po twardy błąd.
+\textbf{Jak działa:} symulator osłabia jedną fazę opornikiem (asymetria), przekaźnik zamienia dwie
+fazy miejscami (kolejność), a stycznik rozcina jedną fazę w środku pracy (,,przepalona wkładka'').
+Urządzenie rejestruje reakcję: prądy na fazach, komunikaty, czasy.
+\textbf{Co dostajesz:} wpisy typu ,,po utracie L2 kontynuuje jednofazowo 6 A'' albo ,,zgłasza
+E-07 i wymaga restartu'' --- bezcenne przy telefonie ,,po wymianie skrzynki przestało działać''.}
+
+\obj{F10 --- Termika złącz $+$ czy czujnik ładowarki mówi prawdę}{%
+\textbf{Po co:} ,,grzeje się wtyczka'' to najczęstszy objaw instalacyjny; ładowarki mają własny
+czujnik temperatury wtyczki i próg wstrzymania --- warto znać ten próg i wiedzieć, czy czujnik
+nie kłamie.
+\textbf{Jak działa:} ładowarka (modele z wtyczką) pracuje przez nasze wzorcowo ,,zepsute''
+gniazdo o znanej, skalibrowanej oporności styku (0,1 lub 0,3 \ohm). Kamera termowizyjna patrzy na
+wtyczkę i mierzy, jak szybko i do jakiej temperatury rośnie; równolegle czytamy temperaturę,
+którą pokazuje sama ładowarka, i notujemy moment, w którym wstrzymuje pracę, oraz kiedy sama
+wraca.
+\textbf{Co dostajesz:} krzywą nagrzewania modelu, próg wstrzymania i błąd wskazań czujnika DUT
+(np. ,,pokazuje o 6 stopni mniej niż jest''). Plus obiektywny wzorzec do porównań: tak wygląda
+,,grzanie wtyczki'' naprawdę.}
+
+\obj{F11 --- Oporność styków wtyczki i wtyku (miliomomierz przypadku)}{%
+\textbf{Po co:} zamienić ,,wtyczka jakaś ciepła'' na liczbę. Zdrowe złącze ma pojedyncze
+dziesiątki miliomów; wypalone --- kilkaset. To rozstrzyga, czy problem zrobiło gniazdo klienta.
+\textbf{Jak działa:} pomiar czteroprzewodowy (Kelvina): dwa przewody pchają znany prąd, dwa
+osobne mierzą spadek napięcia dokładnie na złączu --- dzięki temu oporność przewodów pomiarowych
+nie fałszuje wyniku. Pomiar robi się pod realnym prądem i można go powtarzać w trakcie
+nagrzewania (trend).
+\textbf{Co dostajesz:} np. ,,wtyczka zwrotu: 180 m\ohm{} (norma zdrowego $<$30) --- ślad pracy
+w wypalonym gnieździe''. Twardy dowód do rozmowy z klientem i decyzji o naprawie.}
+
+\obj{F12 --- Upływ własny egzemplarza (porównanie z kartą modelu)}{%
+\textbf{Po co:} zawilgocona lub zestarzała elektronika ,,przecieka'' bardziej niż powinna ---
+i wyzwala różnicówki u klienta, choć na stole wszystko działa.
+\textbf{Jak działa:} ten sam pomiar co w F7, ale tylko część pierwsza: czujnik -B1 mierzy upływ
+konkretnego zwrotu w trzech stanach (spoczynek / podłączone auto / obciążenie) i porównuje
+z wartością zapisaną w karcie modelu.
+\textbf{Co dostajesz:} odchyłkę od wzorca, np. ,,model: 3,8 mA, ten egzemplarz: 9,5 mA ---
+degradacja izolacji, kwalifikacja do naprawy'' --- mimo że ,,działa''.}
+
+\obj{F13 --- Jakość toru prądowego egzemplarza (co ,,ginie'' w środku)}{%
+\textbf{Po co:} po przegrzaniach u klienta stycznik i połączenia wewnątrz ładowarki potrafią mieć
+nadpalone styki. Na oko działa; pod prądem --- grzeje się i gaśnie.
+\textbf{Jak działa:} urządzenie skokowo zmienia obciążenie (np. 25\%$\to$100\%) i z własnego
+pomiaru napięcia liczy, ile woltów ,,znika'' wewnątrz badanej ładowarki (jej oporność
+wewnętrzna), oraz --- przy załączaniu i wyłączaniu --- mierzy czasy zadziałania jej stycznika
+(z czujników obecności napięcia).
+\textbf{Co dostajesz:} liczbę m\ohm{}/spadku dla egzemplarza i czasy łączeń; wzrost względem
+zdrowych sztuk $=$ zużyty tor/stycznik. Świetnie łapie usterki ,,po przejściach''.}
+
+\obj{F14 --- Porównanie progów egzemplarza z kartą modelu}{%
+\textbf{Po co:} najtrudniejsze zwroty to te, w których uszkodził się \emph{obwod pomiarowy}
+ładowarki --- ona działa, ale np. za wcześnie zgłasza błąd uziemienia albo za późno widzi upływ.
+Bez wzorca tego nie widać.
+\textbf{Jak działa:} skrócona wersja pomiarów F4/F6/F7 wykonana na zwrocie i zestawiona
+z kartą modelu (golden unit). Odchyłka progu poza tolerancję $=$ konkretna, nazwana usterka.
+\textbf{Co dostajesz:} twarde ,,jest uszkodzenie: próg PE przesunięty z 120 na 30 \ohm'' zamiast
+,,u nas działa, odsyłamy''.}
+
+\obj{F15 --- Nadzór długoterminowy (nocne polowanie na usterki sporadyczne)}{%
+\textbf{Po co:} część usterek zdarza się raz na dobę albo tylko w specyficznych warunkach ---
+w godzinę testu ich nie złapiesz.
+\textbf{Jak działa:} zwrot zostaje na stanowisku na noc/weekend i pracuje w zaprogramowanym
+rytmie profili symulatora; urządzenie stempluje czasem każde zdarzenie (zaniki, minima napięcia,
+skoki upływu, temperatury, zmiany stanu ładowania). Przy okazji można porównywać łączność WiFi
+zwrotu z egzemplarzem referencyjnym stojącym obok. \emph{Warunek: czujka dymu w pomieszczeniu
+i sprawdzony łańcuch bezpieczeństwa.}
+\textbf{Co dostajesz:} zapis chwili, w której ,,to coś'' się wydarzyło, z pełnym kontekstem ---
+zamiast zgadywania.}
+
+\obj{F16 --- Prąd załączeniowy (inrush)}{%
+\textbf{Po co:} niektóre zgłoszenia ,,wybija eskę przy wpinaniu'' to nie zwarcie, tylko krótka
+szpilka prądu ładowania kondensatorów zasilacza --- za ostra dla słabego zabezpieczenia klienta.
+\textbf{Jak działa:} prosty układ ,,zapamiętaj szczyt'' (peak-hold): przy załączeniu badanej
+ładowarki kondensator zatrzymuje najwyższą chwilową wartość prądu, którą potem spokojnie odczytuje
+przetwornik. Bez drogiego szybkiego próbkowania.
+\textbf{Co dostajesz:} wartość szczytu do karty modelu i porównanie egzemplarza (uszkodzony
+prostownik/termistor daje wyraźnie inną szpilkę). Wpis: ,,szpilka 38 A --- na B10 u klienta ma
+prawo wybijać; rekomendacja B16 lub C''.}
+
+\obj{F17 --- Stanowiskowy test różnicówek (w tym ,,oślepianie'' typu AC)}{%
+\textbf{Po co:} w wielu domach są stare różnicówki typu AC. Prąd stały z elektroniki auta potrafi
+je ,,oślepić'' --- przestają widzieć nawet zwykłe upływy. Miernik instalacyjny tego nie pokaże;
+nasz generator --- tak.
+\textbf{Jak działa:} przyniesioną (lub magazynową) różnicówkę wpina się w osłonięte zaciski na
+panelu. Generator podaje kolejno upływ przemienny, pulsujący i gładki stały --- mierzymy prąd
+i czas zadziałania dla każdego. Test ,,oślepiania'': najpierw 6--10 mA prądu stałego, potem
+próba zwykłym 30 mA przemiennym --- sprawna różnicówka typu A zadziała, oślepiona typu AC nie.
+\textbf{Co dostajesz:} dowód na piśmie do rozmowy z klientem (,,to nie ładowarka --- to pańska
+różnicówka z 1998 r. traci czułość przy aucie'') i materiał szkoleniowo-sprzedażowy. Funkcja
+świadomie na końcu kolejki --- zaciski w panelu robimy od razu, żeby później nie ciąć obudowy.}
+
+\section{Wpływ na architekturę modułu A}
+\subsection{Bloki bazowe wykorzystywane bez zmian}
+PM701E z serwami, tor CP/PP, metering -U2 $+$ -T1..3, czujnik różnicowy -B1 (RCM), generator -A3,
+termowizja MLX90640/MLX90614 $+$ DS18B20, HMI DWIN, SD $+$ USB-C, RTC, WiFi/MQTT, łańcuch E2
+z -K4, optotransoptory faz, separacja -K30..33. \textbf{F12, F13 i F14 nie wymagają żadnego
+nowego sprzętu.}
+\subsection{Sekcja bench-test --- rdzeń (status Z3 zmieniony z ,,opcji'' na obowiązkową)}
+\begin{longtable}{@{}p{0.34\textwidth}p{0.15\textwidth}p{0.13\textwidth}p{0.30\textwidth}@{}}
+\toprule
+\textbf{Element (nowy)} & \textbf{Dla} & \textbf{Sterowanie} & \textbf{Uwagi}\\
+\midrule
+pole zasilania DUT: Schuko $+$ CEE16 3F; B16 1P/3P; \textbf{RCD 100 mA typ A (tor testowy)}
+i \textbf{RCD 30 mA typ A (gniazda robocze)} & F2--F17 & --- & 100 mA na torze testowym celowo:
+nie fałszuje pomiarów progów 30 mA badanych ładowarek (F7/F14); ludzi chronią osłony, procedury
+i 30 mA na gniazdach podręcznych\\
+zespół regulacji napięcia: \textbf{variac 16 A (używany) $+$ serwo DS3218 na pokrętle} $+$ rama
+i sprzęgło; sprzężenie zwrotne z -U2 & F3--F5, F14 & PWM serwa & patent identyczny jak przy
+pokrętłach PM701E; regulacja płynna, w pełni automatyczna\\
+odczepy impedancji 3$\times$(0,15/0,3/0,6 \ohm, drutowe, termiki do pętli -F11.x) & F2, F8, F9 &
+9 przek. & strefa mocy bench, za osłoną\\
+stycznik szybki zaników $+$ układ czasowy & F2, F5, F15 & 1 przek. & timer sprzętowy w -A1\\
+przekaźniki: zamiana L--N; przerwa PE & F2, F6 & 2 przek. & wyłącznie tor bench\\
+drabinka R$_{PE}$ 10/50/200 \ohm/$\infty$ & F6 & 3 przek. & \textbf{tylko w PE toru bench},
+nigdy w PE stanowiska\\
+źródło U$_{N-PE}$ 0--10 V (transformator separacyjny, ogranicznik 1 k\ohm) & F6 & 1 przek.$+$DAC &
+prąd $\le$10 mA\\
+rozszerzenie -A3: przełącznik strony $+$ zakres do 40 mA & F2, F7, F17 & 1 przek. & bez 40 mA
+progi 30 mA różnicówek DUT byłyby nieosiągalne\\
+krzyżowanie kolejności faz $+$ ,,utrata fazy'' & F9 & 2 przek. & tor bench 3F\\
+zaciski Kelvina $+$ wzmacniacz m\ohm & F11 & 1 wej. ADC & 4 gniazda sense na panelu\\
+wzorcowe ,,złe gniazdo'' 0,1/0,3 \ohm{} (kalibrowane) & F10 & 1 przek. & obok gniazda Schuko\\
+układ peak-hold & F16 & 1 wej. ADC & strefa analogowa\\
+zaciski testu RCD w osłonie & F17 & --- & mechanika panelu teraz; elektronika wspólna z -A3
+na końcu kolejki\\
+odbiornik równoległy: grzałka 2 kW $+$ stycznik ($+$silnik za 0 zł, jeśli jest) & F2 & 1 przek. &
+obok stanowiska\\
+drugi MCP23017 $+$ ULN2803 $+$ opto & obsługa 21 wyjść & I2C & strefa logiki\\
+\bottomrule
+\end{longtable}
+\subsection{Firmware}
+Sekwencje przemiatań F4--F10 z kryteriami stopu; formaty kart/profili/sesji z polem wersji;
+replay; rejestrator półokresowy (szybkie odczyty -U2 $+$ zdarzenia opto) dla F5/F15; tryb
+USB-pendrive z blokadą pomiarów na czas zgrywania; \textbf{procedura wejściowa zwrotu}
+($\sim$15 min: F11 $+$ F12 $+$ oględziny $+$ zdjęcia) jako pierwszy ekran każdej sesji;
+sterowanie serwem variaca z pętlą po -U2.
+\subsection{Bezpieczeństwo}
+Wady symulowane wyłącznie w wydzielonym torze bench; przy próbach z osłabionym/przerwanym PE
+obudowa DUT traktowana jak potencjalnie niebezpieczna (bariera, zakaz dotykania); upływ -A3
+ograniczony sprzętowo do 40 mA; test F17 tylko w osłonie; praca nocna (F15) wyłącznie z czujką
+dymu i sprawdzonym łańcuchem E2; termiki odczepów włączone w pętlę -F11.x łańcucha.
+
+\section{Kosztorys (ostateczny, po rozstrzygnięciach)}
+\begin{longtable}{@{}p{0.60\textwidth}r@{}}
+\toprule
+\textbf{Pozycja} & \textbf{zł}\\
+\midrule
+pole zasilania DUT (gniazda, B16 1P/3P, RCD 100 mA $+$ RCD 30 mA) & 250--450\\
+zespół F3: variac 16 A używany $+$ serwo $+$ sprzęgło $+$ rama & 550--900\\
+odczepy impedancji 3 fazy ($+$termiki) & 120--220\\
+stycznik szybki zaników $+$ elementy czasowe & 60--120\\
+przekaźniki L--N / przerwa PE & 40--80\\
+drabinka R$_{PE}$ $+$ przekaźniki & 60--120\\
+źródło U$_{N-PE}$ & 50--100\\
+rozszerzenie -A3 (strona $+$ 40 mA) & 50--100\\
+krzyżowanie faz $+$ utrata fazy & 80--150\\
+pomiar m\ohm{} (Kelvin $+$ wzmacniacz) & 60--120\\
+wzorcowe złe gniazdo & 40--80\\
+peak-hold (F16) & 20--40\\
+zaciski testu RCD (mechanika panelu) & 20--40\\
+odbiornik równoległy (grzałka 2 kW $+$ stycznik) & 80--150\\
+drugi MCP23017 $+$ ULN $+$ opto $+$ drobnica & 40--80\\
+\midrule
+\textbf{RAZEM (sprzęt, komplet po rozstrzygnięciach)} & \textbf{$\sim$1520--2750}\\
+\bottomrule
+\end{longtable}
+Praca własna: sekcja bench $+$ symulator 2--3 dni; mechanika variaca 0,5 dnia; firmware 3--4 dni
+--- \textbf{razem $\sim$5,5--7,5 dnia}. Pozycje odroczone kosztowo: elektronika F17 (0 zł teraz
+--- wspólna z -A3), spływ do HA i raport HTML (etap 2, sam firmware).
+
+\section{Kolejność wdrożenia i zasady operacyjne}
+\textbf{Kolejność:} F1 $\to$ F11/F12/F13 (wraz z procedurą wejściową zwrotu) $\to$ F6/F7 $\to$
+F2 komplet $\to$ F10 $\to$ F15 $\to$ F8/F9 $\to$ F3 $+$ F4/F5 $\to$ F14 $\to$ F17 (F16 sprzętowo
+od razu, programowo przy okazji).\\
+\textbf{Zasady:} golden unit każdego modelu $+$ odświeżenie karty po każdej aktualizacji
+firmware; w każdej karcie zastrzeżenie: \emph{progi zmierzono z obciążeniem stanowiskowym ---
+auto klienta może zareagować wcześniej niż ładowarka}; kalibracja symulatora (rzeczywiste
+wartości odczepów/drabinki zmierzone i wpisane do konfiguracji); przegląd po kwartale: odsetek
+zwrotów zamkniętych z twardym dowodem, średni czas diagnozy, liczba wpisów katalogu z danymi.
+
+\section{Spójność z pomiarami obowiązkowymi i resztą projektu}
+Pomiary obowiązkowe wykonywane są przy wyłączonym symulatorze (przekaźniki F2 w stanie
+neutralnym, tor bench odłączony, separacja -K30..33) --- sekwencer wymusza to blokadą. Funkcje F
+nie zmieniają łańcucha E2 (dochodzą wyłącznie termiki odczepów w pętli -F11.x). Karta odporności
+nie jest testem zgodności z normą --- opisuje praktyczne zachowanie modelu na naszym stanowisku
+i służy diagnozie, porównaniom egzemplarzy oraz regresji po aktualizacjach. Dokument nie dotyczy
+szafy B (magazynu energii); jedyny punkt styku to obciążenie do soaków --- przejściowo auto
+testowe.
+
+\end{document}

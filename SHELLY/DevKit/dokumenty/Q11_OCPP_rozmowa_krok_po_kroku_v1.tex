@@ -1,0 +1,484 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small AMPERE POINT — rozmowa OCPP krok po kroku · Q11 z modułem Shelly · v1 · 2026-09-26}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Rozmowa OCPP krok po kroku\par}
+{\large Jedna sesja ładowania Q11 przez most OCPP, ramka po ramce · AMPERE POINT · 26 września 2026 · oprac. Dawid Cekała\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+
+\section*{Kto rozmawia i jakim językiem}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{3.97cm}>{\raggedright\arraybackslash}p{2.83cm}>{\raggedright\arraybackslash}p{5.05cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Uczestnik} & \textbf{Rola} & \textbf{Z kim rozmawia} & \textbf{Łącze i język} \\
+\midrule\endhead
+\bottomrule\endfoot
+serwer OCPP, CSMS & system operatora: karty, rozliczenia, zdalne sterowanie & tylko z mostem & WebSocket, OCPP 1.6J \\
+most OCPP & udaje wobec serwera ładowarkę \texttt{Q11-\allowbreak{}543204516334} & z serwerem i z DevKitem & dwa połączenia WebSocket, dwa języki \\
+DevKit & moduł Shelly w Q11 & z mostem i ze sterownikiem Q11 & WebSocket z poleceniami Shelly; łącze szeregowe z protokołem Tuya \\
+sterownik Q11 & ładuje auto & tylko z DevKitem & łącze szeregowe 9600 b/s, protokół Tuya \\
+\end{longtable}
+
+Serwer nie wie, że po drugiej stronie jest most, a nie ładowarka. Sterownik Q11 nie wie nic o OCPP.
+
+
+\textbf{Oznaczenia w dokumencie:}
+
+\begin{itemize}
+\item \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \textbf{prawdziwa ramka} skopiowana z logów z 25.09.2026,
+\item \leavevmode{\symbolfont\color{apamber}\textbf{◐}} \textbf{przykład:} tak zbuduje ją nasz most według swojego kodu, ale tej ramki jeszcze nie zaobserwowaliśmy, bo pełna transakcja z ładowaniem czeka na test z symulatorem.
+\end{itemize}
+
+Ramki OCPP idą łączem w jednej linii. W dokumencie są rozpisane na kilka linii, żeby dało się je czytać.
+
+
+\section*{Jak czytać ramkę OCPP}
+
+Każda wiadomość OCPP to tablica JSON. Pierwsza liczba mówi, czym jest wiadomość:
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{2.01cm}>{\raggedright\arraybackslash}p{3.68cm}>{\raggedright\arraybackslash}p{6.15cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Pierwsza liczba} & \textbf{Nazwa w OCPP} & \textbf{Po polsku} & \textbf{Budowa} \\
+\midrule\endhead
+\bottomrule\endfoot
+2 & CALL & zapytanie albo polecenie & \texttt{[2, "numer", "Akcja", \{dane\}]} \\
+3 & CALLRESULT & odpowiedź & \texttt{[3, "numer", \{dane\}]} \\
+4 & CALLERROR & odpowiedź „nie da się” & \texttt{[4, "numer", "kod błędu", "opis", \{szczegóły\}]} \\
+\end{longtable}
+
+\begin{itemize}
+\item \textbf{Numer} wymyśla ten, kto zadaje pytanie. Nasz most i nasz serwer używają losowych identyfikatorów UUID. Odpowiedź powtarza ten sam numer, więc wiadomo, na co odpowiada.
+\item \textbf{Akcja} jest tylko w zapytaniu. Odpowiedź jej nie powtarza, bo wynika z numeru.
+\item \textbf{Zapytanie może wysłać każda strona.} Ładowarka pyta o rejestrację i zgłasza pomiary, a serwer wysyła polecenia. Kierunek łącza nie ogranicza, kto pyta.
+\item \textbf{Jedno pytanie naraz.} Strona nie wysyła kolejnego zapytania, dopóki nie dostanie odpowiedzi na poprzednie albo nie minie limit czasu.
+\end{itemize}
+
+\section*{Krok 0. Otwarcie łącza}
+
+\textbf{Most {\symbolfont→} serwer OCPP · zwykłe połączenie sieciowe, które przechodzi w WebSocket · zapytanie i odpowiedź}
+
+
+Łącze zawsze otwiera ładowarka, u nas most. Zaczyna od zwykłego zapytania WWW z prośbą o przełączenie na WebSocket:
+
+
+\begin{kodbox}
+\mbox{}GET\ /Q11-543204516334\ HTTP/1.1\\
+\mbox{}Host:\ localhost:9000\\
+\mbox{}Upgrade:\ websocket\\
+\mbox{}Connection:\ Upgrade\\
+\mbox{}Sec-WebSocket-Version:\ 13\\
+\mbox{}Sec-WebSocket-Key:\ <losowy\ klucz>\\
+\mbox{}Sec-WebSocket-Protocol:\ ocpp1.6
+\end{kodbox}
+
+Serwer się zgadza:
+
+
+\begin{kodbox}
+\mbox{}HTTP/1.1\ 101\ Switching\ Protocols\\
+\mbox{}Upgrade:\ websocket\\
+\mbox{}Connection:\ Upgrade\\
+\mbox{}Sec-WebSocket-Accept:\ <skrót\ klucza>\\
+\mbox{}Sec-WebSocket-Protocol:\ ocpp1.6
+\end{kodbox}
+
+\begin{itemize}
+\item \texttt{/\allowbreak{}Q11-\allowbreak{}543204516334} na końcu adresu to \textbf{identyfikator ładowarki}. Po nim serwer wie, kto się połączył.
+\item \texttt{Sec-\allowbreak{}WebSocket-\allowbreak{}Protocol:\allowbreak{} ocpp1.\allowbreak{}6} to deklaracja języka. Serwer potwierdza, że będzie mówić OCPP 1.6.
+\item \texttt{101 Switching Protocols} oznacza zgodę. Od tej chwili to samo połączenie jest stałą linią w obie strony.
+\item Tak wygląda standardowe otwarcie WebSocket, które robi biblioteka. Nie zapisywaliśmy tych nagłówków, ale serwer zapisał jego wynik: „POLACZENIE ladowarki Q11-543204516334, podprotokol ocpp1.6”, \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} 25.09, 11:56:07.
+\item W produkcji adres zaczyna się od \texttt{wss://}, a ładowarka podaje hasło albo certyfikat.
+\end{itemize}
+
+\section*{Krok 1. Przedstawienie się: BootNotification}
+
+\textbf{Most {\symbolfont→} serwer · zapytanie · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe, 11:56:07}
+
+
+\begin{kodbox}
+\mbox{}[2,\ "aa145e23-b8f2-4fb9-9caa-dabe46698938",\ "BootNotification",\\
+\mbox{}\ \ \ \ \{"chargePointModel":\ "Q11",\\
+\mbox{}\ \ \ \ \ "chargePointVendor":\ "AmperePoint",\\
+\mbox{}\ \ \ \ \ "chargePointSerialNumber":\ "Q11-543204516334",\\
+\mbox{}\ \ \ \ \ "firmwareVersion":\ "Shelly\ X\ DevKit\ +\ skrypt\ v3"\}]
+\end{kodbox}
+
+\textbf{Serwer {\symbolfont→} most · odpowiedź · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe}
+
+
+\begin{kodbox}
+\mbox{}[3,\ "aa145e23-b8f2-4fb9-9caa-dabe46698938",\\
+\mbox{}\ \ \ \ \{"currentTime":\ "2026-09-25T09:56:07Z",\ "interval":\ 60,\ "status":\ "Accepted"\}]
+\end{kodbox}
+
+\begin{itemize}
+\item Ładowarka mówi, kim jest: producent, model, numer seryjny, wersja oprogramowania.
+\item \texttt{"status":\allowbreak{} "Accepted"} to zgoda na pracę. Przy „Pending” albo „Rejected” ładowarka nie może jeszcze nic innego wysyłać.
+\item \texttt{"interval":\allowbreak{} 60} to polecenie: „dawaj znak życia co 60 s”.
+\item \texttt{"currentTime"} to czas serwera w UTC. 09:56:07Z to 11:56:07 czasu polskiego.
+\item Gdzie są DevKit i Q11? Nigdzie. Rejestracja to sprawa tylko między mostem a serwerem.
+\end{itemize}
+
+\section*{Krok 2. Gotowość: StatusNotification}
+
+\textbf{Most {\symbolfont→} serwer · zapytanie · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe, 11:56:07}
+
+
+\begin{kodbox}
+\mbox{}[2,\ "55c8d3e7-b27e-4311-b681-80156eb2e953",\ "StatusNotification",\\
+\mbox{}\ \ \ \ \{"connectorId":\ 1,\ "errorCode":\ "NoError",\ "status":\ "Available",\\
+\mbox{}\ \ \ \ \ "timestamp":\ "2026-09-25T09:56:07Z",\ "info":\ "Q11:\ charger\_free"\}]
+\end{kodbox}
+
+\textbf{Serwer {\symbolfont→} most · odpowiedź · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe}
+
+
+\begin{kodbox}
+\mbox{}[3,\ "55c8d3e7-b27e-4311-b681-80156eb2e953",\ \{\}]
+\end{kodbox}
+
+\begin{itemize}
+\item \texttt{"connectorId":\allowbreak{} 1} to jedyne złącze Q11. Numer 0 oznaczałby całą ładowarkę.
+\item \texttt{"Available"} wziął się ze stanu Q11 \texttt{charger\_free}, czyli wolna. Most przepisuje stan Q11 na słowo OCPP.
+\item \texttt{"info"} to dowolny opis. Wpisujemy tam oryginalny stan Q11, żeby było widać, skąd się wziął.
+\item Pusta odpowiedź \texttt{\{\}} znaczy „przyjąłem”. Na zgłoszenie stanu serwer nie ma nic do dodania.
+\end{itemize}
+
+\section*{Krok 3. Znak życia: Heartbeat}
+
+\textbf{Most {\symbolfont→} serwer · zapytanie · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe, 13:53:40}
+
+
+\begin{kodbox}
+\mbox{}[2,\ "2ad66794-3b62-4532-b95b-cb8347df4767",\ "Heartbeat",\ \{\}]
+\end{kodbox}
+
+\textbf{Serwer {\symbolfont→} most · odpowiedź · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe}
+
+
+\begin{kodbox}
+\mbox{}[3,\ "2ad66794-3b62-4532-b95b-cb8347df4767",\ \{"currentTime":\ "2026-09-25T11:53:40Z"\}]
+\end{kodbox}
+
+\begin{itemize}
+\item Zapytanie nie niesie danych, sama jego obecność znaczy „żyję”. Odpowiedź przy okazji podaje czas serwera.
+\item Od 11:57 do 13:41 most wysłał 104 takie zapytania, co 60 s, jak kazał serwer w kroku 1.
+\end{itemize}
+
+\section*{Krok 4. Zdalny start: RemoteStartTransaction}
+
+\textbf{Serwer {\symbolfont→} most · zapytanie, czyli polecenie · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe, 11:57:20}
+
+
+\begin{kodbox}
+\mbox{}[2,\ "ed769d84-e5f6-409a-9537-ce29b6d5134d",\ "RemoteStartTransaction",\\
+\mbox{}\ \ \ \ \{"idTag":\ "KARTA-TEST",\ "connectorId":\ 1\}]
+\end{kodbox}
+
+\textbf{Most {\symbolfont→} serwer · odpowiedź · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe}
+
+
+\begin{kodbox}
+\mbox{}[3,\ "ed769d84-e5f6-409a-9537-ce29b6d5134d",\ \{"status":\ "Accepted"\}]
+\end{kodbox}
+
+\begin{itemize}
+\item Teraz pyta serwer: „uruchom ładowanie dla karty KARTA-TEST”. Ta sama linia działa w drugą stronę.
+\item \texttt{"idTag"} to identyfikator użytkownika. Q11 nie ma czytnika kart, więc most tylko zapamiętuje tę wartość i wstawi ją do StartTransaction.
+\item \texttt{"Accepted"} znaczy „przyjąłem polecenie”, a nie „ładowanie trwa”. Ładowanie zacznie się, gdy auto będzie gotowe.
+\end{itemize}
+
+\textbf{Co most robi dalej, na łączu z DevKitem.} Wysyła polecenie Shelly „włącz ładowanie”:
+
+
+\begin{kodbox}
+\mbox{}\{"id":\ 9,\ "src":\ "most-ocpp",\ "method":\ "Boolean.Set",\ "params":\ \{"id":\ 200,\ "value":\ true\}\}
+\end{kodbox}
+
+\leavevmode{\symbolfont\color{apamber}\textbf{◐}} Numer \texttt{id} nadaje most. W teście o 11:57:20 ładowanie było już włączone, więc pole się nie zmieniło i DevKit nic nie wysłał do Q11. Gdy ładowanie jest wyłączone, DevKit wysyła do Q11 taką ramkę Tuya, \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwa z 10:52:37, wtedy z aplikacji:
+
+
+\begin{kodbox}
+\mbox{}DevKit\ {\symbolfont→}\ Q11:\ \ 55\ AA\ 00\ 06\ 00\ 05\ 12\ 01\ 00\ 01\ 01\ 1F\ \ \ \ ustaw\ punkt\ danych\ 18\ na\ „tak”\\
+\mbox{}Q11\ {\symbolfont→}\ DevKit:\ \ 55\ AA\ 03\ 07\ 00\ 05\ 12\ 01\ 00\ 01\ 01\ 23\ \ \ \ punkt\ danych\ 18\ =\ „tak”
+\end{kodbox}
+
+Budowa: \texttt{55 AA} początek, \texttt{00} albo \texttt{03} wersja, \texttt{06} ustaw albo \texttt{07} melduję, \texttt{00 05} długość danych, \texttt{12} punkt danych 18, \texttt{01} typ „tak lub nie”, \texttt{00 01} długość wartości, \texttt{01} wartość, na końcu suma kontrolna.
+
+
+\section*{Krok 5. Auto gotowe, ładowanie rusza: StatusNotification i StartTransaction}
+
+Tu rozmowa zaczyna się w Q11, a nie na serwerze.
+
+
+\textbf{Q11 {\symbolfont→} DevKit · łącze szeregowe · meldunek · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład}
+
+
+\begin{kodbox}
+\mbox{}55\ AA\ 03\ 07\ 00\ 05\ 03\ 04\ 00\ 01\ 01\ 17\ \ \ \ punkt\ danych\ 3\ =\ pozycja\ 1\ =\ auto\ podłączone\\
+\mbox{}55\ AA\ 03\ 07\ 00\ 05\ 03\ 04\ 00\ 01\ 04\ 1A\ \ \ \ punkt\ danych\ 3\ =\ pozycja\ 4\ =\ ładuje
+\end{kodbox}
+
+\textbf{DevKit {\symbolfont→} most · WebSocket · powiadomienie Shelly · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład}
+
+
+\begin{kodbox}
+\mbox{}\{"src":\ "apq11dev-543204516334",\ "dst":\ "most-ocpp",\ "method":\ "NotifyStatus",\\
+\mbox{}\ "params":\ \{"ts":\ 1790400000.00,\ "enum:200":\ \{"value":\ "charger\_charging"\}\}\}
+\end{kodbox}
+
+Skrypt usługi w DevKicie przetłumaczył pozycję 4 na nazwę \texttt{charger\_\allowbreak{}charging}. Powiadomienie to nie jest zapytanie: nie ma numeru \texttt{id} i nie wymaga odpowiedzi.
+
+
+\textbf{Most {\symbolfont→} serwer · dwa zapytania · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład}
+
+
+\begin{kodbox}
+\mbox{}[2,\ "b71c…",\ "StatusNotification",\\
+\mbox{}\ \ \ \ \{"connectorId":\ 1,\ "errorCode":\ "NoError",\ "status":\ "Charging",\\
+\mbox{}\ \ \ \ \ "timestamp":\ "2026-09-26T10:00:00Z",\ "info":\ "Q11:\ charger\_charging"\}]\\
+\mbox{}\\
+\mbox{}[2,\ "c3e4…",\ "StartTransaction",\\
+\mbox{}\ \ \ \ \{"connectorId":\ 1,\ "idTag":\ "KARTA-TEST",\ "meterStart":\ 1234560,\\
+\mbox{}\ \ \ \ \ "timestamp":\ "2026-09-26T10:00:00Z"\}]
+\end{kodbox}
+
+\textbf{Serwer {\symbolfont→} most · odpowiedź na StartTransaction · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład}
+
+
+\begin{kodbox}
+\mbox{}[3,\ "c3e4…",\ \{"transactionId":\ 1,\ "idTagInfo":\ \{"status":\ "Accepted"\}\}]
+\end{kodbox}
+
+\begin{itemize}
+\item Zanim ruszyło ładowanie, most wysłał StatusNotification „Preparing”, gdy Q11 zgłosiła „auto podłączone”.
+\item \texttt{"meterStart":\allowbreak{} 1234560} to stan licznika w Wh w chwili startu, czyli 1234,56 kWh z punktu danych 1.
+\item \texttt{"transactionId":\allowbreak{} 1} nadaje serwer. Most musi go zapamiętać, bo każdy pomiar i koniec transakcji będą się do niego odwoływać.
+\item \texttt{"idTag"} pochodzi z kroku 4. Bez zdalnego startu most wpisałby \texttt{Q11-LOKALNIE}.
+\end{itemize}
+
+\section*{Krok 6. Pomiary: MeterValues}
+
+\textbf{Most {\symbolfont→} serwer · zapytanie · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład, 12 minut po starcie, 10 A na fazę}
+
+
+\begin{kodbox}
+\mbox{}[2,\ "d9a0…",\ "MeterValues",\\
+\mbox{}\ \ \ \ \{"connectorId":\ 1,\ "transactionId":\ 1,\\
+\mbox{}\ \ \ \ \ "meterValue":\ [\{"timestamp":\ "2026-09-26T10:12:00Z",\\
+\mbox{}\ \ \ \ \ \ \ "sampledValue":\ [\\
+\mbox{}\ \ \ \ \ \ \ \ \ \{"value":\ "1235940",\ "measurand":\ "Energy.Active.Import.Register",\ "unit":\ "Wh"\},\\
+\mbox{}\ \ \ \ \ \ \ \ \ \{"value":\ "6900",\ \ \ \ "measurand":\ "Power.Active.Import",\ "unit":\ "W"\},\\
+\mbox{}\ \ \ \ \ \ \ \ \ \{"value":\ "10.0",\ \ \ \ "measurand":\ "Current.Import",\ "phase":\ "L1",\ "unit":\ "A"\},\\
+\mbox{}\ \ \ \ \ \ \ \ \ \{"value":\ "230.1",\ \ \ "measurand":\ "Voltage",\ \ \ \ \ \ \ \ "phase":\ "L1",\ "unit":\ "V"\},\\
+\mbox{}\ \ \ \ \ \ \ \ \ \{"value":\ "10",\ \ \ \ \ \ "measurand":\ "Current.Offered",\ "unit":\ "A"\}]\}]\}]
+\end{kodbox}
+
+\textbf{Serwer {\symbolfont→} most · odpowiedź}
+
+
+\begin{kodbox}
+\mbox{}[3,\ "d9a0…",\ \{\}]
+\end{kodbox}
+
+\begin{itemize}
+\item Wartości są tekstem, taki jest wymóg OCPP.
+\item Licznik wzrósł z 1 234 560 do 1 235 940 Wh, czyli o 1,38 kWh. Tyle daje 6,9 kW przez 12 minut: 6,9 × 0,2 h = 1,38 kWh.
+\item Prąd i napięcie idą osobno dla L1, L2 i L3. W przykładzie pokazana jest tylko L1.
+\item Most wysyła pomiary co 30 s w trakcie transakcji. Serwer może też poprosić o nie od razu przez TriggerMessage. Tak było w teście o 11:56:48, \leavevmode{\symbolfont\color{apgreen}\textbf{✔}}, wtedy z samymi zerami, bo auto było odłączone.
+\end{itemize}
+
+\section*{Krok 7. Zmiana limitu prądu: SetChargingProfile}
+
+To jedyny krok, który przeszedł w teście przez cały łańcuch, od serwera do Q11 i z powrotem.
+
+
+\textbf{Serwer {\symbolfont→} most · polecenie · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe, 11:56:48}
+
+
+\begin{kodbox}
+\mbox{}[2,\ "60ca351b-c144-4e5a-b88d-b9a9e7d01a4b",\ "SetChargingProfile",\\
+\mbox{}\ \ \ \ \{"connectorId":\ 1,\\
+\mbox{}\ \ \ \ \ "csChargingProfiles":\ \{"chargingProfileId":\ 1,\ "stackLevel":\ 0,\\
+\mbox{}\ \ \ \ \ \ \ \ "chargingProfilePurpose":\ "TxDefaultProfile",\ "chargingProfileKind":\ "Absolute",\\
+\mbox{}\ \ \ \ \ \ \ \ "chargingSchedule":\ \{"chargingRateUnit":\ "A",\\
+\mbox{}\ \ \ \ \ \ \ \ \ \ \ "chargingSchedulePeriod":\ [\{"startPeriod":\ 0,\ "limit":\ 10.0\}]\}\}\}]
+\end{kodbox}
+
+\textbf{Most {\symbolfont→} DevKit · polecenie Shelly · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe, ta sama sekunda}
+
+
+\begin{kodbox}
+\mbox{}\{"id":\ 8,\ "src":\ "most-ocpp",\ "method":\ "Number.Set",\ "params":\ \{"id":\ 200,\ "value":\ 10\}\}
+\end{kodbox}
+
+\textbf{DevKit {\symbolfont→} most · odpowiedź Shelly · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe}
+
+
+\begin{kodbox}
+\mbox{}\{"id":\ 8,\ "src":\ "apq11dev-543204516334",\ "dst":\ "most-ocpp",\ "result":\ null\}
+\end{kodbox}
+
+\textbf{Most {\symbolfont→} serwer · odpowiedź OCPP · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe}
+
+
+\begin{kodbox}
+\mbox{}[3,\ "60ca351b-c144-4e5a-b88d-b9a9e7d01a4b",\ \{"status":\ "Accepted"\}]
+\end{kodbox}
+
+\textbf{DevKit {\symbolfont→} Q11 i z powrotem · łącze szeregowe · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe, 11:56:48–50}
+
+
+\begin{kodbox}
+\mbox{}11:56:48\ \ DevKit\ {\symbolfont→}\ Q11:\ \ 55\ AA\ 00\ 06\ 00\ 08\ 04\ 02\ 00\ 04\ 00\ 00\ 00\ 0A\ 21\ \ \ ustaw\ punkt\ 4\ na\ 10\\
+\mbox{}11:56:49\ \ Q11\ {\symbolfont→}\ DevKit:\ \ 55\ AA\ 03\ 07\ 00\ 08\ 04\ 02\ 00\ 04\ 00\ 00\ 00\ 0C\ 27\ \ \ punkt\ 4\ =\ 12,\ jeszcze\ stara\\
+\mbox{}11:56:50\ \ Q11\ {\symbolfont→}\ DevKit:\ \ 55\ AA\ 03\ 07\ 00\ 08\ 04\ 02\ 00\ 04\ 00\ 00\ 00\ 0A\ 25\ \ \ punkt\ 4\ =\ 10,\ przyjęta
+\end{kodbox}
+
+\textbf{DevKit {\symbolfont→} most · powiadomienie Shelly · \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} prawdziwe}
+
+
+\begin{kodbox}
+\mbox{}\{"src":\ "apq11dev-543204516334",\ "dst":\ "most-ocpp",\ "method":\ "NotifyStatus",\\
+\mbox{}\ "params":\ \{"ts":\ 1790330210.70,\ "number:200":\ \{"value":\ 10\}\}\}
+\end{kodbox}
+
+\begin{itemize}
+\item Profil mówi: „od chwili 0 limit 10 A”. \texttt{TxDefaultProfile} oznacza domyślny limit dla każdej transakcji, a \texttt{Absolute} znaczy, że czasy liczy się od wskazanej chwili.
+\item Most wyjmuje z profilu liczbę 10 i zamienia ją na polecenie Shelly dla pola \texttt{number:200}, czyli limitu prądu.
+\item W poleceniu Shelly \texttt{"id": 8} to numer zapytania nadany przez most, a \texttt{"params":\allowbreak{} \{"id":\allowbreak{} 200\}} to numer pola. Te dwa \texttt{id} nie mają ze sobą związku.
+\item Pole \texttt{"src":\allowbreak{} "most-\allowbreak{}ocpp"} mówi DevKitowi, dokąd odesłać odpowiedź i przyszłe powiadomienia.
+\item W ramkach Tuya widać zapis \texttt{04 02 00 04 00 00 00 0A}: punkt danych 4, typ liczba, 4 bajty wartości, wartość 10.
+\end{itemize}
+
+\section*{Krok 8. Zdalne zatrzymanie i koniec transakcji}
+
+\textbf{Serwer {\symbolfont→} most · polecenie · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład}
+
+
+\begin{kodbox}
+\mbox{}[2,\ "e5f6…",\ "RemoteStopTransaction",\ \{"transactionId":\ 1\}]
+\end{kodbox}
+
+\textbf{Most {\symbolfont→} serwer · odpowiedź · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład}
+
+
+\begin{kodbox}
+\mbox{}[3,\ "e5f6…",\ \{"status":\ "Accepted"\}]
+\end{kodbox}
+
+\textbf{Most {\symbolfont→} DevKit {\symbolfont→} Q11 · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład}
+
+
+\begin{kodbox}
+\mbox{}\{"id":\ 10,\ "src":\ "most-ocpp",\ "method":\ "Boolean.Set",\ "params":\ \{"id":\ 200,\ "value":\ false\}\}\\
+\mbox{}DevKit\ {\symbolfont→}\ Q11:\ \ 55\ AA\ 00\ 06\ 00\ 05\ 12\ 01\ 00\ 01\ 00\ 1E\ \ \ \ ustaw\ punkt\ danych\ 18\ na\ „nie”
+\end{kodbox}
+
+\textbf{Most {\symbolfont→} serwer · zapytanie · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład}
+
+
+\begin{kodbox}
+\mbox{}[2,\ "f7a8…",\ "StopTransaction",\\
+\mbox{}\ \ \ \ \{"transactionId":\ 1,\ "meterStop":\ 1236200,\\
+\mbox{}\ \ \ \ \ "timestamp":\ "2026-09-26T10:14:15Z",\ "reason":\ "Remote"\}]
+\end{kodbox}
+
+\textbf{Serwer {\symbolfont→} most · odpowiedź · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład}
+
+
+\begin{kodbox}
+\mbox{}[3,\ "f7a8…",\ \{\}]
+\end{kodbox}
+
+\begin{itemize}
+\item Serwer rozlicza różnicę liczników: 1 236 200 − 1 234 560 = 1 640 Wh, czyli 1,64 kWh.
+\item \texttt{"reason":\allowbreak{} "Remote"} bo zatrzymał serwer. Przy końcu ładowania przez auto byłoby \texttt{Local}, przy odpięciu auta \texttt{EVDisconnected}, przy błędzie \texttt{Other}.
+\item Potem most zgłosi StatusNotification „SuspendedEVSE”, a po odpięciu auta „Available”.
+\end{itemize}
+
+\section*{Krok 9. Odmowa i błąd}
+
+Są dwa sposoby powiedzenia „nie”.
+
+
+\textbf{Odmowa w zwykłej odpowiedzi.} Polecenie jest zrozumiałe, ale ładowarka się nie zgadza. Na przykład serwer chce zatrzymać transakcję o innym numerze niż trwająca. \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład:
+
+
+\begin{kodbox}
+\mbox{}{\symbolfont←}\ [2,\ "0a1b…",\ "RemoteStopTransaction",\ \{"transactionId":\ 99\}]\\
+\mbox{}{\symbolfont→}\ [3,\ "0a1b…",\ \{"status":\ "Rejected"\}]
+\end{kodbox}
+
+\textbf{Błąd.} Ładowarka w ogóle nie obsługuje takiego polecenia, na przykład rezerwacji. Biblioteka mostu odpowiada wtedy sama, rodzajem 4. \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przykład; treść opisu ustala biblioteka:
+
+
+\begin{kodbox}
+\mbox{}{\symbolfont←}\ [2,\ "1c2d…",\ "ReserveNow",\ \{"connectorId":\ 1,\ "expiryDate":\ "…",\ "idTag":\ "KARTA-TEST",\ "reservationId\\
+\hspace*{1.2em}":\ 5\}]\\
+\mbox{}{\symbolfont→}\ [4,\ "1c2d…",\ "NotImplemented",\ "<opis\ od\ biblioteki>",\ \{\}]
+\end{kodbox}
+
+\clearpage
+
+\section*{Cała sesja na jednej osi}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{2.38cm}>{\raggedright\arraybackslash}p{2.38cm}>{\raggedright\arraybackslash}p{2.15cm}>{\raggedright\arraybackslash}p{4.48cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Krok} & \textbf{Nadaje {\symbolfont→} odbiera} & \textbf{Łącze} & \textbf{Rodzaj} & \textbf{Wiadomość} \\
+\midrule\endhead
+\bottomrule\endfoot
+0 & most {\symbolfont→} serwer & WWW, potem WebSocket & otwarcie & prośba o przełączenie, zgoda 101 \\
+1 & most {\symbolfont→} serwer & WebSocket, OCPP & zapytanie & BootNotification; odpowiedź Accepted, co 60 s \\
+2 & most {\symbolfont→} serwer & WebSocket, OCPP & zapytanie & StatusNotification Available \\
+3 & most {\symbolfont→} serwer & WebSocket, OCPP & zapytanie & Heartbeat, co 60 s \\
+4 & serwer {\symbolfont→} most & WebSocket, OCPP & polecenie & RemoteStartTransaction z kartą \\
+4 & most {\symbolfont→} DevKit {\symbolfont→} Q11 & WebSocket Shelly, łącze Tuya & polecenie & włącz ładowanie, punkt danych 18 \\
+5 & Q11 {\symbolfont→} DevKit {\symbolfont→} most & łącze Tuya, WebSocket Shelly & meldunek, powiadomienie & stan: auto podłączone, ładuje \\
+5 & most {\symbolfont→} serwer & WebSocket, OCPP & zapytania & StatusNotification Charging, StartTransaction \\
+6 & most {\symbolfont→} serwer & WebSocket, OCPP & zapytanie & MeterValues, co 30 s \\
+7 & serwer {\symbolfont→} most {\symbolfont→} DevKit {\symbolfont→} Q11 & wszystkie trzy & polecenie & SetChargingProfile 10 A, punkt danych 4 \\
+8 & serwer {\symbolfont→} most {\symbolfont→} DevKit {\symbolfont→} Q11 & wszystkie trzy & polecenie & RemoteStopTransaction, punkt danych 18 \\
+8 & most {\symbolfont→} serwer & WebSocket, OCPP & zapytanie & StopTransaction z licznikiem końcowym \\
+\end{longtable}
+
+\textbf{Zasada ogólna.} Między serwerem a mostem obie strony pytają i odpowiadają w OCPP. Między mostem a DevKitem most wysyła polecenia Shelly i dostaje odpowiedzi oraz powiadomienia. Między DevKitem a Q11 idą ramki Tuya: polecenia „ustaw” i meldunki „melduję”. Most jest jedynym miejscem, które zna oba światy i pamięta numer transakcji.
+
+
+\end{document}

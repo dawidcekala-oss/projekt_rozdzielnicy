@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMPERE POINT — Wyjaśnienia wątków z rozmowy (v1)</title>
+<style>
+  :root{
+    --navy:#16315c; --navy2:#1f4a86; --ink:#1c2430; --muted:#5b6675;
+    --line:#e2e7ef; --bg:#f5f7fb; --card:#ffffff;
+    --good:#1f8a4c; --good-bg:#e7f5ec;
+    --watch:#b9791b; --watch-bg:#fbf1de;
+    --bad:#b3261e; --bad-bg:#fbe9e7;
+    --info:#566173; --info-bg:#eef1f5;
+    --shadow:0 1px 2px rgba(20,40,80,.06),0 6px 20px rgba(20,40,80,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"DejaVu Sans",sans-serif;
+    color:var(--ink); background:var(--bg); line-height:1.6; font-size:16px}
+  a{color:var(--navy2); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1000px; margin:0 auto; padding:0 20px}
+  header.top{background:linear-gradient(135deg,#16315c,#23508f); color:#fff; padding:30px 0 22px; border-bottom:4px solid #0e2447}
+  header.top h1{margin:0; font-size:25px}
+  header.top p{margin:6px 0 0; color:#d6e2f5; font-size:14.5px; max-width:720px}
+  nav.toc{position:sticky; top:0; z-index:20; background:#fff; border-bottom:1px solid var(--line)}
+  nav.toc .wrap{display:flex; gap:2px; flex-wrap:wrap}
+  nav.toc a{font-size:13.5px; font-weight:600; color:var(--muted); padding:12px 10px; border-bottom:3px solid transparent; white-space:nowrap}
+  nav.toc a:hover{color:var(--navy); text-decoration:none}
+  main{padding:26px 0 70px}
+  h2.sec{font-size:21px; color:var(--navy); margin:34px 0 4px; padding-top:8px}
+  h3.sub{font-size:16.5px; color:var(--navy); margin:20px 0 6px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px 22px; margin:14px 0}
+  .quote{background:var(--info-bg); border-left:4px solid var(--navy2); border-radius:8px; padding:10px 14px; font-style:italic; color:#36404e; font-size:14.5px; margin:10px 0}
+  .badge{display:inline-block; font-size:12px; font-weight:700; padding:2px 10px; border-radius:999px; margin-right:6px; vertical-align:middle}
+  .b-warn{background:var(--watch-bg); color:var(--watch)}
+  .b-bad{background:var(--bad-bg); color:var(--bad)}
+  .b-good{background:var(--good-bg); color:var(--good)}
+  .b-info{background:var(--info-bg); color:var(--info)}
+  table{border-collapse:collapse; width:100%; margin:12px 0; font-size:14.5px}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  th{background:#eef2f8; color:var(--navy)}
+  ul,ol{margin:8px 0; padding-left:22px}
+  li{margin:4px 0}
+  .src{background:#f8fafc; border:1px dashed var(--line); border-radius:10px; padding:10px 16px; font-size:14px; margin-top:14px}
+  .src b{color:var(--navy)}
+  code{background:#eef1f5; border-radius:5px; padding:1px 6px; font-size:.92em}
+  .practice{background:var(--good-bg); border-left:4px solid var(--good); border-radius:8px; padding:10px 14px; font-size:14.5px; margin:12px 0}
+  footer{color:var(--muted); font-size:13px; padding:20px 0 40px; border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1>AMPERE POINT — Wyjaśnienia wątków z rozmowy kierownik ↔ klient</h1>
+    <p>Opracowanie notatek z pliku <code>watki_do_wyjasnienia.txt</code>. Każdy wątek: oryginalna notatka → pełne wyjaśnienie → co sprawdzić w praktyce → źródła. Wersja v1, 2026-07-15.</p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#t1">1. Macierz przekaźników</a>
+    <a href="#t2">2. Overvoltage bez falowników</a>
+    <a href="#t3">3. Błąd CP po ładowaniu</a>
+    <a href="#t4">4. Piki od falowników</a>
+    <a href="#t5">5. Tuya i 2,4 GHz</a>
+    <a href="#t6">6. Nowe ładowarki: RCD/EMC</a>
+    <a href="#t7">7. Ładowanie z 2 faz</a>
+    <a href="#zrodla">Spis źródeł</a>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+<!-- ==================== 1 ==================== -->
+<h2 class="sec" id="t1">1. „Sęk w macierzy” — przekaźniki pracujące macierzowo</h2>
+<div class="quote">„sęk w macierzy • 250 V – rezystancja między pinami • to w miarę proste • główny problem to sprawdzenie, jak będą działały przekaźniki macierzowo”</div>
+<div class="card" style="background:var(--good-bg); border-color:var(--good)">
+  <p style="margin:4px 0"><b>→ Analiza dogłębna tego wątku:</b> <a href="AMPERE_POINT_wyjasnienia_macierz_deepdive_v1.html">AMPERE_POINT_wyjasnienia_macierz_deepdive_v1.html</a> —
+  wątek dotyczy konkretnie matrycy komutacyjnej projektu <code>Modul\miernik-izolacji</code> (miernik rezystancji izolacji ładowarek).
+  Tam: architektura 2 szyn (26 przekaźników zamiast 66), historia doboru D6→D8 (kontaktron → RM84 z podwójną przerwą),
+  ścisły model upływów i propozycja autotestu matrycy. W tamtym kontekście rezystancja styków i stuby (poniżej) <b>nie grają roli</b> —
+  macierz przełącza DC i mikroampery; krytyczna jest rezystancja izolacji otwartej przerwy.</p>
+</div>
+<div class="card">
+  <h3 class="sub">O co chodzi</h3>
+  <p>Poniżej wiedza ogólna o macierzach przekaźnikowych (przyda się i przy mierniku izolacji, i przy custom device). W macierzy przekaźniki nie pracują pojedynczo, tylko jako <b>macierz przełączająca (switching matrix)</b>: wiersze i kolumny torów, a łączniki na skrzyżowaniach lub — jak w naszym mierniku — na dwóch wspólnych szynach. Taka topologia pozwala małą liczbą przekaźników zestawić dowolne połączenie „coś-z-czymś”, ale wprowadza problemy, których nie ma przy pojedynczym przekaźniku.</p>
+  <h3 class="sub">Główne pułapki macierzy</h3>
+  <ul>
+    <li><span class="badge b-bad">SNEAK PATH</span><b>Ścieżki pasożytnicze (sneak/phantom paths)</b> — gdy zamkniętych jest kilka przekaźników naraz, prąd może popłynąć trasą, której nikt nie planował (przez „cudzy” wiersz i kolumnę). W urządzeniu symulującym usterki to groźne: zamiast jednej zadanej wady można niechcący zewrzeć dwa tory. Sterownik musi mieć <b>tabelę dozwolonych kombinacji</b> i blokady (interlock) w software, a najlepiej też sprzętowo.</li>
+    <li><span class="badge b-warn">STUB</span><b>Odgałęzienia ślepe</b> — otwarte gałęzie macierzy działają jak pojemności dołączone do toru; przy sygnałach szybkich/pomiarowych (np. CP 1 kHz) mogą zniekształcać sygnał.</li>
+    <li><span class="badge b-warn">STYKI</span><b>Rezystancja styków sumuje się</b> — sygnał w macierzy przechodzi przez 2+ przekaźników szeregowo. Typowa rezystancja styku to ≤100 mΩ; przy prądach ładowarkowych (16–32 A) każdy mΩ to wydzielane ciepło (P = I²R → 32 A przez 0,1 Ω ≈ 100 W!). Dlatego tory prądowe muszą mieć przekaźniki mocy o dużych stykach, a macierz „gęstą” zostawia się dla torów sygnałowych.</li>
+    <li><span class="badge b-bad">SKLEJENIE</span><b>Sklejanie styków</b> przy załączaniu obciążeń indukcyjnych/pojemnościowych — po sklejeniu jednego punktu macierz tworzy stałą ścieżkę pasożytniczą. Konieczny test weryfikacyjny po każdym przełączeniu (odczyt zwrotny, pomiar).</li>
+  </ul>
+  <h3 class="sub">„250 V — rezystancja między pinami”</h3>
+  <p>To dwa różne pomiary, które trzeba rozróżnić:</p>
+  <table>
+    <tr><th>Pomiar</th><th>Jak</th><th>Kryterium</th></tr>
+    <tr><td><b>Rezystancja izolacji</b> między rozwartymi stykami i między cewką a stykami</td><td>Megaomomierz (induktor), napięcie probiercze DC: <b>250 V dla obwodów SELV/PELV</b> (sterowanie), <b>500 V dla torów 230 V</b> — wg PN‑HD 60364‑6</td><td>≥ 0,5 MΩ (SELV/PELV), ≥ 1 MΩ (230 V); dobre przekaźniki fabrycznie mają ≥ 100 MΩ – 1 GΩ</td></tr>
+    <tr><td><b>Rezystancja zestyku</b> (zamkniętego)</td><td>Miliomomierz / metoda 4‑przewodowa (Kelvina), prąd pomiarowy zbliżony do roboczego</td><td>typowo ≤ 100 mΩ na styk; wzrost w czasie = zużycie/nadpalenie</td></tr>
+  </table>
+  <p>Uwaga praktyczna: pomiaru izolacji 250/500 V DC <b>nie wolno</b> robić przez elektronikę sterującą (optotriaki, tranzystory, diody gaszące na cewkach) — trzeba odpiąć sterowanie albo mierzyć tylko tor stykowy.</p>
+  <div class="practice"><b>W praktyce:</b> przed zabudową macierzy zrobić „test matrycowy”: każdą kombinację przekaźników zamknąć po kolei i automatycznie sprawdzić (a) czy zestawiony tor przewodzi, (b) czy <i>żaden inny</i> tor nie przewodzi (wykrywanie sneak paths), (c) rezystancję zestyku. To dokładnie „sprawdzenie, jak będą działały przekaźniki macierzowo”.</div>
+  <div class="src"><b>Źródła:</b>
+    <a href="https://www.pickeringtest.com/en-us/kb/hardware-topics/switching-architectures/pole-switched-matrices">Pickering Interfaces — architektury macierzy przełączających</a> ·
+    <a href="https://www.merserwis.pl/blog/artykul/pomiar-rezystancji-izolacji-instalacji-elektrycznej">Merserwis — pomiar rezystancji izolacji (napięcia probiercze wg PN‑HD 60364‑6)</a> ·
+    <a href="https://bezel.com.pl/pomiary-rezystancji-izolacji/">bezel.com.pl — pomiary rezystancji izolacji: instrukcja i normy</a>
+  </div>
+</div>
+
+<!-- ==================== 2 ==================== -->
+<h2 class="sec" id="t2">2. Overvoltage od razu — mimo wyłączonych falowników i odłączonego auta</h2>
+<div class="quote">„wyłączone falowniki, auto niepodłączone – błąd od razu overvoltage • Podejrzenia: asymetria (np. przetarty kabel)”</div>
+<div class="card">
+  <h3 class="sub">Dlaczego ładowarka zgłasza overvoltage „na pusto”</h3>
+  <p>Ładowarka mierzy napięcie sieci <b>cały czas</b>, nie tylko podczas ładowania. Błąd overvoltage przy odłączonym aucie oznacza, że na zaciskach ładowarki realnie (albo wskutek błędu pomiaru) występuje napięcie powyżej progu — typowo <b>253 V (230 V +10 %)</b>, czyli granicy normy PN‑EN 50160. Skoro falowniki były wyłączone, odpada najczęstszy winowajca (podbijanie napięcia przez oddawanie energii z PV). Zostają:</p>
+  <ol>
+    <li><b>Sieć realnie „wysoka”</b> — za wysoko ustawiona zaczepowa transformatora SN/nN albo sąsiednie instalacje PV w tej samej linii podbijają napięcie. Blisko transformatora bywa 245–250 V na stałe; wystarczy niewielkie wahnięcie, by przekroczyć próg ładowarki.</li>
+    <li><span class="badge b-bad">NAJGROŹNIEJSZE</span><b>Przerwany/„przetarty” przewód neutralny (N)</b> — przy uszkodzonym N w układzie 3‑fazowym punkt gwiazdowy „pływa”: na fazach słabiej obciążonych napięcie L‑N rośnie <b>nawet do ~400 V</b>, na mocniej obciążonych spada. To jest właśnie „asymetria z przetartego kabla” z notatki. Objawy towarzyszące: migające światło, dziwne zachowanie sprzętów, napięcia L‑N różne o kilkadziesiąt V między fazami, napięcie N‑PE ≫ kilka V.</li>
+    <li><b>Poluzowany zacisk N lub L</b> w rozdzielnicy/WLZ — działa jak rezystancja szeregowa, daje tę samą asymetrię co przerwa, tylko zmienną w funkcji obciążenia (błąd „pojawia się i znika”).</li>
+    <li><b>Błąd pomiaru w samej ładowarce</b> — uszkodzony tor pomiarowy / firmware (dlatego warto porównać z miernikiem referencyjnym).</li>
+  </ol>
+  <div class="practice"><b>W praktyce:</b> pomiar L1‑N, L2‑N, L3‑N, N‑PE przy różnym obciążeniu (włączyć czajnik/piekarnik na jednej fazie i patrzeć, czy napięcia na pozostałych rosną — to klasyczny objaw złego N). Najlepiej zostawić <b>rejestrator napięcia na kilka dni</b> (zapis min/max per faza). Sprawdzić i dokręcić zaciski N od złącza po rozdzielnicę. Uszkodzony N to zagrożenie pożarowe i dla sprzętu — traktować priorytetowo.</div>
+  <div class="src"><b>Źródła:</b>
+    <a href="https://voltgrid.pl/blog/napiecie-253v-dlaczego-falownik-sie-wylacza-i-jak-to-naprawic/">VoltGrid — skąd bierze się 253 V i co z tym zrobić</a> ·
+    <a href="https://ecoaudyt.app/blog/za-wysokie-napiecie-w-sieci-wylacza-fotowoltaike-rozwiazania">EcoAudyt — za wysokie napięcie w sieci: przyczyny i rozwiązania</a> ·
+    <a href="https://elektryk-fhu.pl/napiecie-na-przewodzie-neutralnym-dlaczego-i-co-robic">elektryk-fhu.pl — napięcie na przewodzie neutralnym</a> ·
+    <a href="https://pomiary.mobi/asymetria-obciazenia-faz-w-instalacji-trojfazowej">pomiary.mobi — asymetria obciążenia faz a przewód neutralny</a>
+  </div>
+</div>
+
+<!-- ==================== 3 ==================== -->
+<h2 class="sec" id="t3">3. Błąd CP po podłączeniu i naładowaniu auta</h2>
+<div class="quote">„później podłączenie, naładowanie auta i błąd CP”</div>
+<div class="card">
+  <h3 class="sub">Czym jest CP (Control Pilot)</h3>
+  <p>CP to pojedynczy przewód komunikacyjny między ładowarką a autem, zdefiniowany w <b>IEC 61851‑1</b>. Ładowarka generuje na nim sygnał <b>PWM 1 kHz, ±12 V</b>; auto dołącza rezystory między CP a PE i przez to „odpowiada”. Napięcie szczytowe na CP koduje stan:</p>
+  <table>
+    <tr><th>Stan</th><th>Napięcie CP</th><th>Znaczenie</th></tr>
+    <tr><td>A</td><td>+12 V</td><td>auto niepodłączone</td></tr>
+    <tr><td>B</td><td>+9 V</td><td>auto podłączone, nie żąda ładowania</td></tr>
+    <tr><td>C</td><td>+6 V</td><td>auto żąda ładowania (styk S2 zamknięty)</td></tr>
+    <tr><td>D</td><td>+3 V</td><td>ładowanie z wentylacją</td></tr>
+    <tr><td>E / F</td><td>0 V / −12 V</td><td>błąd / ładowarka niedostępna</td></tr>
+  </table>
+  <p>Wypełnienie PWM mówi autu, ile prądu wolno pobrać: <code>I = D × 0,6 A</code> dla 10–85 % (np. 26,6 % ≈ 16 A), <code>I = (D − 64) × 2,5 A</code> dla 85–96 %. Tolerancje są ciasne (±1 % wypełnienia), więc sygnał łatwo „popsuć” zakłóceniami.</p>
+  <h3 class="sub">Dlaczego błąd CP wyszedł dopiero po naładowaniu</h3>
+  <p>Po zakończeniu ładowania auto przechodzi ze stanu C do B (otwiera S2) — to moment skokowej zmiany napięcia na CP. Błąd ujawniający się przy tym przejściu wskazuje na:</p>
+  <ul>
+    <li><b>uszkodzony/przetarty kabel lub nadpalone piny CP w złączu</b> — dodatkowa rezystancja przesuwa poziomy napięć poza okna tolerancji (np. zamiast 9 V ładowarka widzi 7,5 V — ni to B, ni to C);</li>
+    <li><b>zakłócenia EMC</b> (np. od falowników — patrz wątek 4) nakładające się na 1 kHz PWM;</li>
+    <li><b>usterkę diody w aucie</b> (auto potwierdza obecność diodą w obwodzie CP; jej brak = stan błędu E);</li>
+    <li><b>wilgoć/zabrudzenie gniazda</b> — upływność CP→PE.</li>
+  </ul>
+  <div class="practice"><b>W praktyce:</b> oscyloskopem na CP sprawdzić poziomy (+12/+9/+6 V) i czystość zboczy PWM w każdym stanie; obejrzeć piny CP w obu wtykach; podmienić kabel na referencyjny; sprawdzić, czy błąd występuje też przy innym aucie. To dokładnie scenariusz do odtworzenia na stanowisku custom device (symulacja rezystancji szeregowej w CP i upływności CP‑PE).</div>
+  <div class="src"><b>Źródła:</b>
+    <a href="https://www.hdt-electronic.com/en/faq/how-does-evse-work-what-are-control-pilot-and-proximity-contact-signals/">HDT Electronic — jak działa EVSE: sygnały CP i PP</a> ·
+    <a href="https://www.vector.com/int/en/know-how/smart-charging/communication-protocols/">Vector — protokoły komunikacji w ładowaniu AC/DC</a> ·
+    <a href="https://elintacharge.com/glossary/iec-61851/">Elinta Charge — IEC 61851 w pigułce</a> ·
+    <a href="https://www.mdpi.com/1996-1073/13/1/176">MDPI — symulator pojazdu dla Mode 3 wg IEC 61851‑1 (stany A–F, rezystory)</a>
+  </div>
+</div>
+
+<!-- ==================== 4 ==================== -->
+<h2 class="sec" id="t4">4. Falowniki a „piki w sieci” + auto, które „się dostosowało”</h2>
+<div class="quote">„falowniki – piki w sieci?? • samochód dostosował się do tego, co falownik podawał”</div>
+<div class="card">
+  <h3 class="sub">Co falownik naprawdę robi z siecią</h3>
+  <p>Falownik PV przełącza tranzystory z częstotliwością kilkunastu–kilkudziesięciu kHz. Skutki uboczne:</p>
+  <ul>
+    <li><b>szybkie stany przejściowe (piki) i szum wspólny (common‑mode)</b> — wstrzykiwane do przewodów L/N/PE; to najczęstsza przyczyna problemów EMC instalacji z PV;</li>
+    <li><b>harmoniczne i zniekształcenie sinusoidy</b> — zwykle małe (falowniki mają limity THD), ale rosną przy słabej sieci;</li>
+    <li><b>podbicie wartości skutecznej napięcia</b> przy oddawaniu mocy (to wolna zmiana, nie „pik”);</li>
+    <li><b>prądy upływu wysokiej częstotliwości</b> przez pojemności paneli i filtrów EMC → nieuzasadnione zadziałania RCD w tej samej instalacji.</li>
+  </ul>
+  <p>Piki i szum w.cz. mogą zakłócać: pomiar napięcia w ładowarce (fałszywe over/undervoltage), sygnał CP (wątek 3) oraz liczniki/sterowniki. Filtry EMC w nowych ładowarkach (wątek 6) to odpowiedź właśnie na to.</p>
+  <h3 class="sub">„Samochód dostosował się do tego, co falownik podawał”</h3>
+  <p>Ładowarka AC <b>nie przetwarza energii</b> — jest „inteligentnym stycznikiem”: podaje autu napięcie sieci 1:1, a limit prądu przekazuje tylko sygnałem CP. Prostownik jest w aucie (OBC, on‑board charger) i ma szeroki zakres wejściowy (typowo ok. 170–270 V), więc <b>ładuje się tym, co dostanie</b> — także napięciem podbitym lub zniekształconym przez falownik. Auto „dostosowało się”, bo jego OBC toleruje gorsze napięcie niż progi alarmowe ładowarki. Wniosek diagnostyczny: to, że auto się ładuje, <b>nie dowodzi</b>, że sieć jest w porządku.</p>
+  <div class="practice"><b>W praktyce:</b> rejestrator jakości energii (min. true‑RMS z zapisem transientów) na zaciskach ładowarki przy pracujących falownikach; porównać zdarzenia ładowarki z logiem falownika (godziny błędów vs produkcja PV). Jeśli korelują — sprawdzić uziemienie/ekranowanie, separację tras kablowych PV i EV, ferryty na CP.</div>
+  <div class="src"><b>Źródła:</b>
+    <a href="https://www.elexana.com/journal-emf-emi-information/2023/2/1/solar-power-inverters-and-emi-filtering-techniques-everything-you-need-to-know">ELEXANA — EMI z falowników PV i techniki filtracji</a> ·
+    <a href="https://www.inverter.com/how-to-reduce-electromagnetic-interference-in-inverters">inverter.com — jak ograniczać EMI w falownikach</a> ·
+    <a href="https://www.emcdorexs.com/emi-filtering-for-ev-chargers.html">EMC Dorexs — filtracja EMI w ładowarkach EV</a> ·
+    <a href="https://montazfotowoltaiki.pl/blog/przy-jakim-napieciu-wylacza-sie-falownik-kompleksowa-analiza-i-rozwiazania-w-2025-roku/">montazfotowoltaiki.pl — progi napięciowe falowników (253 V, czasy reakcji)</a>
+  </div>
+</div>
+
+<!-- ==================== 5 ==================== -->
+<h2 class="sec" id="t5">5. Tuya, konflikty w sieci 2,4 GHz i „wymiana tokenów”</h2>
+<div class="quote">„problemy z Tuya ~ konflikty w sieci 2,4 • aktualizowanie/reintegrowanie Tuya • wymiana tokenów Tuya • dużo sprzętów smart home 2,4 – najczęstszy problem to konflikty w sieci 2,4”</div>
+<div class="card">
+  <h3 class="sub">Dlaczego 2,4 GHz sprawia problemy</h3>
+  <p>Urządzenia Tuya (i większość taniego smart home) łączą się <b>wyłącznie z 2,4 GHz</b>. To pasmo jest ciasne i współdzielone:</p>
+  <ul>
+    <li>tylko <b>3 niezachodzące kanały (1/6/11)</b> — sąsiednie sieci WiFi wzajemnie się zagłuszają;</li>
+    <li>w tym samym paśmie pracuje <b>Zigbee, Bluetooth, kuchenki mikrofalowe, nianie</b>;</li>
+    <li>routery dwuzakresowe z jednym SSID (band steering / „Smart Connect”) mylą urządzenia przy parowaniu — telefon jest na 5 GHz, żarówka może wejść tylko na 2,4 GHz → parowanie pada;</li>
+    <li>dziesiątki klientów IoT wysycają limity klientów na AP i pulę DHCP.</li>
+  </ul>
+  <p><b>Sprawdzone ustawienia dla IoT:</b> osobne SSID tylko 2,4 GHz, WPA2‑PSK (AES, nie WPA3‑only), <b>stały kanał 1/6/11</b> (nie „auto”), szerokość <b>20 MHz</b>, wyłączony band steering i 802.11r, statyczne dzierżawy DHCP dla urządzeń krytycznych.</p>
+  <h3 class="sub">„Wymiana tokenów” i reintegrowanie</h3>
+  <p>Tuya autoryzuje urządzenia i integracje tokenami/kluczami:</p>
+  <ul>
+    <li><b>Local key urządzenia</b> — zmienia się <b>przy każdym ponownym sparowaniu</b> urządzenia z aplikacją. Skutek: po „reintegrowaniu” urządzenia w aplikacji Smart Life przestaje działać integracja lokalna (np. LocalTuya/tuya‑local w Home Assistant) — trzeba wyciągnąć nowy klucz i zaktualizować konfigurację. To istotne dla naszej integracji <code>tuyaextend_amperepoint</code>.</li>
+    <li><b>Tokeny chmurowe (API)</b> — dostęp do Tuya IoT Platform działa na parze access/refresh token z ograniczonym czasem życia; wygasła subskrypcja projektu „Cloud Development” lub nieodświeżony token objawia się jako urządzenia offline w integracji, mimo że w aplikacji działają.</li>
+  </ul>
+  <div class="practice"><b>W praktyce:</b> u klienta z dużą liczbą urządzeń najpierw porządkujemy radio (kanał, 20 MHz, osobne SSID), dopiero potem re‑parujemy urządzenia — inaczej „naprawianie” parowaniem trzeba powtarzać. Po każdym re‑parowaniu: zaktualizować local keys w integracjach lokalnych.</div>
+  <div class="src"><b>Źródła:</b>
+    <a href="https://support.tuya.com/en/help/_detail/K9nmmho4pxnv4">Tuya Support — troubleshooting łączenia urządzeń WiFi</a> ·
+    <a href="https://support.tuya.com/en/help/_detail/K9hut2v0htbez">Tuya Support — dlaczego urządzenia nie łączą się przez 5 GHz</a> ·
+    <a href="https://whizz-experts.com/support/smart-devices/tuya-constant-disconnects/">Whizz — Tuya: ciągłe rozłączanie, ustawienia 2,4 GHz</a> ·
+    <a href="https://www.simpletechsolve.com/2025/12/tuya-smart-bulb-device-offline-dual-band-router-fix.html">SimpleTechSolve — „device offline” na routerach dwuzakresowych</a>
+  </div>
+</div>
+
+<!-- ==================== 6 ==================== -->
+<h2 class="sec" id="t6">6. Nowe ładowarki: zabezpieczenia EMC, RCD z detekcją DC, firmware</h2>
+<div class="quote">„zabezpieczenia EMC – w nowych ładowarkach w RCD • dużo zmian w firmware”</div>
+<div class="card">
+  <h3 class="sub">Co naprawdę siedzi w „RCD” nowej ładowarki</h3>
+  <p>Nowoczesne wallboxy mają wbudowany układ <b>RCD typ A + RDC‑DD</b> (Residual Direct Current Detecting Device) wg <b>IEC 62955</b>: elektroniczny czujnik wykrywający składową stałą prądu upływu <b>≥ 6 mA DC</b> i rozłączający stycznik ładowarki.</p>
+  <ul>
+    <li><b>Po co:</b> prostownik w aucie może wypuścić do obwodu upływ DC. Prąd stały <b>„oślepia” (blinding)</b> zwykłe RCD typu A/F — rdzeń przekładnika się nasyca i RCD przestaje wykrywać także zwykłe upływy AC. 6 mA DC to próg, przy którym typ A jeszcze pracuje poprawnie.</li>
+    <li><b>Alternatywa:</b> drogi RCD <b>typu B</b> w rozdzielnicy (wykrywa AC+DC sam, RDC‑DD zbędny). Wbudowany RDC‑DD pozwala zostać przy tanim typie A na zasilaniu ładowarki — stąd jego powszechność w nowych modelach.</li>
+    <li><b>Związek z EMC:</b> nowe ładowarki mają też rozbudowane filtry wejściowe EMC — odporność na piki i szum od falowników (wątek 4) oraz ograniczenie własnych emisji. Elektroniczny RDC‑DD musi odróżnić prawdziwy upływ od prądów upływu w.cz. filtrów EMC — dojrzałość tego algorytmu to duża część różnic między generacjami ładowarek.</li>
+  </ul>
+  <h3 class="sub">„Dużo zmian w firmware”</h3>
+  <p>Firmware ładowarki decyduje m.in. o: progach i czasach reakcji na over/undervoltage, obsłudze stanów CP (tolerancje na „dziwne” auta), algorytmie RDC‑DD (czułość vs odporność na zakłócenia), load balancingu i OCPP. Dlatego <b>ten sam błąd może zniknąć albo pojawić się po aktualizacji</b> — przy diagnozie zawsze notować wersję firmware, czytać changelog przed aktualizacją i aktualizować jako element procedury serwisowej (nie „w ciemno” u klienta).</p>
+  <div class="src"><b>Źródła:</b>
+    <a href="https://electrical.theiet.org/wiring-matters/years/2024/100-may-2024/rcds-for-electric-vehicle-supply-equipment-evse/">IET Wiring Matters — dobór RCD dla EVSE (blinding, typ A/B, RDC‑DD)</a> ·
+    <a href="https://viox.com/ev-charger-rcd-selection-type-b-vs-type-f-vs-type-ev-iec-62955-iec-62423/">VIOX — RCD typ B vs RDC‑DD (IEC 62955 / IEC 62423)</a> ·
+    <a href="https://www.iocharger.com/iec-62955-dc-6ma-current-leakage-protection/">iocharger — czym jest ochrona 6 mA DC wg IEC 62955</a> ·
+    <a href="https://download.easee.com/m/31bc990e0654fd3a/original/A2g_RDC-DD-Functional_Description_EN.pdf">Easee — opis funkcjonalny RDC‑DD (PDF producenta)</a> ·
+    <a href="https://www.electrical-installation.org/enwiki/EV_charging_-_electrical_installation_design">Electrical Installation Guide (Schneider) — projektowanie instalacji pod EV</a>
+  </div>
+</div>
+
+<!-- ==================== 7 ==================== -->
+<h2 class="sec" id="t7">7. Czy auto 3‑fazowe może ładować z 2 faz?</h2>
+<div class="quote">„auto 3‑fazowe może ładować z 2 faz, ale to zależy od auta, nie musi na to pozwolić”</div>
+<div class="card">
+  <h3 class="sub">Skąd ta niejednoznaczność</h3>
+  <p>Standard IEC 61851 nie zabrania zasilania częścią faz — decyduje konstrukcja <b>ładowarki pokładowej (OBC)</b> auta:</p>
+  <ul>
+    <li><b>OBC modułowy (większość aut: VW/Škoda/Audi, Tesla, BMW…)</b> — trzy niezależne sekcje 1‑fazowe. Auto ładuje z 1, 2 lub 3 faz tym, co widzi na L1/L2/L3; z 2 faz dostaje 2/3 mocy (np. 7,4 kW zamiast 11 kW). Niektóre modele wymagają obecności fazy na L1, więc przy „wycinaniu” faz ma znaczenie, <i>które</i> fazy zostały.</li>
+    <li><b>OBC zintegrowany z napędem (np. Renault Zoe, „Chameleon”)</b> — wykorzystuje uzwojenia silnika; auto samo przełącza tryb 1‑fazowy/3‑fazowy przekaźnikami i konfiguracja 2‑fazowa może nie być obsługiwana — auto odmówi lub zgłosi błąd.</li>
+    <li>Auto może też <b>celowo odmówić</b> przy wykrytej nietypowej konfiguracji (zabezpieczenie przed asymetrią lub błędna detekcja braku fazy jako awarii sieci).</li>
+  </ul>
+  <p><b>Kontekst sieciowy:</b> ładowanie z 2 faz to z definicji obciążenie asymetryczne. W Niemczech przepisy przyłączeniowe (VDE‑AR‑N 4100) ograniczają asymetrię do 4,6 kVA (20 A) na fazę; w Polsce twardego limitu w warunkach przyłączenia zwykle nie ma, ale duża asymetria podnosi prąd w N i pogarsza jakość napięcia (wątek 2!).</p>
+  <div class="practice"><b>W praktyce:</b> na stanowisku testowym warto mieć scenariusz „brak L2” / „brak L3” i katalogować reakcje aut: ładuje z mniejszą mocą / błąd / odmowa. To częsty przypadek serwisowy przy uszkodzonym bezpieczniku jednej fazy — klient widzi „ładowarka zepsuta”, a to auto odmawia pracy na 2 fazach.</div>
+  <div class="src"><b>Źródła:</b>
+    <a href="https://go-e.com/en/magazine/single-phase-three-phase-ev-charging">go‑e — ładowanie 1‑ vs 3‑fazowe, które auta ładują z 2 faz</a> ·
+    <a href="https://www.speakev.com/threads/zoe-charging.29385/">SpeakEV — jak działa ładowarka Chameleon w Renault Zoe</a> ·
+    <a href="https://en.wikipedia.org/wiki/Renault_Zoe">Wikipedia — Renault Zoe (opis ładowarki Chameleon)</a>
+  </div>
+</div>
+
+<!-- ==================== ŹRÓDŁA ==================== -->
+<h2 class="sec" id="zrodla">Spis źródeł — gdzie doczytać więcej</h2>
+<div class="card">
+  <h3 class="sub">Normy (podstawa; do kupienia w PKN/IEC, omówienia w linkach wyżej)</h3>
+  <ul>
+    <li><b>IEC 61851‑1</b> — system przewodowego ładowania EV; definicja CP, stanów A–F, Mode 1–4.</li>
+    <li><b>IEC 62196</b> — wtyczki i złącza (Typ 2), piny CP/PP.</li>
+    <li><b>IEC 62955</b> — RDC‑DD: detekcja 6 mA DC w ładowarkach Mode 3.</li>
+    <li><b>PN‑EN 50160</b> — parametry napięcia w sieci publicznej (230 V ±10 % → 207–253 V).</li>
+    <li><b>PN‑HD 60364‑6</b> — sprawdzenia odbiorcze/okresowe; napięcia probiercze 250/500/1000 V i minimalne rezystancje izolacji.</li>
+    <li><b>PN‑HD 60364‑7‑722</b> — instalacje zasilające pojazdy elektryczne.</li>
+  </ul>
+  <h3 class="sub">Ładowanie EV i sygnał CP</h3>
+  <ul>
+    <li><a href="https://www.hdt-electronic.com/en/faq/how-does-evse-work-what-are-control-pilot-and-proximity-contact-signals/">HDT Electronic — CP i PP krok po kroku</a></li>
+    <li><a href="https://www.vector.com/int/en/know-how/smart-charging/communication-protocols/">Vector — protokoły komunikacyjne ładowania (Basic Charging → ISO 15118)</a></li>
+    <li><a href="https://elintacharge.com/glossary/iec-61851/">Elinta Charge — słownik IEC 61851</a></li>
+    <li><a href="https://www.mdpi.com/1996-1073/13/1/176">MDPI (open access) — symulator EV dla Mode 3: wartości rezystorów i stanów CP</a></li>
+    <li><a href="https://www.einfochips.com/blog/iec-61851-everything-you-need-to-know-about-the-ev-charging-standard/">eInfochips — przegląd IEC 61851</a></li>
+  </ul>
+  <h3 class="sub">Jakość napięcia, falowniki, asymetria</h3>
+  <ul>
+    <li><a href="https://voltgrid.pl/blog/napiecie-253v-dlaczego-falownik-sie-wylacza-i-jak-to-naprawic/">VoltGrid — problem 253 V</a></li>
+    <li><a href="https://ecoaudyt.app/blog/za-wysokie-napiecie-w-sieci-wylacza-fotowoltaike-rozwiazania">EcoAudyt — wysokie napięcie w sieci z PV</a></li>
+    <li><a href="https://elektryk-fhu.pl/napiecie-na-przewodzie-neutralnym-dlaczego-i-co-robic">elektryk‑fhu — napięcie na N, floating neutral</a></li>
+    <li><a href="https://pomiary.mobi/asymetria-obciazenia-faz-w-instalacji-trojfazowej">pomiary.mobi — asymetria faz i przeciążenie N</a></li>
+    <li><a href="https://www.elexana.com/journal-emf-emi-information/2023/2/1/solar-power-inverters-and-emi-filtering-techniques-everything-you-need-to-know">ELEXANA — EMI z falowników PV</a></li>
+    <li><a href="https://www.inverter.com/how-to-reduce-electromagnetic-interference-in-inverters">inverter.com — redukcja EMI w falownikach</a></li>
+  </ul>
+  <h3 class="sub">Zabezpieczenia ładowarek (RCD / RDC‑DD / EMC)</h3>
+  <ul>
+    <li><a href="https://electrical.theiet.org/wiring-matters/years/2024/100-may-2024/rcds-for-electric-vehicle-supply-equipment-evse/">IET Wiring Matters — RCD dla EVSE</a></li>
+    <li><a href="https://viox.com/ev-charger-rcd-selection-type-b-vs-type-f-vs-type-ev-iec-62955-iec-62423/">VIOX — typ B vs RDC‑DD</a></li>
+    <li><a href="https://www.iocharger.com/iec-62955-dc-6ma-current-leakage-protection/">iocharger — 6 mA DC wg IEC 62955</a></li>
+    <li><a href="https://download.easee.com/m/31bc990e0654fd3a/original/A2g_RDC-DD-Functional_Description_EN.pdf">Easee — RDC‑DD functional description (PDF)</a></li>
+    <li><a href="https://www.electrical-installation.org/enwiki/EV_charging_-_electrical_installation_design">Schneider Electrical Installation Guide — rozdział EV</a></li>
+    <li><a href="https://www.emcdorexs.com/emi-filtering-for-ev-chargers.html">EMC Dorexs — filtry EMI w ładowarkach</a></li>
+  </ul>
+  <h3 class="sub">Macierze przekaźników i pomiary</h3>
+  <ul>
+    <li><a href="https://www.pickeringtest.com/en-us/kb/hardware-topics/switching-architectures/pole-switched-matrices">Pickering — Switching Architectures Knowledge Base (cała sekcja KB warta przejrzenia)</a></li>
+    <li><a href="https://www.merserwis.pl/blog/artykul/pomiar-rezystancji-izolacji-instalacji-elektrycznej">Merserwis — pomiar rezystancji izolacji</a></li>
+    <li><a href="https://bezel.com.pl/pomiary-rezystancji-izolacji/">bezel.com.pl — pomiary izolacji: normy i praktyka</a></li>
+    <li><a href="https://sep.com.pl/opracowania/Kontrola%20stanu%20instalacji%20elektrycznych%20niskiego%20napiecia.pdf">SEP / prof. Czapp — kontrola stanu instalacji nN (PDF)</a></li>
+  </ul>
+  <h3 class="sub">Tuya / smart home 2,4 GHz</h3>
+  <ul>
+    <li><a href="https://support.tuya.com/en/help/_detail/K9nmmho4pxnv4">Tuya Support — WiFi troubleshooting</a></li>
+    <li><a href="https://support.tuya.com/en/help/_detail/K9hut2v0htbez">Tuya Support — problem 5 GHz</a></li>
+    <li><a href="https://whizz-experts.com/support/smart-devices/tuya-constant-disconnects/">Whizz — rozłączanie Tuya: ustawienia sieci</a></li>
+    <li><a href="https://www.simpletechsolve.com/2025/12/tuya-smart-bulb-device-offline-dual-band-router-fix.html">SimpleTechSolve — dual‑band a „device offline”</a></li>
+  </ul>
+  <h3 class="sub">Ładowanie wielofazowe</h3>
+  <ul>
+    <li><a href="https://go-e.com/en/magazine/single-phase-three-phase-ev-charging">go‑e — 1‑ vs 3‑fazowe ładowanie</a></li>
+    <li><a href="https://www.speakev.com/threads/zoe-charging.29385/">SpeakEV — Zoe i ładowarka Chameleon</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Renault_Zoe">Wikipedia — Renault Zoe</a></li>
+  </ul>
+</div>
+
+<footer>
+  <div class="wrap">AMPERE POINT — materiał wewnętrzny. Opracowano na podstawie notatek z rozmowy kierownika z klientem (<code>watki_do_wyjasnienia.txt</code>). Wersja v1 · 2026‑07‑15. Normy przywołane informacyjnie — pełne teksty: sklep PKN / IEC Webstore.</div>
+</footer>
+
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,479 @@
+{
+  "home_assistant": {
+    "arch": "x86_64",
+    "dev": false,
+    "docker": true,
+    "hassio": false,
+    "installation_type": "Home Assistant Container",
+    "os_name": "Linux",
+    "os_version": "6.18.33.2-microsoft-standard-WSL2",
+    "python_version": "3.14.5",
+    "timezone": "Europe/Warsaw",
+    "version": "2026.6.4",
+    "virtualenv": false,
+    "container_arch": "amd64",
+    "run_as_root": true
+  },
+  "custom_components": {
+    "hacs": {
+      "documentation": "https://hacs.xyz/docs/use/",
+      "version": "2.0.5",
+      "requirements": [
+        "aiogithubapi>=22.10.1"
+      ]
+    },
+    "tuyaextend_amperepoint": {
+      "documentation": "https://github.com/amperepoint/tuyaextend-amperepoint",
+      "version": "0.6.0",
+      "requirements": []
+    },
+    "tuya_local": {
+      "documentation": "https://github.com/make-all/tuya-local",
+      "version": "2026.7.2",
+      "requirements": [
+        "tinytuya==1.20.0",
+        "tuya-device-sharing-sdk~=0.2.4"
+      ]
+    }
+  },
+  "integration_manifest": {
+    "domain": "tuya",
+    "name": "Tuya",
+    "codeowners": [
+      "Tuya",
+      "zlinoliver"
+    ],
+    "config_flow": true,
+    "dependencies": [
+      "ffmpeg"
+    ],
+    "dhcp": [
+      {
+        "macaddress": "105A17*"
+      },
+      {
+        "macaddress": "10D561*"
+      },
+      {
+        "macaddress": "1869D8*"
+      },
+      {
+        "macaddress": "381F8D*"
+      },
+      {
+        "macaddress": "508A06*"
+      },
+      {
+        "macaddress": "68572D*"
+      },
+      {
+        "macaddress": "708976*"
+      },
+      {
+        "macaddress": "7CF666*"
+      },
+      {
+        "macaddress": "84E342*"
+      },
+      {
+        "macaddress": "D4A651*"
+      },
+      {
+        "macaddress": "D81F12*"
+      }
+    ],
+    "documentation": "https://www.home-assistant.io/integrations/tuya",
+    "integration_type": "hub",
+    "iot_class": "cloud_push",
+    "loggers": [
+      "tuya_sharing"
+    ],
+    "requirements": [
+      "tuya-device-handlers==0.0.22",
+      "tuya-device-sharing-sdk==0.2.8"
+    ],
+    "is_built_in": true,
+    "overwrites_built_in": false
+  },
+  "setup_times": {
+    "null": {
+      "setup": 0.00022693900000092526
+    },
+    "01KWEZT9HB2SYW7KCZ0H5027SP": {
+      "wait_import_platforms": -0.046600667999999956,
+      "config_entry_setup": 3.062683262
+    }
+  },
+  "data": {
+    "endpoint": "https://apigw.tuyaeu.com",
+    "terminal_id": "1783936803126mlxoCX",
+    "mqtt_connected": true,
+    "disabled_by": null,
+    "disabled_polling": false,
+    "id": "bfa1efdb234e79915f6sfs",
+    "name": "timer_test",
+    "category": "qccdz",
+    "product_id": "jhlyzpk5nfk28nrh",
+    "product_name": "Ampere Point EV Charger",
+    "online": true,
+    "sub": false,
+    "time_zone": "+02:00",
+    "active_time": "2026-08-12T07:59:06+00:00",
+    "create_time": "2026-08-12T07:59:06+00:00",
+    "update_time": "2026-08-12T07:59:06+00:00",
+    "function": {
+      "charge_cur_set": {
+        "type": "Integer",
+        "value": "{\"unit\":\"A\",\"min\":6,\"max\":32,\"scale\":0,\"step\":1}"
+      },
+      "work_mode": {
+        "type": "Enum",
+        "value": "{\"range\":[\"charge_now\",\"charge_energy\",\"charge_schedule\"]}"
+      },
+      "energy_charge": {
+        "type": "Integer",
+        "value": "{\"unit\":\"kW\u00b7h\",\"min\":1,\"max\":200,\"scale\":0,\"step\":1}"
+      },
+      "switch": {
+        "type": "Boolean",
+        "value": "{}"
+      },
+      "local_timer": {
+        "type": "Raw",
+        "value": "{\"maxlen\":128}"
+      },
+      "mode_set": {
+        "type": "Raw",
+        "value": "{\"maxlen\":128}"
+      }
+    },
+    "local_strategy": {
+      "1": {
+        "value_convert": "default",
+        "status_code": "forward_energy_total",
+        "config_item": {
+          "statusFormat": "{\"forward_energy_total\":\"$\"}",
+          "valueDesc": "{\"unit\":\"kW\u00b7h\",\"min\":0,\"max\":99999999,\"scale\":2,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "3": {
+        "value_convert": "default",
+        "status_code": "work_state",
+        "config_item": {
+          "statusFormat": "{\"work_state\":\"$\"}",
+          "valueDesc": "{\"range\":[\"charger_free\",\"charger_insert\",\"charger_free_fault\",\"charger_wait\",\"charger_charging\",\"charger_pause\",\"charger_end\",\"charger_fault\"]}",
+          "valueType": "Enum",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "4": {
+        "value_convert": "default",
+        "status_code": "charge_cur_set",
+        "config_item": {
+          "statusFormat": "{\"charge_cur_set\":\"$\"}",
+          "valueDesc": "{\"unit\":\"A\",\"min\":6,\"max\":32,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "6": {
+        "value_convert": "default",
+        "status_code": "phase_a",
+        "config_item": {
+          "statusFormat": "{\"phase_a\":\"$\"}",
+          "valueDesc": "{\"maxlen\":128}",
+          "valueType": "Raw",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "7": {
+        "value_convert": "default",
+        "status_code": "phase_b",
+        "config_item": {
+          "statusFormat": "{\"phase_b\":\"$\"}",
+          "valueDesc": "{\"maxlen\":128}",
+          "valueType": "Raw",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "8": {
+        "value_convert": "default",
+        "status_code": "phase_c",
+        "config_item": {
+          "statusFormat": "{\"phase_c\":\"$\"}",
+          "valueDesc": "{\"maxlen\":128}",
+          "valueType": "Raw",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "9": {
+        "value_convert": "default",
+        "status_code": "power_total",
+        "config_item": {
+          "statusFormat": "{\"power_total\":\"$\"}",
+          "valueDesc": "{\"unit\":\"kW\",\"min\":0,\"max\":99999999,\"scale\":3,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "10": {
+        "value_convert": "default",
+        "status_code": "fault",
+        "config_item": {
+          "statusFormat": "{\"fault\":\"$\"}",
+          "valueDesc": "{\"label\":[\"ov_cr\",\"ov2_cr_fault\",\"ov_vol\",\"undervoltage_alarm\",\"contactor_adhesion\",\"contactor_fault\",\"earth_fault\",\"meter_hardware_alarm\",\"scram_fault\",\"cp_fault\",\"meter_commu_fault\",\"card_reader_fault\",\"cir_short_fault\",\"adhesion_fault\",\"self_test_alarm\",\"leakagecurr_alarm\",\"ov_Temp_fault\"],\"maxlen\":17}",
+          "valueType": "Bitmap",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "13": {
+        "value_convert": "default",
+        "status_code": "connection_state",
+        "config_item": {
+          "statusFormat": "{\"connection_state\":\"$\"}",
+          "valueDesc": "{\"range\":[\"controlpi_12v\",\"controlpi_12v_pwm\",\"controlpi_9v\",\"controlpi_9v_pwm\",\"controlpi_6v\",\"controlpi_6v_pwm\",\"controlpi_error\"]}",
+          "valueType": "Enum",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "14": {
+        "value_convert": "default",
+        "status_code": "work_mode",
+        "config_item": {
+          "statusFormat": "{\"work_mode\":\"$\"}",
+          "valueDesc": "{\"range\":[\"charge_now\",\"charge_energy\",\"charge_schedule\"]}",
+          "valueType": "Enum",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "17": {
+        "value_convert": "default",
+        "status_code": "energy_charge",
+        "config_item": {
+          "statusFormat": "{\"energy_charge\":\"$\"}",
+          "valueDesc": "{\"unit\":\"kW\u00b7h\",\"min\":1,\"max\":200,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "18": {
+        "value_convert": "default",
+        "status_code": "switch",
+        "config_item": {
+          "statusFormat": "{\"switch\":\"$\"}",
+          "valueDesc": "{}",
+          "valueType": "Boolean",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "19": {
+        "value_convert": "default",
+        "status_code": "local_timer",
+        "config_item": {
+          "statusFormat": "{\"local_timer\":\"$\"}",
+          "valueDesc": "{\"maxlen\":128}",
+          "valueType": "Raw",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "23": {
+        "value_convert": "default",
+        "status_code": "system_version",
+        "config_item": {
+          "statusFormat": "{\"system_version\":\"$\"}",
+          "valueDesc": "{\"maxlen\":255}",
+          "valueType": "String",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "24": {
+        "value_convert": "default",
+        "status_code": "temp_current",
+        "config_item": {
+          "statusFormat": "{\"temp_current\":\"$\"}",
+          "valueDesc": "{\"unit\":\"\u2103\",\"min\":-40,\"max\":200,\"scale\":0,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "25": {
+        "value_convert": "default",
+        "status_code": "charge_energy_once",
+        "config_item": {
+          "statusFormat": "{\"charge_energy_once\":\"$\"}",
+          "valueDesc": "{\"unit\":\"kW\u00b7h\",\"min\":1,\"max\":999999,\"scale\":2,\"step\":1}",
+          "valueType": "Integer",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      },
+      "33": {
+        "value_convert": "default",
+        "status_code": "mode_set",
+        "config_item": {
+          "statusFormat": "{\"mode_set\":\"$\"}",
+          "valueDesc": "{\"maxlen\":128}",
+          "valueType": "Raw",
+          "enumMappingMap": {},
+          "pid": "jhlyzpk5nfk28nrh"
+        }
+      }
+    },
+    "status_range": {
+      "forward_energy_total": {
+        "type": "Integer",
+        "value": "{\"unit\":\"kW\u00b7h\",\"min\":0,\"max\":99999999,\"scale\":2,\"step\":1}",
+        "report_type": "minux"
+      },
+      "work_state": {
+        "type": "Enum",
+        "value": "{\"range\":[\"charger_free\",\"charger_insert\",\"charger_free_fault\",\"charger_wait\",\"charger_charging\",\"charger_pause\",\"charger_end\",\"charger_fault\"]}",
+        "report_type": null
+      },
+      "charge_cur_set": {
+        "type": "Integer",
+        "value": "{\"unit\":\"A\",\"min\":6,\"max\":32,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "phase_a": {
+        "type": "Raw",
+        "value": "{\"maxlen\":128}",
+        "report_type": null
+      },
+      "phase_b": {
+        "type": "Raw",
+        "value": "{\"maxlen\":128}",
+        "report_type": null
+      },
+      "phase_c": {
+        "type": "Raw",
+        "value": "{\"maxlen\":128}",
+        "report_type": null
+      },
+      "power_total": {
+        "type": "Integer",
+        "value": "{\"unit\":\"kW\",\"min\":0,\"max\":99999999,\"scale\":3,\"step\":1}",
+        "report_type": null
+      },
+      "fault": {
+        "type": "Bitmap",
+        "value": "{\"label\":[\"ov_cr\",\"ov2_cr_fault\",\"ov_vol\",\"undervoltage_alarm\",\"contactor_adhesion\",\"contactor_fault\",\"earth_fault\",\"meter_hardware_alarm\",\"scram_fault\",\"cp_fault\",\"meter_commu_fault\",\"card_reader_fault\",\"cir_short_fault\",\"adhesion_fault\",\"self_test_alarm\",\"leakagecurr_alarm\",\"ov_Temp_fault\"],\"maxlen\":17}",
+        "report_type": null
+      },
+      "connection_state": {
+        "type": "Enum",
+        "value": "{\"range\":[\"controlpi_12v\",\"controlpi_12v_pwm\",\"controlpi_9v\",\"controlpi_9v_pwm\",\"controlpi_6v\",\"controlpi_6v_pwm\",\"controlpi_error\"]}",
+        "report_type": null
+      },
+      "work_mode": {
+        "type": "Enum",
+        "value": "{\"range\":[\"charge_now\",\"charge_energy\",\"charge_schedule\"]}",
+        "report_type": null
+      },
+      "energy_charge": {
+        "type": "Integer",
+        "value": "{\"unit\":\"kW\u00b7h\",\"min\":1,\"max\":200,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "switch": {
+        "type": "Boolean",
+        "value": "{}",
+        "report_type": null
+      },
+      "local_timer": {
+        "type": "Raw",
+        "value": "{\"maxlen\":128}",
+        "report_type": null
+      },
+      "system_version": {
+        "type": "String",
+        "value": "{\"maxlen\":255}",
+        "report_type": null
+      },
+      "temp_current": {
+        "type": "Integer",
+        "value": "{\"unit\":\"\u2103\",\"min\":-40,\"max\":200,\"scale\":0,\"step\":1}",
+        "report_type": null
+      },
+      "charge_energy_once": {
+        "type": "Integer",
+        "value": "{\"unit\":\"kW\u00b7h\",\"min\":1,\"max\":999999,\"scale\":2,\"step\":1}",
+        "report_type": "sum"
+      },
+      "mode_set": {
+        "type": "Raw",
+        "value": "{\"maxlen\":128}",
+        "report_type": null
+      }
+    },
+    "status": {
+      "forward_energy_total": 6380,
+      "work_state": "charger_free",
+      "charge_cur_set": 16,
+      "phase_a": "AAAAAAAAAA==",
+      "phase_b": "AAAAAAAAAA==",
+      "phase_c": "AAAAAAAAAA==",
+      "power_total": 0,
+      "fault": 0,
+      "connection_state": "controlpi_12v",
+      "work_mode": "charge_now",
+      "energy_charge": 1,
+      "switch": true,
+      "local_timer": "AAA=",
+      "system_version": "V1",
+      "temp_current": 23,
+      "charge_energy_once": 1,
+      "mode_set": ""
+    },
+    "set_up": true,
+    "support_local": true,
+    "quirk": null,
+    "warnings": null,
+    "home_assistant": {
+      "name": "timer_test",
+      "name_by_user": null,
+      "disabled": false,
+      "disabled_by": null,
+      "entities": [
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "original_icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "switch.timer_test_switch",
+            "state": "on",
+            "attributes": {
+              "friendly_name": "timer_test Switch"
+            },
+            "last_changed": "2026-09-24T08:06:08.994763+00:00",
+            "last_reported": "2026-09-24T08:06:10.235647+00:00",
+            "last_updated": "2026-09-24T08:06:08.994763+00:00"
+          }
+        }
+      ]
+    }
+  },
+  "issues": []
+}

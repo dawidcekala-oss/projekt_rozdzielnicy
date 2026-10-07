@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>AP-T — one-pager decyzyjny (v1)</title>
+<style>
+:root{--navy:#102a54;--red:#c81e28;--soft:#f4f6f9;--line:#d8dee6;--ok:#1a7f4b}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",system-ui,Arial,sans-serif;margin:0;color:#1b2430;font-size:13.5px;line-height:1.45;background:#fff}
+.page{max-width:900px;margin:0 auto;padding:26px 32px}
+h1{color:var(--navy);font-size:21px;margin:0 0 2px}
+h1 .b{color:var(--red)}
+.sub{color:#555;font-size:12.5px;margin-bottom:14px}
+h2{color:var(--navy);font-size:14.5px;margin:14px 0 6px;border-bottom:2px solid var(--line);padding-bottom:3px}
+table{border-collapse:collapse;width:100%;font-size:12px;margin:6px 0}
+th{background:var(--navy);color:#fff;padding:4px 7px;text-align:left}
+td{border:1px solid var(--line);padding:4px 7px;vertical-align:top}
+tr:nth-child(even) td{background:var(--soft)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+.box{background:var(--soft);border-left:4px solid var(--red);padding:8px 12px;margin:8px 0;border-radius:0 5px 5px 0;font-size:12.5px}
+ul{margin:4px 0;padding-left:18px}
+li{margin:2.5px 0}
+.price{font-variant-numeric:tabular-nums;white-space:nowrap}
+.foot{color:#888;font-size:10.5px;margin-top:14px;border-top:1px solid var(--line);padding-top:6px}
+@media print{.page{padding:8mm}body{font-size:11.5px}}
+</style>
+</head>
+<body>
+<div class="page">
+<h1><span class="b">AMPERE POINT</span> AP-T „Ampere Tower" — decyzja w 5 minut</h1>
+<div class="sub">Uniwersalny słupek zasilająco-ładujący pod całą ofertę AP • one-pager do dokumentów: <i>research v1</i> + <i>koncepcja AP-T v1</i> (folder Stojak) • 25.07.2026</div>
+
+<div class="box"><b>Co to jest:</b> jedna platforma (korpus 250×160×1450, aluminium) + wymienne panele = od słupka z gniazdami, przez zestaw „gniazdo CEE + ładowarka przenośna Q na docku" (nasz model sprzedaży — <b>nikt na rynku tego nie nosi</b>), po wallbox Prime i wersje firmowe z licznikiem. Fundament i panele wspólne na lata — klient rozbudowuje zamiast wymieniać.</div>
+
+<div class="grid">
+<div>
+<h2>Dlaczego to zadziała (3 fakty z researchu)</h2>
+<ul>
+<li><b>Pustka 1000–2500 zł:</b> tani segment (FLOWEV 695, Platinet 1100) nie ma ŻADNEJ elektryki ani gniazd; pierwszy produkt z aparaturą per gniazdo to import za ~2600 zł (Rolec) lub 5,7–14 tys. (Enelion, Walther).</li>
+<li><b>Norma gra dla nas:</b> 60364-7-722/708 wymagają RCD na każdy punkt/gniazdo i zabezpieczeń przy stanowisku — „pusta rura" z Allegro nie może być zgodna. Nasze ładowarki mają RDC-DD 6 mA → wystarczy tani RCD typ A (nie B za ~1200 zł).</li>
+<li><b>Koszt instalacji (4,3–6,5 tys.) &gt; cena słupka</b> — wszystko co skraca robociznę (prefabrykat AP-F, zaciski przelotowe, montaż od frontu) realnie obniża rachunek klienta i uzasadnia marżę.</li>
+</ul>
+
+<h2>Rodzina SKU (ceny docelowe netto)</h2>
+<table>
+<tr><th>SKU</th><th>Co zawiera</th><th>Cena</th></tr>
+<tr><td>BASE</td><td>platforma + zaślepki</td><td class="price">999–1190</td></tr>
+<tr><td>SOCKET</td><td>CEE16 + 2×Schuko + 2×RCBO</td><td class="price">1390–1590</td></tr>
+<tr><td><b>CHARGE ★</b></td><td>dock Q + CEE32 + RCD/C32 + holster + hak</td><td class="price">1790–1990</td></tr>
+<tr><td>WALLBOX</td><td>płyta UNI + CEE32 + aparatura</td><td class="price">1590–1790</td></tr>
+<tr><td>DUO / FIRMA</td><td>2 stanowiska / +licznik, loop-out</td><td class="price">2690–2990 / +390–690</td></tr>
+<tr><td>Akcesoria</td><td>fundament AP-F 399–499 • daszek LED 199 • odbojnica 149 • kotwy 149 • śruby ziemne 549</td><td class="price">—</td></tr>
+</table>
+</div>
+
+<div>
+<h2>5 decyzji do podjęcia (rekomendacje)</h2>
+<table>
+<tr><th>Decyzja</th><th>Rekomendacja</th></tr>
+<tr><td>1. Materiał startowy</td><td>blacha alu 5754 3 mm, skręcana (zero kosztów narzędzi, start 2–3 tyg.); matryca profilu (6–15 tys.) dopiero po ~150 szt./rok</td></tr>
+<tr><td>2. Rozstaw fundamentu</td><td>M12 200×120 jako <b>stały standard AP</b> („kolejne generacje wejdą na ten sam fundament") — deklarować publicznie</td></tr>
+<tr><td>3. RCD typ A czy B</td><td>typ A + pisemne potwierdzenie RDC-DD (IEC 62955) od producenta ładowarek — <b>największe ryzyko projektu (R2)</b>; typ B tylko jako opcja</td></tr>
+<tr><td>4. Osprzęt CEE</td><td>zapytania do PCE / Bals / Mennekes o gniazda skośne 16/32 A IP44 (3 wyceny przed DXF)</td></tr>
+<tr><td>5. Pozycjonowanie vs AMP-BOX</td><td>AMP-BOX = „wszystko pod kluczem", AP-T = „urządzenia na wierzchu"; panel P-AMP łączy oba (szafa na słupku)</td></tr>
+</table>
+
+<h2>Koszty i harmonogram</h2>
+<table>
+<tr><td>Koszt platformy @50 szt.</td><td class="price">~1300 zł/szt. netto (BOM w koncepcji §13)</td></tr>
+<tr><td>Koszt CHARGE komplet @50</td><td class="price">1,7–2,4 tys. → marża zdrowa od serii 100+ / etapu profilowego (−250–400 zł/szt.)</td></tr>
+<tr><td>Prototyp α (2 szt. + AP-F)</td><td class="price">~6–9 tys. zł + 4–5 tygodni</td></tr>
+<tr><td>Testy prototypu</td><td>deszczownica 30 min • hak 15/30 kg • moment 25 kg + 150 N • noc w −20°C • <b>32 A z daszkiem vs bez (materiał marketingowy!)</b> • montaż 1 os. &lt;2 h</td></tr>
+<tr><td>Pierwsze wdrożenie</td><td>wymiana słupków w showroomie = sesja foto + test polowy</td></tr>
+</table>
+</div>
+</div>
+
+<div class="box" style="border-left-color:var(--ok)"><b>Jedno zdanie do zapamiętania:</b> AP-T zamienia nasz największy prowizoryczny wstyd (gniazdo przenośne przykręcone na szczycie rury, kabel owinięty wokół słupka) w produkt, którego nie ma nikt w Europie poniżej 2500 zł — i który sprzedaje nasze ładowarki, gniazda, kable i szafy jednocześnie.</div>
+
+<div class="foot">AP-T one-pager v1 • szczegóły i źródła: AMPERE_POINT_stojak_research_rynkowy_v1.html oraz AMPERE_POINT_stojak_koncepcja_APT_v1.html • wartości normowe do weryfikacji w PN przed wykonawstwem</div>
+</div>
+</body>
+</html>

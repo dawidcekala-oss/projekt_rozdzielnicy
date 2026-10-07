@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.92]
+\setsansfont{DejaVu Sans}[Scale=0.92]
+\setmonofont{DejaVu Sans Mono}[Scale=0.82]
+\usepackage{amsmath,amssymb}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{xurl}
+
+\definecolor{navy}{RGB}{19,40,82}
+\definecolor{rulegrey}{RGB}{180,190,205}
+\definecolor{accent}{RGB}{0,110,90}
+\definecolor{codebg}{RGB}{246,248,251}
+\definecolor{boxbg}{RGB}{238,243,251}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=accent,citecolor=navy}
+
+\emergencystretch=3em \hbadness=3000
+\titleformat{\section}{\large\bfseries\sffamily\color{navy}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily\color{navy}}{\thesubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.1em}{0.35em}
+\titlespacing*{\subsection}{0pt}{0.7em}{0.2em}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.45em}
+\setlist[itemize]{leftmargin=1.2em,itemsep=0.12em,topsep=0.15em}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.12em,topsep=0.15em}
+\newcommand{\key}[1]{\textbf{\color{navy}#1}}
+
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,
+  rulecolor=\color{rulegrey},backgroundcolor=\color{codebg},
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  xleftmargin=4pt,xrightmargin=2pt,framexleftmargin=2pt,aboveskip=6pt,belowskip=4pt}
+
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{rulegrey}\leaders\hrule height \footrulewidth\hfill}}
+\fancyfoot[L]{\footnotesize\sffamily\color{rulegrey}AMPERE POINT — integracja SUN2000 + Home Assistant + seria Q, v1}
+\fancyfoot[R]{\footnotesize\sffamily\color{rulegrey}\thepage}
+
+\newcommand{\fb}[2]{\fcolorbox{navy}{boxbg}{\parbox[c][12mm][c]{#1}{\centering\sffamily\footnotesize\color{navy}#2}}}
+
+\begin{document}
+{\sffamily\bfseries\color{navy}\LARGE Integracja Huawei SUN2000 z Home Assistant i ładowarką serii Q}\\[3pt]
+{\sffamily\large\color{navy} Ładowanie EV nadwyżką z fotowoltaiki — architektura i sposób wdrożenia}\\[6pt]
+{\color{rulegrey}\hrule height 1pt}\vspace{4pt}
+{\footnotesize\sffamily Wersja v1 \quad•\quad data: 2026-06-29 \quad•\quad opracowano na podstawie zebranych źródeł (AMPERE POINT, projekt \texttt{huawei\_solar}, Huawei, Tuya/Home Assistant) — linki w sekcji 8}\\[2pt]
+
+\section{Cel i założenia}
+Artykuł opisuje, jak w \key{Home Assistant} (HA) połączyć trzy elementy: falownik \key{Huawei SUN2000}, ładowarkę \key{AMPERE POINT serii Q} (Q11/Q22/Q37/Q74) oraz logikę automatyzacji, tak aby ładować samochód \key{przede wszystkim z nadwyżki fotowoltaiki} (tzw. ładowanie nadwyżkowe / solar surplus). Przy okazji integracja daje pełny monitoring obu urządzeń i dynamiczne sterowanie prądem ładowania.
+
+Założenia: falownik SUN2000 z modułem \key{SDongle} (WLAN-FE lub 4G) albo bezpośrednim RS485 i firmware z 2023 r. lub nowszym; ładowarka serii Q w wersji \key{WiFi/Tuya} (sieć 2,4 GHz); Home Assistant OS z \key{HACS}. Pozycje oparte na rozszerzeniach społecznościowych (\texttt{xtend\_tuya}, \texttt{tuya\_local}, \texttt{huawei\_solar}) są nieoficjalne — działają dobrze, ale nie są objęte wsparciem producentów.
+
+\section{Architektura integracji}
+Sygnały z falownika i sterowanie ładowarką spotykają się w Home Assistant, który pełni rolę „mózgu": liczy dostępną nadwyżkę i ustawia prąd ładowania.
+
+\vspace{4pt}
+\begin{center}
+\fb{2.7cm}{SUN2000\\falownik PV}
+$\;\xrightarrow{\text{\scriptsize Modbus TCP}}\;$
+\fb{3.1cm}{Home Assistant\\HACS + automatyzacja}
+$\;\xleftarrow{\text{\scriptsize Tuya}}\;$
+\fb{2.7cm}{Ładowarka Q\\WiFi/Tuya}
+\end{center}
+\vspace{2pt}
+
+Trzy warstwy: (1) odczyt falownika przez \key{Modbus TCP} integracją \texttt{huawei\_solar}; (2) odczyt i sterowanie ładowarką przez \key{Tuya} (\texttt{xtend\_tuya} w chmurze lub \texttt{tuya\_local} lokalnie); (3) automatyzacja w HA, która z bieżącej nadwyżki PV (i stanu baterii) wylicza prąd ładowania i ustawia go w ładowarce.
+
+\section{Warstwa falownika: SUN2000 \texorpdfstring{$\rightarrow$}{->} Home Assistant}
+\subsection{Włączenie Modbus TCP w falowniku}
+W aplikacji \key{FusionSolar} wejdź w tryb instalatora: \emph{Device Commissioning} $\rightarrow$ logowanie kontem \texttt{installer} (domyślne hasło \texttt{00000a} lub \texttt{0000000a}). Następnie \emph{Settings $\rightarrow$ Communication Configuration $\rightarrow$ Dongle Parameter Settings $\rightarrow$ Modbus TCP $\rightarrow$ Connection: Enabled (Unrestricted)}. Nadaj urządzeniu \key{stały adres IP} w routerze.
+
+\subsection{Instalacja i konfiguracja \texttt{huawei\_solar}}
+Zainstaluj integrację \texttt{huawei\_solar} przez HACS, zrestartuj HA i dodaj ją (Ustawienia $\rightarrow$ Integracje). Wybierz połączenie sieciowe i podaj:
+\begin{itemize}
+\item \key{IP} falownika/dongla (stałe) oraz \key{port} — \texttt{502} albo \texttt{6607} (po aktualizacji firmware port bywa zmieniany);
+\item \key{Slave ID} — typowo \texttt{1} dla SDongle, \texttt{0} przy łączeniu się bezpośrednio z punktem dostępowym falownika (\texttt{192.168.200.1});
+\item opcję \key{Elevate permissions} — wymaga danych konta \texttt{installer}; daje dostęp do danych optymalizatorów i do \emph{sterowania mocą} (potrzebne, jeśli chcesz aktywnie ograniczać eksport).
+\end{itemize}
+Integracja odpytuje falownik co 30 s; dla licznika i baterii warto dodać własny, częstszy polling (poniżej, sekcja 5).
+
+\subsection{Najważniejsze encje}
+Do logiki nadwyżki kluczowe są:
+\begin{itemize}
+\item \verb|sensor.power_meter_active_power| — moc na przyłączu (Smart Power Sensor). Znak rozróżnia pobór i oddawanie do sieci — to podstawowy sygnał nadwyżki;
+\item \verb|sensor.battery_state_of_capacity| — stan naładowania magazynu (SOC), jeśli jest bateria;
+\item moc/uzysk falownika (\emph{input power}, \emph{daily yield}) — do monitoringu i panelu Energia.
+\end{itemize}
+\key{Uwaga:} Modbus obsługuje \key{jedno połączenie naraz}. Jeśli oprócz HA z falownika korzysta inny system (np. EVCC), użyj pośrednika \href{https://github.com/Akulatraxas/ha-modbusproxy}{Modbus Proxy}. Pełną mapę rejestrów zawiera dokument Huawei „Solar Inverter Modbus Interface Definitions".
+
+\section{Warstwa ładowarki: AMPERE POINT serii Q \texorpdfstring{$\rightarrow$}{->} Home Assistant}
+Ładowarki Q to urządzenia \key{WiFi/Tuya} (2,4 GHz; 5 GHz nie jest wspierane). Oficjalna integracja Tuya w Home Assistant — według stanu na 2025 r. — \key{nie obsługuje jeszcze ładowarek EV}, więc po podpięciu konta Tuya ładowarka nie pojawi się jako urządzenie. Producent rekomenduje rozwiązania społecznościowe.
+
+\subsection{Wariant chmurowy: \texttt{xtend\_tuya} (zalecany przez AMPERE POINT)}
+Wymagania: HA OS, włączona \key{oficjalna integracja Tuya} (konto Tuya autoryzowane), ładowarka dodana w aplikacji \emph{Tuya Smart} lub \emph{Smart Life}, konto GitHub (do HACS). Kroki: zainstaluj \href{https://hacs.xyz/docs/setup/download/}{HACS}, następnie dodaj repozytorium \href{https://github.com/azerty9971/xtend_tuya}{\texttt{xtend\_tuya}} i potwierdź instalację. Po chwili ładowarka pojawi się jako zestaw encji.
+
+\subsection{Wariant lokalny: \texttt{tuya\_local} (bez chmury)}
+Jeśli zależy Ci na niezależności od serwerów Tuya i stabilniejszym łączu, użyj \href{https://github.com/make-all/tuya-local}{\texttt{tuya\_local}}: dodaj ładowarkę w aplikacji, zainstaluj integrację przez HACS, skorzystaj z trybu „Smart Life cloud-assisted" (skan QR). Gdy encje się nie pojawią, wyłuskaj \emph{device id} i \emph{local key} narzędziem \href{https://github.com/jasonacox/tinytuya}{TinyTuya}.
+
+\subsection{Co otrzymujesz}
+Encje (zależnie od modelu i wersji): \key{status} (\verb|charger_free|, \verb|charging|, \verb|paused|, \verb|error|), \key{prąd ładowania} (6–48 A; w warstwie Tuya zwykle datapoint „set current", często DP~102, 8–32 A co 1 A), moc (kW), energia sesji (kWh), tryb (\verb|charge_now|, \verb|charge_schedule|). \key{Sterowanie:} start/stop (switch), ustawienie prądu (number/select) i zmiana trybu. To wystarcza, by automatyzacja modulowała ładowanie.
+
+\section{Mózg integracji: automatyzacja ładowania nadwyżką PV}
+Idea: licz dostępną nadwyżkę (oddawanie do sieci, ewentualnie powiększone o to, co już pobiera auto), zamień ją na prąd ładowania i ustaw w ładowarce, z histerezą i minimalnym prądem 6~A.
+
+\key{Przeliczenie mocy na prąd:} 1-faza, 230~V: $I[\mathrm{A}] \approx P[\mathrm{W}]/230$. \quad 3-fazy, 400~V: $I[\mathrm{A}] \approx P[\mathrm{W}]/(\sqrt{3}\cdot 400) \approx P/692$. Zakres ogranicz do 6–32~A (poniżej ~6~A auto przerwie ładowanie).
+
+\key{Krok 1 — sensor nadwyżki i docelowego prądu} (przykład 1-fazowy; nazwy encji dostosuj do siebie):
+\begin{lstlisting}
+template:
+  - sensor:
+      - name: "PV surplus"          # nadwyzka = oddawanie do sieci [W]
+        unit_of_measurement: "W"
+        state: >
+          {{ [0, (0 - states('sensor.power_meter_active_power')|float(0))] | max | round(0) }}
+      - name: "EV charge current target"   # docelowy prad ladowania [A]
+        unit_of_measurement: "A"
+        state: >
+          {% set surplus = states('sensor.pv_surplus')|float(0) %}
+          {% set soc = states('sensor.battery_state_of_capacity')|float(100) %}
+          {% if soc < 80 %}
+            0
+          {% else %}
+            {{ [[ (surplus / 230)|round(0), 6 ]|max, 32 ]|min }}
+          {% endif %}
+\end{lstlisting}
+
+\key{Krok 2 — automatyzacja ustawiająca prąd / start-stop} (próg 6~A; gdy nadwyżka mniejsza — pauza):
+\begin{lstlisting}
+automation:
+  - alias: "EV solar surplus control"
+    trigger:
+      - platform: time_pattern
+        seconds: "/15"
+    action:
+      - variables:
+          amps: "{{ states('sensor.ev_charge_current_target')|int(0) }}"
+      - choose:
+          - conditions: "{{ amps >= 6 }}"
+            sequence:
+              - service: number.set_value           # encja pradu ladowarki (xtend_tuya/tuya_local)
+                target: { entity_id: number.q_charger_set_current }
+                data:   { value: "{{ amps }}" }
+              - service: switch.turn_on
+                target: { entity_id: switch.q_charger_charge }
+          - conditions: "{{ amps < 6 }}"
+            sequence:
+              - service: switch.turn_off
+                target: { entity_id: switch.q_charger_charge }
+\end{lstlisting}
+
+\key{Krok 3 — szybszy polling licznika} (domyślnie 30~s to za rzadko dla pętli sterowania):
+\begin{lstlisting}
+automation:
+  - alias: "Huawei power meter fast polling"
+    trigger:
+      - platform: time_pattern
+        seconds: "/5"
+    action:
+      - service: homeassistant.update_entity
+        target: { entity_id: sensor.power_meter_active_power }
+\end{lstlisting}
+
+Gotowe wzorce: społecznościowy przepis \href{https://community.home-assistant.io/t/turn-your-tuya-ev-charger-dynamic-load-balancing-or-solar-controlled/854072}{„dynamic / load balancing / solar controlled" dla ładowarek Tuya} oraz \href{https://evcc.io/}{EVCC} jako gotowy orkiestrator (steruje ładowarką i czyta falownik; pamiętaj o Modbus Proxy, bo falownik to jedno połączenie).
+
+\section{Warianty, ograniczenia i bezpieczeństwo}
+\begin{itemize}
+\item \key{Chmura vs lokalnie:} \texttt{xtend\_tuya} jest najprostszy, ale zależny od chmury Tuya; \texttt{tuya\_local} działa lokalnie (stabilniej, bez Internetu), kosztem trudniejszej konfiguracji (local key).
+\item \key{Sieć:} ładowarka tylko 2,4 GHz; falownikowi/donglowi nadaj stały IP; Modbus = jedno połączenie naraz.
+\item \key{Status nieoficjalny:} \texttt{xtend\_tuya}/\texttt{tuya\_local}/\texttt{huawei\_solar} to rozszerzenia społecznościowe — możliwe zmiany po aktualizacjach; oficjalne wsparcie Tuya dla ładowarek EV jest zgłoszone, ale jeszcze nie wdrożone.
+\item \key{Bezpieczeństwo i normy:} prąd ładowania zmieniaj w granicach obciążalności instalacji i przewodu; utrzymuj minimum ~6~A; nie obchodź zabezpieczeń. Konfigurację i automatyzacje wdraża osoba kompetentna.
+\item \key{Strojenie pętli:} dodaj histerezę i opóźnienia (np. min. czas między zmianami prądu), żeby chmury nie powodowały ciągłego start-stop; rozważ próg SOC baterii, od którego oddajesz nadwyżkę do auta.
+\end{itemize}
+
+\section{Materiały źródłowe i karty katalogowe}
+\textbf{Ładowarka serii Q (AMPERE POINT)}
+\begin{itemize}
+\item Poradnik producenta: \href{https://www.amperepoint.com/blogs/poradniki/integration-of-ampere-point-q-series-charger-with-home-assistant}{Integration of Ampere Point Q Series Charger with Home Assistant} (xtend\_tuya, tuya\_local, lista encji).
+\item Instrukcja serii Q (folder projektu): \texttt{QSeries\_Ampere\_Point\_manual\_EN\_CONTENT\_REVIEW.docx} — WiFi/Tuya, ustawianie prądu, harmonogramy, wzmianka o HACS + \texttt{xtend\_tuya}.
+\item \href{https://github.com/azerty9971/xtend_tuya}{\texttt{xtend\_tuya}} \, • \, \href{https://github.com/make-all/tuya-local}{\texttt{tuya\_local}} \, • \, \href{https://github.com/jasonacox/tinytuya}{TinyTuya} \, • \, \href{https://hacs.xyz/docs/setup/download/}{HACS}.
+\end{itemize}
+\textbf{Falownik SUN2000}
+\begin{itemize}
+\item Integracja \href{https://github.com/wlcrs/huawei_solar}{\texttt{huawei\_solar}} oraz \href{https://github.com/wlcrs/huawei_solar/wiki}{Wiki} (Connecting to the inverter, Changing Active Power Control).
+\item Huawei „Solar Inverter Modbus Interface Definitions" (mapa rejestrów) — \href{https://support.huawei.com/enterprise/en/doc/EDOC1100480329}{Huawei Support} oraz kopia \href{https://community.symcon.de/uploads/short-url/pqZXWOienoBK2AsEzGD2oH1bcPR.pdf}{V3.0 (PDF)}.
+\item \href{https://github.com/Akulatraxas/ha-modbusproxy}{Modbus Proxy} (wiele systemów na jednym falowniku) \, • \, \href{https://evcc.io/}{EVCC}.
+\end{itemize}
+\textbf{Home Assistant / Tuya}
+\begin{itemize}
+\item \href{https://www.home-assistant.io/integrations/tuya/}{Oficjalna integracja Tuya} \, • \, wzorzec \href{https://community.home-assistant.io/t/turn-your-tuya-ev-charger-dynamic-load-balancing-or-solar-controlled/854072}{sterowania ładowarką Tuya nadwyżką PV}.
+\end{itemize}
+
+\end{document}

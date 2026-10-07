@@ -1,0 +1,236 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Koszyk a_brod</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#F5F7F9;
+  --surface:#FFFFFF;
+  --surface-2:#EDF1F5;
+  --ink:#131820;
+  --ink-2:#525E6E;
+  --ink-3:#7C8797;
+  --line:#DCE2EA;
+  --line-2:#C6CEDA;
+  --accent:#B5470B;
+  --accent-soft:#FBEDE3;
+  --ok:#2E7D46;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1218;
+    --surface:#161C25;
+    --surface-2:#1D242F;
+    --ink:#E6EAF0;
+    --ink-2:#9AA5B4;
+    --ink-3:#77828F;
+    --line:#26303C;
+    --line-2:#33404F;
+    --accent:#F0925A;
+    --accent-soft:#2A1D14;
+    --ok:#7BC594;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1218;
+  --surface:#161C25;
+  --surface-2:#1D242F;
+  --ink:#E6EAF0;
+  --ink-2:#9AA5B4;
+  --ink-3:#77828F;
+  --line:#26303C;
+  --line-2:#33404F;
+  --accent:#F0925A;
+  --accent-soft:#2A1D14;
+  --ok:#7BC594;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px;margin:0 auto;padding:40px 20px 72px;display:flex;flex-direction:column;gap:24px}
+
+header{display:flex;flex-direction:column;gap:10px}
+h1{
+  font-family:Archivo,system-ui,sans-serif;
+  font-weight:700;font-size:clamp(1.5rem,4vw,2rem);
+  letter-spacing:-.02em;margin:0;
+}
+.klucz{font-size:.85rem;color:var(--ink-2);margin:0}
+
+.sklep{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+.sklep-gora{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 18px;border-bottom:1px solid var(--line);
+  background:var(--surface-2);
+}
+.sklep-nazwa{
+  font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:1.06rem;
+}
+.sklep-nazwa a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line-2)}
+.sklep-nazwa a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.sklep-suma{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;
+}
+.sklep-suma small{display:block;font-family:"IBM Plex Sans",sans-serif;font-weight:500;font-size:.74rem;color:var(--ok)}
+
+.poz{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  align-items:center;gap:14px;
+  padding:13px 18px;
+  border-top:1px solid var(--line);
+  color:inherit;text-decoration:none;
+  transition:background .12s ease;
+}
+.sklep-gora + .poz{border-top:none}
+.poz:hover{background:var(--accent-soft)}
+.poz:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.nazwa{font-weight:500;line-height:1.35}
+.nazwa small{display:block;font-weight:400;font-size:.78rem;color:var(--ink-3)}
+.ile{
+  font-family:"IBM Plex Mono",monospace;font-size:.85rem;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.cena{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.95rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap;min-width:66px;text-align:right;
+}
+.poz::after{
+  content:"↗";color:var(--ink-3);font-size:.9rem;grid-column:4;
+}
+.poz:hover::after{color:var(--accent)}
+
+@media (max-width:620px){
+  .poz{grid-template-columns:1fr auto;gap:10px;padding:12px 14px}
+  .ile{grid-column:1;grid-row:2;font-size:.8rem}
+  .cena{grid-column:2;grid-row:1}
+  .poz::after{grid-column:2;grid-row:2;text-align:right}
+  .sklep-gora{padding:12px 14px}
+}
+
+footer{
+  display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;
+  font-size:.82rem;color:var(--ink-3);
+  border-top:1px solid var(--line);padding-top:16px;
+}
+footer span{font-family:"IBM Plex Mono",monospace}
+</style>
+
+<div class="wrap">
+
+<header>
+  <h1>Koszyk: a_brod</h1>
+  <p class="klucz">Wszystko od jednego sprzedawcy — suma 63,75 zł ≥ 49,90, więc dostawa 0 zł (Smart). Kliknięcie wiersza otwiera ofertę. Dwie ostatnie pozycje można skreślić — koszyk zostanie 56,72 zł, dalej nad progiem.</p>
+</header>
+
+<section class="sklep">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa"><a href="https://allegro.pl/uzytkownik/a_brod">a_brod</a></div>
+    <div class="sklep-suma">63,75 zł<small>dostawa 0 zł (Smart)</small></div>
+  </div>
+  <a class="poz" href="https://allegro.pl/produkt/multiplekser-texas-instruments-cd4051-b5e82402-9c71-49fa-9c34-cc4b8ab4cbd8">
+    <span class="nazwa">CD4051 (TI), multiplekser analogowy 8:1, DIP-16
+      <small>na stronie produktu wybrać ofertę sprzedawcy a_brod (3,19)</small></span>
+    <span class="ile">3 × 3,19</span>
+    <span class="cena">9,57</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/lm393-podwojny-komparator-2szt-823-88b7e618-4f85-483e-9743-9d2f784d8e13">
+    <span class="nazwa">LM393, komparator podwójny, opak. 2&nbsp;szt.</span>
+    <span class="ile">1 × 3,27</span>
+    <span class="cena">3,27</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/dioda-prostownicza-prc-1n4148-1d83c1a2-482f-45f3-be70-b82d09665a17">
+    <span class="nazwa">Dioda 1N4148 DO-35, opak. 50&nbsp;szt.</span>
+    <span class="ile">1 × 3,28</span>
+    <span class="cena">3,28</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-ceramiczny-470pf-50-szt-1155-995e27dd-f611-4a68-ad54-a9485de133c3">
+    <span class="nazwa">Kondensator ceramiczny 470&nbsp;pF, opak. 50&nbsp;szt.</span>
+    <span class="ile">1 × 3,22</span>
+    <span class="cena">3,22</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-ceramiczny-1nf-3kv-5mm-20szt-27c7904e-2fb0-44f8-bf36-ecfa72cb5a6a">
+    <span class="nazwa">Kondensator ceramiczny 1&nbsp;nF / 3&nbsp;kV, opak. 20&nbsp;szt.</span>
+    <span class="ile">1 × 3,73</span>
+    <span class="cena">3,73</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-mkt-47nf-100v-r-5-5szt-f5d97b43-ca0f-469c-ad5b-d43c2563e50a">
+    <span class="nazwa">Kondensator MKT 47&nbsp;nF / 100&nbsp;V, opak. 5&nbsp;szt.</span>
+    <span class="ile">1 × 2,39</span>
+    <span class="cena">2,39</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-ceramiczny-100nf-50v-20-sztuk-94833a9c-519d-4653-8270-de1128eb83cf">
+    <span class="nazwa">Kondensator ceramiczny 100&nbsp;nF / 50&nbsp;V, opak. 20&nbsp;szt.</span>
+    <span class="ile">1 × 4,19</span>
+    <span class="cena">4,19</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/podstawka-dip-prc-dip16-50ae2754-d787-4491-9f59-09bcd0c8a8e7">
+    <span class="nazwa">Podstawka DIP-16, opak. 5&nbsp;szt.</span>
+    <span class="ile">1 × 3,10</span>
+    <span class="cena">3,10</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/podstawka-dip-prc-34-bdadf07e-af1f-460a-8522-974032e5e4af">
+    <span class="nazwa">Podstawka DIP-8, opak. 10&nbsp;szt.</span>
+    <span class="ile">1 × 2,81</span>
+    <span class="cena">2,81</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/gniazdo-idc-20pin-meskie-191170d7-2465-421c-ba88-4b43e915ce9c">
+    <span class="nazwa">Złącze IDC20 do druku, proste, obudowane, opak. 3&nbsp;szt.
+      <small>przy odbiorze sprawdzić: obudowa z wycięciem-kluczem</small></span>
+    <span class="ile">1 × 3,05</span>
+    <span class="cena">3,05</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/uzytkownik/a_brod?string=tsal6400">
+    <span class="nazwa">Dioda IR nadawcza TSAL6400, 940&nbsp;nm, opak. 2&nbsp;szt.
+      <small>link otwiera wyszukiwarkę sprzedawcy — wziąć ofertę „TSAL6400 IR DIODA NADAWCZA (2szt)"</small></span>
+    <span class="ile">3 × 3,09</span>
+    <span class="cena">9,27</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/uzytkownik/a_brod?string=bc337">
+    <span class="nazwa">Tranzystor BC337 NPN, opak. 10&nbsp;szt.
+      <small>link otwiera wyszukiwarkę sprzedawcy — jedna oferta</small></span>
+    <span class="ile">1 × 2,94</span>
+    <span class="cena">2,94</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-470uf-25v-low-esr-5szt-9828b60c-98e0-41d3-bc6c-5aa5108808d0">
+    <span class="nazwa">Kondensator 470&nbsp;µF / 25&nbsp;V LOW&nbsp;ESR, opak. 5&nbsp;szt.</span>
+    <span class="ile">2 × 2,95</span>
+    <span class="cena">5,90</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/wtyk-idc-20pin-zenski-na-tasme-1550c4cc-e774-4f07-b209-d39c5c9400af">
+    <span class="nazwa">Wtyk IDC20 żeński, zaciskany na taśmę, opak. 3&nbsp;szt.
+      <small>zapas — można skreślić</small></span>
+    <span class="ile">1 × 3,04</span>
+    <span class="cena">3,04</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/tasma-idc-aksotronik-awg28-20-zyl-szara-30-5-m-4c1daf68-3482-424f-bd5c-57e3bb1e7a22">
+    <span class="nazwa">Taśma 20-żyłowa AWG28, 1&nbsp;mb
+      <small>zapas — można skreślić</small></span>
+    <span class="ile">1 × 3,99</span>
+    <span class="cena">3,99</span>
+  </a>
+</section>
+
+<footer>
+  <div>15 pozycji &middot; jeden sprzedawca &middot; dostawa 0 zł</div>
+  <div><span>2026-09-03</span> &middot; ceny i dostępność sprawdzone tego dnia</div>
+</footer>
+
+</div>

@@ -1,0 +1,137 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+
+\title{\textbf{AMPERE POINT --- custom device}\\[4pt]
+\large PROPOZYCJA v4: nowe pomiary --- ,,karta odporności modelu''\\ i diagnostyka egzemplarza\\[2pt]
+\normalsize do zatwierdzenia (Z21); rozwija zatwierdzony kierunek v3 (S1--S3, praca tylko na stanowisku)}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{13 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\section{Skąd te propozycje}
+Dwa nowe źródła wiedzy: \textbf{przewodnik o instalacjach} (13 skatalogowanych wad niekrytycznych
+z mechanizmami) oraz \textbf{analiza rzeczywistej instalacji} (folder \texttt{instalacja}), która
+pokazała typowe realia zasilania ładowarki: obwód \textbf{współdzielony} z innymi odbiornikami
+(obw.~9: płyta indukcyjna $+$ kotłownia $+$ słupek), \textbf{długa trasa} kabla, zabezpieczenie
+C25 przed kilkoma B16, różnicówki \textbf{nieznanego typu}, rozdział PEN w starym złączu.
+Wniosek: katalog scenariuszy (funkcja docelowa) potrzebuje nie tylko \emph{reprodukcji} wad (S1),
+ale też \textbf{znajomości progów reakcji każdego modelu ładowarki} --- bez nich nie da się
+przewidzieć, czy dana wada u danego klienta objawi się właśnie tak. Stąd dwie nowe klasy pomiarów.
+
+\section{Klasa A --- ,,karta odporności modelu'' (wykonywana raz na model/firmware)}
+Sekwencja automatyczna: symulator (S1) przemiata parametr, urządzenie obserwuje reakcję DUT
+(napięcia --- U2, prądy --- T1..3, stan CP, czasy z opto faz, telemetria HMI/aplikacji).
+Wynik $=$ tabela progów zapisywana jako \textbf{karta modelu} (sesja S3). Karta służy potem:
+(a) diagnozie telefonicznej (katalog: wada $\to$ czy TEN model zareaguje), (b) porównaniu
+egzemplarza-zwrotu z modelem (odchyłka progu $=$ uszkodzenie), (c) regresji po aktualizacji
+firmware --- bez odwoływania się do normy (to nasze progi praktyczne, nie test zgodności).
+\begin{longtable}{@{}p{0.05\textwidth}p{0.30\textwidth}p{0.30\textwidth}p{0.27\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Pomiar} & \textbf{Metoda (stanowisko)} & \textbf{Wpis do katalogu (przykład)}\\
+\midrule
+A1 & progi napięciowe U$_{min}$/U$_{max}$, histereza, czasy reakcji i wznowienia & rampa/skoki
+napięcia zasilania DUT (regulacja $+$ odczepy impedancji pod obciążeniem) & ,,przerywa przy
+198~V, wraca 208~V po 40~s'' $\to$ miękka sieć/PV u klienta\\
+A2 & odporność na zapady i przerwy & matryca: głębokość $\times$ czas (50~ms--5~s), stycznik
+szybki; obserwacja: kontynuacja / restart / czas wznowienia & ,,zapad $>$150~ms $=$ restart
+sesji'' $\to$ migotanie u klienta $=$ przerwy ładowania\\
+A3 & \textbf{próg detekcji wadliwego PE} & wstawka rezystancyjna w PE zasilania DUT:
+0/10/50/200~\ohm/przerwa $+$ zadawane napięcie N--PE (0--10~V) & ,,błąd uziemienia przy
+R$_{PE}>$120~\ohm{} lub U$_{N-PE}>$4~V'' $\to$ TT ze słabym uziomem, stare TN-C\\
+A4 & \textbf{margines upływowy}: własny upływ DUT$+$auta oraz próg dołożonego tła AC/DC &
+pomiar RCM (B1) upływu własnego w C; generator -A3 dokłada tło aż do wyzwolenia (wewn.
+RCD DUT / wzorcowego RCD stanowiska) & ,,upływ własny 3,8~mA; wyzwala przy tle 19~mA AC''
+$\to$ wspólna różnicówka u klienta $=$ nocne wyzwalania\\
+A5 & wrażliwość na impedancję zasilania & przemiatanie odczepów 0,15/0,3/0,6~\ohm{} (per faza);
+pomiar $\Delta$U pod prądem DUT i reakcji & ,,przy 0,6~\ohm{} redukuje prąd do 10~A''
+$\to$ przedłużacz/długi obwód\\
+A6 & prąd załączeniowy (inrush) & szybkie próbkowanie prądu przy wpięciu/załączeniu DUT &
+,,szpilka 32~A/2~ms'' $\to$ wybijanie B10 u klienta\\
+A7 & zachowanie 3F: asymetria napięć, zamiana kolejności, \textbf{utrata jednej fazy w trakcie} &
+odczepy niezależnie per faza; przekaźnik krzyżujący L1$\leftrightarrow$L2; stycznik rozcinający
+L2 podczas soak & ,,przy utracie L2 kontynuuje 1F na L1/6~A'' albo ,,błąd E-XX''
+$\to$ przepalona wkładka u klienta\\
+A8 & zachowanie przy ,,złym gnieździe'' (tylko modele przenośne) & wzorcowe gniazdo o
+skalibrowanej rezystancji styku (0,1/0,3~\ohm); soak $+$ termowizja $+$ odczyt czujnika
+temperatury wtyczki DUT & ,,przy 0,3~\ohm{} wtyczka $+$52~K po 40~min, DUT wstrzymuje przy
+75~$^\circ$C'' $\to$ obiektywizacja ,,grzania wtyczki''\\
+\bottomrule
+\end{longtable}
+
+\section{Klasa B --- diagnostyka egzemplarza (zwrotu)}
+\begin{longtable}{@{}p{0.05\textwidth}p{0.34\textwidth}p{0.53\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Pomiar} & \textbf{Po co / interpretacja}\\
+\midrule
+B1 & \textbf{rezystancja styków} wtyczki zasilającej i wtyku Type~2 (4-przewodowo, m\ohm,
+pod prądem soak) & obiektywna liczba zamiast ,,ciepła wtyczka''; $>$kilkadziesiąt m\ohm{} $=$
+złącze zdegradowane (zwykle przez gniazdo klienta) --- dowód do rozmowy i wymiany\\
+B2 & upływ własny egzemplarza AC/DC (w B, w C, pod obciążeniem) & porównanie z kartą modelu;
+wzrost $=$ degradacja izolacji/filtrów (wilgoć u klienta)\\
+B3 & inrush egzemplarza & odchyłka od karty $=$ uszkodzenie prostownika/NTC\\
+B4 & \textbf{porównanie progów egzemplarza z kartą modelu} (A1, A3, A4 w wersji skróconej) &
+przesunięty próg PE/napięcia $=$ uszkodzony obwód pomiarowy DUT --- twarda kwalifikacja
+naprawy zamiast ,,u nas działa''\\
+B5 & trend termiczny złącz w socu (termowizja $+$ B1) & wychwycenie uszkodzeń utajonych po
+przegrzaniach u klienta\\
+\bottomrule
+\end{longtable}
+
+\section{Pomiar specjalny: stanowiskowy test różnicówek instalacyjnych}
+Generator -A3 umie to, czego nie umie UT595: \textbf{gładki prąd stały}. Na panelu przewidzieć
+zaciski/gniazdo do wpięcia \emph{przyniesionego} RCD (lub egzemplarzy typowych AC/A z magazynu):
+(1) prąd i czas zadziałania dla AC / pulsującego / gładkiego DC; (2) \textbf{test oślepiania}:
+podanie 6--10~mA gładkiego DC i sprawdzenie, czy RCD nadal wyzwala od 30~mA AC. Wynik wprost do
+rozmów z klientami (,,pańska różnicówka typu AC przy aucie traci czułość'') i do katalogu ---
+to najczęstszy ukryty problem instalacji z EV wg przewodnika.
+
+\section{Zmiany sprzętowe (rozszerzenie symulatora S1)}
+\begin{longtable}{@{}p{0.56\textwidth}r@{}}
+\toprule
+\textbf{Pozycja} & \textbf{zł}\\
+\midrule
+wstawka rezystancyjna PE (drabinka 10/50/200~\ohm{} $+$ przerwa, przekaźniki) & 60--120\\
+źródło napięcia N--PE 0--10~V (transformatorek $+$ regulacja) & 50--100\\
+odczepy impedancji na 3 fazach niezależnie (zamiast tylko L1) & 120--220\\
+przekaźnik krzyżujący kolejność faz $+$ stycznik ,,utraty fazy'' & 80--150\\
+zaciski sense $+$ wzmacniacz do pomiaru m\ohm{} (4-przewodowo) & 60--120\\
+wzorcowe ,,złe gniazdo'' (kalibrowane 0,1/0,3~\ohm) & 40--80\\
+gniazdo/zaciski testu RCD $+$ obciążenie probiercze & 60--120\\
+odbiornik równoległy udarowy (grzałka 2~kW $+$ stycznik --- symulacja wspólnego obwodu) & 80--150\\
+\midrule
+\textbf{Razem} & \textbf{$\sim$550--1060}\\
+\bottomrule
+\end{longtable}
+Regulacja napięcia (A1/A2 w pełnym zakresie) --- autotransformator 16~A z opcji S1 (używany
+400--700~zł) staje się \textbf{zalecany} zamiast opcjonalnego. Firmware: sekwencje przemiatania
+$+$ format ,,karty modelu'' w sesjach S3. Praca własna: $\sim$2--3 dni.
+
+\section{Czego świadomie nie proponujemy}
+Komora klimatyczna (temperatury skrajne), generator harmonicznych dużej mocy (jakość sieci
+syntetyczna), pomiary u klienta, testy zgodności z normą (rola producenta), weryfikacja liczników
+(odrzucone P2). Wszystko powyższe zostaje poza zakresem świadomie --- koszt/wartość.
+
+\section{Decyzja}
+\textbf{Z21:} zakres klas A (A1--A8) i B (B1--B5) $+$ test RCD; sprzęt $\sim$0,55--1,06~tys.~zł
+$+$ zalecany autotransformator; kolejność wdrożenia: \textbf{B1/B2 $\to$ A3/A4 $\to$ A1/A2 $\to$
+A5--A8 $\to$ test RCD}. Karty modeli zaczynamy od P, B, Q11 (własne jednostki referencyjne).
+
+\end{document}

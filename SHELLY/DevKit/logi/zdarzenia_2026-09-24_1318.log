@@ -1,0 +1,110 @@
+13:18:27  Monitor DevKitu na COM5. Ustawienia na starcie:
+13:18:27      Symulacja: samochód: A, odłączony
+13:18:27      Symulacja: awaria uziemienia: nie
+13:18:27      Ładowanie włączone: nie
+13:18:27      Limit prądu: 16 A
+13:18:27      Tryb ładowania: Natychmiast
+13:18:27      Energia docelowa: 10 kWh
+13:18:27      Początek harmonogramu: 22 h
+13:18:27      Koniec harmonogramu: 6 h
+13:18:27      Stan ładowarki: Wolna
+13:18:27      Sygnał Control Pilot: 12 V: brak auta
+13:18:27      Błędy: brak
+13:18:27      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 23 °C
+13:54:32  [strona WWW] polecenie RPC.Ping
+13:54:32  [strona WWW] strona DevKitu została otwarta
+13:54:33  [strona WWW] polecenie BLE.ListPairedDevices
+13:54:33  [strona WWW] polecenie Script.GetCode
+13:54:33  [strona WWW] polecenie Webhook.ListAllSupported
+13:54:34  [strona WWW] polecenie Script.GetCode
+13:54:34  [strona WWW] polecenie Webhook.ListAllSupported
+13:54:34  [strona WWW] polecenie Script.GetCode
+13:54:34  [strona WWW] polecenie Script.GetCode
+13:54:34  [strona WWW] polecenie Script.GetCode
+13:54:34  [strona WWW] polecenie Script.GetCode
+14:17:53  [strona WWW] polecenie RPC.Ping
+14:46:58  [strona WWW] polecenie RPC.Ping
+14:46:58  [strona WWW] strona DevKitu została otwarta
+14:46:59  [strona WWW] polecenie BLE.ListPairedDevices
+14:46:59  [strona WWW] polecenie Script.GetCode
+14:46:59  [strona WWW] polecenie Webhook.ListAllSupported
+14:47:00  [strona WWW] polecenie Script.GetCode
+14:47:00  [strona WWW] polecenie Webhook.ListAllSupported
+14:47:00  [strona WWW] polecenie Script.GetCode
+14:47:00  [strona WWW] polecenie Script.GetCode
+14:47:00  [strona WWW] polecenie Script.GetCode
+14:47:00  [strona WWW] polecenie Script.GetCode
+14:47:10  [strona WWW] polecenie RPC.Ping
+14:47:20  [strona WWW] polecenie RPC.Ping
+14:52:34  [strona WWW] strona DevKitu została otwarta
+14:52:34  [strona WWW] polecenie RPC.Ping
+14:52:35  [strona WWW] polecenie BLE.ListPairedDevices
+14:52:35  [strona WWW] polecenie Script.GetCode
+14:52:35  [strona WWW] polecenie Webhook.ListAllSupported
+14:52:36  [strona WWW] polecenie Script.GetCode
+14:52:36  [strona WWW] polecenie Webhook.ListAllSupported
+14:52:36  [strona WWW] polecenie Script.GetCode
+14:52:36  [strona WWW] polecenie Script.GetCode
+14:52:36  [strona WWW] polecenie Script.GetCode
+14:52:36  [strona WWW] polecenie Script.GetCode
+14:59:42  [strona WWW] polecenie RPC.Ping
+14:59:42  [strona WWW] strona DevKitu została otwarta
+14:59:43  [strona WWW] polecenie BLE.ListPairedDevices
+14:59:43  [strona WWW] polecenie Script.GetCode
+14:59:43  [strona WWW] polecenie Webhook.ListAllSupported
+14:59:44  [strona WWW] polecenie Script.GetCode
+14:59:44  [strona WWW] polecenie Webhook.ListAllSupported
+14:59:44  [strona WWW] polecenie Script.GetCode
+14:59:44  [strona WWW] polecenie Script.GetCode
+14:59:44  [strona WWW] polecenie Script.GetCode
+14:59:44  [strona WWW] polecenie Script.GetCode
+14:59:54  [strona WWW] polecenie RPC.Ping
+15:17:23  [Bluetooth] polecenie Shelly.Update
+15:18:32  !!  E shelly_xmod.cpp:447     bad jws in fs: NOT_FOUND: error opening xmod.jws
+15:18:33      skrypt: Symulator Q11 wystartowal, licznik calkowity 1.028 kWh
+15:18:35      skrypt: Q11 stan:  -> charger_free
+15:18:37  [strona WWW] strona DevKitu została otwarta
+15:18:37  [strona WWW] polecenie RPC.Ping
+15:18:37  [SHC] polecenie shc.channelready
+15:18:38  [strona WWW] polecenie BLE.ListPairedDevices
+15:18:38  [strona WWW] polecenie Script.GetCode
+15:18:38  [strona WWW] polecenie Webhook.ListAllSupported
+15:18:39  [strona WWW] polecenie Script.GetCode
+15:18:39  [strona WWW] polecenie Script.GetCode
+15:18:39  [strona WWW] polecenie Script.GetCode
+15:18:39  [strona WWW] polecenie Script.GetCode
+15:18:39  [strona WWW] polecenie Script.GetCode
+15:18:42  [Bluetooth] polecenie XMOD.ApplyProductJWS
+15:18:52  !!  E shelly_backup.cpp:696   RestoreVendorBackup failed: -105 - shelly does not contain file data
+15:18:54  !!  E shos_event.cpp:189      Group STY is aready registered
+15:19:10  [Bluetooth] polecenie Service.PutFile
+15:19:12  [Bluetooth] polecenie Service.PutFile
+15:19:26  [Bluetooth] polecenie Service.PutFile
+15:19:37  [Bluetooth] polecenie Service.PutFile
+15:19:51  [Bluetooth] polecenie Service.PutFile
+15:20:04  [Bluetooth] polecenie Service.PutFile
+15:20:18  [Bluetooth] polecenie Service.PutFile
+15:20:26  [Bluetooth] polecenie Service.PutFile
+15:20:27  [Bluetooth] polecenie Service.Install
+15:20:31  !!  E shos_event.cpp:189      Group STY is aready registered
+15:20:33  !!  W shelly_espruino.cpp:277 JS Error [3] reference_error Error in ExecFile used=479 peak=580 total=480
+15:20:33  !!  W shelly_service.cpp:732  Service.HandleError (service:0) [3] reference_error Error in ExecFile
+15:20:33  !!  E shelly_service.cpp:464  service:0 already terminated!
+15:20:36  [Bluetooth] polecenie Service.GetResources
+15:30:51  [Bluetooth] polecenie Wifi.Scan
+15:32:11  [Bluetooth] polecenie Service.PutFile
+15:32:16  [Bluetooth] polecenie Service.PutFile
+15:33:01  [Bluetooth] polecenie Service.PutFile
+15:40:24  [Bluetooth] polecenie Wifi.Scan
+15:40:49  [Bluetooth] polecenie Service.PutFile
+15:40:50  [Bluetooth] polecenie Service.PutFile
+15:41:05  [Bluetooth] polecenie Service.PutFile
+15:41:17  [Bluetooth] polecenie Service.PutFile
+15:41:31  [Bluetooth] polecenie Service.PutFile
+15:41:45  [Bluetooth] polecenie Service.PutFile
+15:41:59  [Bluetooth] polecenie Service.PutFile
+15:42:07  [Bluetooth] polecenie Service.PutFile
+15:42:08  [Bluetooth] polecenie Service.Install
+15:42:12  !!  E shos_event.cpp:189      Group STY is aready registered
+15:42:18  [Bluetooth] polecenie Service.GetResources
+15:46:26  [Bluetooth] polecenie Wifi.Scan

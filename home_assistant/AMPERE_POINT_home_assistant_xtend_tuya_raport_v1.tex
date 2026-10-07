@@ -1,0 +1,385 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\usepackage{polyglossia}
+\setmainlanguage{polish}
+\usepackage[a4paper,top=2.4cm,bottom=2.6cm,left=2.4cm,right=2.4cm]{geometry}
+\usepackage{xcolor}
+\definecolor{navy}{RGB}{0,51,102}
+\definecolor{lightnavy}{RGB}{232,238,246}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\sffamily\color{navy}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{navy}}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\sffamily\color{navy}}{\thesubsubsection.}{0.6em}{}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,framerule=0.3pt,rulecolor=\color{navy},backgroundcolor=\color{lightnavy},tabsize=2,columns=fullflexible,keepspaces=true}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\small\textcolor{navy}{AMPERE POINT --- Home Assistant / xtend\_tuya}}
+\fancyhead[R]{\sffamily\small\textcolor{navy}{v1 --- 2026-07-05}}
+\fancyfoot[C]{\sffamily\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=navy}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\emergencystretch=3em
+\sloppy
+
+\begin{document}
+
+\begin{center}
+{\huge\bfseries\sffamily\color{navy} Integracja ładowarek AMPERE POINT\\[2pt] z Home Assistant przez xtend\_tuya}\\[8pt]
+{\large Raport z naprawy konfiguracji, wyjaśnienie działania systemu\\ oraz poradnik dalszych kroków}\\[6pt]
+{\normalsize wersja 1 --- 5 lipca 2026 --- dokument wewnętrzny projektu AMPERE\_POINT}
+\end{center}
+
+\vspace{4pt}
+\tableofcontents
+\newpage
+
+\section{Cel i zakres dokumentu}
+
+Dokument podsumowuje sesję z 5 lipca 2026, w której doprowadzono do działania rozszerzoną integrację ładowarek AMPERE POINT z Home Assistant. Opisuje kolejno: stan wyjściowy i objawy problemu, wykonane kroki wraz z uzasadnieniem każdego z nich, najbardziej prawdopodobną przyczynę wcześniejszych niepowodzeń, zasadę działania całego łańcucha (ładowarka --- chmura Tuya --- Home Assistant) razem z użytymi sieciami i protokołami, instrukcję dokończenia konfiguracji, poradnik automatyzacji oraz listę przewidywanych problemów z proponowanymi rozwiązaniami. Na końcu znajduje się słowniczek pojęć i skrótów.
+
+Terminy techniczne są wyjaśniane przy pierwszym użyciu, a najważniejsze z nich zebrano dodatkowo w słowniczku (rozdział~\ref{sec:slowniczek}).
+
+\section{Stan wyjściowy i objawy problemu}
+
+Punkt wyjścia w dniu sesji wyglądał następująco:
+
+\begin{itemize}
+\item \textbf{Home Assistant} (dalej: HA) --- system automatyki domowej, czyli oprogramowanie zbierające w jednym miejscu dane z urządzeń i pozwalające nimi sterować --- działał na komputerze w \textbf{Dockerze}. Docker to narzędzie uruchamiające programy w tzw. kontenerach, czyli odizolowanych ,,pudełkach'' zawierających program razem ze wszystkim, czego potrzebuje do działania. Wcześniejsza próba uruchomienia HA w maszynie wirtualnej VirtualBox (system HAOS) została porzucona z powodu problemów sieciowych maszyny wirtualnej; wariant z Dockerem okazał się stabilny. Interfejs HA był dostępny w przeglądarce pod adresem \texttt{localhost:8123}, a pliki konfiguracyjne w katalogu \texttt{C:\textbackslash HomeAssistant\textbackslash config}.
+\item \textbf{HACS} (Home Assistant Community Store --- społecznościowy ,,sklep'' z dodatkami, których nie ma w oficjalnym HA) był zainstalowany i sprawny.
+\item \textbf{Oficjalna integracja Tuya} (integracja = moduł HA łączący go z konkretnym systemem lub usługą) była skonfigurowana i widziała \textbf{10 urządzeń} na koncie \texttt{dawid.cekala@gmail.com}: AmperePoint EV Charger, EV Charger VE, EV Charging Station, GPEV100, Q11 OTA, Q11 OTA~2 (ladowarka\_q11), Q22 OTA, Q22 OTA~2, Q37 OTA oraz urzadzenie\_zepsute (Q22 OTA).
+\item Każde urządzenie miało jednak tylko \textbf{jedną encję} --- przełącznik (Switch). Encja to pojedyncza ,,zmienna'' widoczna w HA: jeden czujnik, jeden przełącznik, jedna wartość. Brakowało encji prądu, mocy, energii, napięć, statusu ładowania itd.
+\item Rozszerzenie \textbf{xtend\_tuya} w wersji 4.4.8 (dodatek społecznościowy autora azerty9971, który dokłada brakujące encje do oficjalnej integracji Tuya) było \textbf{pobrane w HACS}, ale --- jak się okazało --- nigdy nie zostało skutecznie \textbf{dodane jako integracja}. To rozróżnienie jest kluczowe i wraca w rozdziale~\ref{sec:przyczyna}.
+\item W katalogu \texttt{custom\_components} znajdował się też firmowy dodatek \textbf{TuyaExtend AmperePoint} --- pomocnik, który nie pobiera żadnych danych z Tuya, lecz jedynie mapuje i przelicza encje już istniejące w HA (np. koszt ładowania z taryfą w~PLN). Bez encji źródłowych nie miał czego mapować.
+\end{itemize}
+
+Objaw końcowy: mimo pobrania xtend\_tuya liczba encji nie rosła, a wejście w pozycję ,,Xtend Tuya'' w HACS pokazywało jedynie opis (README) wyglądający jak instrukcja instalacji.
+
+\section{Diagnoza --- skąd wiadomo, co było nie tak}
+
+Diagnozę oparto na dwóch źródłach: transkrypcie wcześniejszej rozmowy ,,Home assistant (historia)'' oraz sześciu zrzutach ekranu z 5 lipca (folder \texttt{home\_assistant} w projekcie). Kluczowe obserwacje:
+
+\begin{enumerate}
+\item Zrzut listy integracji (Ustawienia $\to$ Urządzenia i usługi) pokazywał: Tuya, HACS, Backup, prognozę pogody i kilka drobnych --- \textbf{ale żadnego wpisu ,,Xtend Tuya''}. Pobranie w HACS kopiuje tylko pliki na dysk; encje powstają dopiero, gdy integracja zostanie dodana i utworzy się jej \textbf{wpis konfiguracyjny} (config entry). Brak wpisu = brak encji, niezależnie od tego, ile razy restartowano system.
+\item Zrzut HACS potwierdzał, że pakiet Xtend Tuya v4.4.8 jest pobrany (sekcja ,,Pobrane'').
+\item Zrzut strony urządzenia (urzadzenie\_zepsute, Q22 OTA) potwierdzał objaw: jedna encja Switch, brak czujników.
+\item Transkrypt wcześniejszej rozmowy pokazywał, że podczas prób dodawania integracji pojawiało się ,,jakieś dodatkowe okno'', które zostało zamknięte. To okno okazało się ostatnim krokiem kreatora konfiguracji --- szczegóły w rozdziale~\ref{sec:przyczyna}.
+\end{enumerate}
+
+Wniosek diagnostyczny: pliki były na miejscu, konto Tuya działało, a jedynym brakującym ogniwem było \textbf{skuteczne przejście kreatora dodawania integracji do samego końca}.
+
+\section{Wykonane kroki --- chronologicznie, z wyjaśnieniami}
+
+Prace podzielono na trzy etapy zgodne z dokumentacją xtend\_tuya: \textbf{A} --- dodanie integracji bez chmury deweloperskiej, \textbf{B} --- podłączenie platformy deweloperskiej Tuya (pełniejsze dane), \textbf{C} --- odblokowanie wszystkich punktów danych urządzeń. Wszystkie kliknięcia w przeglądarce wykonywał asystent (Chrome, sterowanie zdalne); logowania, hasła i kody QR obsługiwał Dawid.
+
+\subsection{Etap A --- dodanie integracji Xtend Tuya w Home Assistant}
+
+\begin{enumerate}
+\item \textbf{Ustawienia $\to$ Urządzenia i usługi $\to$ Dodaj integrację}, wyszukanie ,,xtend''. Na liście pojawiły się obie pozycje: \textbf{Xtend Tuya} oraz \textbf{TuyaExtend AmperePoint (helper)} --- dowód, że pliki obu dodatków były poprawnie zainstalowane i ładowane przez HA.
+\item Wybrano \textbf{Xtend Tuya}. Kreator poprosił o \textbf{kod użytkownika} (User Code) --- to identyfikator konta Tuya, \emph{nie} hasło. Znajduje się w aplikacji mobilnej: \textbf{Smart Life $\to$ Ja $\to$ Ustawienia (zębatka) $\to$ Konto i bezpieczeństwo $\to$ Kod użytkownika}. Wielkość liter ma znaczenie.
+\item Po zatwierdzeniu kodu kreator wyświetlił \textbf{kod QR}, który Dawid zeskanował aplikacją Smart Life (Ja $\to$ ikona skanera) i zatwierdził logowanie na telefonie. To ten sam mechanizm, którego używa oficjalna integracja Tuya --- HA ,,podszywa się'' za dodatkową aplikację na koncie.
+\item \textbf{Moment krytyczny:} po zatwierdzeniu QR kreator pokazał formularz \textbf{,,Add Tuya OpenAPI credentials''} (dodaj dane dostępowe do OpenAPI --- interfejsu programistycznego chmury Tuya). Przy pierwszym podejściu w tej sesji formularz został zamknięty krzyżykiem --- i cały kreator przepadł bez komunikatu: wpis integracji nie powstał. \textbf{To odtworzyło dokładnie wcześniejszy problem} (rozdział~\ref{sec:przyczyna}).
+\item Procedurę powtórzono. Tym razem w formularzu zaznaczono pole \textbf{,,Don't ask for OpenAPI credentials''} (nie pytaj o dane OpenAPI), bo kluczy z platformy deweloperskiej jeszcze nie było. Uwaga na pułapkę: mimo zaznaczenia tego pola formularz \textbf{nadal wymagał} wybrania kraju i punktu końcowego (endpoint --- adres serwera API); bez tego zgłaszał błąd walidacji ,,value must be one of [\ldots]''. Wybrano \textbf{Country = Poland} oraz \textbf{endpoint = Europe} (czyli \texttt{https://openapi.tuyaeu.com} --- centrum danych Europa Środkowa) i zatwierdzono.
+\item Kreator przeszedł do okna ,,Name and assign'' (nazwy urządzeń i przypisanie do obszarów) --- zostawiono wartości domyślne i kliknięto \textbf{Zakończ}.
+\end{enumerate}
+
+\textbf{Efekt etapu A:} na liście integracji pojawił się wpis \textbf{Xtend Tuya --- 10 urządzeń}, a łączna liczba encji wzrosła z 10 do około \textbf{154}:
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Urządzenie} & \textbf{encje przed} & \textbf{encje po etapie A}\\
+\midrule
+Q22 OTA & 1 & 24\\
+Q22 OTA 2 & 1 & 24\\
+urzadzenie\_zepsute (Q22 OTA) & 1 & 24\\
+GPEV100 & 1 & 16\\
+Q11 OTA & 1 & 15\\
+ladowarka\_q11 (Q11 OTA) & 1 & 15\\
+Q37 OTA & 1 & 15\\
+EV Charger VE & 1 & 15\\
+EV Charging Station & 1 & 5\\
+AmperePoint EV Charger & 1 & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Urządzenie ,,AmperePoint EV Charger'' nie zyskało nic --- wyjaśnienie tego przypadku znajduje się w punkcie~\ref{sec:lightsource}.
+
+\subsection{Etap B --- projekt na platformie deweloperskiej Tuya}
+
+Celem etapu B jest danie xtend\_tuya drugiego, pełniejszego kanału dostępu do chmury Tuya --- przez \textbf{OpenAPI}, czyli oficjalny interfejs programistyczny dla deweloperów. Wymaga to darmowego konta na \url{https://iot.tuya.com} (platforma deweloperska Tuya; po zalogowaniu przekierowuje na \texttt{platform.tuya.com}).
+
+\begin{enumerate}
+\item Dawid zalogował się na platformę (konto deweloperskie zakłada się samodzielnie; można użyć tego samego adresu e-mail co w aplikacji).
+\item Utworzono projekt chmurowy: \textbf{Cloud $\to$ Development $\to$ Create Cloud Project}. Wypełniono: nazwa \textbf{AmperePoint HA}, branża (Industry) \textbf{Smart Home}, metoda rozwoju (Development Method) \textbf{Smart Home}, centrum danych (Data Center) \textbf{Central Europe Data Center}. Wybór centrum danych jest \textbf{krytyczny}: musi odpowiadać regionowi konta aplikacji Smart Life (dla Polski --- Europa Środkowa). Darmowy plan (Trial Edition usługi IoT Core) pozwala na jedno centrum danych.
+\item Kreator ,,Authorize API Services'' zaproponował pięć usług, które zatwierdzono bez zmian: \textbf{IoT Core} (rdzeń --- dostęp do urządzeń; w pakiecie Free Basic Resource Pack), \textbf{Authorization Token Management} (zarządzanie tokenami, czyli tymczasowymi ,,przepustkami'' do API), \textbf{Smart Home Basic Service}, \textbf{Data Dashboard Service} oraz \textbf{Smart Home Scene Linkage} (oznaczona jako przestarzała, nieszkodliwa).
+\item Po utworzeniu projektu na karcie \textbf{Overview} dostępne są klucze projektu (sekcja \emph{Authorization Key}): \textbf{Access ID/Client ID} (identyfikator: \texttt{dne8yn9jnawta5gxtrsh}) oraz \textbf{Access Secret/Client Secret} (sekret --- ukryty pod ikoną oka; pełni rolę hasła do API i nie należy go nikomu udostępniać ani zapisywać w miejscach współdzielonych). Kod projektu: \texttt{p1783262455403t77xgh}.
+\item Powiązano konto aplikacji z projektem: zakładka \textbf{Devices $\to$ Link App Account $\to$ Add App Account $\to$ Tuya App Account Authorization}. Na ekranie pojawił się kod QR, który Dawid zeskanował aplikacją Smart Life i zatwierdził. Wybrano tryb \textbf{Automatic Link} (automatyczne dołączanie wszystkich urządzeń konta --- także przyszłych). Platforma potwierdziła dołączenie \textbf{10 urządzeń} konta \texttt{dawid.cekala@gmail.com}.
+\end{enumerate}
+
+\textbf{Efekt etapu B:} projekt deweloperski widzi wszystkie ładowarki (np. ladowarka\_q11 --- Online), a klucze Client ID/Secret są gotowe do wpisania w HA. Samo wpisanie kluczy pozostało do wykonania po stronie Dawida (rozdział~\ref{sec:dokonczenie}) --- asystent zasadniczo nie wprowadza cudzych kluczy API.
+
+\subsection{Etap C --- odblokowanie wszystkich punktów danych (DP Instruction)}
+\label{sec:etapc}
+
+Chmura Tuya udostępnia urządzenia przez API na dwa sposoby: \textbf{Standard Instruction} (instrukcje standardowe --- ujednolicone, ale okrojone mapowanie funkcji dla danej kategorii urządzeń) albo \textbf{DP Instruction} (surowe \textbf{punkty danych}). Punkt danych (DP, data point) to pojedyncza zmienna urządzenia --- np. ,,prąd fazy L1'', ,,energia sesji'', ,,stan pracy'' --- o numerze, nazwie kodowej i typie. Tryb standardowy potrafi ukrywać część DP, dlatego dokumentacja xtend\_tuya zaleca przełączenie produktów na tryb DP.
+
+Procedura (dla \textbf{każdej} kategorii produktu osobno): zakładka \textbf{Devices $\to$ All Devices}, przycisk \textbf{,,\ldots''} przy pasku ,,View Devices by Product'' $\to$ najechać kursorem na kafelek produktu $\to$ ikona \textbf{ołówka} $\to$ zaznaczyć \textbf{DP Instruction} $\to$ \textbf{Save Configuration} $\to$ potwierdzić \textbf{OK}. Ostrzeżenie platformy (,,devices might not be able to be controlled by the original standard instructions'') dotyczy wyłącznie tego projektu API --- nie wpływa na aplikację Smart Life ani na działanie ładowarek.
+
+Stan na moment przerwania sesji (Dawid przejął dokańczanie): przełączone \textbf{EV Charger\_VE}, \textbf{AmperePoint EV Charger} i \textbf{Q20\_3.5KW\_with\_OTA}; do przełączenia pozostały \textbf{EV Charging Station}, \textbf{Q11\_11KW\_with\_OTA}, \textbf{Q22 OTA} i \textbf{GPEV100}.
+
+\subsubsection{Odkrycie: ,,AmperePoint EV Charger'' to produkt zarejestrowany jako źródło światła}
+\label{sec:lightsource}
+
+Strona konfiguracji trybu instrukcji ujawniła, że produkt \textbf{AmperePoint EV Charger} (PID, czyli identyfikator produktu: \texttt{gbmxngploofmhbjc}) ma w chmurze Tuya typ \textbf{,,Light Source''} (źródło światła) i \textbf{jeden jedyny punkt danych} \texttt{switch\_led}. To nie jest błąd HA ani xtend\_tuya --- \textbf{producent zarejestrował ten produkt w złej kategorii i z minimalnym zestawem DP}. Dlatego urządzenie ma i będzie miało tylko jedną encję, dopóki producent nie poprawi definicji produktu. Zalecenie: zgłosić to firmie (podając PID) --- warto poprosić o przeniesienie do kategorii ładowarek EV z pełnym zestawem punktów danych.
+
+\section{Prawdopodobna przyczyna wcześniejszych niepowodzeń}
+\label{sec:przyczyna}
+
+Najbardziej prawdopodobna przyczyna, potwierdzona ,,na żywo'' w tej sesji, jest prozaiczna i \textbf{konstrukcyjna, nie użytkowa}: kreator Xtend Tuya po zeskanowaniu kodu QR wyświetla \textbf{dodatkowy formularz} ,,Add Tuya OpenAPI credentials''. Formularz wygląda jak opcjonalna, ,,doklejona'' prośba o dane deweloperskie --- ale jego \textbf{zamknięcie krzyżykiem przerywa cały kreator}: wpis integracji nie powstaje, a HA nie pokazuje żadnego błędu ani ostrzeżenia. Użytkownik ma poczucie, że ,,wszystko zrobił'' (pobrał, zrestartował, dodał, zeskanował QR) --- i obiektywnie tak było, z wyjątkiem jednego okna, którego funkcja jest kompletnie nieoczywista. W tej sesji zamknięcie tego formularza odtworzyło problem w 100\%: po zamknięciu wpis integracji nie istniał; po ponownym przejściu kreatora i \emph{obsłużeniu} formularza (checkbox + kraj + endpoint) --- wszystko zadziałało od razu.
+
+Czynniki, które dodatkowo utrudniały wcześniejsze próby:
+\begin{itemize}
+\item \textbf{Formularz ma błąd walidacji}: mimo zaznaczenia ,,Don't ask for OpenAPI credentials'' wymaga wybrania kraju i endpointu; komunikat błędu (lista adresów serwerów) nie wyjaśnia, czego dotyczy.
+\item \textbf{Mylący ekran w HACS}: pozycja Xtend Tuya pokazuje README z przyciskiem ,,OPEN HACS REPOSITORY'', który niczego nie instaluje; właściwy przycisk ,,Download'' znika po pobraniu, co sugerowało awarię.
+\item \textbf{Fałszywy trop z forkami}: adresy \texttt{amperepoint/tuya-ap} i \texttt{dawidcekala-oss/tuya-ap} zwracały 404, bo repozytorium firmowe jest prywatne, a HACS czyta tylko publiczne --- stąd wcześniejsza instalacja ręczna dodatku firmowego do \texttt{custom\_components}.
+\item \textbf{Restart nie mógł pomóc}: bez wpisu integracji restartowanie kontenera nic nie zmienia, co budowało wrażenie ,,nic nie działa mimo wszystkiego''.
+\end{itemize}
+
+Krótko: \textbf{nie było żadnego błędu w instalacji plików ani w koncie Tuya --- brakowało jednego, źle zaprojektowanego kroku kreatora, który po cichu anulował całą konfigurację.}
+
+\section{Jak to naprawdę działa --- architektura, sieci, protokoły}
+
+\subsection{Home Assistant od środka}
+
+Home Assistant to program napisany w języku Python, zbudowany wokół trzech pojęć:
+
+\begin{description}[style=nextline]
+\item[Encja (entity)] pojedyncza wielkość lub element sterowania: czujnik mocy, przełącznik, pole wyboru trybu. Każda encja ma identyfikator (np. \texttt{sensor.q22\_ota\_moc}), bieżący \textbf{stan} (np. \texttt{7.4}) i \textbf{atrybuty} (np. jednostkę kW). Zmiany stanów płyną przez wewnętrzną \textbf{magistralę zdarzeń} (event bus) i są zapisywane do lokalnej bazy danych (domyślnie SQLite --- plikowa baza w katalogu konfiguracji), dzięki czemu działa zakładka Historia.
+\item[Urządzenie (device)] grupa encji pochodzących z jednego fizycznego sprzętu (np. ładowarka Q22 = kilkanaście encji). To tylko ,,teczka'' porządkująca --- logika siedzi w encjach.
+\item[Integracja (integration)] moduł tłumaczący świat zewnętrzny (chmurę, protokół, urządzenie) na encje. Integracja po skonfigurowaniu tworzy \textbf{wpis konfiguracyjny} (config entry) zapisywany w ukrytym katalogu \texttt{.storage}; wpis pamięta konto, tokeny itd. \textbf{Pliki integracji bez wpisu konfiguracyjnego nie robią nic} --- to była istota naszego problemu. Kreator, który taki wpis tworzy, nazywa się \textbf{config flow}.
+\end{description}
+
+Dodatki społecznościowe (jak xtend\_tuya) trafiają do katalogu \texttt{custom\_components} --- HA ładuje je przy starcie obok integracji wbudowanych. \textbf{HACS} to tylko wygodny instalator: pobiera pliki z serwisu GitHub (publiczne repozytoria kodu) i przypomina o restarcie; nie konfiguruje niczego.
+
+\textbf{Warstwa systemowa:} HA działa w kontenerze Dockera. Kontener współdzieli system operacyjny gospodarza, ale ma własny, odizolowany system plików i sieć; katalog \texttt{C:\textbackslash HomeAssistant\textbackslash config} jest ,,wpięty'' (zamontowany) do kontenera jako \texttt{/config}, więc konfiguracja przeżywa restarty i aktualizacje. Port 8123 kontenera jest opublikowany na komputerze --- stąd adres \texttt{http://localhost:8123} (localhost = ,,ten komputer''). Na Windows Docker Desktop uruchamia kontenery w lekkiej maszynie wirtualnej z Linuksem (WSL2), co jest niewidoczne w codziennym użyciu. Restart HA = restart kontenera \texttt{homeassistant} w Docker Desktop; w tej wersji instalacji HA nie ma własnego przycisku ,,Uruchom ponownie'' w menu System.
+
+\subsection{Droga danych: ładowarka $\to$ chmura Tuya $\to$ Home Assistant}
+
+Ładowarki AMPERE POINT (seria Q) mają moduł Wi-Fi oparty na platformie Tuya. Pełny łańcuch komunikacji wygląda tak:
+
+\begin{enumerate}
+\item \textbf{Ładowarka $\leftrightarrow$ router domowy:} Wi-Fi w paśmie \textbf{2,4 GHz} (standard 802.11 b/g/n, szyfrowanie WPA2). Moduły Tuya nie łączą się z sieciami 5 GHz --- to częsta przyczyna problemów z parowaniem.
+\item \textbf{Ładowarka $\leftrightarrow$ chmura Tuya:} urządzenie utrzymuje stałe, szyfrowane połączenie z serwerami Tuya w przypisanym \textbf{centrum danych} (dla Polski: Central Europe, fizycznie w UE). Używany jest protokół \textbf{MQTT} (Message Queuing Telemetry Transport --- lekki protokół ,,publikuj/subskrybuj'', w którym urządzenie zgłasza zmiany do pośrednika, a pośrednik rozsyła je zainteresowanym) w tunelu \textbf{TLS} (Transport Layer Security --- standardowe szyfrowanie transmisji, to samo ,,s'' co w https). Treść komunikatów Tuya dodatkowo szyfruje własnym kluczem urządzenia. Tym kanałem płyną raporty punktów danych (DP) w górę i polecenia w dół.
+\item \textbf{Aplikacja Smart Life $\leftrightarrow$ chmura:} telefon rozmawia z chmurą przez \textbf{HTTPS} (zapytania \textbf{REST} --- czyli zwykłe żądania sieciowe ,,pobierz/ustaw'' na adresach API) oraz odbiera powiadomienia w czasie rzeczywistym. Konto aplikacji jest przypisane do centrum danych --- dlatego wszędzie musi się zgadzać region.
+\item \textbf{Home Assistant $\leftrightarrow$ chmura --- kanał 1 (konto aplikacji):} oficjalna integracja Tuya oraz xtend\_tuya w trybie podstawowym logują się \textbf{jak druga aplikacja} na Twoim koncie (stąd kod użytkownika + QR). Dostają listę urządzeń, specyfikacje w trybie instrukcji standardowych i strumień zmian stanów (połączenie zwrotne typu MQTT/WebSocket utrzymywane przez integrację). Zaleta: proste logowanie; wada: chmura pokazuje tym kanałem tylko ,,ugrzecznione'', okrojone opisy urządzeń.
+\item \textbf{Home Assistant $\leftrightarrow$ chmura --- kanał 2 (OpenAPI, po etapie B):} xtend\_tuya z kluczami projektu (Client ID + Secret) odpytuje \textbf{OpenAPI} na adresie \texttt{https://openapi.tuyaeu.com}. Każde żądanie jest podpisywane funkcją skrótu \textbf{HMAC-SHA256} (podpis kryptograficzny z użyciem sekretu --- serwer weryfikuje, że żądanie wysłał właściciel kluczy i że nikt go nie zmienił po drodze), a sesję utrzymuje krótkotrwały \textbf{token} (,,przepustka'' ważna ok.~2 h, odświeżana automatycznie). Tym kanałem widać \textbf{pełne modele punktów danych} --- zwłaszcza po przełączeniu produktów na tryb DP Instruction (etap C).
+\end{enumerate}
+
+Ważny wniosek praktyczny: \textbf{cała integracja jest chmurowa}. Gdy padnie internet, HA traci kontakt z ładowarkami (encje przechodzą w stan ,,niedostępny''), choć same ładowarki dalej ładują. Sterowanie lokalne (bez chmury) jest technicznie możliwe (protokół lokalny Tuya na porcie 6668, projekty typu LocalTuya), ale to osobny, bardziej wymagający projekt --- wspomniany w rozdziale~\ref{sec:poradnik}.
+
+\subsection{Platforma deweloperska Tuya --- co czym jest}
+
+\begin{description}[style=nextline]
+\item[Projekt chmurowy (Cloud Project)] Twoja własna ,,aplikacja'' po stronie API: ma klucze (Client ID + Secret), przypisane centrum danych i listę wykupionych/darmowych usług API. Projekt \textbf{AmperePoint HA} działa na darmowym planie \textbf{IoT Core Trial Edition} --- wystarczającym dla domu/warsztatu, z limitem jednego centrum danych i okresową koniecznością przedłużania (patrz rozdział~\ref{sec:problemy}).
+\item[Usługi API (API Services)] moduły funkcjonalne projektu. Kluczowe: \textbf{IoT Core} (odczyt/sterowanie urządzeniami) i \textbf{Authorization Token Management} (wydawanie tokenów). Bez autoryzowanej usługi wywołania API kończą się błędem uprawnień (kod 1106 / ,,permission deny'').
+\item[Powiązanie konta aplikacji (Link App Account)] most między światem konsumenckim (Smart Life) a deweloperskim: po zeskanowaniu QR projekt widzi urządzenia Twojego konta. Tryb \textbf{Automatic Link} dołącza też urządzenia dodane w przyszłości.
+\item[PID (Product ID)] identyfikator \emph{produktu} (modelu) --- wspólny dla wszystkich egzemplarzy danego modelu. Definicja produktu (kategoria + zestaw DP) należy do producenta; stąd przypadek ,,Light Source'' z p.~\ref{sec:lightsource}.
+\item[Device ID] identyfikator konkretnego egzemplarza (np. ladowarka\_q11 = \texttt{bf0b29260437b6d615ldyx}).
+\item[Tryb instrukcji (Standard/DP)] sposób, w jaki API prezentuje urządzenie projektowi --- opisany w rozdziale~\ref{sec:etapc}.
+\end{description}
+
+\subsection{Rola xtend\_tuya i dodatku firmowego}
+
+\textbf{xtend\_tuya} działa \emph{obok} oficjalnej integracji Tuya i dokłada brakujące encje do tych samych urządzeń. Tryby pracy (nazewnictwo z dokumentacji): \textbf{OT+XT} --- bez kluczy OpenAPI (nasz etap A; ,,większość'' encji), \textbf{OT+XT+Cloud} --- z kluczami (etapy B+C; ,,prawie wszystkie'' encje). Autor używa nieoficjalnych rozwiązań (,,hacków''), dlatego dodatek nie wejdzie do oficjalnego HA i bywa wrażliwy na aktualizacje --- to cena za pełne dane.
+
+\textbf{TuyaExtend AmperePoint} (dodatek firmowy, katalog \texttt{custom\_components/tuyaextend\_amperepoint}) to \textbf{warstwa prezentacji}: w kreatorze wybiera się model (np. AmperePoint Q22 OTA), taryfę za kWh i mapuje istniejące encje (przełącznik, moc, energia sesji, energia całkowita, limit prądu, status, napięcia/prądy L1--L3). Dodatek liczy koszty, tłumaczy statusy na polski i buduje ,,ładne'' urządzenie ładowarki. Konfigurować go warto \textbf{dopiero po} etapach B+C, gdy wszystkie encje źródłowe już istnieją.
+
+\section{Dokończenie konfiguracji --- krok po kroku}
+\label{sec:dokonczenie}
+
+Stan na koniec sesji: etap A zakończony, projekt deweloperski gotowy, część produktów przełączona na DP Instruction. Do zrobienia:
+
+\begin{enumerate}
+\item \textbf{Dokończyć etap C} (jeśli jeszcze nie zrobione): na \texttt{platform.tuya.com} $\to$ projekt AmperePoint HA $\to$ Devices $\to$ przycisk ,,\ldots'' $\to$ dla produktów \textbf{EV Charging Station}, \textbf{Q11\_11KW\_with\_OTA}, \textbf{Q22 OTA} i \textbf{GPEV100}: ołówek $\to$ DP Instruction $\to$ Save $\to$ OK.
+\item \textbf{Wpisać klucze w HA:} Ustawienia $\to$ Urządzenia i usługi $\to$ \textbf{Xtend Tuya} $\to$ \textbf{Konfiguruj} $\to$ formularz ,,Add Tuya OpenAPI credentials'': \textbf{odznaczyć} ,,Don't ask\ldots'', Country = \textbf{Poland}, endpoint = \textbf{Europe}, \textbf{Tuya IoT Access ID} i \textbf{Access Secret} skopiowane z karty Overview projektu (sekret odsłania ikona oka). Zatwierdzić.
+\item \textbf{Zrestartować kontener} \texttt{homeassistant} w Docker Desktop i odczekać 1--2 minuty.
+\item \textbf{Zweryfikować wynik:} Ustawienia $\to$ Urządzenia i usługi $\to$ Xtend Tuya $\to$ liczba encji przy urządzeniach powinna wzrosnąć (zwłaszcza Q22: docelowo 30+); w razie braków --- odświeżyć stronę, ewentualnie ,,Załaduj ponownie'' integrację (menu ,,\ldots'' przy wpisie Xtend Tuya).
+\end{enumerate}
+
+\section{Poradnik: następne kroki --- weryfikacja, energia, automatyzacje}
+\label{sec:poradnik}
+
+\subsection{Porządki po konfiguracji}
+
+W \textbf{Rejestrze encji} (Ustawienia $\to$ Urządzenia i usługi $\to$ zakładka Rejestr encji) warto: nadać encjom czytelne nazwy i identyfikatory (np. \texttt{sensor.q22\_moc}), wyłączyć encje zbędne (mniej szumu w bazie danych) oraz przypisać urządzenia do \textbf{obszarów} (np. ,,Pole'', ,,Serwis''). Duplikaty: oficjalna Tuya i xtend\_tuya mogą pokazywać ten sam przełącznik dwa razy --- to normalne; jeden z nich można wyłączyć w rejestrze.
+
+\subsection{Panel Energia}
+
+Ustawienia $\to$ Pulpity $\to$ \textbf{Energia}: w sekcji ,,Poszczególne urządzenia'' dodać encje energii ładowarek (te sumujące kWh, zwykle ,,energia całkowita''/\texttt{forward\_energy\_total}). HA zacznie budować dzienne/miesięczne wykresy zużycia --- podstawa do analiz i rozliczeń ładowania.
+
+\subsection{Dodatek firmowy TuyaExtend AmperePoint}
+
+Po pojawieniu się pełnych encji: Dodaj integrację $\to$ \textbf{TuyaExtend AmperePoint} $\to$ w kreatorze wybrać model (np. \textbf{AmperePoint Q22 OTA}), nazwę, taryfę (zł/kWh), walutę \textbf{PLN}, pozostawić domyślny próg mocy (0{,}25 kW), minuty bezczynności (3) i tryb energii sesji (Auto), a następnie zmapować encje źródłowe: przełącznik ładowania, moc, energię sesji, energię całkowitą, limit prądu, status, błąd oraz napięcia/prądy L1--L3. W razie pomyłki mapowanie zmienia się przyciskiem \textbf{Konfiguruj} bez usuwania integracji.
+
+\subsection{Automatyzacje --- jak myśleć i trzy przykłady}
+
+Automatyzacja w HA składa się z \textbf{wyzwalacza} (trigger --- ,,kiedy?''), opcjonalnych \textbf{warunków} (condition --- ,,czy na pewno?'') i \textbf{akcji} (action --- ,,co zrobić?''). Buduje się je wygodnie w kreatorze: Ustawienia $\to$ Automatyzacje i sceny $\to$ Utwórz automatyzację; poniżej zapis w formacie YAML (tekstowy format konfiguracji --- wcięcia mają znaczenie). \textbf{Identyfikatory encji w przykładach są poglądowe} --- należy podstawić własne z Rejestru encji.
+
+\textbf{1) Powiadomienie o zakończeniu ładowania} (wymaga aplikacji Home Assistant Companion na telefonie, która dodaje usługę \texttt{notify}):
+
+\begin{lstlisting}
+alias: Powiadom o koncu ladowania Q22
+trigger:
+  - platform: state
+    entity_id: sensor.q22_status
+    from: "charging"
+    to: "charger_free"
+action:
+  - service: notify.mobile_app_telefon_dawida
+    data:
+      title: "Ladowarka Q22"
+      message: "Ladowanie zakonczone."
+\end{lstlisting}
+
+\textbf{2) Ładowanie tylko w taniej taryfie} (start 22:00, stop 6:00):
+
+\begin{lstlisting}
+alias: Q22 tania taryfa
+trigger:
+  - platform: time
+    at: "22:00:00"
+    id: start
+  - platform: time
+    at: "06:00:00"
+    id: stop
+action:
+  - choose:
+      - conditions: [{ condition: trigger, id: start }]
+        sequence:
+          - service: switch.turn_on
+            target: { entity_id: switch.q22_przelacznik }
+      - conditions: [{ condition: trigger, id: stop }]
+        sequence:
+          - service: switch.turn_off
+            target: { entity_id: switch.q22_przelacznik }
+\end{lstlisting}
+
+\textbf{3) Alarm przy błędzie ładowarki:}
+
+\begin{lstlisting}
+alias: Alarm bledu ladowarki
+trigger:
+  - platform: state
+    entity_id: sensor.q22_blad
+condition:
+  - condition: template
+    value_template: "{{ trigger.to_state.state not in ['0','ok','unknown','unavailable'] }}"
+action:
+  - service: notify.mobile_app_telefon_dawida
+    data:
+      title: "UWAGA: blad ladowarki"
+      message: "Kod bledu: {{ trigger.to_state.state }}"
+\end{lstlisting}
+
+Pomysły na dalsze automatyzacje: obniżanie limitu prądu (encja typu \emph{number}, usługa \texttt{number.set\_value}) w godzinach szczytu; raport dzienny energii; ładowanie nadwyżką z fotowoltaiki (po zintegrowaniu falownika z HA --- wtedy wyzwalaczem jest moc eksportu do sieci).
+
+\subsection{Pulpit (dashboard)}
+
+Na pulpicie warto zestawić: kartę \textbf{wskaźnika} (gauge) z mocą chwilową, kartę \textbf{historii} z energią sesji, kartę \textbf{encji} ze statusem/limitem prądu/przełącznikiem. Karty dodaje się z poziomu pulpitu przyciskiem ,,Edytuj''.
+
+\subsection{Kopie zapasowe i aktualizacje}
+
+W instalacji kontenerowej najpewniejszą kopią zapasową jest \textbf{kopia całego katalogu} \texttt{C:\textbackslash HomeAssistant\textbackslash config} (najlepiej przy zatrzymanym kontenerze). Aktualizacja HA = pobranie nowego obrazu kontenera (\texttt{docker pull}) i ponowne utworzenie kontenera; aktualizacje xtend\_tuya --- przez HACS, ale rozważnie: po każdej większej aktualizacji HA sprawdzić w HACS, czy xtend\_tuya ma wersję zgodną (dodatek używa nieoficjalnych mechanizmów i bywa czuły na zmiany).
+
+\subsection{Kierunek na przyszłość: sterowanie lokalne}
+
+Jeżeli zależność od chmury zacznie przeszkadzać (opóźnienia, przerwy internetu), istnieje ścieżka \textbf{LocalTuya / tuya-local}: sterowanie po sieci lokalnej z użyciem \emph{kluczy lokalnych} urządzeń (local key --- indywidualny klucz szyfrowania, do odczytania przez API projektu deweloperskiego). Wymaga stałych adresów IP dla ładowarek w routerze i ręcznego mapowania DP; bywa pracochłonna, ale uniezależnia podstawowe funkcje od internetu. Na dziś --- opcja, nie konieczność.
+
+\section{Przewidywane problemy i proponowane rozwiązania}
+\label{sec:problemy}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}p{5.6cm}}
+\toprule
+\textbf{Objaw} & \textbf{Prawdopodobna przyczyna} & \textbf{Rozwiązanie}\\
+\midrule
+\endhead
+Po wpisaniu kluczy brak nowych encji & Klucze wpisane, ale integracja nie odświeżyła danych & Restart kontenera; potem menu ,,\ldots'' przy wpisie Xtend Tuya $\to$ Załaduj ponownie. Sprawdzić logi: Ustawienia $\to$ System $\to$ Logi, filtr ,,xtend''.\\
+\addlinespace
+Błąd ,,sign invalid'' w logach & Zły Client ID/Secret (literówka, spacja) albo zły endpoint & Skopiować klucze ponownie z karty Overview; endpoint musi być Europe (\texttt{openapi.tuyaeu.com}).\\
+\addlinespace
+Błąd ,,permission deny'' / kod 1106 & Nieautoryzowana usługa API w projekcie albo wygasła subskrypcja & Na platformie: Service API $\to$ sprawdzić, czy IoT Core i Authorization są aktywne; w razie potrzeby Authorize/Renew.\\
+\addlinespace
+Encje przestają się aktualizować po kilku miesiącach & \textbf{IoT Core Trial Edition wygasa} (typowo co pół roku) & Na platformie: Cloud $\to$ projekt $\to$ IoT Core $\to$ \emph{Extend Trial} (bezpłatne przedłużenie). Wpisać do kalendarza przypomnienie.\\
+\addlinespace
+Urządzenia w projekcie ,,No data found'' albo puste listy & Przeglądarka zgubiła region (przekierowania \texttt{platform} $\leftrightarrow$ \texttt{eu.platform}) & Odświeżyć stronę; upewnić się, że w prawym górnym rogu wybrane jest Central Europe Data Center.\\
+\addlinespace
+QR z platformy nie daje się zeskanować / błąd autoryzacji & Konto aplikacji jest w innym centrum danych niż projekt & Sprawdzić region konta (dokument ,,App account data center distribution'' podlinkowany przy QR); projekt musi mieć ten sam DC.\\
+\addlinespace
+Wszystkie encje ,,niedostępne'' & Przerwa internetu lub awaria chmury Tuya; ładowarka offline & Sprawdzić internet i stan urządzenia w Smart Life. Integracja jest chmurowa --- bez internetu nie działa (docelowo: LocalTuya).\\
+\addlinespace
+Po aktualizacji HA integracja Xtend Tuya nie startuje & Niezgodność wersji dodatku z nowym HA & W HACS zaktualizować xtend\_tuya; jeśli poprawki brak --- tymczasowo wrócić do poprzedniego obrazu HA. Przed aktualizacją HA sprawdzać zgodność.\\
+\addlinespace
+Zdublowane encje (dwa przełączniki tej samej ładowarki) & Oficjalna Tuya i Xtend Tuya wystawiają ten sam element & Stan normalny; zbędną encję wyłączyć w Rejestrze encji (nie usuwać integracji).\\
+\addlinespace
+,,AmperePoint EV Charger'' wciąż ma 1 encję & Produkt zarejestrowany przez producenta jako Light Source z jednym DP (\texttt{switch\_led}) & Zgłosić producentowi (PID \texttt{gbmxngploofmhbjc}) prośbę o poprawną kategorię i pełny zestaw DP. Po stronie HA nic się nie da zrobić.\\
+\addlinespace
+Ładowarka nie łączy się z Wi-Fi po zmianie routera/hasła & Moduły Tuya wymagają pasma 2,4 GHz i ponownego parowania & Włączyć sieć 2,4 GHz, sparować urządzenie ponownie w Smart Life; urządzenia wrócą do HA automatycznie (Automatic Link).\\
+\addlinespace
+Obawa: ,,czy tryb DP zepsuł mi aplikację?'' & Ostrzeżenie platformy przy zmianie trybu instrukcji & Nie --- zmiana dotyczy tylko sposobu prezentacji urządzeń w \emph{tym projekcie API}; aplikacja Smart Life i ładowarki działają bez zmian.\\
+\addlinespace
+Wyciek kluczy (Client Secret) & Klucz zapisany w miejscu współdzielonym & Na platformie można zresetować sekret (Overview $\to$ ikona przy kluczu); po resecie zaktualizować go w HA.\\
+\bottomrule
+\end{longtable}
+
+\section{Słowniczek pojęć i skrótów}
+\label{sec:slowniczek}
+
+\begin{description}[style=nextline,itemsep=1pt]
+\item[API (Application Programming Interface)] interfejs programistyczny --- ,,okienko podawcze'', przez które programy proszą usługę o dane lub działania.
+\item[Centrum danych (Data Center, DC)] serwerownia regionu, do której przypisane jest konto Tuya; u nas Central Europe.
+\item[Client ID / Access ID i Client Secret / Access Secret] para ,,login + hasło'' projektu deweloperskiego do podpisywania żądań API.
+\item[Config entry (wpis konfiguracyjny)] zapisany wynik kreatora integracji w HA; bez niego integracja nie działa.
+\item[Config flow] kreator konfiguracji integracji (okienka ,,dalej/dalej'' w HA).
+\item[Docker / kontener] sposób uruchamiania programów w odizolowanych ,,pudełkach''; HA działa jako kontener \texttt{homeassistant}.
+\item[DP (data point, punkt danych)] pojedyncza zmienna urządzenia Tuya (np. moc, status); ma numer, kod i typ.
+\item[Encja (entity)] pojedynczy czujnik/przełącznik/wartość w HA.
+\item[Endpoint] adres serwera API (u nas \texttt{https://openapi.tuyaeu.com}).
+\item[HA] Home Assistant.
+\item[HACS] społecznościowy instalator dodatków do HA.
+\item[HMAC-SHA256] podpis kryptograficzny żądań API wykonywany sekretem projektu.
+\item[HTTPS/TLS] szyfrowana transmisja w sieci (kłódka w przeglądarce).
+\item[Integracja] moduł HA łączący go z usługą/urządzeniami.
+\item[MQTT] lekki protokół ,,publikuj/subskrybuj'' używany przez urządzenia IoT do stałej łączności z chmurą.
+\item[OpenAPI (Tuya)] oficjalne API deweloperskie chmury Tuya.
+\item[OTA (Over-The-Air)] aktualizacja oprogramowania urządzenia ,,przez powietrze'' (zdalnie); człon nazw produktów Q~OTA.
+\item[PID (Product ID)] identyfikator modelu produktu w Tuya; Device ID --- identyfikator egzemplarza.
+\item[QR (kod QR)] kwadratowy kod kreskowy skanowany telefonem; tu: do autoryzacji logowań.
+\item[REST] styl API: proste żądania ,,pobierz/ustaw'' pod adresami HTTP.
+\item[SQLite] plikowa baza danych, w której HA zapisuje historię stanów.
+\item[Token] tymczasowa ,,przepustka'' do API wydawana po uwierzytelnieniu; odświeżana automatycznie.
+\item[User Code (kod użytkownika)] identyfikator konta aplikacji Smart Life używany przy logowaniu integracji przez QR.
+\item[WSL2] lekka maszyna wirtualna z Linuksem, w której Docker Desktop uruchamia kontenery na Windows.
+\item[YAML] tekstowy format konfiguracji automatyzacji HA (wcięcia mają znaczenie).
+\end{description}
+
+\vspace{8pt}
+\begin{center}
+\textcolor{navy}{\rule{0.6\textwidth}{0.4pt}}\\[4pt]
+{\small Koniec dokumentu --- wersja 1, 2026-07-05. Kolejne wersje oznaczać v2, v3\ldots{} bez usuwania poprzednich.}
+\end{center}
+
+\end{document}

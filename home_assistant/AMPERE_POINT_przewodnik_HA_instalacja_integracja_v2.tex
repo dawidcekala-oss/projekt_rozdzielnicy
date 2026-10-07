@@ -1,0 +1,804 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\usepackage{polyglossia}
+\setmainlanguage{polish}
+\usepackage[a4paper,top=2.4cm,bottom=2.6cm,left=2.4cm,right=2.4cm]{geometry}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\definecolor{navy}{RGB}{0,51,102}
+\definecolor{lightnavy}{RGB}{232,238,246}
+\definecolor{warnred}{RGB}{153,0,0}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\sffamily\color{navy}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{navy}}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\sffamily\color{navy}}{\thesubsubsection.}{0.6em}{}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,framerule=0.3pt,rulecolor=\color{navy},backgroundcolor=\color{lightnavy},tabsize=2,columns=fullflexible,keepspaces=true}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\small\textcolor{navy}{AMPERE POINT --- Przewodnik instalacji i integracji HA}}
+\fancyhead[R]{\sffamily\small\textcolor{navy}{v2 --- 2026-07-06}}
+\fancyfoot[C]{\sffamily\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=navy}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\emergencystretch=3em
+\sloppy
+
+\newcommand{\uwaga}[1]{\par\medskip\noindent\textcolor{warnred}{\textbf{UWAGA:}} #1\par\medskip}
+\newcommand{\wskazowka}[1]{\par\medskip\noindent\textcolor{navy}{\textbf{Wskazówka:}} #1\par\medskip}
+
+\begin{document}
+
+\begin{center}
+{\huge\bfseries\sffamily\color{navy} Home Assistant dla AMPERE POINT\\[2pt] --- kompletny przewodnik instalacji i integracji}\\[8pt]
+{\large Od zera do działającego systemu --- na Windows (Docker) albo Raspberry Pi (Wi-Fi):\\ Home Assistant, HACS, Tuya, xtend\_tuya, dodatek firmowy, panel Energia i automatyzacje\\[2pt] + rozszerzenia: kamera Imou i symulator falownika SUN2000}\\[6pt]
+{\normalsize wersja 2 --- 6 lipca 2026 --- dokument wewnętrzny projektu AMPERE\_POINT}\\[2pt]
+{\small Przewodnik pisany dla osoby bez wcześniejszego doświadczenia z Home Assistant i Dockerem.\\ Zawiera wszystkie pułapki znalezione w sesjach 2026-06-30 \ldots\ 2026-07-05 i sposoby ich ominięcia.}
+\end{center}
+
+\vspace{4pt}
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{Cel, zakres i jak korzystać z przewodnika}
+
+Ten dokument prowadzi \textbf{od zera} --- od komputera z samym Windows \emph{albo} od pustego Raspberry Pi --- do w pełni działającej integracji ładowarek AMPERE POINT (seria Q, moduły Tuya) z systemem automatyki \textbf{Home Assistant}: pełne dane (moce, prądy, energie, statusy), koszty ładowania w PLN, panel Energia i automatyzacje. Rozdziały opcjonalne opisują dołączenie kamery Imou oraz symulatora falownika Huawei SUN2000 (do ćwiczeń przed montażem fotowoltaiki).
+
+Przewodnik powstał na bazie rzeczywistych wdrożeń w projekcie AMPERE\_POINT (sesje 2026-06-30 do 2026-07-05). Wszystkie opisane pułapki \textbf{wydarzyły się naprawdę} --- każdą oznaczono i podano sprawdzone obejście. Dokument uzupełnia (nie zastępuje) raport \texttt{AMPERE\_POINT\_home\_assistant\_xtend\_tuya\_raport\_v1}, który wyjaśnia szczegółowo, \emph{dlaczego} system działa tak, a nie inaczej.
+
+\subsection{Konwencje zapisu}
+
+\begin{itemize}
+\item \textbf{Ustawienia $\to$ Urządzenia i usługi} --- ścieżka klikania w menu (kolejne pozycje po strzałce).
+\item \texttt{czcionka maszynowa} --- adresy, polecenia, nazwy plików i katalogów; wpisywać dokładnie tak, jak wydrukowano.
+\item Ramki z kodem --- polecenia do skopiowania w całości.
+\item \textcolor{warnred}{\textbf{UWAGA}} --- pułapka potwierdzona w praktyce; przeczytać \emph{zanim} wykona się krok.
+\item Terminy techniczne wyjaśniane są przy pierwszym użyciu i zebrane w słowniczku (rozdział~\ref{sec:slowniczek}).
+\end{itemize}
+
+\subsection{Czego przewodnik wymaga od czytelnika}
+
+Umiejętności: obsługa przeglądarki, kopiowanie plików, uruchamianie programów. \textbf{Nic więcej.} Każde polecenie terminala jest podane w całości do skopiowania. Tam, gdzie system poprosi o uprawnienia administratora (okno UAC --- ciemniejszy ekran z pytaniem ,,Czy chcesz zezwolić\ldots''), wystarczy kliknąć \textbf{Tak}.
+
+%=====================================================================
+\section{Obraz całości --- co budujemy i dlaczego tak}
+\label{sec:architektura}
+
+\subsection{Elementy układanki}
+
+\begin{description}[style=nextline]
+\item[Home Assistant (HA)] darmowy system automatyki domowej: zbiera dane z urządzeń w jednym panelu www i pozwala nimi sterować oraz budować automatyzacje (,,gdy X, zrób Y'').
+\item[Docker Desktop] program uruchamiający aplikacje w \textbf{kontenerach} --- odizolowanych ,,pudełkach'' z kompletem zależności. HA działa u nas jako kontener \texttt{homeassistant}; jego konfiguracja leży w zwykłym folderze \texttt{C:\textbackslash HomeAssistant\textbackslash config}.
+\item[HACS] społecznościowy ,,sklep'' z dodatkami do HA, których nie ma w wersji oficjalnej. Stąd instalujemy xtend\_tuya (i w przyszłości Huawei Solar).
+\item[Integracja Tuya (oficjalna)] łączy HA z chmurą Tuya, w której ,,mieszkają'' ładowarki serii Q. Sama z siebie daje \textbf{tylko 1 encję na urządzenie} (przełącznik) --- to normalne.
+\item[xtend\_tuya] dodatek społecznościowy (autor azerty9971) dokładający brakujące encje: prądy, napięcia, moce, energie, statusy. W trybie pełnym korzysta z \textbf{platformy deweloperskiej Tuya} (darmowej).
+\item[TuyaExtend AmperePoint] firmowy dodatek-nakładka: mapuje encje źródłowe na ,,ładną'' ładowarkę, liczy koszty sesji wg taryfy w PLN, tłumaczy statusy na polski.
+\end{description}
+
+Droga danych (szczegóły i protokoły --- raport v1, rozdz. 6): ładowarka $\to$ Wi-Fi 2,4 GHz $\to$ chmura Tuya (centrum danych Europa Środkowa) $\to$ internet $\to$ Home Assistant na komputerze. Integracja jest \textbf{chmurowa}: bez internetu encje będą ,,niedostępne'', choć ładowarki dalej ładują.
+
+\subsection{Dlaczego Docker, a nie maszyna wirtualna}
+\label{sec:dlaczego-docker}
+
+Pierwsze podejście (2026-06-30) stawiało HA OS w maszynie wirtualnej VirtualBox. Instalacja \textbf{utknęła na wiele godzin} na pobieraniu Core: wirtualna karta sieciowa w trybie mostka na Wi-Fi dławiła transfer, a dodatkowo twarde wyłączenie maszyny (host zasnął) uszkodziło magazyn Supervisora. Wnioski, które przenieśliśmy do tego przewodnika:
+
+\begin{itemize}
+\item \textbf{Docker Desktop (WSL2) ma wydajną sieć} --- pobieranie obrazu HA trwa minuty, nie godziny. Wariant kontenerowy okazał się stabilny i to on jest ścieżką główną.
+\item Podczas długich pobrań \textbf{komputer nie może zasnąć} (rozdz.~\ref{sec:etap0}).
+\item Wersja kontenerowa nie ma sklepu dodatków HA OS ani przycisku ,,Uruchom ponownie'' w menu --- restart robi się w Docker Desktop (to normalne, nie awaria).
+\end{itemize}
+
+Wariant Docker pozostaje ścieżką startową tego przewodnika (wszystko dzieje się na komputerze, który już masz). Jeżeli jednak system ma pracować całą dobę, docelowo wygodniejsze jest małe, energooszczędne urządzenie dedykowane --- rozdział~\ref{sec:rpi} opisuje kompletną instalację na Raspberry Pi, w całości przez Wi-Fi.
+
+\subsection{Mapa etapów}
+
+\begin{center}
+\begin{tabular}{clc}
+\toprule
+\textbf{Etap} & \textbf{Co powstaje} & \textbf{Rozdział}\\
+\midrule
+0 & WSL2 + Docker Desktop & \ref{sec:etap0}\\
+1 & Kontener Home Assistant + konto & \ref{sec:etap1}\\
+R & Wariant: HA na Raspberry Pi przez Wi-Fi & \ref{sec:rpi}\\
+2 & HACS & \ref{sec:etap2}\\
+3 & Oficjalna integracja Tuya (urządzenia widoczne) & \ref{sec:etap3}\\
+4 & xtend\_tuya bez chmury dev (encje $\times$15) & \ref{sec:etap4}\\
+5 & Projekt na platformie deweloperskiej Tuya & \ref{sec:etap5}\\
+6 & Tryb DP Instruction produktów & \ref{sec:etap6}\\
+7 & Klucze OpenAPI w HA (encje ,,prawie wszystkie'') & \ref{sec:etap7}\\
+8 & Dodatek firmowy TuyaExtend AmperePoint & \ref{sec:etap8}\\
+9 & Porządki, panel Energia, pulpit & \ref{sec:etap9}\\
+10 & Automatyzacje & \ref{sec:etap10}\\
+--- & Opcjonalnie: kamera Imou, symulator SUN2000 & \ref{sec:kamera}, \ref{sec:pvsim}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\section{Wymagania wstępne --- checklista przed startem}
+
+\begin{itemize}
+\item Komputer z \textbf{Windows 10/11 (64-bit)}, min. 8 GB RAM, ok. 10 GB wolnego dysku, \textbf{stały dostęp do internetu} --- \emph{albo} Raspberry Pi 4/5 wg listy zakupów z rozdz.~\ref{sec:rpi} (wtedy etapy 0--1 zastępuje rozdział~\ref{sec:rpi}).
+\item Konto w aplikacji \textbf{Smart Life} (lub Imou/Tuya Smart) z dodanymi ładowarkami --- u nas konto \texttt{dawid.cekala@gmail.com} z 10 urządzeniami. Telefon z tą aplikacją pod ręką (będzie skanować kody QR).
+\item Sieć Wi-Fi \textbf{2,4 GHz} dla urządzeń Tuya (moduły nie łączą się z 5 GHz).
+\item Konto GitHub (darmowe) --- potrzebne raz, do autoryzacji HACS.
+\item Ok. 2--3 godziny czasu na etapy 0--8 (większość to klikanie wg instrukcji).
+\item Zasilanie: laptop podpięty do ładowarki; \textbf{uśpienie wyłączone} na czas instalacji (niżej).
+\end{itemize}
+
+%=====================================================================
+\section{Etap 0 --- przygotowanie Windows: WSL2 i Docker Desktop}
+\label{sec:etap0}
+
+\subsection{Wyłącz usypianie komputera (na czas instalacji)}
+
+\textbf{Ustawienia Windows $\to$ System $\to$ Zasilanie i bateria $\to$ Ekran i uśpienie} $\to$ pozycje ,,\emph{Przy zasilaniu\ldots{} uśpij}'' ustaw na \textbf{Nigdy}. Uśpienie komputera w trakcie pobierania było jedną z przyczyn porażki wariantu VM (rozdz.~\ref{sec:dlaczego-docker}). Po zakończeniu instalacji można przywrócić stare ustawienia --- ale jeśli HA ma działać całą dobę (zbierać historię, wykonywać automatyzacje), komputer musi pozostawać włączony na stałe.
+
+\subsection{WSL2 --- silnik Linuksa dla Dockera}
+
+WSL2 (Windows Subsystem for Linux) to wbudowany w Windows mechanizm uruchamiania lekkiego Linuksa; Docker Desktop używa go ,,pod maską''.
+
+\begin{enumerate}
+\item Kliknij \textbf{prawym} przyciskiem na przycisk \textbf{Start} $\to$ \textbf{Terminal (administrator)} (albo ,,Windows PowerShell (administrator)''). Potwierdź okno UAC przyciskiem \textbf{Tak}.
+\item Wpisz i zatwierdź Enterem:
+\begin{lstlisting}
+wsl --install
+\end{lstlisting}
+\item Po zakończeniu \textbf{zrestartuj komputer}. Jeśli polecenie odpowie, że WSL już jest zainstalowany --- restart można pominąć.
+\end{enumerate}
+
+\subsection{Docker Desktop}
+
+\begin{enumerate}
+\item Pobierz instalator: \url{https://www.docker.com/products/docker-desktop/} (przycisk \textbf{Download for Windows}).
+\item Uruchom instalator; zostaw zaznaczone \textbf{Use WSL 2 instead of Hyper-V}; potwierdź UAC. Po instalacji wyloguj się/zrestartuj, jeśli poprosi.
+\item Uruchom \textbf{Docker Desktop} (ikona wieloryba). Przy pierwszym starcie zaakceptuj warunki; zakładanie konta Docker można \textbf{pominąć} (Skip).
+\item Poczekaj, aż ikona wieloryba w zasobniku (przy zegarze) przestanie się animować, a w oknie pojawi się status \textbf{Docker Desktop is running} / ,,Engine running''.
+\end{enumerate}
+
+\uwaga{Docker Desktop musi być \textbf{uruchomiony} za każdym razem, gdy ma działać Home Assistant. Warto włączyć autostart: Docker Desktop $\to$ Settings (zębatka) $\to$ General $\to$ \textbf{Start Docker Desktop when you sign in}.}
+
+%=====================================================================
+\section{Etap 1 --- Home Assistant w kontenerze}
+\label{sec:etap1}
+
+\subsection{Uruchomienie gotowym skryptem}
+
+W folderze projektu \texttt{AMPERE\_POINT} leży skrypt \textbf{\texttt{ha-docker-setup.bat}}. Upewnij się, że Docker Desktop działa, i kliknij skrypt dwukrotnie. Skrypt: sprawdzi Dockera, utworzy folder \texttt{C:\textbackslash HomeAssistant\textbackslash config}, usunie ewentualny stary kontener i uruchomi nowy.
+
+Równoważne polecenie ręczne (Terminal, \emph{bez} administratora), gdyby skryptu zabrakło:
+
+\begin{lstlisting}
+mkdir C:\HomeAssistant\config
+docker run -d --name homeassistant --restart=unless-stopped -e TZ=Europe/Warsaw -v "C:\HomeAssistant\config:/config" -p 8123:8123 ghcr.io/home-assistant/home-assistant:stable
+\end{lstlisting}
+
+Co znaczą kluczowe fragmenty: \texttt{-{}-restart=unless-stopped} --- kontener wstaje sam po restarcie komputera; \texttt{-v "C:/\ldots:/config"} --- konfiguracja HA trafia do zwykłego folderu Windows (przeżywa aktualizacje i przenosiny); \texttt{-p 8123:8123} --- panel HA będzie pod portem 8123.
+
+Pierwszy start pobiera obraz HA (ok.~1,5 GB) --- przez WSL2 zwykle kilka minut. Potem otwórz w przeglądarce:
+
+\begin{center}\Large\texttt{http://localhost:8123}\end{center}
+
+Z innych urządzeń w tej samej sieci: \texttt{http://<IP-komputera>:8123}. Jeżeli strona nie wstaje od razu --- odczekaj 1--2 minuty i odśwież (HA przy pierwszym starcie buduje bazę).
+
+\subsection{Onboarding --- konto i podstawy}
+
+Kreator powitalny HA:
+\begin{enumerate}
+\item \textbf{Utwórz konto} --- imię, nazwa użytkownika, silne hasło. To konto \textbf{lokalne} (nie wysyłane do żadnej chmury); zapisz dane w menedżerze haseł. Konta i hasła zakłada \textbf{właściciel systemu osobiście} --- nie asystent, nie osoby trzecie.
+\item \textbf{Lokalizacja} --- wybierz dom/warsztat (strefa czasowa i wschody/zachody słońca dla automatyzacji), jednostki metryczne.
+\item Zgody na statystyki --- wg uznania (można wszystko odznaczyć).
+\item Wykryte urządzenia --- na razie \textbf{pomiń} (Zakończ). Dodamy wszystko po kolei świadomie.
+\end{enumerate}
+
+\subsection{Jak restartować Home Assistant (w tej instalacji)}
+\label{sec:restart}
+
+Wersja kontenerowa HA \textbf{nie ma} przycisku ,,Uruchom ponownie'' w menu System. Restart wykonuje się w \textbf{Docker Desktop}: zakładka \textbf{Containers} $\to$ wiersz \texttt{homeassistant} $\to$ ikona \textbf{Restart} (okrągła strzałka). Alternatywnie w terminalu:
+
+\begin{lstlisting}
+docker restart homeassistant
+\end{lstlisting}
+
+Po restarcie panel wraca po ok.~30--90 s. Ta czynność będzie potrzebna kilka razy w dalszych etapach.
+
+%=====================================================================
+\section{Wariant R --- Home Assistant na Raspberry Pi, w całości przez Wi-Fi}
+\label{sec:rpi}
+
+Ten rozdział prowadzi od pustej kartki do działającego Home Assistant na komputerku \textbf{Raspberry Pi} --- \textbf{bez podłączania kabla Ethernet na żadnym etapie}. Po jego ukończeniu wracasz do wspólnej ścieżki przewodnika (etap~2 --- HACS), z drobnymi różnicami opisanymi w podrozdziale~\ref{sec:rpi-dalej}.
+
+\subsection{Kiedy wybrać ten wariant}
+
+Wariant z Dockerem na Windows (rozdz.~\ref{sec:etap1}) jest świetny na start, ale ma jedną niewygodę: automatyzacje działają tylko wtedy, gdy komputer jest włączony. Raspberry Pi to komputer wielkości karty kredytowej, który może pracować całą dobę, pobierając 3--6~W --- mniej niż ładowarka telefonu. Do tego dostaje ,,pełne'' wydanie Home Assistant (system \textbf{HAOS}), które ma kilka luksusów niedostępnych w wariancie kontenerowym: sklep dodatków, wbudowane kopie zapasowe, aktualizacje jednym kliknięciem i przycisk restartu w menu.
+
+\subsection{Lista zakupów --- i dlaczego akurat to}
+
+\begin{itemize}
+\item \textbf{Raspberry Pi 4 lub Pi 5}, najlepiej z \textbf{4 GB RAM} (2 GB wystarczy na sam HA, 4 GB daje zapas na dodatki). Obie płytki mają wbudowane dwuzakresowe Wi-Fi (2,4 i 5 GHz) --- dlatego kabel nie będzie potrzebny.
+\item \textbf{Karta microSD od 32 GB} (wygodnie: 64 GB), \textbf{markowa, z oznaczeniem A2}. To nie snobizm: karta będzie dyskiem systemowym, a HA nieustannie dopisuje do bazy danych historię stanów. Tanie karty ,,z promocji'' są optymalizowane pod aparaty (duże pliki zapisywane rzadko) i potrafią paść po kilku miesiącach ciągłych drobnych zapisów. Oznaczenie A2 (Application Performance Class~2) gwarantuje przyzwoitą szybkość właśnie takich małych operacji.
+\item \textbf{Zasilacz USB-C}: dla Pi~4 --- 5\,V/3\,A (15 W), dla Pi~5 --- 5\,V/5\,A (27 W); najlepiej oficjalny. Zbyt słaby zasilacz (albo ładowarka od telefonu z cienkim kablem) to najczęstsza przyczyna ,,tajemniczych'' restartów i uszkodzeń karty --- płytka sygnalizuje to zjawisko jako \emph{undervoltage} (za niskie napięcie).
+\item \textbf{Obudowa z radiatorem} (dla Pi~5: z wentylatorem). Procesor pod obciążeniem potrafi się dławić termicznie; radiator kosztuje grosze, a wydłuża życie sprzętu.
+\item \textbf{Czytnik kart microSD} do komputera (jeśli nie masz w laptopie).
+\item Do konfiguracji Wi-Fi --- \textbf{jedno z dwojga}: zwykły \textbf{pendrive} (metoda~A, polecana --- nie potrzeba monitora), \emph{albo} monitor z kablem \textbf{micro-HDMI} i klawiatura USB (metoda~B). Uwaga: Pi 4 i Pi 5 mają gniazda \emph{micro}-HDMI, nie pełne HDMI --- potrzebna przejściówka lub właściwy kabel.
+\end{itemize}
+
+\subsection{Jak to działa pod maską (dla ciekawych)}
+
+Raspberry Pi nie ma dysku ani ,,BIOS-u'' z systemem --- po podaniu zasilania wbudowany bootloader po prostu czyta system z karty microSD. Karta jest więc jednocześnie instalatorem i dyskiem docelowym: my przygotowujemy ją na zwykłym komputerze, a Pi tylko z niej startuje.
+
+Sam \textbf{HAOS} (Home Assistant Operating System) to minimalny Linux wyspecjalizowany do jednego zadania. W środku pracują trzy warstwy: system-gospodarz (zarządza sprzętem i siecią przez usługę \textbf{NetworkManager} --- to jej podamy hasło Wi-Fi), \textbf{Supervisor} (nadzorca instalujący i aktualizujący resztę) oraz właściwy Home Assistant i dodatki --- każdy w osobnym \textbf{kontenerze}. Brzmi znajomo? Tak, pod maską to ten sam mechanizm kontenerów co w naszym wariancie Docker na Windows --- tyle że tutaj nikt nie musi go obsługiwać ręcznie, bo robi to Supervisor. Właśnie dlatego HAOS ma sklep dodatków i aktualizacje jednym kliknięciem.
+
+\subsection{Krok 1 --- wgranie systemu na kartę (Raspberry Pi Imager)}
+
+\begin{enumerate}
+\item Na zwykłym komputerze pobierz i zainstaluj \textbf{Raspberry Pi Imager}: \url{https://www.raspberrypi.com/software/}.
+\item Włóż kartę microSD do czytnika i \textbf{sprawdź, co na niej jest}, zanim cokolwiek zapiszesz: otwórz \emph{Ten komputer} i wejdź dwuklikiem na dysk wymienny, który właśnie się pojawił. Karta po aparacie lub telefonie pokaże zdjęcia (folder \texttt{DCIM}); karta po wcześniejszej instalacji Linuksa potrafi zmylić --- Windows pokaże tylko mały fragment (np. partycję \texttt{hassos-boot}) albo zaproponuje ,,Musisz sformatować dysk\ldots''. To \textbf{nie} znaczy, że karta jest pusta --- Windows po prostu nie czyta partycji linuksowych. Jeżeli znajdziesz coś cennego, skopiuj to teraz na komputer.
+\uwaga{Zapis obrazu \textbf{kasuje całą zawartość wybranego nośnika}. Na liście \emph{Storage} w Imagerze kieruj się nazwą i \textbf{rozmiarem} (karta 32 GB pokaże się jako ok.\ 29--30 GB, 64 GB jako ok.\ 58--60 GB), a dla pewności \textbf{odłącz na czas zapisu wszystkie inne pendrive'y i dyski USB} --- wtedy nie ma czego pomylić.}
+\item W Imagerze wybierz kolejno:
+  \begin{itemize}
+  \item \textbf{Choose Device} --- model posiadanej płytki (Raspberry Pi 4 lub 5);
+  \item \textbf{Choose OS} $\to$ \textbf{Other specific-purpose OS} $\to$ \textbf{Home assistants and home automation} $\to$ \textbf{Home Assistant} $\to$ obraz \textbf{Home Assistant OS} w wersji dla Twojej płytki;
+  \item \textbf{Choose Storage} --- kartę microSD.
+  \end{itemize}
+\item Kliknij \textbf{Next / Zapisz}. Imager pobierze obraz (ok.~1 GB), zapisze go na kartę i zweryfikuje zapis --- łącznie kilka minut. ,,Obraz'' to gotowy zrzut całego dysku: po zapisaniu karta zawiera od razu kompletny, uruchamialny system.
+\end{enumerate}
+
+\uwaga{Imager zapyta: \emph{,,Would you like to apply OS customisation settings?''} (personalizacja: nazwa hosta, Wi-Fi, użytkownik). Odpowiedz \textbf{NIE}. Ten mechanizm działa tylko z systemem Raspberry Pi OS --- \textbf{HAOS go ignoruje}, więc wpisane tam hasło Wi-Fi po prostu przepadnie. To bardzo częsta pułapka i główny powód opinii, że ,,HA na Pi bez kabla się nie da''. Da się --- Wi-Fi skonfigurujemy w kroku 2 metodą, którą HAOS naprawdę czyta.}
+
+\subsection{Krok 2 --- konfiguracja Wi-Fi (bez kabla)}
+\label{sec:rpi-wifi}
+
+\subsubsection{Metoda A (polecana): pendrive z profilem sieci}
+
+HAOS przy każdym starcie sprawdza, czy do złącza USB nie włożono pendrive'a o etykiecie \texttt{CONFIG} --- a jeśli tak, importuje z niego ustawienia sieci. Przygotujmy taki pendrive:
+
+\begin{enumerate}
+\item Przygotuj pendrive. Nie musi być pusty: HAOS rozpoznaje nośnik po \textbf{etykiecie} \texttt{CONFIG} i czyta z niego wyłącznie folder \texttt{network} --- inne pliki mu nie przeszkadzają. Są dwie drogi:
+  \begin{itemize}
+  \item pendrive \textbf{już jest w FAT32} (większość fabrycznie jest --- sprawdzisz w: prawy przycisk $\to$ Właściwości $\to$ System plików): wystarczy zmienić etykietę, bez formatowania i bez utraty plików --- prawy przycisk na dysku $\to$ \emph{Zmień nazwę} $\to$ wpisz \texttt{CONFIG};
+  \item pendrive ma inny system plików (NTFS/exFAT): skopiuj z niego cenne pliki, bo \textbf{formatowanie usuwa wszystko}, a potem: prawy przycisk $\to$ \emph{Formatuj} $\to$ System plików: \textbf{FAT32}, Etykieta woluminu: \texttt{CONFIG}.
+  \end{itemize}
+  Po udanej konfiguracji Wi-Fi etykietę możesz przywrócić, a folder skasować --- pendrive wraca do zwykłych zadań.
+\item Utwórz na nim folder \texttt{network}, a w folderze plik o nazwie \texttt{my-network} --- \textbf{bez żadnego rozszerzenia}.
+\item Wklej do pliku poniższą treść i podmień \textbf{dwie} wartości: \texttt{ssid=} (dokładna nazwa Twojej sieci Wi-Fi, z zachowaniem wielkości liter) oraz \texttt{psk=} (hasło sieci, wpisane wprost, bez cudzysłowów):
+\begin{lstlisting}
+[connection]
+id=my-network
+uuid=72111c67-4a5d-4d5c-925e-f8ee26efb3c3
+type=802-11-wireless
+
+[802-11-wireless]
+mode=infrastructure
+ssid=NAZWA_TWOJEJ_SIECI
+# jesli siec jest ukryta, usun znak # z linii ponizej:
+#hidden=true
+
+[802-11-wireless-security]
+auth-alg=open
+key-mgmt=wpa-psk
+psk=HASLO_TWOJEJ_SIECI
+
+[ipv4]
+method=auto
+
+[ipv6]
+addr-gen-mode=stable-privacy
+method=auto
+\end{lstlisting}
+\item Zapisz plik jako \textbf{czysty tekst}. W Notatniku: \emph{Zapisz jako} $\to$ w polu ,,Zapisz jako typ'' wybierz \emph{Wszystkie pliki}, nazwa \texttt{my-network}, kodowanie UTF-8.
+\end{enumerate}
+
+\uwaga{Windows domyślnie \textbf{ukrywa rozszerzenia plików}, więc plik zapisany ,,jako'' \texttt{my-network} bywa naprawdę plikiem \texttt{my-network.txt} --- a takiego HAOS nie rozpozna. Włącz widoczność rozszerzeń (Eksplorator $\to$ karta \emph{Widok} $\to$ zaznacz \emph{Rozszerzenia nazw plików}) i sprawdź, że nazwa kończy się dokładnie na \texttt{my-network}.}
+
+\wskazowka{Co znaczą pola tego pliku? To profil połączenia usługi NetworkManager w formacie INI: \texttt{type=802-11-wireless} mówi ,,to sieć bezprzewodowa'' (802.11 to numer normy Wi-Fi), \texttt{key-mgmt=wpa-psk} --- ,,zabezpieczona hasłem WPA'', a \texttt{method=auto} --- ,,adres IP pobierz z routera (DHCP)''. Pole \texttt{uuid} to unikalny identyfikator profilu --- przykładowy możesz zostawić bez zmian; gdybyś kiedyś tworzył kilka profili, wygenerujesz świeży identyfikator poleceniem PowerShell \texttt{[guid]::NewGuid()}.}
+
+Na koniec: włóż \textbf{kartę microSD do Pi}, \textbf{pendrive do gniazda USB} i dopiero wtedy podłącz zasilanie. System przy pierwszym starcie zaimportuje profil i połączy się z Twoją siecią. Po kilku minutach pendrive można wyjąć --- ustawienia są już zapisane na karcie i przetrwają restarty.
+
+\subsubsection{Metoda B: monitor i klawiatura (gdy pendrive zawiedzie lub go brak)}
+
+Podłącz monitor (micro-HDMI!) i klawiaturę USB, uruchom Pi i poczekaj, aż na ekranie pojawi się znak zachęty \texttt{ha >} (konsola Home Assistant). Wpisz jedno polecenie (w tej konsoli \textbf{nie} poprzedza się komend słowem ,,ha''):
+
+\begin{lstlisting}
+network update wlan0 --wifi-mode infrastructure --ssid "NazwaSieci" --psk "HasloSieci"
+\end{lstlisting}
+
+\texttt{wlan0} to nazwa wbudowanej karty Wi-Fi. Poprawność sprawdzisz poleceniem \texttt{network info} --- interfejs \texttt{wlan0} powinien po chwili mieć przydzielony adres IP (np. \texttt{192.168.0.150}).
+
+\subsection{Krok 3 --- pierwszy start i znalezienie panelu}
+
+Pierwsze uruchomienie trwa dłużej niż kolejne: HAOS powiększa partycje na całą kartę, a następnie pobiera najnowszą wersję rdzenia Home Assistant. Przy sprawnym Wi-Fi zajmuje to zwykle \textbf{10--20 minut} --- w tym czasie nie odłączaj zasilania.
+
+\begin{enumerate}
+\item Po kilku minutach otwórz na komputerze (podłączonym do \textbf{tej samej sieci}) adres:
+\begin{center}\Large\texttt{http://homeassistant.local:8123}\end{center}
+Zobaczysz stronę \emph{Preparing Home Assistant} z paskiem postępu, a po niej --- kreator powitalny.
+\item Skąd komputer zna nazwę \texttt{homeassistant.local}? Z usługi \textbf{mDNS}: urządzenia w sieci lokalnej ,,przedstawiają się'' swoimi nazwami, bez udziału internetu. Nie wszystkie routery i przeglądarki to wspierają --- jeśli adres nie działa, wejdź w panel administracyjny routera, znajdź listę podłączonych urządzeń (DHCP/klienci), odszukaj urządzenie \texttt{homeassistant} i użyj jego adresu IP wprost, np. \texttt{http://192.168.0.150:8123}.
+\item Przy okazji pobytu w panelu routera: \textbf{zarezerwuj Pi stały adres IP} (opcja ,,rezerwacja DHCP''/,,static lease''). Dzięki temu adres nie zmieni się po restarcie routera.
+\item Przejdź kreator powitalny dokładnie tak, jak opisano w podrozdziale~\ref{sec:etap1} (konto lokalne, lokalizacja, jednostki; wykryte urządzenia można pominąć).
+\end{enumerate}
+
+\wskazowka{Cierpliwość przy pierwszym starcie naprawdę popłaca: dopóki trwa pobieranie rdzenia, strona potrafi nie odpowiadać albo pokazywać sam pasek postępu. To nie awaria. Twarde odłączenie zasilania w tym momencie może uszkodzić system plików na karcie --- tej lekcji nauczyliśmy się w projekcie boleśnie.}
+
+\subsection{Krok 4 --- dalej wspólną ścieżką (różnice wariantu R)}
+\label{sec:rpi-dalej}
+
+Od tego miejsca przewodnik jest wspólny: wykonaj etapy 2--10. Cztery rzeczy działają w HAOS \textbf{inaczej (prościej)} niż w wariancie Docker:
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}p{9.6cm}}
+\toprule
+\textbf{Czynność} & \textbf{Jak to zrobić w HAOS (Raspberry Pi)}\\
+\midrule
+Instalacja HACS (etap 2) & Zamiast polecenia \texttt{docker exec}: \textbf{Ustawienia $\to$ Dodatki $\to$ Sklep dodatków} $\to$ menu \textbf{,,\ldots''} (prawy górny róg) $\to$ \textbf{Repozytoria} $\to$ wklej \texttt{https://github.com/hacs/addons} $\to$ Dodaj. Następnie zainstaluj z listy dodatek \textbf{Get HACS} i kliknij \textbf{Uruchom} --- dodatek pobierze HACS (postęp widać w jego zakładce \emph{Dziennik}). Potem restart HA i dodanie integracji HACS --- już identycznie jak w podrozdz.~\ref{sec:etap2}.\\
+\addlinespace
+Restart Home Assistant & Jest w menu: \textbf{Ustawienia $\to$ System $\to$} ikona zasilania (prawy górny róg) $\to$ \textbf{Uruchom ponownie}. Docker Desktop nie jest potrzebny.\\
+\addlinespace
+Kopie zapasowe & Wbudowane: \textbf{Ustawienia $\to$ System $\to$ Kopie zapasowe} --- utwórz kopię i \textbf{pobierz plik na komputer} (kopia leżąca tylko na karcie SD nie chroni przed awarią karty).\\
+\addlinespace
+Aktualizacje & Z poziomu panelu: \textbf{Ustawienia $\to$ System $\to$ Aktualizacje} (osobno rdzeń, system i dodatki). Zasada ostrożności z rozdz.~\ref{sec:backup} obowiązuje: najpierw kopia, potem aktualizacja; po większych aktualizacjach sprawdzić zgodność xtend\_tuya.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\wskazowka{Na dłuższą metę: rób kopię zapasową regularnie (i po każdej większej zmianie), a gdy system rozrośnie się o kamery czy długą historię --- rozważ przeniesienie HAOS z karty microSD na \textbf{dysk SSD po USB}. Pi 4 i Pi 5 umieją startować z USB, a SSD jest o rząd wielkości trwalszy od karty przy ciągłych zapisach.}
+
+%=====================================================================
+\section{Etap 2 --- HACS (sklep z dodatkami)}
+\label{sec:etap2}
+
+\subsection{Instalacja plików HACS}
+
+W folderze projektu jest skrypt \textbf{\texttt{ha-docker-hacs.bat}} --- dwuklik. Skrypt wykonuje wewnątrz kontenera oficjalny instalator HACS i restartuje kontener. Odpowiednik ręczny:
+
+\begin{lstlisting}
+docker exec homeassistant bash -c "wget -O - https://get.hacs.xyz | bash -"
+docker restart homeassistant
+\end{lstlisting}
+
+\subsection{Dodanie integracji HACS i autoryzacja GitHub}
+
+\begin{enumerate}
+\item Po restarcie: \textbf{Ustawienia $\to$ Urządzenia i usługi $\to$ Dodaj integrację} $\to$ wyszukaj \textbf{HACS}.
+\item Zaakceptuj warunki (checkboxy) $\to$ \textbf{Prześlij}.
+\item HA pokaże \textbf{kod urządzenia} i adres \url{https://github.com/login/device}. Otwórz adres, zaloguj się na GitHub, przepisz kod, kliknij \textbf{Authorize}.
+\item Wróć do HA $\to$ integracja HACS pojawi się na liście, a w menu bocznym przybędzie pozycja \textbf{HACS}.
+\end{enumerate}
+
+\wskazowka{Jeśli po restarcie HACS nie ma na liście integracji --- odśwież stronę przeglądarki twardo (Ctrl+F5). Jeśli nadal brak: sprawdź, czy w \texttt{C:\textbackslash HomeAssistant\textbackslash config\textbackslash custom\_components} istnieje folder \texttt{hacs}, i powtórz restart.}
+
+%=====================================================================
+\section{Etap 3 --- oficjalna integracja Tuya}
+\label{sec:etap3}
+
+Cel: HA widzi wszystkie ładowarki z konta Smart Life (na razie z jedną encją każda).
+
+\begin{enumerate}
+\item \textbf{Ustawienia $\to$ Urządzenia i usługi $\to$ Dodaj integrację} $\to$ \textbf{Tuya}.
+\item Kreator poprosi o \textbf{kod użytkownika} (User Code). Znajdziesz go w telefonie: \textbf{Smart Life $\to$ Ja $\to$ zębatka (Ustawienia) $\to$ Konto i bezpieczeństwo $\to$ Kod użytkownika}. Przepisz \textbf{z zachowaniem wielkości liter}.
+\item HA wyświetli \textbf{kod QR}. W Smart Life: \textbf{Ja $\to$ ikona skanera} (prawy górny róg) $\to$ zeskanuj ekran $\to$ \textbf{zatwierdź logowanie} na telefonie.
+\item Po chwili integracja pokaże urządzenia konta (u nas 10: Q11/Q22/Q37/GPEV100 itd.).
+\end{enumerate}
+
+\uwaga{Każde urządzenie ma teraz tylko \textbf{jedną encję} (przełącznik). \textbf{To jest oczekiwane.} Brakujące czujniki doda xtend\_tuya w etapach 4--7. Nie ma sensu szukać błędu ani restartować --- tak działa oficjalna integracja z tymi ładowarkami.}
+
+%=====================================================================
+\section{Etap 4 --- xtend\_tuya, część A (bez chmury deweloperskiej)}
+\label{sec:etap4}
+
+Cel: encje rosną z 1 do kilkunastu--dwudziestu kilku na urządzenie (u nas łącznie z 10 do ok.~154).
+
+\subsection{Pobranie w HACS}
+
+\begin{enumerate}
+\item Menu boczne $\to$ \textbf{HACS} $\to$ wyszukaj \textbf{Xtend Tuya}.
+\item Otwórz pozycję $\to$ przycisk \textbf{Pobierz / Download} (prawy dolny róg) $\to$ potwierdź.
+\item \textbf{Zrestartuj kontener} (rozdz.~\ref{sec:restart}).
+\end{enumerate}
+
+\uwaga{Ekran pozycji w HACS pokazuje README z przyciskiem ,,OPEN HACS REPOSITORY'', który \textbf{niczego nie instaluje} --- to tylko odnośnik. Po pobraniu przycisk ,,Download'' \textbf{znika} --- to nie awaria, tak wygląda stan ,,pobrane''. Pobranie w HACS kopiuje wyłącznie pliki na dysk; encje pojawią się dopiero po \textbf{dodaniu integracji} (poniżej). To rozróżnienie było źródłem wielotygodniowej frustracji --- pliki leżały na dysku, a integracji nikt nie ,,dokończył''.}
+
+\subsection{Dodanie integracji --- z kluczowym oknem, którego nie wolno zamknąć}
+\label{sec:krytyczne-okno}
+
+\begin{enumerate}
+\item \textbf{Ustawienia $\to$ Urządzenia i usługi $\to$ Dodaj integrację} $\to$ wyszukaj ,,xtend'' $\to$ wybierz \textbf{Xtend Tuya} (nie mylić z ,,TuyaExtend AmperePoint (helper)'' --- ten będzie w etapie 8).
+\item Podaj \textbf{kod użytkownika} (ten sam co w etapie 3) $\to$ zeskanuj \textbf{kod QR} aplikacją Smart Life $\to$ zatwierdź na telefonie.
+\item \textbf{MOMENT KRYTYCZNY.} Pojawi się formularz \textbf{,,Add Tuya OpenAPI credentials''}. Wygląda jak opcjonalny i ma krzyżyk --- ale \textbf{zamknięcie go krzyżykiem po cichu anuluje cały kreator}: wpis integracji nie powstaje, HA nie pokazuje żadnego błędu, a użytkownik jest przekonany, że ,,wszystko zrobił''. Dokładnie to zjawisko zablokowało wcześniejsze próby (odtworzone i potwierdzone w sesji 2026-07-05).
+\item W formularzu (skoro kluczy deweloperskich jeszcze nie mamy):
+  \begin{itemize}
+  \item zaznacz \textbf{,,Don't ask for OpenAPI credentials''},
+  \item \textbf{mimo zaznaczenia} wybierz \textbf{Country = Poland} oraz \textbf{endpoint = Europe} (\texttt{https://openapi.tuyaeu.com}) --- formularz ma błąd walidacji i bez tych pól zgłosi niezrozumiały komunikat ,,value must be one of [\ldots]'',
+  \item zatwierdź.
+  \end{itemize}
+\item Okno \textbf{,,Name and assign''} (nazwy/obszary) --- zostaw domyślne $\to$ \textbf{Zakończ}.
+\end{enumerate}
+
+\subsection{Weryfikacja etapu A}
+
+\textbf{Ustawienia $\to$ Urządzenia i usługi}: na liście musi być wpis \textbf{Xtend Tuya --- 10 urządzeń}. Liczby encji po etapie A z wdrożenia wzorcowego:
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Urządzenie} & \textbf{encje przed} & \textbf{encje po etapie A}\\
+\midrule
+Q22 OTA & 1 & 24\\
+Q22 OTA 2 & 1 & 24\\
+urzadzenie\_zepsute (Q22 OTA) & 1 & 24\\
+GPEV100 & 1 & 16\\
+Q11 OTA & 1 & 15\\
+ladowarka\_q11 (Q11 OTA) & 1 & 15\\
+Q37 OTA & 1 & 15\\
+EV Charger VE & 1 & 15\\
+EV Charging Station & 1 & 5\\
+AmperePoint EV Charger & 1 & 1 (patrz rozdz.~\ref{sec:lightsource})\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Jeśli wpisu Xtend Tuya \textbf{nie ma} --- kreator został przerwany (najpewniej na formularzu OpenAPI); powtórz podrozdział~\ref{sec:krytyczne-okno} od początku.
+
+%=====================================================================
+\section{Etap 5 --- projekt na platformie deweloperskiej Tuya}
+\label{sec:etap5}
+
+Cel: drugi, pełniejszy kanał dostępu do chmury (OpenAPI) --- klucze \textbf{Client ID + Secret}, dzięki którym xtend\_tuya zobaczy ,,prawie wszystkie'' punkty danych.
+
+\begin{enumerate}
+\item Wejdź na \url{https://iot.tuya.com} i \textbf{załóż darmowe konto} (może być ten sam e-mail co w Smart Life; po zalogowaniu serwis przekierowuje na \texttt{platform.tuya.com}).
+\item \textbf{Cloud $\to$ Development $\to$ Create Cloud Project}. Wypełnij:
+  \begin{itemize}
+  \item Project Name: np. \textbf{AmperePoint HA};
+  \item Industry: \textbf{Smart Home}; Development Method: \textbf{Smart Home};
+  \item Data Center: \textbf{Central Europe Data Center} --- wybór \textbf{krytyczny}: musi odpowiadać regionowi konta Smart Life (dla Polski --- Europa Środkowa). Darmowy plan pozwala na jedno centrum danych.
+  \end{itemize}
+\item Kreator \textbf{Authorize API Services} zaproponuje usługi --- zatwierdź proponowane bez zmian (IoT Core, Authorization Token Management, Smart Home Basic Service, Data Dashboard Service, ewentualnie Smart Home Scene Linkage oznaczona jako przestarzała --- nieszkodliwa).
+\item Po utworzeniu projektu, karta \textbf{Overview}, sekcja \emph{Authorization Key}: \textbf{Access ID/Client ID} oraz \textbf{Access Secret/Client Secret} (odsłania ikona oka). \uwaga{Secret pełni rolę hasła do API: nie wysyłać nikomu, nie wklejać do dokumentów współdzielonych, trzymać w menedżerze haseł. W razie wycieku: Overview $\to$ ikona przy kluczu $\to$ reset sekretu, potem aktualizacja w HA.}
+\item Powiąż konto aplikacji: zakładka \textbf{Devices $\to$ Link App Account $\to$ Add App Account $\to$ Tuya App Account Authorization} $\to$ zeskanuj kod QR aplikacją Smart Life $\to$ zatwierdź. Wybierz tryb \textbf{Automatic Link} (dołącza też urządzenia dodane w przyszłości). Platforma potwierdzi listę urządzeń konta.
+\end{enumerate}
+
+%=====================================================================
+\section{Etap 6 --- tryb DP Instruction (pełne punkty danych)}
+\label{sec:etap6}
+
+Chmura Tuya wystawia urządzenia przez API w trybie \textbf{Standard Instruction} (ujednolicone, ale okrojone) albo \textbf{DP Instruction} (surowe punkty danych --- pełna lista zmiennych urządzenia). Dokumentacja xtend\_tuya zaleca DP. Procedura --- \textbf{dla każdej kategorii produktu osobno}:
+
+\begin{enumerate}
+\item Na platformie: projekt $\to$ \textbf{Devices $\to$ All Devices} $\to$ przycisk \textbf{,,\ldots''} przy pasku \emph{View Devices by Product}.
+\item Najedź kursorem na kafelek produktu $\to$ ikona \textbf{ołówka}.
+\item Zaznacz \textbf{DP Instruction} $\to$ \textbf{Save Configuration} $\to$ \textbf{OK}.
+\item Powtórz dla wszystkich produktów z listy (u nas: EV Charger\_VE, AmperePoint EV Charger, Q20\_3.5KW\_with\_OTA, EV Charging Station, Q11\_11KW\_with\_OTA, Q22 OTA, GPEV100).
+\end{enumerate}
+
+Ostrzeżenie platformy (,,devices might not be able to be controlled by the original standard instructions'') dotyczy \textbf{wyłącznie tego projektu API} --- aplikacja Smart Life i same ładowarki działają bez zmian.
+
+\subsection{Znany przypadek: produkt zarejestrowany jako źródło światła}
+\label{sec:lightsource}
+
+Produkt \textbf{AmperePoint EV Charger} (PID \texttt{gbmxngploofmhbjc}) jest w chmurze Tuya zarejestrowany przez producenta w kategorii \textbf{,,Light Source''} z jednym jedynym punktem danych \texttt{switch\_led}. Dlatego to urządzenie ma i będzie miało \textbf{tylko 1 encję}, niezależnie od wszystkich kroków po stronie HA. Rozwiązanie leży wyłącznie po stronie producenta: zgłosić prośbę o przeniesienie produktu do kategorii ładowarek EV z pełnym zestawem DP (podając PID).
+
+%=====================================================================
+\section{Etap 7 --- klucze OpenAPI w HA i weryfikacja końcowa}
+\label{sec:etap7}
+
+\begin{enumerate}
+\item \textbf{Ustawienia $\to$ Urządzenia i usługi $\to$ Xtend Tuya $\to$ Konfiguruj}. Otworzy się znany formularz ,,Add Tuya OpenAPI credentials''.
+\item Tym razem: \textbf{odznacz} ,,Don't ask for OpenAPI credentials''; Country = \textbf{Poland}; endpoint = \textbf{Europe}; \textbf{Tuya IoT Access ID} i \textbf{Access Secret} wklej z karty Overview projektu (etap 5). Zatwierdź.
+\item \textbf{Zrestartuj kontener} (rozdz.~\ref{sec:restart}) i odczekaj 1--2 minuty.
+\item Weryfikacja: \textbf{Ustawienia $\to$ Urządzenia i usługi $\to$ Xtend Tuya} --- liczby encji przy urządzeniach powinny wzrosnąć (Q22 docelowo 30+). W razie braków: odśwież stronę; potem menu \textbf{,,\ldots''} przy wpisie Xtend Tuya $\to$ \textbf{Załaduj ponownie}; na końcu zajrzyj do logów (\textbf{Ustawienia $\to$ System $\to$ Logi}, filtr ,,xtend'') --- typowe błędy w tabeli rozdz.~\ref{sec:problemy}.
+\end{enumerate}
+
+%=====================================================================
+\section{Etap 8 --- dodatek firmowy TuyaExtend AmperePoint}
+\label{sec:etap8}
+
+Dodatek firmowy \textbf{nie pobiera} danych z Tuya --- mapuje istniejące encje i dokłada warstwę prezentacji: koszty sesji wg taryfy, statusy po polsku, jedno ,,ładne'' urządzenie ładowarki. Konfigurować \textbf{dopiero po} etapie 7, gdy encje źródłowe istnieją.
+
+\subsection{Instalacja plików (jeśli jeszcze nie ma)}
+
+Repozytorium firmowe jest \textbf{prywatne}, więc HACS go nie zobaczy (HACS czyta tylko repozytoria publiczne --- stąd wcześniejsze błędy 404 przy próbach dodania adresów \texttt{amperepoint/tuya-ap} i podobnych). Instalacja ręczna: skopiuj folder \texttt{tuyaextend\_amperepoint} (z folderu projektu AMPERE\_POINT) do \texttt{C:\textbackslash HomeAssistant\textbackslash config\textbackslash custom\_components\textbackslash} tak, by powstała ścieżka \texttt{custom\_components\textbackslash tuyaextend\_amperepoint\textbackslash manifest.json}. Zrestartuj kontener.
+
+\subsection{Kreator konfiguracji}
+
+\textbf{Dodaj integrację $\to$ TuyaExtend AmperePoint}, następnie:
+
+\begin{enumerate}
+\item \textbf{Model}: np. AmperePoint Q22 OTA; \textbf{nazwa} urządzenia (np. ,,Ładowarka Q22 --- stanowisko 1'').
+\item \textbf{Taryfa}: cena prądu w \textbf{PLN/kWh}; waluta \textbf{PLN}.
+\item Parametry pozostawić domyślne: próg mocy ładowania \textbf{0{,}25 kW}, minuty bezczynności \textbf{3}, tryb energii sesji \textbf{Auto}.
+\item \textbf{Mapowanie encji źródłowych}: przełącznik ładowania, moc, energia sesji, energia całkowita, limit prądu, status, błąd, napięcia i prądy L1--L3 --- wybieraj encje utworzone przez xtend\_tuya dla danej ładowarki.
+\end{enumerate}
+
+Pomyłkę w mapowaniu naprawia się przyciskiem \textbf{Konfiguruj} przy wpisie integracji --- bez usuwania czegokolwiek.
+
+%=====================================================================
+\section{Etap 9 --- porządki, panel Energia, pulpit}
+\label{sec:etap9}
+
+\subsection{Rejestr encji --- nazwy, duplikaty, obszary}
+
+\textbf{Ustawienia $\to$ Urządzenia i usługi $\to$ zakładka Encje}:
+\begin{itemize}
+\item nadaj kluczowym encjom czytelne nazwy i identyfikatory (np. \texttt{sensor.q22\_moc});
+\item \textbf{duplikaty}: oficjalna Tuya i xtend\_tuya potrafią wystawić ten sam przełącznik dwa razy --- to normalne; zbędną encję \textbf{wyłącz} (nie usuwaj integracji);
+\item wyłącz encje niepotrzebne (mniej szumu w bazie danych);
+\item przypisz urządzenia do \textbf{obszarów} (np. ,,Pole'', ,,Serwis'').
+\end{itemize}
+
+\subsection{Panel Energia}
+
+\textbf{Ustawienia $\to$ Pulpity $\to$ Energia} $\to$ sekcja ,,Poszczególne urządzenia'' $\to$ dodaj encje energii ładowarek (sumujące kWh --- zwykle ,,energia całkowita'' / \texttt{forward\_energy\_total}). HA zacznie budować dzienne i miesięczne wykresy --- podstawa analiz i rozliczeń. Wykresy pojawiają się po 1--2 godzinach zbierania danych.
+
+\subsection{Pulpit ładowarek}
+
+Na pulpicie (przycisk \textbf{Edytuj} w prawym górnym rogu) warto zestawić: kartę \textbf{wskaźnika} (gauge) z mocą chwilową, kartę \textbf{historii} z energią sesji, kartę \textbf{encji} ze statusem, limitem prądu i przełącznikiem ładowania.
+
+%=====================================================================
+\section{Etap 10 --- automatyzacje}
+\label{sec:etap10}
+
+Automatyzacja składa się z \textbf{wyzwalacza} (,,kiedy?''), opcjonalnych \textbf{warunków} (,,czy na pewno?'') i \textbf{akcji} (,,co zrobić?''). Buduje się je w kreatorze: \textbf{Ustawienia $\to$ Automatyzacje i sceny $\to$ Utwórz automatyzację}. Poniżej trzy sprawdzone przykłady w zapisie YAML (kreator ma tryb ,,Edytuj w YAML''). \textbf{Identyfikatory encji podmień na własne} z Rejestru encji. Powiadomienia wymagają aplikacji \textbf{Home Assistant Companion} na telefonie.
+
+\textbf{1) Powiadomienie o zakończeniu ładowania:}
+
+\begin{lstlisting}
+alias: Powiadom o koncu ladowania Q22
+trigger:
+  - platform: state
+    entity_id: sensor.q22_status
+    from: "charging"
+    to: "charger_free"
+action:
+  - service: notify.mobile_app_telefon_dawida
+    data:
+      title: "Ladowarka Q22"
+      message: "Ladowanie zakonczone."
+\end{lstlisting}
+
+\textbf{2) Ładowanie tylko w taniej taryfie (22:00--6:00):}
+
+\begin{lstlisting}
+alias: Q22 tania taryfa
+trigger:
+  - platform: time
+    at: "22:00:00"
+    id: start
+  - platform: time
+    at: "06:00:00"
+    id: stop
+action:
+  - choose:
+      - conditions: [{ condition: trigger, id: start }]
+        sequence:
+          - service: switch.turn_on
+            target: { entity_id: switch.q22_przelacznik }
+      - conditions: [{ condition: trigger, id: stop }]
+        sequence:
+          - service: switch.turn_off
+            target: { entity_id: switch.q22_przelacznik }
+\end{lstlisting}
+
+\textbf{3) Alarm przy błędzie ładowarki:}
+
+\begin{lstlisting}
+alias: Alarm bledu ladowarki
+trigger:
+  - platform: state
+    entity_id: sensor.q22_blad
+condition:
+  - condition: template
+    value_template: "{{ trigger.to_state.state not in ['0','ok','unknown','unavailable'] }}"
+action:
+  - service: notify.mobile_app_telefon_dawida
+    data:
+      title: "UWAGA: blad ladowarki"
+      message: "Kod bledu: {{ trigger.to_state.state }}"
+\end{lstlisting}
+
+Kierunki rozwoju: obniżanie limitu prądu w szczycie (encje typu \emph{number}, usługa \texttt{number.set\_value}); dzienny raport energii; \textbf{ładowanie nadwyżką z fotowoltaiki} --- wyzwalaczem jest moc eksportu do sieci (patrz symulator, rozdz.~\ref{sec:pvsim}).
+
+%=====================================================================
+\section{Rozszerzenie opcjonalne: kamera Imou IPC-T42EP}
+\label{sec:kamera}
+
+Zidentyfikowany sprzęt: \textbf{Imou Turret SE 4MP, model IPC-T42EP}, obiektyw 2,8 mm, zasilacz 12 V/0,5 A. Kamera ma \textbf{port Ethernet} i Wi-Fi 2,4 GHz, \textbf{oficjalne wsparcie ONVIF}, slot microSD (do 256 GB) i mikrofon --- to jeden z łatwiejszych przypadków integracyjnych.
+
+\uwaga{Stan na 2026-07-05: egzemplarz jest \textbf{powiązany z cudzym kontem Imou} i nie da się go dodać do własnego. Zanim wykonasz kroki poniżej: poprzedni właściciel musi usunąć kamerę ze swojego konta w aplikacji Imou Life (Ustawienia urządzenia $\to$ Usuń), \emph{albo} wykonaj reset fabryczny przyciskiem reset przy porcie kabla ($\sim$10 s do sygnału) i sparuj ponownie; jeśli blokada konta pozostanie --- konieczny kontakt ze wsparciem Imou z dowodem zakupu.}
+
+Ścieżka zalecana (lokalna, podgląd bez chmury):
+\begin{enumerate}
+\item Sparuj kamerę w aplikacji \textbf{Imou Life} (najlepiej po \textbf{kablu LAN}; przy Wi-Fi pamiętaj o 2,4 GHz).
+\item W routerze nadaj kamerze \textbf{stałe IP}.
+\item W Imou Life sprawdź ustawienia kamery i \textbf{wyłącz szyfrowanie/TLS}, jeśli występuje (nowszy firmware blokuje zwykły RTSP przy włączonym szyfrowaniu).
+\item W HA: \textbf{Dodaj integrację $\to$ ONVIF} $\to$ IP kamery, port 80, login \texttt{admin}, hasło = \textbf{safety code z naklejki} na spodzie kamery lub hasło ustawione w aplikacji.
+\item Jeśli ONVIF zawiedzie --- \textbf{Generic Camera} ze strumieniem RTSP:
+\begin{lstlisting}
+rtsp://admin:HASLO@IP_KAMERY:554/cam/realmonitor?channel=1&subtype=0
+\end{lstlisting}
+(\texttt{subtype=1} = lżejszy strumień pomocniczy).
+\end{enumerate}
+
+Ścieżka dodatkowa (chmurowa --- przełączniki, detekcja ruchu jako encje): darmowe konto na \url{https://open.imoulife.com} $\to$ \textbf{My App} $\to$ \textbf{AppId + AppSecret} (analogia 1:1 do kluczy Tuya) $\to$ w HACS integracja \textbf{Imou Life}.
+
+%=====================================================================
+\section{Rozszerzenie opcjonalne: symulator falownika SUN2000}
+\label{sec:pvsim}
+
+Do ćwiczeń z fotowoltaiką \textbf{przed} zakupem falownika powstał symulator \textbf{SUN2000-10KTL-M1}: serwer Modbus TCP w czystym Pythonie (zero bibliotek do instalowania), pliki w folderze projektu \texttt{pv\_sim}. HA łączy się z nim \textbf{prawdziwą} integracją Huawei Solar --- dokładnie tak, jak z fizycznym falownikiem.
+
+\begin{enumerate}
+\item Uruchomienie (terminal):
+\begin{lstlisting}
+cd C:\Users\Lenovo\Desktop\AMPERE_POINT\pv_sim
+python sun2000_sim.py
+\end{lstlisting}
+Gdy zapora Windows zapyta --- \textbf{Zezwól} (sieci prywatne). Przydatne parametry: \texttt{-{}-kwp 10} (moc instalacji), \texttt{-{}-time-scale 60} (doba mija w 24 min), \texttt{-{}-port 5020} (gdy 502 zajęty), \texttt{-{}-no-meter} (bez licznika).
+\item W HACS pobierz \textbf{Huawei Solar} (autor wlcrs) $\to$ restart kontenera.
+\item \textbf{Dodaj integrację $\to$ Huawei Solar} $\to$ typ \textbf{Modbus TCP}: host \texttt{host.docker.internal} (tak kontener HA ,,widzi'' Windowsa), port \texttt{502}, slave/device ID \texttt{0} lub \texttt{1}, tryb bez podwyższonych uprawnień.
+\item Po chwili pojawi się urządzenie SUN2000 z encjami: moc czynna, moc DC, energie, fazy L1--L3, stringi PV, temperatura, status oraz licznik (eksport/import). Symulator generuje realistyczną krzywą dobową z ,,chmurami''; energie liczników przeżywają restart (plik \texttt{sun2000\_sim\_state.json}).
+\item Test bez HA: \texttt{python test\_client.py 127.0.0.1 502}. Szczegóły i szkic automatyzacji ,,ładowanie nadwyżką'': \texttt{pv\_sim\textbackslash README\_URUCHOMIENIE.md}.
+\end{enumerate}
+
+Po zakupie prawdziwego falownika wystarczy w integracji podmienić host na IP falownika/SDongle --- reszta konfiguracji (encje, panel Energia, automatyzacje) zostaje.
+
+%=====================================================================
+\section{Kopie zapasowe i aktualizacje}
+\label{sec:backup}
+
+\begin{description}[style=nextline]
+\item[Kopia zapasowa] najpewniejsza metoda w instalacji kontenerowej: zatrzymać kontener (Docker Desktop $\to$ Stop) i \textbf{skopiować cały folder} \texttt{C:\textbackslash HomeAssistant\textbackslash config} (np. na dysk zewnętrzny), potem Start. Kopię robić przed każdą większą zmianą (aktualizacja HA, nowe integracje).
+\item[Aktualizacja Home Assistant] w terminalu:
+\begin{lstlisting}
+docker pull ghcr.io/home-assistant/home-assistant:stable
+docker rm -f homeassistant
+\end{lstlisting}
+\ldots{}a następnie ponownie polecenie \texttt{docker run} z rozdz.~\ref{sec:etap1} (lub \texttt{ha-docker-setup.bat} --- UWAGA: skrypt usuwa stary kontener, ale konfiguracja w \texttt{C:\textbackslash HomeAssistant\textbackslash config} zostaje nietknięta).
+\item[Aktualizacje xtend\_tuya] przez HACS, ale \textbf{rozważnie}: dodatek korzysta z nieoficjalnych mechanizmów i bywa czuły na zmiany HA. Po każdej większej aktualizacji HA sprawdzić w HACS zgodność wersji; w razie awarii --- tymczasowo wrócić do poprzedniego obrazu HA.
+\item[Przypomnienie okresowe] darmowy plan \textbf{IoT Core Trial Edition} na platformie Tuya wygasa (typowo co pół roku). Wpisz do kalendarza: \textbf{Cloud $\to$ projekt $\to$ IoT Core $\to$ Extend Trial} (bezpłatne).
+\end{description}
+
+%=====================================================================
+\section{Rozwiązywanie problemów}
+\label{sec:problemy}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}p{5.6cm}}
+\toprule
+\textbf{Objaw} & \textbf{Prawdopodobna przyczyna} & \textbf{Rozwiązanie}\\
+\midrule
+\endhead
+\multicolumn{3}{l}{\textit{--- Instalacja podstawy (etapy 0--2) ---}}\\
+\addlinespace
+\texttt{docker} ,,nie jest rozpoznawalny'' / skrypt zgłasza błąd & Docker Desktop nie działa albo silnik jeszcze startuje & Uruchomić Docker Desktop, poczekać na ,,running'', powtórzyć. \\
+\addlinespace
+\texttt{localhost:8123} nie odpowiada & Kontener startuje / pierwszy start buduje bazę & Odczekać 1--2 min; Docker Desktop $\to$ Containers $\to$ status \texttt{homeassistant} ma być ,,Running''; logi kontenera przyciskiem ,,View details''.\\
+\addlinespace
+Port 8123 zajęty (błąd przy \texttt{docker run}) & Inny program używa portu & W poleceniu zmienić mapowanie na \texttt{-p 8124:8123} i wchodzić na \texttt{localhost:8124}.\\
+\addlinespace
+HACS nie pojawia się po instalacji & Restart wykonany przed końcem skryptu; twardy cache przeglądarki & Sprawdzić folder \texttt{custom\_components\textbackslash hacs}; \texttt{docker restart homeassistant}; Ctrl+F5.\\
+\addlinespace
+\multicolumn{3}{l}{\textit{--- Tuya / xtend\_tuya (etapy 3--7) ---}}\\
+\addlinespace
+Po ,,pobraniu'' xtend\_tuya encji nie przybywa & Pobranie $\ne$ dodanie: brak wpisu integracji (kreator przerwany, zwykle krzyżykiem na formularzu OpenAPI) & Przejść kreator do końca wg rozdz.~\ref{sec:krytyczne-okno}; restart nic nie da, dopóki wpis nie istnieje.\\
+\addlinespace
+Formularz OpenAPI z błędem ,,value must be one of [\ldots]'' & Błąd walidacji: kraj/endpoint wymagane mimo checkboxa & Wybrać Country=Poland i endpoint=Europe, dopiero wtedy zatwierdzić.\\
+\addlinespace
+Błąd ,,sign invalid'' w logach & Zły Client ID/Secret (literówka, spacja) albo zły endpoint & Skopiować klucze ponownie z Overview; endpoint = Europe (\texttt{openapi.tuyaeu.com}).\\
+\addlinespace
+Błąd ,,permission deny'' / kod 1106 & Nieautoryzowana usługa API albo wygasły trial & Platforma $\to$ Service API: IoT Core i Authorization aktywne; w razie potrzeby Authorize/Renew.\\
+\addlinespace
+Encje przestają się aktualizować po miesiącach & Wygasł IoT Core Trial Edition & Cloud $\to$ projekt $\to$ IoT Core $\to$ Extend Trial; wpisać przypomnienie do kalendarza.\\
+\addlinespace
+Na platformie ,,No data found'' / puste listy & Przeglądarka zgubiła region (przekierowania platform $\leftrightarrow$ eu.platform) & Odświeżyć; sprawdzić wybór Central Europe DC w prawym górnym rogu.\\
+\addlinespace
+QR z platformy nie działa / błąd autoryzacji & Konto aplikacji w innym centrum danych niż projekt & Projekt musi mieć ten sam DC co konto Smart Life (dla PL: Central Europe).\\
+\addlinespace
+Wszystkie encje ,,niedostępne'' & Brak internetu / awaria chmury / urządzenie offline & Sprawdzić internet i stan w Smart Life; integracja jest chmurowa.\\
+\addlinespace
+Po aktualizacji HA Xtend Tuya nie startuje & Niezgodność wersji dodatku z HA & HACS $\to$ aktualizacja xtend\_tuya; brak poprawki $\to$ powrót do poprzedniego obrazu HA.\\
+\addlinespace
+Zdublowane encje (dwa przełączniki) & Tuya i xtend\_tuya wystawiają ten sam element & Normalne; zbędną encję wyłączyć w Rejestrze encji.\\
+\addlinespace
+,,AmperePoint EV Charger'' ma wciąż 1 encję & Produkt zarejestrowany jako Light Source (1 DP) & Zgłosić producentowi (PID \texttt{gbmxngploofmhbjc}); po stronie HA nie ma co naprawiać.\\
+\addlinespace
+Ładowarka zniknęła po zmianie routera & Moduły Tuya wymagają 2,4 GHz i ponownego parowania & Włączyć 2,4 GHz, sparować w Smart Life; wróci do HA sama (Automatic Link).\\
+\addlinespace
+\multicolumn{3}{l}{\textit{--- Raspberry Pi / Wi-Fi (wariant R) ---}}\\
+\addlinespace
+Pi nie pojawia się w sieci po pierwszym starcie & Plik konfiguracyjny nazywa się \texttt{my-network.txt} (Windows ukrywa rozszerzenia) albo pendrive nie ma etykiety \texttt{CONFIG}/FAT32 & Włączyć widoczność rozszerzeń, poprawić nazwę pliku; sformatować pendrive jako FAT32 z etykietą \texttt{CONFIG}; zrestartować Pi z włożonym pendrive.\\
+\addlinespace
+Pi nie łączy się z Wi-Fi mimo poprawnego pliku & Literówka w \texttt{ssid}/\texttt{psk} (wielkość liter!), sieć ukryta, problem z pasmem 5 GHz & Sprawdzić dane; dla sieci ukrytej odkomentować \texttt{hidden=true}; spróbować sieci 2,4 GHz; awaryjnie metoda B (monitor + \texttt{network update wlan0}).\\
+\addlinespace
+\texttt{homeassistant.\allowbreak local} nie otwiera się & Router/przeglądarka bez wsparcia mDNS & Znaleźć adres IP na liście klientów DHCP routera i wejść po IP (\texttt{http://IP:8123}); zarezerwować stały adres.\\
+\addlinespace
+Losowe restarty Pi, ostrzeżenie o zasilaniu & Za słaby zasilacz lub kabel (undervoltage) & Użyć zasilacza 15 W (Pi 4) / 27 W (Pi 5), najlepiej oficjalnego; nie zasilać z portu USB komputera.\\
+\addlinespace
+\emph{Preparing Home Assistant} trwa ponad godzinę & Słaby sygnał Wi-Fi w miejscu montażu & Na czas instalacji przenieść Pi bliżej routera; docelowo sprawdzić siłę sygnału lub użyć pasma 2,4 GHz (większy zasięg).\\
+\addlinespace
+\multicolumn{3}{l}{\textit{--- Rozszerzenia ---}}\\
+\addlinespace
+Kamera Imou: ,,urządzenie już dodane'' przy parowaniu & Egzemplarz powiązany z cudzym kontem & Usunięcie z poprzedniego konta albo reset + parowanie; ostatecznie wsparcie Imou (dowód zakupu).\\
+\addlinespace
+Kamera: RTSP nie łączy & Włączone szyfrowanie/TLS w Imou Life; złe hasło & Wyłączyć szyfrowanie; hasło = safety code z naklejki lub z aplikacji.\\
+\addlinespace
+Symulator: HA nie łączy się & Zapora Windows; zły host; port zajęty & Zezwolić Pythonowi (sieci prywatne); host = \texttt{host.docker.internal}; ew. \texttt{-{}-port 5020} i ten sam port w HA.\\
+\bottomrule
+\end{longtable}
+
+%=====================================================================
+\section{Checklista końcowa --- ,,czy wszystko działa''}
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{11.2cm} c}
+\toprule
+\textbf{Punkt kontrolny} & \textbf{OK?}\\
+\midrule
+Docker Desktop startuje z systemem; kontener \texttt{homeassistant} = Running & $\square$\\
+\texttt{http://localhost:8123} loguje do panelu HA & $\square$\\
+HACS widoczny w menu bocznym & $\square$\\
+Integracja Tuya: wszystkie ładowarki na liście urządzeń & $\square$\\
+Wpis \textbf{Xtend Tuya} istnieje na liście integracji (nie tylko ,,pobrane'' w HACS) & $\square$\\
+Q22: 30+ encji; pozostałe ładowarki: kilkanaście+ & $\square$\\
+Klucze OpenAPI wpisane; w logach brak ,,sign invalid'' / ,,permission deny'' & $\square$\\
+Wszystkie produkty na platformie w trybie \textbf{DP Instruction} & $\square$\\
+TuyaExtend AmperePoint skonfigurowany; koszt sesji liczy się w PLN & $\square$\\
+Panel Energia pokazuje energię ładowarek (po 1--2 h) & $\square$\\
+Testowa automatyzacja (np. powiadomienie) zadziałała & $\square$\\
+Kopia zapasowa \texttt{C:\textbackslash HomeAssistant\textbackslash config} wykonana & $\square$\\
+Przypomnienie ,,Extend Trial'' (IoT Core) w kalendarzu & $\square$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\section{Słowniczek pojęć i skrótów}
+\label{sec:slowniczek}
+
+\begin{description}[style=nextline,itemsep=1pt]
+\item[API] interfejs programistyczny --- ,,okienko podawcze'', przez które programy proszą usługę o dane lub działania.
+\item[Centrum danych (DC)] serwerownia regionu przypisana do konta Tuya/Imou; u nas Central Europe.
+\item[Client ID / Client Secret] para ,,login + hasło'' projektu deweloperskiego do podpisywania żądań API (Tuya); odpowiednik w Imou: AppId/AppSecret.
+\item[Config entry (wpis konfiguracyjny)] zapisany wynik kreatora integracji w HA; \textbf{bez niego integracja nie działa}, choćby pliki leżały na dysku.
+\item[Docker / kontener / obraz] kontener = odizolowane ,,pudełko'' z programem; obraz = wzorzec, z którego kontener powstaje; Docker Desktop = program zarządzający tym na Windows.
+\item[DP (data point)] pojedyncza zmienna urządzenia Tuya (moc, status\ldots); tryb DP Instruction wystawia pełną listę DP przez API.
+\item[Encja (entity)] pojedynczy czujnik/przełącznik/wartość w HA.
+\item[Endpoint] adres serwera API (u nas \texttt{https://openapi.tuyaeu.com}).
+\item[HA / HAOS] Home Assistant; HAOS = jego samodzielny system operacyjny (używany w wariancie VM, u nas zastąpiony kontenerem).
+\item[HACS] społecznościowy instalator dodatków do HA.
+\item[Integracja] moduł HA łączący go z usługą lub urządzeniami.
+\item[mDNS] usługa, dzięki której urządzenia w sieci lokalnej przedstawiają się nazwami (np. \texttt{homeassistant.local}) bez centralnego serwera.
+\item[Modbus TCP] prosty protokół odczytu/zapisu rejestrów po sieci; tak rozmawia się z falownikami (i naszym symulatorem).
+\item[NetworkManager] usługa Linuksa zarządzająca połączeniami sieciowymi; w HAOS to jej podaje się profil Wi-Fi (plik \texttt{my-network}).
+\item[ONVIF] standard komunikacji kamer IP; pozwala dodać kamerę do HA bez aplikacji producenta.
+\item[OpenAPI (Tuya)] oficjalne API deweloperskie chmury Tuya.
+\item[PID / Device ID] identyfikator modelu produktu / konkretnego egzemplarza w Tuya.
+\item[QR] kod skanowany telefonem; tu: autoryzacja logowań Tuya/Imou.
+\item[RTSP] protokół strumienia wideo z kamer; adres zaczyna się od \texttt{rtsp://}.
+\item[Safety code] fabryczne hasło urządzenia Imou, wydrukowane na naklejce.
+\item[UAC] okno Windows ,,Czy chcesz zezwolić tej aplikacji\ldots'' --- prośba o prawa administratora.
+\item[User Code (kod użytkownika)] identyfikator konta Smart Life używany przy logowaniu integracji przez QR.
+\item[WSL2] lekka maszyna wirtualna z Linuksem, w której Docker Desktop uruchamia kontenery.
+\item[YAML] tekstowy format konfiguracji automatyzacji HA (wcięcia mają znaczenie).
+\end{description}
+
+\vspace{8pt}
+\begin{center}
+\textcolor{navy}{\rule{0.6\textwidth}{0.4pt}}\\[4pt]
+{\small Koniec dokumentu --- wersja 2, 2026-07-06 (v2 = v1 + rozdział o Raspberry Pi przez Wi-Fi). Kolejne wersje oznaczać v2, v3\ldots{} bez usuwania poprzednich.\\
+Dokumenty powiązane: \texttt{AMPERE\_POINT\_home\_assistant\_xtend\_tuya\_raport\_v1} (wyjaśnienie działania),\\ \texttt{INSTRUKCJA\_HomeAssistant\_Docker.md}, \texttt{pv\_sim\textbackslash README\_URUCHOMIENIE.md}, notatki sesji w \texttt{home\_assistant}.}
+\end{center}
+
+\end{document}

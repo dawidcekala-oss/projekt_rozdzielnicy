@@ -1,0 +1,170 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small AMPERE POINT — Q11 na DevKit: wyniki testów lokalnych, MQTT, OCPP · v1 · 2026-09-25}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Q11 na Shelly DevKit: wyniki testów lokalnych, MQTT i OCPP\par}
+{\large Raport z testów · AMPERE POINT · 25 września 2026\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+
+\section{Podsumowanie}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.49cm}>{\raggedright\arraybackslash}p{1.12cm}>{\raggedright\arraybackslash}p{10.66cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Test} & \textbf{Wynik} & \textbf{Najważniejsze} \\
+\midrule\endhead
+\bottomrule\endfoot
+Praca bez chmury Shelly & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & rozmowa z Q11, polecenia HTTP, WebSocket, MQTT i most OCPP działają przy wyłączonej chmurze \\
+Zegar bez internetu & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & bez serwera czasu Q11 dostaje datę z samymi zerami; naprawione lokalnym serwerem czasu w Dockerze \\
+MQTT z lokalnym brokerem & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & stan wszystkich pól na osobnych tematach; limit prądu zmieniony przez MQTT i potwierdzony przez Q11 \\
+OCPP 1.6J przez most & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & rejestracja, stan, pomiary, zdalny start i limit prądu z serwera OCPP potwierdzony przez Q11 \\
+Transakcja OCPP z ładowaniem & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} & logika gotowa; test wymaga auta albo symulatora pobierającego prąd \\
+\end{longtable}
+
+Chmura Shelly w DevKicie jest wyłączona od 11:48. Aplikacja Shelly pokazuje go jako niedostępny, dopóki chmura nie wróci. Włączenie to jedno polecenie.
+
+
+\section{Praca bez chmury}
+
+Chmurę wyłączyłem poleceniem w sieci lokalnej, bez restartu. Po wyłączeniu DevKit dalej rozmawia z Q11 co kilka sekund, a wszystkie kanały lokalne działają: polecenia HTTP, WebSocket, MQTT i most OCPP opisane niżej.
+
+
+\section{Zegar bez internetu}
+
+\textbf{Wynik: bez serwera czasu Q11 dostaje błędną datę.} Test: DevKit dostał nieosiągalny serwer czasu i restart.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.53cm}>{\raggedright\arraybackslash}p{5.01cm}>{\raggedright\arraybackslash}p{5.75cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Chwila} & \textbf{Co wysłał moduł do Q11 na pytanie o czas} & \textbf{Znaczenie} \\
+\midrule\endhead
+\bottomrule\endfoot
+po restarcie bez serwera czasu & \texttt{01 00 00 00 00 00 00 00} & „czas ważny”, ale rok 0, miesiąc 0, godzina 0 \\
+po ręcznym ustawieniu godziny z laptopa & \texttt{01 00 00 00 00 00 00 00} & bez zmian: ręczny czas nie trafia do Q11 \\
+po restarcie z serwerem czasu & \texttt{01 1A 09 19 0B 33 12 05} & 2026-09-25 11:51:18, piątek; poprawnie \\
+\end{longtable}
+
+\textbf{Mechanizm.} Obsługa Tuya w module podaje Q11 czas tylko wtedy, gdy DevKit zsynchronizował się z serwerem czasu. Ręczne ustawienie godziny zmienia zegar DevKitu, ale nie odblokowuje czasu dla Q11. Q11 może więc przyjąć datę zerową jako ważną, co grozi błędnym działaniem harmonogramu ładowania.
+
+
+\textbf{Wniosek.} Instalacja bez internetu potrzebuje serwera czasu w sieci lokalnej. Router biura na porcie 123 nie odpowiada. Do wyboru:
+
+\begin{itemize}
+\item włączyć serwer czasu w routerze, jeśli ma taką opcję,
+\item uruchomić serwer czasu na komputerze z HA; na docelowym OptiPlexie z Linuksem to jeden kontener.
+\end{itemize}
+
+Serwer czasu wpisuje się w DevKit jednym poleceniem. Most OCPP i tak ustawia godzinę DevKitu po restarcie, ale to pomaga tylko harmonogramom Shelly, a nie Q11.
+
+
+\begin{wazne}[{Ważne}]
+wdrożone 25.09 o 12:50. Serwer czasu chrony działa w Dockerze na laptopie: kontener \texttt{ntp}, obraz \texttt{ampere-ntp:1} zbudowany z oficjalnego Alpine, port 123/udp, pliki w \texttt{DevKit\textbackslash{}ntp}. Ustawienie „local stratum 10” sprawia, że podaje czas także bez internetu, wtedy z zegara komputera. DevKit ma w ustawieniach serwer \texttt{192.168.0.57}. Wynik: synchronizacja 18 s po restarcie, a Q11 dostała na pytanie o czas \texttt{01 1A 09 19 0C 32 0C 05}, czyli 2026-09-25 12:50:12, piątek.
+\end{wazne}
+
+\clearpage
+
+\section{MQTT}
+
+\textbf{Broker:} Mosquitto 2.1.2 w Dockerze na laptopie, port 1883, kontener \texttt{mosquitto} z automatycznym startem. Konfiguracja leży w \texttt{DevKit\textbackslash{}mqtt\textbackslash{}config\textbackslash{}mosquitto.\allowbreak{}conf}. Na razie broker wpuszcza wszystkich bez hasła, więc nadaje się tylko do testów w sieci biura.
+
+
+\textbf{DevKit:} broker \texttt{192.\allowbreak{}168.\allowbreak{}0.\allowbreak{}57:\allowbreak{}1883}, przedrostek tematów \texttt{ampere/\allowbreak{}q11dev}, powiadomienia i polecenia włączone. Zmianę ustawień zrobiłem poleceniem w sieci lokalnej, bez portalu.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{8.40cm}>{\raggedright\arraybackslash}p{7.32cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Temat} & \textbf{Zawartość} \\
+\midrule\endhead
+\bottomrule\endfoot
+\texttt{ampere/\allowbreak{}q11dev/\allowbreak{}online} & \texttt{true} albo \texttt{false}, obecność DevKitu \\
+\texttt{ampere/\allowbreak{}q11dev/\allowbreak{}status/\allowbreak{}boolean:\allowbreak{}200} & włączenie ładowania \\
+\texttt{ampere/\allowbreak{}q11dev/\allowbreak{}status/\allowbreak{}number:\allowbreak{}200} & limit prądu w A \\
+\texttt{ampere/\allowbreak{}q11dev/\allowbreak{}status/\allowbreak{}enum:\allowbreak{}200} & stan ładowarki, np. \texttt{charger\_free} \\
+\texttt{ampere/\allowbreak{}q11dev/\allowbreak{}status/\allowbreak{}object:\allowbreak{}200} & fazy: napięcie, prąd, moc, licznik \\
+\texttt{ampere/\allowbreak{}q11dev/\allowbreak{}status/\allowbreak{}number:\allowbreak{}201}, \texttt{number:202} & czas i energia sesji \\
+\texttt{ampere/\allowbreak{}q11dev/\allowbreak{}events/\allowbreak{}rpc} & powiadomienia o każdej zmianie \\
+\texttt{ampere/\allowbreak{}q11dev/\allowbreak{}rpc} & polecenia do DevKitu \\
+\end{longtable}
+
+\textbf{Test sterowania:} wiadomość na \texttt{ampere/\allowbreak{}q11dev/\allowbreak{}rpc} z poleceniem ustawienia limitu na 10 A. Q11 potwierdziła 10 A, a następna wiadomość przywróciła 12 A. Q11 potwierdziła i to.
+
+
+\section{OCPP 1.6J przez most}
+
+Most \texttt{DevKit\textbackslash{}ocpp\textbackslash{}most\_\allowbreak{}q11.\allowbreak{}py} łączy się z DevKitem przez WebSocket w sieci lokalnej, a wobec serwera OCPP występuje jako ładowarka \texttt{Q11-\allowbreak{}543204516334}. Testowy serwer \texttt{DevKit\textbackslash{}ocpp\textbackslash{}csms\_\allowbreak{}test.\allowbreak{}py} zapisuje każdy komunikat w \texttt{DevKit\textbackslash{}logi\textbackslash{}ocpp\_\allowbreak{}csms\_\allowbreak{}*.\allowbreak{}log}.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.80cm}>{\raggedright\arraybackslash}p{9.92cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Krok} & \textbf{Wynik} \\
+\midrule\endhead
+\bottomrule\endfoot
+BootNotification & Accepted, heartbeat co 60 s \\
+StatusNotification & Available, bo Q11 jest wolna, a auto odłączone \\
+TriggerMessage, pomiary & energia 0 Wh, moc 0 W, prąd i napięcie na trzech fazach, oferowany prąd 10 A \\
+SetChargingProfile 10 A & Accepted; Q11 potwierdziła 10 A po około 2 s \\
+SetChargingProfile 12 A & Accepted; Q11 potwierdziła 12 A \\
+GetConfiguration & lista ustawień mostu \\
+RemoteStartTransaction z identyfikatorem karty KARTA-TEST & Accepted; most włącza ładowanie i zapamiętuje identyfikator \\
+\end{longtable}
+
+\textbf{Czego jeszcze nie sprawdziłem:} pełnej transakcji. Most wysyła StartTransaction, gdy Q11 przejdzie w stan „ładuje”, pomiary co 30 s w trakcie i StopTransaction przy końcu ładowania, odłączeniu auta albo zdalnym zatrzymaniu. Do testu potrzebne jest auto albo symulator pobierający prąd.
+
+
+\textbf{Jak uruchomić,} w dwóch oknach wiersza poleceń:
+
+\begin{itemize}
+\item serwer testowy: \texttt{python -\allowbreak{}u DevKit\textbackslash{}ocpp\textbackslash{}csms\_\allowbreak{}test.\allowbreak{}py}
+\item most: \texttt{python -\allowbreak{}u DevKit\textbackslash{}ocpp\textbackslash{}most\_\allowbreak{}q11.\allowbreak{}py 192.\allowbreak{}168.\allowbreak{}0.\allowbreak{}238 ws:\allowbreak{}/\allowbreak{}/\allowbreak{}localhost:\allowbreak{}9000}
+\end{itemize}
+
+Polecenia do ładowarki wpisuje się do pliku \texttt{DevKit\textbackslash{}ocpp\textbackslash{}polecenia.\allowbreak{}txt}, po jednym w wierszu: \texttt{start}, \texttt{stop}, \texttt{limit 10}, \texttt{status}, \texttt{meter}, \texttt{config}.
+
+
+\section{Otwarte sprawy}
+
+\begin{enumerate}
+\item \textbf{Serwer czasu na stałe.} Działa na laptopie, więc DevKit ma czas tylko wtedy, gdy laptop jest włączony. Docelowo ten sam kontener na OptiPlexie razem z HA. Zegar laptopa odbiega od wzorca o około 2 s, bo usługa czasu Windows jest wyłączona; dla harmonogramu ładowania to bez znaczenia.
+\item \textbf{Pełna transakcja OCPP} z autem albo symulatorem.
+\item \textbf{Licznik całkowity podaje 0 kWh.} Do porównania z wyświetlaczem ładowarki.
+\item \textbf{Nowe pola w konfiguracji v2:} błędy, sygnał z auta, temperatura i licznik jako osobne pola. OCPP potrzebuje ich do kodów błędów w StatusNotification.
+\item \textbf{Most na stałe.} Dziś działa na laptopie, póki trwa sesja. Docelowo jako usługa na OptiPlexie albo wariant serwerowy, w którym DevKit sam łączy się z mostem przez wychodzący WebSocket.
+\item \textbf{Hasło do brokera MQTT} przed jakimkolwiek użyciem poza testem.
+\item \textbf{Chmura Shelly} zostaje wyłączona do dalszych testów, zgodnie z decyzją z 25.09.
+\end{enumerate}
+
+\end{document}

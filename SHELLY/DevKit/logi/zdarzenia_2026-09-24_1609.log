@@ -1,0 +1,10 @@
+16:09:58  Monitor DevKitu przez Wi-Fi, 192.168.0.238. Ustawienia na starcie:
+16:09:58      Ładowanie włączone (DP 18): nie
+16:09:58      Limit prądu (DP 4): 16 A
+16:09:58      Stan ładowarki (DP 3): Wolna
+16:09:58      odczyty: energia sesji 0 kWh | czas sesji 0 min | moc 0 W, prąd 0 A, napięcia 0/0/0 V, licznik 0 kWh
+16:09:58  Log przez Wi-Fi: połączono z 192.168.0.238
+16:09:59  Q11: mikrokontroler nie odpowiada (Heartbeat timed out); kolejne takie same pomijam
+16:10:00  [strona WWW] polecenie RPC.Ping
+16:10:10  [strona WWW] polecenie RPC.Ping
+16:10:20  [strona WWW] polecenie RPC.Ping

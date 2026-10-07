@@ -1,0 +1,93 @@
+% Wspólna preambuła raportu do producenta (xelatex)
+\usepackage{fontspec}
+% \ZHDOC zdefiniowane przed \input => cały dokument po chińsku (Noto Sans CJK SC + łamanie wierszy CJK)
+\ifdefined\ZHDOC
+  \setmainfont{Noto Sans CJK SC}[Scale=0.92]
+  \setsansfont{Noto Sans CJK SC}[Scale=0.92]
+  \XeTeXlinebreaklocale "zh"
+  \XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+\else
+  \setmainfont{Lato}[Scale=0.95]
+  \setsansfont{Lato}[Scale=0.95]
+\fi
+\setmonofont{DejaVu Sans Mono}[Scale=0.80]
+\newfontfamily\cjkfont{Noto Sans CJK SC}[Scale=0.92]
+\newfontfamily\latinfont{Lato}[Scale=0.95]
+\newcommand{\pl}[1]{{\latinfont #1}}
+\usepackage[a4paper,top=2.0cm,bottom=2.0cm,left=1.9cm,right=1.9cm]{geometry}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,tabularx,enumitem,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{needspace}
+\usepackage{float}
+\emergencystretch=2.5em
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\renewcommand{\arraystretch}{1.22}
+\captionsetup{font=small,labelfont=bf,skip=3pt}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+
+\definecolor{apnavy}{HTML}{1A1A1A}
+\definecolor{apink}{HTML}{1C2430}
+\definecolor{apmuted}{HTML}{5B6675}
+\definecolor{apline}{HTML}{E3E3E3}
+\definecolor{apbg}{HTML}{F5F5F5}
+\definecolor{apaccent}{HTML}{EC6434}
+\definecolor{apaccentbg}{HTML}{FDEDE6}
+\definecolor{apwarn}{HTML}{B9791B}
+\definecolor{apwarnbg}{HTML}{FBF1DE}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredbg}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{1F8A4C}
+\definecolor{apgreenbg}{HTML}{E7F5EC}
+\definecolor{aphead}{HTML}{EDEDED}
+
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{apmuted}\DOCFOOT}
+\fancyfoot[R]{\footnotesize\color{apmuted}\thepage\,/\,\pageref{LastPage}}
+\usepackage{lastpage}
+
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{apnavy}}{\thesection}{0.6em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titleformat{\subsection}{\large\bfseries\color{apnavy}}{\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+% pasek tytułowy
+\newcommand{\apheader}[3]{%
+\noindent\includegraphics[height=1.0cm]{logo_ap.png}\hfill
+\raisebox{0.25cm}{\parbox[t]{10.5cm}{\raggedleft\footnotesize\color{apmuted}#3}}\\[0.25cm]
+{\color{apaccent}\rule{\textwidth}{1.8pt}}\\[0.30cm]
+{\bfseries\color{apnavy}\LARGE #1}\\[0.18cm]
+{\large\color{apmuted}#2}\\[0.2cm]}
+
+% ramki
+\newtcolorbox{apbox}[1][]{enhanced,breakable,colback=apbg,colframe=apline,boxrule=0.6pt,arc=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,fonttitle=\bfseries,coltitle=apnavy,colbacktitle=aphead,title={#1}}
+\newtcolorbox{apwarnb}[1][]{enhanced,breakable,colback=apwarnbg,colframe=apwarn,boxrule=0.6pt,arc=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+\newtcolorbox{apredb}[1][]{enhanced,breakable,colback=apredbg,colframe=apred,boxrule=0.6pt,arc=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+\newtcolorbox{apgreenb}[1][]{enhanced,breakable,colback=apgreenbg,colframe=apgreen,boxrule=0.6pt,arc=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,fonttitle=\bfseries,title={#1}}
+
+% komórka ze zrzutem ekranu: #1 szerokość, #2 plik, #3 podpis
+\newcommand{\shot}[3]{%
+\begin{minipage}[t]{#1}
+  \vspace{0pt}\centering
+  \includegraphics[width=\linewidth,height=6.2cm,keepaspectratio]{#2}\par\vspace{3pt}
+  {\footnotesize\color{apink}#3\par}
+\end{minipage}}
+
+
+% mniejsza komórka ze zdjęciem (np. gniazda aut)
+\newcommand{\shotsm}[3]{%
+\begin{minipage}[t]{#1}
+  \vspace{0pt}\centering
+  \includegraphics[width=\linewidth,height=4.6cm,keepaspectratio]{#2}\par\vspace{3pt}
+  {\footnotesize\color{apink}#3\par}
+\end{minipage}}
+
+\newcommand{\kroknum}[1]{{\colorbox{apaccent}{\textcolor{white}{\bfseries\small\,#1\,}}}}
+\newcommand{\dpn}[1]{{\cjkfont #1}}
+\newcommand{\Fact}{\textcolor{apgreen}{\textbf{[fact]}}}
+\newcommand{\Hyp}{\textcolor{apwarn}{\textbf{[hypothesis]}}}

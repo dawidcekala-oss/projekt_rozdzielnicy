@@ -1,0 +1,69 @@
+# KOMPENDIUM — prowadzenie firmy
+
+Plik zbiorczy dla wiedzy **nietechnicznej**: podatki, cło, logistyka, formalności,
+obowiązki przedsiębiorcy. Prowadzony przyrostowo, tak samo jak techniczny.
+
+Bliźniaczy plik techniczny: `KONTEKST_kompendium_czatow.md` (złącza, komponenty,
+pomiary, infrastruktura). Tam też, w sekcji 3, siedzą na razie SEP i fakturowanie/KSeF.
+
+Znaczniki: **[DOK]** z dokumentacji/przepisu, **[PRZYKŁAD]** wyliczenie ilustracyjne,
+**[POMIAR]** dane z naszej praktyki, **[OTWARTE]** niepotwierdzone.
+
+> UWAGA: pełne sekcje 1–7 (VAT należny/naliczony, odprawa celna, procedura 42,
+> fracht/FCL/LCL z przykładem liczbowym, EORI i JPK_V7, obowiązki importera wyrobu)
+> są w wersji przesłanej na czacie — do scalenia przy najbliższej okazji.
+
+
+---
+
+## 8. EAN i SKU — identyfikatory towaru
+
+**[DOK]** Dwa numery, które łatwo pomylić, bo stoją obok siebie w każdym systemie
+sprzedażowym. Różnią się właścicielem i zasięgiem.
+
+### EAN — numer zewnętrzny, globalny
+
+European Article Number, formalnie dziś **GTIN** (Global Trade Item Number) w systemie
+**GS1**. To ten numer pod kreskami na opakowaniu. Identyfikuje **produkt**, a nie sprzedawcę
+— ta sama ładowarka kupiona u trzech różnych hurtowników ma **ten sam EAN**.
+
+Odmiany: **EAN-13** (standard detaliczny), **EAN-8** (małe opakowania),
+**UPC-12** (USA), **GTIN-14** (opakowania zbiorcze, kartony, warstwy na palecie).
+Ostatnia cyfra to **cyfra kontrolna** liczona z pozostałych — po niej system od razu
+wykrywa literówkę.
+
+**Nie da się go wymyślić.** Pule numerów przydziela **GS1** (w Polsce GS1 Polska),
+odpłatnie, na firmę. Prefiks **590** oznacza, że numer wydała **polska organizacja GS1** —
+i tu klasyczne nieporozumienie: **590 nie znaczy „wyprodukowano w Polsce"**, tylko
+że firma, która zarejestrowała numer, jest zarejestrowana w Polsce. Produkt może
+pochodzić skądkolwiek.
+
+### SKU — numer wewnętrzny, twój
+
+**Stock Keeping Unit** — własny numer katalogowy. Wymyślasz go sam, obowiązuje wyłącznie
+u Ciebie, nikt go nie reguluje i nic nie kosztuje. Np. `AP-WB-11-T2-5M`.
+To on spina fakturę z magazynem, z ERP i z BaseLinkerem.
+
+**Zasada przy projektowaniu SKU:** kodować tylko cechy **trwałe** — typ, moc, wersję
+złącza, długość kabla. Nigdy ceny, dostawcy ani lokalizacji magazynowej, bo to się zmienia,
+a SKU ma zostać na zawsze.
+
+### W kontekście faktur i zakupów
+
+Ustawa o VAT **nie wymaga** ani EAN, ani SKU na fakturze — obowiązkowa jest nazwa towaru,
+ilość, cena jednostkowa, wartość netto, stawka i kwota VAT. Oba numery są dodatkiem,
+ale dodatkiem, który robi robotę:
+
+- **SKU na fakturze zakupowej** pozwala zaksięgować przyjęcie (PZ) automatycznie,
+  bez ręcznego dopasowywania pozycji do kartotek.
+- **EAN** pozwala skanować towar przy przyjęciu i jest **wymagany przy wystawianiu ofert**
+  na Allegro i Amazonie (na Amazonie da się uzyskać zwolnienie GTIN dla marki własnej).
+
+**Nasza sytuacja:** jeśli sprowadzamy i sprzedajemy pod własną marką, potrzebujemy
+**własnej puli EAN z GS1 Polska**. Numery podawane przez chińskich dostawców trzeba
+zweryfikować w wyszukiwarce GS1 — w obiegu krąży sporo numerów nieprzypisanych albo
+przypisanych do zupełnie innej firmy, a kolizja EAN-ów wywala oferty na marketplace'ach.
+
+**Nie mylić z kodem celnym.** EAN nie ma nic wspólnego z odprawą — tam obowiązuje
+**kod CN/TARIC**, który opisuje kategorię towaru dla taryfy celnej, a nie konkretny
+egzemplarz asortymentu. Patrz sekcja 2.

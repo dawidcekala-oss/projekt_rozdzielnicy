@@ -1,0 +1,252 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small AMPERE POINT — pola produktu v4 · Q11 z modułem Shelly · 2026-09-29}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Produkt „Q11 DevKit test”: pola i punkty danych, wersja 4\par}
+{\large Co wpisać w portalu Shelly X, żeby produkt pokazywał wszystkie punkty danych Q11, i jak to wdrożyć · AMPERE POINT · 29 września 2026 · oprac. Dawid Cekała\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+
+\section*{W skrócie}
+
+\begin{itemize}
+\item \textbf{Dziś produkt ma 6 pól. Dochodzi 9 nowych,} razem 15. Nowe pola odpowiadają punktom danych, które sterownik wysyła, a produkt ich nie pokazywał: sygnał z auta, tryb pracy, limit energii, okno godzin (dwa pola), temperatura, energia ostatniej sesji, błędy i wersja sterownika.
+\item \textbf{Nazwy ról muszą być dokładnie takie jak w tabeli.} Skrypt v4 (\texttt{script.\allowbreak{}svc.\allowbreak{}ts} w tym folderze) szuka pól po roli. Pola, którego nie ma w produkcie, skrypt nie obsługuje, ale działa dalej. Można więc wdrożyć część pól, jeśli portal albo pamięć nie pozwolą na wszystkie.
+\item \textbf{Nazwy w interfejsie są po angielsku,} tak jak obecne pola.
+\item \textbf{Skrypt v4 poprawia też trzy rzeczy z testów 29.09:}
+\begin{itemize}
+\item czas sesji liczy z tyknięć zegara skryptu, a nie z godziny modułu;
+\item moc całkowitą bierze ze sterownika;
+\item po każdym zapisie sprawdza, czy sterownik przyjął wartość.
+\end{itemize}
+\item \textbf{Wgranie konfiguracji kasuje Wi-Fi modułu.} Po wgraniu dodajesz DevKit do sieci, a ja przechodzę listę kontrolną z rozdziału 5.
+\end{itemize}
+
+\section{Pola produktu: ekran Virtual Components}
+
+Sześć pól oznaczonych PREDEFINED zostaje bez zmian. Nowe dodajesz przyciskiem \textbf{„+ Add custom VC”}. Dla każdego pola:
+
+\begin{enumerate}
+\item wpisz klucz,
+\item wybierz DATA TYPE,
+\item ustaw ACCESS,
+\item kliknij \textbf{Configure} i wypełnij okno.
+\end{enumerate}
+
+\textbf{Config (write)} nigdzie nie zaznaczaj, tak jak w polach PREDEFINED. \textbf{Log to cloud} zostaw bez zmian, bo chmura i tak jest wyłączona. \textbf{Persisted} jest domyślnie zaznaczone i przy nowych polach trzeba je \textbf{odznaczyć}. Sterownik sam pamięta swoje ustawienia i zgłasza je po starcie, a pamięć w module grozi narzuceniem starej wartości (test C8).
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{1.43cm}>{\raggedright\arraybackslash}p{2.28cm}>{\raggedright\arraybackslash}p{2.11cm}>{\raggedright\arraybackslash}p{2.05cm}>{\raggedright\arraybackslash}p{1.58cm}>{\raggedright\arraybackslash}p{1.08cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Klucz} & \textbf{DATA TYPE} & \textbf{ACCESS: zaznaczone} & \textbf{Configure: Display name} & \textbf{Configure: reszta} & \textbf{DEFAULT VALUE} & \textbf{Punkt} \\
+\midrule\endhead
+\bottomrule\endfoot
+\texttt{cp\_state} & enum & Config (read), Read & Vehicle signal & Options z rozdziału 2 & pierwsza opcja & 13 \\
+\texttt{work\_mode} & enum & Config (read), Read, Write & Charging mode & Options z rozdziału 2 & pierwsza opcja & 14 \\
+\texttt{energy\_limit} & number & Config (read), Read, Write & Energy limit & zakres 0–200, jednostka kWh & 0 & 17 \\
+\texttt{window\_start} & number & Config (read), Read, Write & Charging window from & zakres 0–23, jednostka h & 0 & 19 \\
+\texttt{window\_end} & number & Config (read), Read, Write & Charging window to & zakres 0–23, jednostka h & 0 & 19 \\
+\texttt{temperature} & number & Config (read), Read & Temperature & zakres −40–200, jednostka °C & 0 & 24 \\
+\texttt{last\_\allowbreak{}session\_\allowbreak{}energy} & number & Config (read), Read & Last session energy & zakres 0–9999999, jednostka kWh & 0 & 25 \\
+\texttt{faults} & text; jeśli nie ma go na liście, number & Config (read), Read & Faults & — & puste albo 0 & 10 \\
+\texttt{controller\_\allowbreak{}version} & text; jeśli nie ma go na liście, pomiń pole & Config (read), Read & Controller version & — & puste & 23 \\
+\end{longtable}
+
+Zakres i jednostka liczb: w oknie Configure, tak jak przy \texttt{current\_\allowbreak{}limit} („6–16 A”). \textbf{Klucze muszą być dokładnie takie jak w tabeli,} bo skrypt v4 szuka pól po kluczu. Pola, którego nie ma, skrypt nie obsługuje, ale działa dalej.
+
+
+Energia sesji ma w opisie portalu Wh, a czas sesji sekundy. Skrypt podaje kWh i minuty, tak jak zakresy w polach PREDEFINED („0–9999999999 kWh”, „0–50000 min”). Tego nie zmieniamy.
+
+
+\section{Opcje pól enum}
+
+W oknie Configure pole „Options (one per line)”. Wkleić dokładnie w tej kolejności, bo sterownik wysyła numer pozycji, a nie nazwę.
+
+
+**\texttt{cp\_state}**, sygnał z auta:
+
+
+\begin{kodbox}
+\mbox{}controlpi\_12v\\
+\mbox{}controlpi\_12v\_pwm\\
+\mbox{}controlpi\_9v\\
+\mbox{}controlpi\_9v\_pwm\\
+\mbox{}controlpi\_6v\\
+\mbox{}controlpi\_6v\_pwm\\
+\mbox{}controlpi\_error
+\end{kodbox}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{5.30cm}>{\raggedright\arraybackslash}p{6.98cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Nr} & \textbf{Opcja} & \textbf{Znaczenie} \\
+\midrule\endhead
+\bottomrule\endfoot
+0 & \texttt{controlpi\_\allowbreak{}12v} & 12 V, brak auta \\
+1 & \texttt{controlpi\_\allowbreak{}12v\_\allowbreak{}pwm} & 12 V z sygnałem prądu \\
+2 & \texttt{controlpi\_9v} & 9 V, auto podłączone \\
+3 & \texttt{controlpi\_\allowbreak{}9v\_\allowbreak{}pwm} & 9 V z sygnałem prądu, gotowe \\
+4 & \texttt{controlpi\_6v} & 6 V, auto chce ładować \\
+5 & \texttt{controlpi\_\allowbreak{}6v\_\allowbreak{}pwm} & 6 V z sygnałem prądu, ładowanie \\
+6 & \texttt{controlpi\_\allowbreak{}error} & błąd sygnału \\
+\end{longtable}
+
+**\texttt{work\_mode}**, tryb pracy:
+
+
+\begin{kodbox}
+\mbox{}charge\_now\\
+\mbox{}charge\_energy\\
+\mbox{}charge\_schedule
+\end{kodbox}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{6.02cm}>{\raggedright\arraybackslash}p{6.26cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Nr} & \textbf{Opcja} & \textbf{Znaczenie} \\
+\midrule\endhead
+\bottomrule\endfoot
+0 & \texttt{charge\_now} & natychmiast \\
+1 & \texttt{charge\_\allowbreak{}energy} & do limitu energii \\
+2 & \texttt{charge\_\allowbreak{}schedule} & w oknie godzin \\
+\end{longtable}
+
+\textbf{Opcje nie mają osobnych napisów.} Na stronie WWW modułu i w API widać surowe nazwy, np. \texttt{controlpi\_6v}. Czytelne napisy po polsku da dopiero nasz własny ekran.
+
+
+**\texttt{faults}**, błędy. Przy polu text skrypt wpisuje \texttt{none} albo listę kodów z definicji Tuya i wartość szesnastkową, np. \texttt{ov\_\allowbreak{}Temp\_\allowbreak{}fault, earth\_\allowbreak{}fault (0x10040)}. Przy polu number wpisuje samą wartość, np. 65600. Znaczenie kodów jest w zestawieniu punktów danych, rozdział 4.
+
+
+\section{Punkty danych w źródle Tuya MCU}
+
+Zakładka Data {\symbolfont→} Datapoints. Pierwsze siedem wierszy już jest. Nowe punkty zostawiamy \textbf{niepowiązane z polami}, bo obsługuje je nasz skrypt. Powiązanie w portalu wygenerowałoby dla nich kod, który i tak zastępujemy.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{3.70cm}>{\raggedright\arraybackslash}p{2.26cm}>{\raggedright\arraybackslash}p{3.04cm}>{\raggedright\arraybackslash}p{2.40cm}}
+\toprule
+\rowcolor{apteallight}\textbf{DP} & \textbf{Nazwa} & \textbf{Typ} & \textbf{Tryb} & \textbf{Powiązanie z polem} \\
+\midrule\endhead
+\bottomrule\endfoot
+18 & state & Boolean & readwrite & state \\
+4 & current\_limit & Integer & readwrite & current\_limit \\
+3 & mode & Enum & readonly & mode \\
+1 & total\_energy & Integer & readonly & brak \\
+6 & phase\_a & Raw & readonly & brak \\
+7 & phase\_b & Raw & readonly & brak \\
+8 & phase\_c & Raw & readonly & brak \\
+\textbf{9} & power\_total & Integer & readonly & brak \\
+\textbf{10} & faults & Bitmap & readonly & brak \\
+\textbf{13} & cp\_state & Enum & readonly & brak \\
+\textbf{14} & work\_mode & Enum & readwrite & brak \\
+\textbf{17} & energy\_limit & Integer & readwrite & brak \\
+\textbf{19} & charge\_window & Raw & readwrite & brak \\
+\textbf{23} & controller\_version & String & readonly & brak \\
+\textbf{24} & temperature & Integer & readonly & brak \\
+\textbf{25} & last\_session\_energy & Integer & readonly & brak \\
+\end{longtable}
+
+\textbf{Jeśli portal nie ma typu Bitmap albo String,} pomiń ten punkt. Moduł sam dodaje punkt, gdy sterownik go przyśle; tak było z temperaturą, której nie było w tabeli (w logu: „add int 24 = 19”). Skrypt v4 podpina takie punkty z opóźnieniem, próbując co 5 s.
+
+
+\section{Skrypt v4}
+
+Zakładka Develop {\symbolfont→} Open editor {\symbolfont→} \texttt{script.\allowbreak{}svc.\allowbreak{}ts}: zastąpić całą zawartość plikiem \texttt{script.\allowbreak{}svc.\allowbreak{}ts} z tego folderu i zbudować. Portal oznaczy skrypt jako przepisany („REWRITTEN — NOT MERGING”). \textbf{Nie klikać „REVERT \& REGENERATE”.} Wersja v3 zostaje w tym folderze jako \texttt{script\_\allowbreak{}v3.\allowbreak{}svc.\allowbreak{}ts}.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.95cm}>{\raggedright\arraybackslash}p{9.77cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Zmiana w v4} & \textbf{Dlaczego} \\
+\midrule\endhead
+\bottomrule\endfoot
+Dziewięć nowych pól z tłumaczeniem numerów pozycji na nazwy & generator portalu przepisuje numer bez tłumaczenia (znane z v2) \\
+Okno godzin: dwa pola, jeden punkt; zmiana któregokolwiek wysyła oba & punkt 19 ma dwa bajty: godzinę startu i godzinę końca \\
+Czas sesji z tyknięć zegara skryptu co 10 s & v3 liczył z godziny modułu; 29.09 czas skoczył o 45 min przy korekcie zegara i na 1066 min po restarcie \\
+Moc całkowita z punktu 9 & sterownik podaje ją sam; suma faz zostaje na wypadek jej braku \\
+Po zapisie kontrola po 3 s & gdy sterownik odrzuci wartość, odsyła starą, a moduł nie zgłasza zmiany; pole zostałoby z wartością, której sterownik nie ma \\
+Punkty podpinane z opóźnieniem & moduł dodaje punkt dopiero po pierwszym meldunku sterownika \\
+Brakujące pole jest pomijane & wdrożenie częściowe nie psuje reszty \\
+Komunikaty w logu z przedrostkiem \texttt{Q11:} & odrzucony zapis albo wartość poza zakresem widać w monitorze \\
+\end{longtable}
+
+\textbf{Sprawdzenie przed wgraniem.} Skrypt uruchomiony na laptopie na atrapie modułu: podstawiona warstwa Tuya, pola i zegar (\texttt{narzedzia\textbackslash{}test\_\allowbreak{}skryptu\textbackslash{}atrapa.\allowbreak{}mjs}, polecenie \texttt{node atrapa.\allowbreak{}mjs .\allowbreak{}.\allowbreak{}/\allowbreak{}.\allowbreak{}.\allowbreak{}/\allowbreak{}portal\_\allowbreak{}q11/\allowbreak{}script.\allowbreak{}svc.\allowbreak{}ts}). 31 sprawdzeń, wszystkie \leavevmode{\symbolfont\color{apgreen}\textbf{✔}}:
+
+\begin{itemize}
+\item meldunki sterownika trafiają do pól, także punktów podpiętych z opóźnieniem;
+\item zapis limitu, trybu i okna trafia do sterownika jeden raz;
+\item odrzucony zapis wraca do wartości sterownika, bez ponownego zapisu;
+\item limit energii przy niezgłoszonym punkcie daje komunikat w logu;
+\item czas sesji nie reaguje na skok zegara o 45 min;
+\item moc bierze z punktu 9, energię sesji liczy z licznika;
+\item brak pola nie zatrzymuje skryptu.
+\end{itemize}
+
+Test złapał błąd w pierwszej wersji v4. Gdy sterownik zgłaszał nowe okno godzin, skrypt ustawiał pola po kolei. Zmiana pierwszego pola odsyłała sterownikowi okno z nowym startem i starym końcem, np. zamiast 22–6 szło 22–0. Poprawione blokadą na czas wpisywania okna do pól.
+
+
+\section{Wdrożenie i lista kontrolna}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{1.14cm}>{\raggedright\arraybackslash}p{11.14cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Krok} & \textbf{Kto} & \textbf{Co} \\
+\midrule\endhead
+\bottomrule\endfoot
+1 & Dawid & Portal, ekran Virtual Components: 9 pól przyciskiem „+ Add custom VC” (rozdziały 1 i 2); potem „Set up datapoints”: punkty z rozdziału 3 \\
+2 & Dawid & Develop: wkleić skrypt v4, zbudować \\
+3 & Dawid & Wgranie przez Bluetooth; po wgraniu dodać DevKit do Wi-Fi \\
+4 & Claude & Moduł ma 15 pól; brakujące = limit pamięci albo portal, zapisać które \\
+5 & Claude & Usługa działa: skrót kodu w stanie usługi zgadza się z v4 \\
+6 & Claude & Ustawienia po wgraniu: chmura wyłączona, serwer czasu \texttt{time.\allowbreak{}cloudflare.\allowbreak{}com}, MQTT \texttt{192.\allowbreak{}168.\allowbreak{}0.\allowbreak{}57:\allowbreak{}1883} z przedrostkiem \texttt{ampere/\allowbreak{}q11dev}, log przez WebSocket włączony, poziom 3; co wgranie zmieniło, przywrócić \\
+7 & Claude & Pola wypełnione ze sterownika: sygnał z auta, tryb, okno, temperatura, błędy „none” \\
+8 & Claude & Zapis z modułu: tryb pracy, okno godzin, limit energii; sterownik potwierdza albo w logu jest \texttt{Q11:} z powodem \\
+9 & razem & Powrót do testów: B3 (Home Assistant widzi nowe encje), B2 (strona WWW z nowymi polami) \\
+\end{longtable}
+
+\section{Ryzyka}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.64cm}>{\raggedright\arraybackslash}p{4.61cm}>{\raggedright\arraybackslash}p{6.03cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Ryzyko} & \textbf{Co się stanie} & \textbf{Co wtedy} \\
+\midrule\endhead
+\bottomrule\endfoot
+Opcje pól enum bez napisów & na stronie WWW i w API surowe nazwy, np. \texttt{controlpi\_6v} & czytelne napisy w naszym ekranie \\
+Pola dodane przez „Add custom VC” nie pojawią się na ekranie ładowarki w aplikacji & widać je na stronie WWW, w API i w Home Assistant & bez aplikacji z chmurą to i tak nieważne (test B1); sprawdzić po wgraniu \\
+Brak pamięci na 15 pól & część pól nie powstanie & połączyć: okno godzin jako jeden tekst „22–6”, wersję wpisać do błędów \\
+Limit energii i wersja nigdy nie przyszły od sterownika & moduł odrzuci zapis limitu energii, dopóki sterownik go nie zgłosi & w logu \texttt{Q11:\allowbreak{} … nie zglosil DP 17}; sprawdzić w teście C6 po zmianie trybu z menu \\
+Zapis okna jako tekst szesnastkowy to założenie (odczyt przychodzi w tej postaci) & sterownik może nie przyjąć & skrypt po 3 s pokaże w polach wartość sterownika i zapisze powód w logu \\
+Kolejność bitów błędów to założenie & kody mogą być przesunięte & potwierdzi dopiero prawdziwy błąd; wartość szesnastkowa jest w polu obok kodów \\
+Licznik całkowity przychodzi co 90 s i tylko w stanie „ładuje” & początek albo koniec sesji może być policzony z opóźnieniem do 90 s; przy 11 kW to do 0,275 kWh (11 kW × 90 s) & sprawdzić pod obciążeniem, porównać z energią ostatniej sesji ze sterownika (punkt 25) \\
+\end{longtable}
+
+\end{document}

@@ -1,0 +1,97 @@
+{
+  "protocol": {
+    "number": "AP/SER/2026/0001",
+    "issue_date": "2026-09-14",
+    "place": "Tuchom"
+  },
+  "service_provider": {
+    "name": "Maxima Trading sp. z o.o. sp. k. / Ampere Point",
+    "address": "Gdyńska 72, 80-209 Tuchom",
+    "contact": "hello@amperepoint.com"
+  },
+  "customer": {
+    "name": "Kamil Tekla",
+    "contact": "karcia111673@wp.pl, +48 510 485 224",
+    "sales_reference": "Allegro, zamówienie 153004477 z 06.08.2026"
+  },
+  "equipment": {
+    "brand": "Ampere Point",
+    "model": "B35",
+    "serial_number": "EU16A20260430065",
+    "product_code": "B35",
+    "purchase_date": "2026-08-06"
+  },
+  "case": {
+    "case_reference": "Zwrot sz-26-249-0yr2e3e (kod 6119061722)",
+    "intake_date": "2026-09-08",
+    "repair_date": "2026-09-14",
+    "reported_issue": "Zgłoszenie reklamacyjne Allegro z 01.09.2026 (reklamacja ustawowa): wada wykryta podczas używania — ładowarka ładowała i nagle przestała działać. Oczekiwane rozwiązanie: naprawa lub wymiana.",
+    "inspection_findings": [
+      "Wewnątrz obudowy stwierdzono ślady wody: krople i osady na dnie obudowy przy listwie LED oraz na zaciskach i przekaźniku płyty głównej (fot. 1, 2).",
+      "Obudowa i uszczelnienia sprawdzone — bez wad; nie stwierdzono wady, która tłumaczyłaby przedostanie się wody do wnętrza.",
+      "Do wymiany zakwalifikowano płytę główną, płytkę kontrolną i listwę LED (fot. 3–5)."
+    ],
+    "diagnosis": "Uszkodzenie elektroniki (płyta główna, płytka kontrolna, listwa LED) przez wilgoć, która dostała się do wnętrza urządzenia w trakcie użytkowania. Wady obudowy ani uszczelnień nie stwierdzono.",
+    "warranty": {
+      "status": "Reklamacja nieuznana — naprawa odpłatna",
+      "decision": "Naprawa odpłatna za zgodą klienta (wiadomość z 11.09.2026)",
+      "basis": "Wewnątrz urządzenia stwierdzono ślady wody (fot. 1, 2), a obudowa i uszczelnienia są bez wad. Uszkodzenie ma przyczynę zewnętrzną, powstałą w trakcie użytkowania, i nie jest brakiem zgodności towaru z umową istniejącym w chwili dostarczenia (art. 43c ust. 1 ustawy z dnia 30 maja 2014 r. o prawach konsumenta). Klient został poinformowany 08.09.2026 i 11.09.2026 zlecił naprawę odpłatną."
+    }
+  },
+  "work": {
+    "actions": [
+      "Wymiana płyty głównej.",
+      "Wymiana płytki kontrolnej.",
+      "Wymiana listwy LED."
+    ],
+    "parts": [
+      { "name": "Płyta główna", "quantity": 1, "reference": "Nowa część" },
+      { "name": "Płytka kontrolna", "quantity": 1, "reference": "Nowa część" },
+      { "name": "Listwa LED", "quantity": 1, "reference": "Nowa część" }
+    ],
+    "tests": [
+      {
+        "name": "Test na testerze stacji ładowania",
+        "result": "Poprawna praca, bez błędów",
+        "status": "PASS"
+      },
+      {
+        "name": "Ładowanie pojazdu, 30 min przy 16 A",
+        "result": "Sesja zakończona bez błędów",
+        "status": "PASS"
+      }
+    ]
+  },
+  "settlement": {
+    "currency": "PLN",
+    "total_gross": 90
+  },
+  "result": {
+    "status": "Sprawne po naprawie",
+    "release_date": "2026-09-14",
+    "recommendations": "Urządzenie przenośne użytkować i przechowywać w miejscu osłoniętym od opadów; nie pozostawiać na zewnątrz bez zadaszenia. Chronić złącze i przepust kabla przed wodą spływającą po przewodzie.",
+    "attachments": [
+      "Zgłoszenie reklamacyjne Allegro z 01.09.2026",
+      "Korespondencja serwisowa z 08.09.2026 i 11.09.2026 (informacja o kwalifikacji, zlecenie naprawy odpłatnej)"
+    ]
+  },
+  "signatures": {
+    "technician": "Dawid Cekała",
+    "customer": "Kamil Tekla"
+  },
+  "factory_state_statement": {
+    "issue": true,
+    "parts_origin": "Nowe części serwisowe producenta, przeznaczone do tego modelu",
+    "firmware": "Fabryczne, bez zmian",
+    "reference_document": "Specyfikacja producenta dla modelu B35",
+    "notes": ""
+  },
+  "photos": [
+    { "file": "zdjecia/01_stan_przy_przyjeciu_listwa_LED_woda.jpg", "caption": "Stan przy przyjęciu: krople wody i osady na dnie obudowy przy listwie LED." },
+    { "file": "zdjecia/02_stan_przy_przyjeciu_zaciski_plyty_glownej_woda.jpg", "caption": "Stan przy przyjęciu: ślady wody na zaciskach i przekaźniku płyty głównej." },
+    { "file": "zdjecia/03_przed_naprawa_plyta_glowna.jpg", "caption": "Przed naprawą: płyta główna zakwalifikowana do wymiany." },
+    { "file": "zdjecia/04_przed_naprawa_plytka_kontrolna.jpg", "caption": "Przed naprawą: płytka kontrolna zakwalifikowana do wymiany." },
+    { "file": "zdjecia/05_przed_naprawa_listwa_LED.jpg", "caption": "Przed naprawą: listwa LED zakwalifikowana do wymiany." },
+    { "file": "zdjecia/06_tabliczka_numer_seryjny.jpg", "caption": "Tabliczka urządzenia z numerem seryjnym EU16A20260430065." }
+  ]
+}

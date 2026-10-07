@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMPERE POINT — custom device — wizualizacja 3D v2 (moduł rekuperacji energii)</title>
+<style>
+:root{--surface-1:#f1f3f5;--surface-2:#fff;--text-primary:#16191d;--text-secondary:#555b63;--text-muted:#8a9099;--border:#d9dee3;--border-strong:#c2c9d0;--radius:8px;--bg-accent:#e6f1fb;--text-accent:#185fa5}
+body{margin:0;font-family:system-ui,sans-serif;background:var(--surface-1);color:var(--text-primary)}
+.page{max-width:1200px;margin:0 auto;padding:14px}
+h1{font-size:18px;font-weight:500;margin:4px 0 10px}
+button{padding:6px 12px;border:1px solid var(--border-strong);border-radius:var(--radius);background:var(--surface-2);color:var(--text-primary);cursor:pointer;font-size:13px}
+button.on{background:var(--bg-accent);color:var(--text-accent);border-color:var(--text-accent)}
+select{padding:6px 10px;border:1px solid var(--border-strong);border-radius:var(--radius);background:var(--surface-2);color:var(--text-primary);font-size:13px;max-width:340px}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>AMPERE POINT — custom device — rozmieszczenie 3D v2: moduł B jako szafa rekuperacji energii (PFC + LiFePO4 + falownik), wg koncepcji v2 i schematu v4</h1>
+<div id="v3d-wrap" style="width:100%">
+ <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px">
+  <button id="btnLid">Otwórz pokrywę</button>
+  <button id="btnXray">Przezroczyste ściany</button>
+  <button id="btnLbl" class="on">Etykiety</button>
+  <button id="btnReset">Reset widoku</button>
+  <select id="selPart"><option value="">— wybierz element —</option></select>
+ </div>
+ <div style="position:relative;border:1px solid var(--border);border-radius:12px;overflow:hidden">
+  <canvas id="v3dcv" style="display:block;width:100%;height:560px"></canvas>
+ </div>
+ <div style="margin:10px 2px 2px;min-height:40px">
+  <span id="infoName" style="font-weight:500;font-size:14px"></span>
+  <span id="infoDesc" style="font-size:13px;color:var(--text-secondary);margin-left:8px"></span>
+ </div>
+ <div style="font-size:12px;color:var(--text-muted)">obrót: lewy przycisk myszy · zoom: kółko · przesuwanie: prawy przycisk · kliknij element lub wybierz z listy</div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const T=THREE;
+const cv=document.getElementById('v3dcv');
+const renderer=new T.WebGLRenderer({canvas:cv,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
+renderer.setClearColor(0xf3f5f7);
+const scene=new T.Scene();
+const cam=new T.PerspectiveCamera(42,1,5,30000);
+const parts={},clickable=[],wallsX=[],labelsG=new T.Group();
+function M(c,o){return new T.MeshStandardMaterial(Object.assign({color:c,roughness:.8,metalness:.12},o||{}))}
+function bx(w,h,d,x,y,z,c,o){const m=new T.Mesh(new T.BoxGeometry(w,h,d),M(c,o));m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;return m}
+function cy(r,h,x,y,z,c,o,seg){const m=new T.Mesh(new T.CylinderGeometry(r,r,h,seg||28),M(c,o));m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;return m}
+function reg(id,name,info,fx,fy,fz){parts[id]={name:name,info:info,focus:new T.Vector3(fx,fy,fz),meshes:[]}}
+function tag(o,id){o.traverse(n=>{if(n.isMesh){n.userData.pid=id;clickable.push(n);parts[id].meshes.push(n)}})}
+function tube(pts,r,c){const cu=new T.CatmullRomCurve3(pts.map(p=>new T.Vector3(p[0],p[1],p[2])));const m=new T.Mesh(new T.TubeGeometry(cu,90,r,10,false),M(c,{roughness:.55}));m.castShadow=true;return m}
+scene.add(new T.HemisphereLight(0xffffff,0x8fa0b0,.95));
+const d1=new T.DirectionalLight(0xffffff,.75);d1.position.set(900,1800,900);d1.castShadow=true;
+d1.shadow.mapSize.set(2048,2048);d1.shadow.camera.left=-1700;d1.shadow.camera.right=1900;d1.shadow.camera.top=1700;d1.shadow.camera.bottom=-900;d1.shadow.camera.far=6000;scene.add(d1);
+const d2=new T.DirectionalLight(0xffffff,.25);d2.position.set(-800,700,-900);scene.add(d2);
+const gnd=new T.Mesh(new T.CircleGeometry(2600,48),M(0xf0f2f4,{roughness:.95}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;scene.add(gnd);
+const grid=new T.GridHelper(5000,50,0xbac3cc,0xdfe4ea);grid.position.y=1;scene.add(grid);
+const A=new T.Group();scene.add(A);
+[[-270,-95],[270,-95],[-270,95],[270,95]].forEach(p=>A.add(cy(10,12,p[0],6,p[1],0x37474f)));
+function wall(w,h,d,x,y,z){const m=bx(w,h,d,x,y,z,0xd7d9d4,{roughness:.7});wallsX.push(m);A.add(m);return m}
+wall(600,4,250,0,14,0);wall(600,4,250,0,410,0);wall(4,396,250,-298,212,0);wall(4,396,250,298,212,0);wall(600,396,4,0,212,-123);wall(600,152,4,0,88,123);
+const plate=bx(560,235,4,0,285,-105,0xe3e5e0);A.add(plate);wallsX.push(plate);
+A.add(bx(4,235,170,-80,285,-15,0xcfd2cc));A.add(bx(4,235,170,110,285,-15,0xcfd2cc));
+const lid=new T.Group();lid.position.set(0,408,125);A.add(lid);
+lid.add(bx(588,240,5,0,-122,3,0xbfd9e8,{transparent:true,opacity:.25,roughness:.15,depthWrite:false}));
+lid.add(bx(80,10,8,0,-234,6,0x455a64));
+reg('hmi','HMI DWIN 7″ (-P1)','panel w pokrywie — prowadzi operatora, wpisy wyników (UART)',0,258,140);
+const hmiB=bx(170,105,10,0,-150,9,0x11161c);const hmiS=bx(150,86,2,0,-150,15,0x1d3a5f,{emissive:0x16324f,emissiveIntensity:.5});lid.add(hmiB);lid.add(hmiS);tag(hmiB,'hmi');tag(hmiS,'hmi');
+reg('q0','-Q0 rozłącznik 40 A 4P','ręczne odcięcie toru mocy (nie odłącza odczepu -X3)',-240,340,-60);
+const q0=new T.Group();q0.add(bx(70,90,65,-240,340,-70,0x546e7a));const q0k=cy(13,12,-240,340,-33,0xc62828);q0k.rotation.x=Math.PI/2;q0.add(q0k);A.add(q0);tag(q0,'q0');
+reg('fuses','-F1..-F3 gG 32 A','zabezpieczenie faz toru mocy',-173,340,-60);
+const fg=new T.Group();[-195,-173,-151].forEach(x=>fg.add(bx(18,88,55,x,340,-72,0x78909c)));A.add(fg);tag(fg,'fuses');
+reg('k1','-K1 stycznik główny','4P 40 A — podaje moc do modułu B; cewka w łańcuchu E2',-115,340,-60);
+const k1=bx(56,92,78,-115,340,-64,0x37474f);A.add(k1);tag(k1,'k1');
+reg('b1','-B1 CDSR (RCM)','czujnik różnicowy AC/DC fluxgate, SPI do -A1',-235,247,-60);
+const b1=new T.Group();b1.add(bx(85,62,38,-235,247,-76,0x263238));b1.add(bx(60,20,3,-235,240,-56,0x0b0e11));A.add(b1);tag(b1,'b1');
+reg('ct','-T1..-T3 przekładniki','40 A/1 V — pomiar prądów do -U2',-132,247,-60);
+const ctg=new T.Group();[-168,-132,-96].forEach(x=>{const t=new T.Mesh(new T.TorusGeometry(26,9,14,32),M(0x1a237e));t.position.set(x,247,-70);t.castShadow=true;ctg.add(t)});A.add(ctg);tag(ctg,'ct');
+reg('bus','szyny L1/L2/L3/N/PE','magistrala 6 mm² (PE nieprzerwane)',-180,180,-70);
+const busg=new T.Group();[[196,0x6d4c41],[188,0x22262a],[180,0x9aa0a6],[172,0x1565c0],[164,0x2e7d32]].forEach(p=>busg.add(bx(180,7,7,-180,p[0],-85,p[1])));A.add(busg);tag(busg,'bus');
+reg('u2','-U2 ATM90E36A','metering 3F: U/I/P/cosφ/f (SPI)',-10,325,-80);
+const u2=new T.Group();u2.add(bx(115,80,3,-10,325,-100,0x1b5e20));u2.add(bx(14,10,3,-30,330,-97,0x11161c));A.add(u2);tag(u2,'u2');
+reg('a3','-A3 generator upływu','rampa 0–20 mA DC — test RDC-DD 6 mA',-10,240,-60);
+const a3=bx(95,55,35,-10,240,-85,0xb0bec5);A.add(a3);tag(a3,'a3');
+reg('k30','-K30..-K33 separacja','tryb izolacji: odłączenie elektroniki od magistrali',-18,185,-60);
+const k30=new T.Group();[-52,-29,-6,17].forEach(x=>k30.add(bx(16,58,62,x,185,-72,0xcfd8dc)));A.add(k30);tag(k30,'k30');
+reg('g1','-G1 zasilacz 24/5/3,3 V','zasilanie logiki z Schuko — nie z DUT',155,340,-60);
+const g1=bx(95,90,58,155,340,-73,0xeceff1);A.add(g1);tag(g1,'g1');
+reg('rel','-RB, -K10, -K4, -A2','bezpieczeństwo: samopodtrzymanie, zezwolenie, przerwanie CP, watchdog',250,340,-60);
+const rel=new T.Group();[[215,0xffd54f],[238,0xcfd8dc],[261,0xcfd8dc],[284,0xcfd8dc]].forEach(p=>rel.add(bx(16,58,62,p[0],340,-72,p[1])));A.add(rel);tag(rel,'rel');
+reg('a1','-A1 ESP32-S3','sekwencer; v2: dodatkowo magistrala CAN (TWAI) do prostowników',205,225,-80);
+const a1=new T.Group();a1.add(bx(140,95,3,205,225,-100,0x1b5e20));a1.add(bx(28,20,5,185,240,-96,0x90a4a6));a1.add(bx(22,14,4,250,240,-96,0x37474f));A.add(a1);tag(a1,'a1');
+reg('pm','PM701E + serwa -M1/-M2','symulator stanów pojazdu; pokrętła obracane serwami, weryfikacja CP',60,195,80);
+const pm=new T.Group();
+pm.add(bx(370,4,120,110,148,55,0xb8bcc0));pm.add(bx(210,58,110,60,179,55,0xe65100));
+const kn1=cy(13,10,10,192,112,0x212121);kn1.rotation.x=Math.PI/2;pm.add(kn1);
+const kn2=cy(13,10,95,192,112,0x212121);kn2.rotation.x=Math.PI/2;pm.add(kn2);
+[[-20,0xd32f2f],[0,0x1565c0],[20,0xfdd835],[40,0x212121],[60,0xfafafa]].forEach(p=>{const b=cy(5,8,p[0]-15,163,112,p[1],{},16);b.rotation.x=Math.PI/2;pm.add(b)});
+pm.add(bx(200,4,36,52,232,112,0x607d8b));pm.add(bx(22,38,42,10,212,100,0x1a237e));pm.add(bx(22,38,42,95,212,100,0x1a237e));
+A.add(pm);tag(pm,'pm');
+reg('x1','-X1 gniazdo Type 2','wejście DUT 32 A 3F; blokada -Y1',-225,95,140);
+const x1=new T.Group();const x1a=cy(38,16,-225,95,128,0x37474f);x1a.rotation.x=Math.PI/2;x1.add(x1a);
+const x1b=cy(30,6,-225,95,138,0x11161c,{},32);x1b.rotation.x=Math.PI/2;x1.add(x1b);A.add(x1);tag(x1,'x1');
+reg('x2','-X2 gniazdo CEE 32 A','wyjście toru mocy do modułu B (5×6 mm²)',-140,90,140);
+const x2=new T.Group();x2.add(bx(58,74,16,-140,90,126,0x8d2222));
+const x2c=cy(30,36,-140,84,140,0xc62828,{},24);x2c.rotation.x=Math.PI/2-.55;x2.add(x2c);A.add(x2);tag(x2,'x2');
+reg('banan','gniazda bananowe','punkt UT595 (L1/L2/L3/N/PE)',-20,112,135);
+const bang=new T.Group();[[-60,0xd32f2f],[-40,0x212121],[-20,0xfafafa],[0,0x1565c0],[20,0x2e7d32]].forEach(p=>{const b=cy(6.5,10,p[0],112,128,p[1],{},16);b.rotation.x=Math.PI/2;bang.add(b)});A.add(bang);tag(bang,'banan');
+reg('esh','zaciski E/S/H','pomiar uziomu (UT522)',-30,55,135);
+const eshg=new T.Group();[-55,-30,-5].forEach(x=>{const b=cy(6.5,10,x,55,128,0x2e7d32,{},16);b.rotation.x=Math.PI/2;eshg.add(b)});A.add(eshg);tag(eshg,'esh');
+reg('estop','E-STOP (-S0)','rozpad łańcucha + przerwanie CP (-K4)',150,100,140);
+const es=new T.Group();const esd=cy(24,8,150,100,128,0xfdd835);esd.rotation.x=Math.PI/2;es.add(esd);
+const esm=cy(16,14,150,100,138,0xc62828);esm.rotation.x=Math.PI/2;es.add(esm);A.add(es);tag(es,'estop');
+reg('start','START (-S2)','uzbrojenie samopodtrzymania -RB',205,100,135);
+const st=cy(13,8,205,100,130,0x2e7d32);st.rotation.x=Math.PI/2;A.add(st);tag(st,'start');
+reg('led','kolumna LED','napięcie / test / gotowość',250,470,0);
+const ledg=new T.Group();ledg.add(cy(10,12,250,418,0,0x455a64));
+[[437,0x2e7d32],[465,0xf9a825],[493,0xc62828]].forEach(p=>ledg.add(cy(16,26,250,p[0],0,p[1],{emissive:p[1],emissiveIntensity:.35})));A.add(ledg);tag(ledg,'led');
+reg('schuko','zasilanie logiki (-X4)','Schuko z instalacji; -F4/-F5',-360,40,150);
+const sg=new T.Group();sg.add(tube([[-303,60,80],[-380,14,180],[-470,10,260],[-540,14,330]],5,0x37474f));
+sg.add(bx(26,14,40,-548,16,340,0x22262a));scene.add(sg);tag(sg,'schuko');
+const B=new T.Group();scene.add(B);
+[[600,-170],[600,170],[1100,-170],[1100,170]].forEach(p=>{const w=cy(42,18,p[0],42,p[1],0x22262a);w.rotation.x=Math.PI/2;B.add(w)});
+function wb2(w,h,d,x,y,z,o){const m=bx(w,h,d,x,y,z,0xc4cbd1,Object.assign({roughness:.65},o||{}));wallsX.push(m);B.add(m);return m}
+wb2(600,4,400,850,102,0);wb2(600,4,400,850,1298,0);wb2(4,1200,400,552,700,0);wb2(4,1200,400,1148,700,0);wb2(600,1200,4,850,700,-198);
+B.add(bx(596,1196,3,850,700,199,0xbfd9e8,{transparent:true,opacity:.22,roughness:.15,depthWrite:false}));
+[460,660,980].forEach(y=>B.add(bx(592,4,380,850,y,0,0xb8bcc0)));
+reg('bat','bateria LiFePO4 48 V (10–14 kWh)','bufor pochłania moc testu (soak 30 min @ 11 kW ≈ 5,5 kWh); poza testami: magazyn/UPS zakładu',850,240,0);
+const bat=new T.Group();[[715],[985]].forEach(p=>{bat.add(bx(260,150,300,p[0],181,0,0x0d2b45));bat.add(bx(240,30,4,p[0],181,152,0x1d4ed8,{emissive:0x123a8f,emissiveIntensity:.4}))});
+bat.add(bx(260,150,300,715,336,0,0x0d2b45));bat.add(bx(240,30,4,715,336,152,0x1d4ed8,{emissive:0x123a8f,emissiveIntensity:.4}));
+B.add(bat);tag(bat,'bat');
+reg('bms','BMS + kontaktor DC','nadzór ogniw i temperatur (1-Wire do -A1); awaryjne odcięcie niezależne od MCU',700,500,80);
+const bms=new T.Group();bms.add(bx(120,60,44,690,494,120,0x37474f));bms.add(bx(60,54,40,790,491,120,0x455a64));B.add(bms);tag(bms,'bms');
+reg('dcbus','szyna DC 48 V + bezpieczniki','rozdział mocy prostowniki→bateria→falownik; bezpieczniki DC klasy mega',950,530,120);
+const dcb=new T.Group();dcb.add(bx(280,8,8,960,540,140,0xb87333,{metalness:.6,roughness:.35}));dcb.add(bx(280,8,8,960,518,140,0xb87333,{metalness:.6,roughness:.35}));
+dcb.add(bx(44,60,32,880,492,120,0x8d6e63));dcb.add(bx(44,60,32,1040,492,120,0x8d6e63));B.add(dcb);tag(dcb,'dcbus');
+reg('rect','prostowniki PFC 48 V (6× 3 kW)','klasy R4850G2: PF>0,99, sprawność ~96%, prąd zadawany po CAN — elektrycznie to samo, co OBC auta',850,760,0);
+const rct=new T.Group();[707,802].forEach(y=>[640,850,1060].forEach(x=>{rct.add(bx(170,80,280,x,y,0,0x9aa0a6,{metalness:.3,roughness:.5}));rct.add(bx(160,70,4,x,y,143,0x22262a));rct.add(bx(10,6,3,x-60,y+24,146,0x2e7d32,{emissive:0x2e7d32,emissiveIntensity:.6}))}));
+B.add(rct);tag(rct,'rect');
+reg('k11','-K11..-K13 styczniki AC','załączają sekcje prostowników per faza; cewki 24 V w torze zezwolenia (łańcuch E2 bez zmian)',700,1030,80);
+const k11=new T.Group();[640,706,772].forEach(x=>k11.add(bx(44,64,52,x,1022,100,0x455a64)));k11.add(bx(150,70,50,960,1022,100,0x78909c));B.add(k11);tag(k11,'k11');
+reg('fanr','wentylatory strat','odprowadzają tylko straty przemiany ~0,5–1,2 kW (zamiast 11 kW jak przy grzałkach)',850,1300,0);
+const fr=new T.Group();[720,980].forEach(x=>{const r=new T.Mesh(new T.TorusGeometry(44,6,10,28),M(0x37474f));r.rotation.x=Math.PI/2;r.position.set(x,1304,0);fr.add(r);fr.add(cy(10,8,x,1304,0,0x22262a))});B.add(fr);tag(fr,'fanr');
+reg('dcsw','rozłącznik DC','ręczne odcięcie baterii do prac serwisowych',1150,900,120);
+const dsw=new T.Group();dsw.add(bx(6,70,70,1152,900,120,0xfdd835));dsw.add(bx(10,36,12,1158,900,120,0xc62828));B.add(dsw);tag(dsw,'dcsw');
+reg('inv','falownik hybrydowy 48 V → 230/400 V','5–12 kW; oddaje energię do instalacji zakładu (tryb ESS/UPS), zasila odbiory warsztatu',1220,760,0);
+const inv=new T.Group();inv.add(bx(130,420,300,1218,760,0,0x1a4f8a));inv.add(bx(6,180,140,1286,800,0,0x11161c));inv.add(bx(120,60,290,1218,520,0,0x9aa0a6));scene.add(inv);tag(inv,'inv');
+reg('gridout','wyjście do rozdzielni zakładu','odzysk ~85–92% energii testu wraca do instalacji — zasila warsztat/biuro',1650,420,-350);
+const go=new T.Group();go.add(tube([[1218,545,60],[1330,15,-120],[1560,14,-300],[1650,180,-350]],7,0x22262a));
+go.add(cy(8,500,1650,250,-350,0x9aa0a6));go.add(bx(140,200,60,1650,430,-350,0xd7d9d4));B.add(go);tag(go,'gridout');
+reg('cwu','zasobnik CWU (zrzut nadmiaru)','gdy bateria pełna i brak odbioru: nadwyżka grzeje wodę użytkową — ciepło też użyteczne',1560,400,330);
+const cw=new T.Group();cw.add(cy(140,760,1560,382,330,0xfafafa,{roughness:.4}));cw.add(cy(142,20,1560,772,330,0x9aa0a6));
+cw.add(tube([[1650,340,-350],[1680,15,-100],[1620,14,200],[1580,60,300]],4,0x8d6e63));B.add(cw);tag(cw,'cwu');
+reg('can','magistrala CAN (-A1, TWAI)','ESP32-S3 zadaje prąd prostowników: kroki 25/50/75/100% deklaracji CP, rampy, asymetria per faza',420,60,180);
+const cn=tube([[302,150,20],[400,14,200],[500,14,120],[548,700,60]],4,0x2e7d32);scene.add(cn);tag(cn,'can');
+reg('cee','przewód CEE 5×6 mm²','tor mocy moduł A → szafa rekuperacji (H07RN-F)',150,40,470);
+const ceec=new T.Group();ceec.add(tube([[-140,78,140],[-160,14,320],[200,10,470],[480,14,300],[530,120,140],[548,300,120]],9,0x22262a));
+const ci=cy(26,40,545,300,120,0xc62828,{},22);ci.rotation.z=Math.PI/2;ceec.add(ci);scene.add(ceec);tag(ceec,'cee');
+reg('dut','ładowarka badana (DUT)','wallbox zasilany z instalacji; wtyk Type 2 w -X1 — energia testu wraca do zakładu przez falownik',-620,140,560);
+const dut=new T.Group();dut.add(tube([[-225,92,168],[-320,16,320],[-450,12,430],[-580,16,520]],8,0xff6f00));
+dut.add(bx(36,36,54,-225,95,152,0x22262a));
+const wbx=new T.Group();wbx.add(bx(160,240,80,0,130,0,0xfafafa));wbx.add(bx(120,60,4,0,170,42,0x11161c));
+wbx.position.set(-630,0,570);wbx.rotation.y=.6;dut.add(wbx);scene.add(dut);tag(dut,'dut');
+function mkLabel(txt,ax,ay,az,ox,oy,oz){const c2=document.createElement('canvas');let g=c2.getContext('2d');g.font='500 44px system-ui,sans-serif';
+const w=Math.ceil(g.measureText(txt).width)+52;c2.width=w;c2.height=74;g=c2.getContext('2d');g.font='500 44px system-ui,sans-serif';
+g.fillStyle='rgba(24,32,44,.92)';if(g.roundRect){g.beginPath();g.roundRect(0,0,w,74,18);g.fill()}else g.fillRect(0,0,w,74);
+g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.fillText(txt,w/2,40);
+const tx=new T.CanvasTexture(c2);tx.minFilter=T.LinearFilter;
+const sp=new T.Sprite(new T.SpriteMaterial({map:tx,depthTest:false,transparent:true}));
+sp.scale.set(w*.8,59,1);sp.position.set(ax+ox,ay+oy,az+oz);sp.renderOrder=99;
+const ln=new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(ax,ay,az),sp.position.clone()]),new T.LineBasicMaterial({color:0x5b6672,depthTest:false,transparent:true,opacity:.85}));
+ln.renderOrder=98;labelsG.add(sp);labelsG.add(ln)}
+mkLabel('-X1 Type 2 (wejście DUT)',-225,120,140,-160,260,140);
+mkLabel('E-STOP -S0',150,100,140,110,150,120);
+mkLabel('HMI DWIN 7 cala',0,258,140,-120,320,120);
+mkLabel('PM701E + serwa',60,235,110,-30,180,220);
+mkLabel('-A1 ESP32-S3 (CAN)',205,225,-98,330,150,-80);
+mkLabel('prostowniki PFC 48 V (CAN)',850,850,150,-160,560,120);
+mkLabel('bateria LiFePO4',850,420,150,-60,-240,320);
+mkLabel('falownik hybrydowy',1218,975,0,150,220,60);
+mkLabel('do rozdzielni zakładu',1650,535,-350,60,160,0);
+mkLabel('zasobnik CWU (zrzut)',1560,775,330,60,180,60);
+mkLabel('magistrala CAN',480,14,160,-40,150,220);
+mkLabel('przewód CEE 5×6 mm²',150,12,470,-60,130,140);
+mkLabel('ładowarka badana (DUT)',-630,255,570,0,130,0);
+scene.add(labelsG);
+const groups={'Moduł A':['x1','x2','banan','esh','estop','start','led','hmi','schuko','q0','fuses','k1','b1','ct','bus','u2','a3','k30','g1','rel','a1','pm'],'Szafa rekuperacji (moduł B v2)':['k11','rect','dcbus','bat','bms','dcsw','inv','fanr','gridout','cwu'],'Połączenia':['cee','can','dut']};
+const sel=document.getElementById('selPart');
+Object.keys(groups).forEach(gn=>{const og=document.createElement('optgroup');og.label=gn;groups[gn].forEach(id=>{const o=document.createElement('option');o.value=id;o.textContent=parts[id].name;og.appendChild(o)});sel.appendChild(og)});
+const tgt=new T.Vector3(430,330,40);let sph={r:3000,th:.8,ph:1.1},focusTo=null,interacted=false;
+function applyCam(){cam.position.set(tgt.x+sph.r*Math.sin(sph.ph)*Math.sin(sph.th),tgt.y+sph.r*Math.cos(sph.ph),tgt.z+sph.r*Math.sin(sph.ph)*Math.cos(sph.th));cam.lookAt(tgt)}
+let selId=null;
+const nameEl=document.getElementById('infoName'),descEl=document.getElementById('infoDesc');
+function select(id){if(selId&&parts[selId])parts[selId].meshes.forEach(m=>{if(m.material.emissive){m.material.emissive.setHex(0);m.material.emissiveIntensity=1}});
+selId=id;if(!id||!parts[id]){nameEl.textContent='';descEl.textContent='';return}
+parts[id].meshes.forEach(m=>{if(m.material.emissive){m.material.emissive.setHex(0x2563eb);m.material.emissiveIntensity=.5}});
+nameEl.textContent=parts[id].name;descEl.textContent=parts[id].info;sel.value=id;focusTo=parts[id].focus.clone()}
+sel.addEventListener('change',()=>select(sel.value));
+let lidOpen=false,xray=false,lblOn=true;
+const bLid=document.getElementById('btnLid'),bX=document.getElementById('btnXray'),bL=document.getElementById('btnLbl');
+bLid.onclick=()=>{lidOpen=!lidOpen;bLid.classList.toggle('on',lidOpen);bLid.textContent=lidOpen?'Zamknij pokrywę':'Otwórz pokrywę'};
+bX.onclick=()=>{xray=!xray;bX.classList.toggle('on',xray);wallsX.forEach(m=>{m.material.transparent=true;m.material.opacity=xray?.13:1;m.material.depthWrite=!xray;m.material.needsUpdate=true})};
+bL.onclick=()=>{lblOn=!lblOn;bL.classList.toggle('on',lblOn);labelsG.visible=lblOn};
+document.getElementById('btnReset').onclick=()=>{sph={r:3000,th:.8,ph:1.1};tgt.set(430,330,40);focusTo=null;select('')};
+let drag=null;
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,b:e.button,moved:0};interacted=true;cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved+=Math.abs(dx)+Math.abs(dy);
+if(drag.b===2||e.ctrlKey){const f=sph.r*.0011,right=new T.Vector3(),up=new T.Vector3(0,1,0);cam.getWorldDirection(right);right.cross(up).normalize();tgt.addScaledVector(right,-dx*f);tgt.y+=dy*f;focusTo=null}
+else{sph.th-=dx*.005;sph.ph=Math.min(1.5,Math.max(.15,sph.ph-dy*.005))}
+drag.x=e.clientX;drag.y=e.clientY});
+cv.addEventListener('pointerup',e=>{if(drag&&drag.moved<6){const r=cv.getBoundingClientRect(),v=new T.Vector2(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1),rc=new T.Raycaster();rc.setFromCamera(v,cam);const hit=rc.intersectObjects(clickable,false)[0];select(hit?hit.object.userData.pid:'')}drag=null});
+cv.addEventListener('wheel',e=>{e.preventDefault();interacted=true;sph.r=Math.min(7000,Math.max(450,sph.r*(1+e.deltaY*.001)))},{passive:false});
+function resize(){const w=cv.clientWidth,h=cv.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+window.addEventListener('resize',resize);
+function loop(){requestAnimationFrame(loop);
+lid.rotation.x+=((lidOpen?-1.78:0)-lid.rotation.x)*.08;
+if(!interacted)sph.th+=.0016;
+if(focusTo){tgt.lerp(focusTo,.06);if(tgt.distanceTo(focusTo)<2)focusTo=null}
+applyCam();renderer.render(scene,cam)}
+resize();applyCam();loop();
+</script>
+</body>
+</html>

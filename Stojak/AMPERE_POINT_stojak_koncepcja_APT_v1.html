@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMPERE POINT — AP-T: projekt koncepcyjny uniwersalnego słupka (v1)</title>
+<style>
+:root{
+  --navy:#102a54; --red:#c81e28; --gray:#787e85; --bg:#ffffff; --soft:#f4f6f9;
+  --line:#d8dee6; --ok:#1a7f4b; --warn:#b26a00; --silver:#b9c0c9;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;margin:0;background:var(--bg);color:#1b2430;line-height:1.5;font-size:15px}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 34px 80px}
+header.doc{border-bottom:4px solid var(--navy);padding:18px 0 14px;margin-bottom:18px}
+header.doc h1{margin:0;color:var(--navy);font-size:26px}
+header.doc .sub{color:#333;font-size:15px;margin-top:6px}
+header.doc .meta{color:var(--gray);font-size:12.5px;margin-top:8px}
+.brand{color:var(--red);font-weight:700}
+h2{color:var(--navy);font-size:20px;border-bottom:2px solid var(--line);padding-bottom:6px;margin:38px 0 12px}
+h2 .no{color:var(--red);margin-right:8px}
+h3{color:var(--navy);font-size:16.5px;margin:24px 0 8px}
+h4{color:#31415e;font-size:14.5px;margin:16px 0 6px}
+p{margin:8px 0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.2px}
+th{background:var(--navy);color:#fff;text-align:left;padding:7px 9px;font-weight:600}
+td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
+tr:nth-child(even) td{background:var(--soft)}
+.small{font-size:12.3px;color:#444}
+.box{background:var(--soft);border-left:4px solid var(--navy);padding:12px 16px;margin:14px 0;border-radius:0 6px 6px 0}
+.box.red{border-left-color:var(--red)}
+.box.green{border-left-color:var(--ok)}
+.box b.t{display:block;color:var(--navy);margin-bottom:4px}
+a{color:#0b57a4;text-decoration:none} a:hover{text-decoration:underline}
+.toc{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:14px 20px;margin:16px 0}
+.toc b{color:var(--navy)}
+.toc ol{margin:8px 0 0;padding-left:22px;columns:2;column-gap:36px}
+.toc li{margin:3px 0;font-size:13.5px}
+.fig{margin:20px 0;text-align:center;background:#fbfcfe;border:1px solid var(--line);border-radius:8px;padding:16px 8px 8px}
+.fig .cap{font-size:12.8px;color:#333;margin-top:8px;text-align:left;padding:0 12px}
+.fig .cap b{color:var(--navy)}
+svg text{font-family:"Segoe UI",Arial,sans-serif}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}.toc ol{columns:1}}
+.kv{display:grid;grid-template-columns:250px 1fr;gap:4px 12px;font-size:13.5px;margin:8px 0}
+.kv div:nth-child(odd){color:var(--gray)}
+footer{margin-top:50px;border-top:2px solid var(--line);padding-top:12px;color:var(--gray);font-size:12px}
+mark{background:#fff3c2;padding:0 3px;border-radius:3px}
+.price{font-variant-numeric:tabular-nums}
+ol.exec{counter-reset:x;padding-left:0;list-style:none}
+ol.exec>li{margin:10px 0;padding:10px 14px 10px 52px;background:var(--soft);border-radius:6px;position:relative}
+ol.exec>li::before{counter-increment:x;content:counter(x);position:absolute;left:12px;top:10px;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.center{text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1><span class="brand">AMPERE POINT</span> — System AP-T „Ampere Tower"</h1>
+  <div class="sub"><b>CZĘŚĆ 2: PROJEKT KONCEPCYJNY</b> — uniwersalny słupek zasilająco-ładujący pod całą ofertę urządzeń (Schuko / CEE / dock ładowarki przenośnej / wallbox / AMP-BOX)</div>
+  <div class="meta">wersja 1 &nbsp;•&nbsp; 25 lipca 2026 &nbsp;•&nbsp; dokument bazuje na: <i>CZĘŚĆ 1 — Research rynkowo-techniczny v1</i> (ten sam folder) &nbsp;•&nbsp; rysunki koncepcyjne wymiarowe (podstawa do DXF), nie dokumentacja warsztatowa</div>
+</header>
+
+<div class="toc">
+<b>Spis treści</b>
+<ol>
+<li><a href="#k1">Idea produktu i wymagania wejściowe</a></li>
+<li><a href="#k2">Architektura: trzy komory, jeden raster</a></li>
+<li><a href="#k3">Rysunek: widok frontowy (konfiguracja CHARGE) i przekrój boczny</a></li>
+<li><a href="#k4">Panele funkcyjne P-xx</a></li>
+<li><a href="#k5">Konfiguracje handlowe (SKU)</a></li>
+<li><a href="#k6">Wymiary i wysokości — uzasadnienia normowe</a></li>
+<li><a href="#k7">Elektryka wewnętrzna + schemat jednokreskowy</a></li>
+<li><a href="#k8">Kable: dobór, zapas, wejście do słupka</a></li>
+<li><a href="#k9">Posadowienie: fundament AP-F i 3 warianty montażu</a></li>
+<li><a href="#k10">Zarządzanie kablem ładowania (hak + holster)</a></li>
+<li><a href="#k11">Klimat: daszek, kondensacja, zima/lato</a></li>
+<li><a href="#k12">Konstrukcja i produkcja (etap 1: blacha alu, etap 2: profil)</a></li>
+<li><a href="#k13">Zestawienie materiałowe i kalkulacja (BOM)</a></li>
+<li><a href="#k14">Porównanie z konkurencją — „lepszy pod każdym względem"</a></li>
+<li><a href="#k15">Ryzyka i decyzje do podjęcia</a></li>
+<li><a href="#k16">Roadmapa wdrożenia i plan testów prototypu</a></li>
+</ol>
+</div>
+
+<h2 id="k1"><span class="no">1.</span>Idea produktu i wymagania wejściowe</h2>
+
+<p><b>AP-T to nie „słupek pod wallbox".</b> To wolnostojący nośnik całego modelu sprzedaży AMPERE POINT: od dwóch gniazd ogrodowych, przez zestaw „gniazdo CEE + ładowarka przenośna Q/P/B na docku", po wallbox Prime i konfiguracje firmowe z licznikiem — na <b>jednej platformie mechanicznej</b>, z <b>jednym fundamentem na lata</b> i z rozbudową realizowaną wymianą paneli, nie wymianą słupka. Research (Część 1) pokazał, że takiego produktu nie ma nikt: profesjonalne kolumny (GIFAS/Rolec/Walther) kosztują 2600–6400&nbsp;zł i nie znają EV „przenośnego", pedestały EV są przyspawane do jednej marki wallboxa, a tani segment PL to puste rury bez elektryki.</p>
+
+<h3>1.1. Wymagania wejściowe (z researchu — skrót decyzyjny)</h3>
+<table>
+<tr><th>Grupa</th><th>Wymaganie dla AP-T</th><th>Skąd</th></tr>
+<tr><td rowspan="4"><b>Nośność funkcji</b></td><td>dock ładowarki Q/P/B (2–4&nbsp;kg) z RFID na 1,05–1,25&nbsp;m + gniazdo CEE 150–250&nbsp;mm pod dockiem (ogon wtyku bez pętli)</td><td>oferta AP + zdjęcia obecnych słupków</td></tr>
+<tr><td>płyta uniwersalna pod wallbox Prime i obce (siatka otworów, 5–8&nbsp;kg)</td><td>wzorzec Wallbox Discounter (15 adapterów, €229)</td></tr>
+<tr><td>interfejs pod szafę AMP-BOX: rozstaw 250×150&nbsp;mm, nośność ≥25&nbsp;kg</td><td>karta AMP-BOX</td></tr>
+<tr><td>magazyn kabla T2: zwój Ø30–35&nbsp;cm, 5&nbsp;kg (7,5&nbsp;m); holster stykami w dół</td><td>fizyka kabla 22&nbsp;kW (Ø16,8&nbsp;mm)</td></tr>
+<tr><td rowspan="4"><b>Normy</b></td><td>1 punkt ładowania = 1 obwód + RCD ≤30&nbsp;mA typ A (ładowarki AP mają RDC-DD 6&nbsp;mA) </td><td>PN-HD 60364-7-722; 61851-1 §8.5</td></tr>
+<tr><td>każde gniazdo: własne RCD + własne nadprądowe; max 4 gniazda</td><td>PN-HD 60364-7-708</td></tr>
+<tr><td>gniazda 0,5–1,5&nbsp;m; interfejs 0,80–1,22&nbsp;m; IP44 (komora aparatowa IP54); IK08–IK10; SPD T2 gdy &gt;10&nbsp;m</td><td>708/722, UDT, DEHN, 61439-7</td></tr>
+<tr><td>prefabrykat deklarowany wg PN-EN IEC 61439-7 (zestaw ACCS/AEVCS)</td><td>61439-7</td></tr>
+<tr><td rowspan="3"><b>Montaż</b></td><td>kabel z ziemi, zapas 1,0–1,5&nbsp;m w cokole, rura DVK 25&nbsp;cm nad fundament, promień ≥12×D</td><td>instrukcje KEBA/ABL/Enelion</td></tr>
+<tr><td>szpilki M12, poziomowanie nakrętkami + podlewka; kotwienie tylko w beton (nie w kostkę)</td><td>praktyka + instrukcje</td></tr>
+<tr><td>montaż i serwis wyłącznie od frontu, bez wiercenia, jedna osoba</td><td>lekcja z obecnych słupków</td></tr>
+<tr><td rowspan="2"><b>Klimat</b></td><td>−30…+50&nbsp;°C; przy 32&nbsp;A osłona od słońca (derating!) → daszek kryjący urządzenie i gniazda</td><td>KEBA P30, 61851-1</td></tr>
+<tr><td>dół otwarty do fundamentu (odpływ), membrana wyrównująca w komorze aparatowej, opcja grzałki 15&nbsp;W</td><td>KEBA / STEGO / PCE TerraMo</td></tr>
+</table>
+
+<h3>1.2. Zasada nr 1: „słupek rośnie z klientem"</h3>
+<div class="box green"><b class="t">Ścieżka klienta, którą AP-T obsługuje bez wymiany konstrukcji i fundamentu</b>
+<b>Rok 0:</b> klient kupuje AP-T SOCKET (CEE16 + 2×Schuko) do ogrodu/warsztatu → <b>Rok 1:</b> kupuje auto → dokłada panel P-DOCK i ładowarkę Q11 (istniejące gniazdo CEE zasila ładowarkę; RCBO już jest) → <b>Rok 3:</b> drugie auto → wymienia panel górny na P-UNI z wallboxem Prime 22&nbsp;kW, CEE zostaje jako gniazdo serwisowe → <b>Rok 5:</b> firma → drugi słupek AP-T spięty z pierwszego przez zaciski przelotowe (loop-out) + DLB po RS-485. Każdy krok = odkręcenie 4 śrub M6 i (ew.) wizyta elektryka przy aparatach. <b>To jest treść słowa „uniwersalny" i główna przewaga nad każdym produktem z Części 1.</b></div>
+
+<h2 id="k2"><span class="no">2.</span>Architektura: trzy komory, jeden raster</h2>
+
+<table>
+<tr><th>Strefa (wys. nad gruntem)</th><th>Zawartość</th><th>Dostęp</th><th>Szczelność</th></tr>
+<tr><td><b>S1 — Cokół przyłączeniowy</b><br>0–300&nbsp;mm</td><td>wyjście rury DVK z fundamentu (+250&nbsp;mm), <b>zapas kabla 1,0–1,5&nbsp;m w pętli</b>, zaciski przelotowe 5×16&nbsp;mm² (loop-in/loop-out), śruba PE M8, dławnice odejść</td><td>panel frontowy S1 na śrubach M6 (serwisowy, nie dla klienta)</td><td>otwarty ku dołowi do fundamentu (odpływ kondensatu — celowo <b>bez</b> uszczelnienia dna); labirynt przeciwrozbryzgowy</td></tr>
+<tr><td><b>S2 — Komora aparatowa</b><br>300–700&nbsp;mm</td><td>2× szyna TH35 (2×9 modułów), RCBO/RCD+MCB per punkt, SPD T2, opcja: licznik MID / podlicznik z okienkiem, złączki N/PE, opcja grzałka 15&nbsp;W z higrostatem</td><td>drzwiczki z zamkiem (trójkąt 8&nbsp;mm / wkładka patentowa) + <b>okienko PC na liczniki</b>; reset RCBO po otwarciu</td><td><b>IP54</b> jako wydzielony moduł z membraną STEGO DA&nbsp;084; przepusty do S1 i S3 dławione</td></tr>
+<tr><td><b>S3 — Strefa urządzeń</b><br>700–1450&nbsp;mm</td><td>panele funkcyjne P-xx na rastrze; za panelami przestrzeń kablowa; przelotki serwisowe</td><td>panele na śrubach M6 od frontu (nitonakrętki / kamienie T-slot)</td><td>IP44 systemowo; szczelność właściwa siedzi w osprzęcie (gniazda IP44/54, urządzenia IP65/66) — filozofia Pop&nbsp;Up Power</td></tr>
+<tr><td><b>Daszek</b><br>1450–1530&nbsp;mm</td><td>blacha alu 2&nbsp;mm, rzut <b>420×340&nbsp;mm</b>, spadek 10° do tyłu, wysunięcie 180&nbsp;mm przed lico frontu; opcja: listwa LED ze zmierzchówką od spodu, logo podświetlane</td><td>4× M6 od góry w nitonakrętki/kanały</td><td>kryje urządzenie, gniazda i WPIĘTE WTYKI; obniża temperaturę słoneczną (pełne 32&nbsp;A latem)</td></tr>
+</table>
+
+<div class="box"><b class="t">Raster montażowy — zmiana względem AP-S1 v2 (ważne)</b>
+Rezygnujemy z nakrętek koszykowych (wymagają ręki OD WEWNĄTRZ — kolizja z przedziałami i kolejnością montażu). Zamiast tego:<br>
+• <b>Etap 1 (blacha):</b> dwa pionowe pasy <b>nitonakrętek M6 osadzonych fabrycznie</b> co 25&nbsp;mm, rozstaw pasów 140&nbsp;mm, strefa 700–1400&nbsp;mm, na froncie i na tylnej ścianie (DUO); na bokach pas co 50&nbsp;mm (haki, odejścia).<br>
+• <b>Etap 2 (profil):</b> te same rozstawy jako <b>kanały T-slot wyciśnięte w profilu</b> — kamień M6 wsuwany od frontu w dowolnym miejscu, zero ograniczenia podziałką.<br>
+Panele mają identyczny obrys i rozstaw otworów w obu etapach → <b>pełna kompatybilność paneli między generacjami</b> (obietnica L10 z researchu: „następny słupek wejdzie na ten sam fundament, panele przełożysz").</div>
+
+<h2 id="k3"><span class="no">3.</span>Rysunki: widok frontowy (CHARGE) i przekrój boczny</h2>
+
+<div class="fig">
+<svg viewBox="0 0 980 760" width="100%" style="max-width:960px">
+<defs>
+<pattern id="grunt" width="12" height="12" patternUnits="userSpaceOnUse">
+<path d="M0,12 L12,0" stroke="#9aa4ae" stroke-width="1.2"/>
+</pattern>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker>
+</defs>
+<!-- skala: 0.38 px/mm ; grunt na y=640 ; oś słupka x=430 -->
+<!-- GRUNT -->
+<rect x="40" y="640" width="900" height="26" fill="url(#grunt)"/>
+<line x1="40" y1="640" x2="940" y2="640" stroke="#333" stroke-width="2"/>
+<!-- FUNDAMENT pod gruntem (zarys) -->
+<rect x="382" y="666" width="96" height="70" fill="none" stroke="#888" stroke-dasharray="5 4" stroke-width="1.4"/>
+<text x="486" y="705" font-size="11.5" fill="#666">fundament AP-F (rys. 5)</text>
+<!-- PŁYTA PODSTAWY 350 szer -->
+<rect x="363.5" y="633" width="133" height="7" fill="#2b2f36"/>
+<!-- KORPUS 250 szer x 1450 -->
+<rect x="382.5" y="89" width="95" height="544" fill="#23272e" stroke="#111" stroke-width="1.2"/>
+<!-- strefy: separacyjne linie S1 0-300 (y 640-526), S2 300-700 (y 526-374), S3 700-1450 -->
+<line x1="382.5" y1="526" x2="477.5" y2="526" stroke="#555" stroke-width="1"/>
+<line x1="382.5" y1="374" x2="477.5" y2="374" stroke="#555" stroke-width="1"/>
+<!-- panel S1 (serwisowy) -->
+<rect x="390" y="534" width="80" height="98" fill="#2e333b" stroke="#14171c"/>
+<circle cx="398" cy="542" r="2.2" fill="#777"/><circle cx="462" cy="542" r="2.2" fill="#777"/>
+<circle cx="398" cy="624" r="2.2" fill="#777"/><circle cx="462" cy="624" r="2.2" fill="#777"/>
+<text x="430" y="588" font-size="10.5" fill="#aab3bd" text-anchor="middle">S1: przyłącze</text>
+<!-- drzwiczki S2 z okienkiem -->
+<rect x="390" y="382" width="80" height="136" fill="#2e333b" stroke="#14171c"/>
+<rect x="401" y="398" width="58" height="34" rx="3" fill="#c9d6e2" stroke="#8fa3b5"/>
+<text x="430" y="418" font-size="9.5" fill="#33475c" text-anchor="middle">licznik/RCBO</text>
+<circle cx="452" cy="472" r="5" fill="#1b1f24" stroke="#666"/>
+<text x="430" y="500" font-size="10.5" fill="#aab3bd" text-anchor="middle">S2: aparatura</text>
+<!-- raster nitonakrętek S3 -->
+<g fill="#565e68">
+<circle cx="404" cy="360" r="1.8"/><circle cx="456" cy="360" r="1.8"/>
+<circle cx="404" cy="341" r="1.8"/><circle cx="456" cy="341" r="1.8"/>
+<circle cx="404" cy="322" r="1.8"/><circle cx="456" cy="322" r="1.8"/>
+<circle cx="404" cy="303" r="1.8"/><circle cx="456" cy="303" r="1.8"/>
+<circle cx="404" cy="284" r="1.8"/><circle cx="456" cy="284" r="1.8"/>
+<circle cx="404" cy="265" r="1.8"/><circle cx="456" cy="265" r="1.8"/>
+<circle cx="404" cy="246" r="1.8"/><circle cx="456" cy="246" r="1.8"/>
+<circle cx="404" cy="227" r="1.8"/><circle cx="456" cy="227" r="1.8"/>
+<circle cx="404" cy="208" r="1.8"/><circle cx="456" cy="208" r="1.8"/>
+<circle cx="404" cy="189" r="1.8"/><circle cx="456" cy="189" r="1.8"/>
+<circle cx="404" cy="170" r="1.8"/><circle cx="456" cy="170" r="1.8"/>
+<circle cx="404" cy="151" r="1.8"/><circle cx="456" cy="151" r="1.8"/>
+<circle cx="404" cy="132" r="1.8"/><circle cx="456" cy="132" r="1.8"/>
+<circle cx="404" cy="113" r="1.8"/><circle cx="456" cy="113" r="1.8"/>
+</g>
+<!-- GNIAZDO CEE 32A skośne, oś 1000mm -> y=260 -->
+<g>
+<rect x="398" y="234" width="64" height="52" rx="6" fill="#3a3f47" stroke="#191c20"/>
+<circle cx="430" cy="260" r="19" fill="#c81e28" stroke="#7d1218" stroke-width="2"/>
+<circle cx="430" cy="260" r="11" fill="#e8e8e8"/>
+<rect x="419" y="238" width="22" height="7" rx="3" fill="#c81e28"/>
+<text x="430" y="264" font-size="9" fill="#333" text-anchor="middle">CEE</text>
+</g>
+<!-- DOCK + ŁADOWARKA Q, 1050-1400mm -> y=241..108 ; ładowarka szer 70 -->
+<g>
+<rect x="393" y="104" width="74" height="14" rx="3" fill="#4a515b"/> <!-- górny chwyt docka -->
+<rect x="396" y="108" width="68" height="130" rx="10" fill="#15181d" stroke="#000"/>
+<rect x="396" y="150" width="68" height="16" fill="#8f979f"/> <!-- srebrny pas -->
+<circle cx="430" cy="132" r="12" fill="#d9d2c0" stroke="#9a906f"/>
+<text x="430" y="136" font-size="8.5" fill="#555" text-anchor="middle">RFID</text>
+<rect x="411" y="176" width="38" height="20" rx="2" fill="#0f2f4d"/>
+<text x="430" y="189" font-size="8.5" fill="#9fc3e0" text-anchor="middle">22 kW</text>
+<text x="430" y="222" font-size="8.5" fill="#c8ccd2" text-anchor="middle">AmperePoint</text>
+<!-- ogon CEE ładowarki do gniazda -->
+<path d="M441 238 C 445 246, 441 250, 435 252" stroke="#111" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+</g>
+<!-- HOLSTER T2 na froncie, oś 850mm -> y=317 -->
+<g>
+<rect x="403" y="300" width="54" height="40" rx="6" fill="#3a3f47" stroke="#191c20"/>
+<ellipse cx="430" cy="322" rx="13" ry="15" fill="#14171c" stroke="#000" transform="rotate(-14 430 322)"/>
+<circle cx="430" cy="322" r="7.5" fill="#2c343e"/>
+<text x="430" y="352" font-size="8.5" fill="#c8ccd2" text-anchor="middle">holster T2 ↓15°</text>
+</g>
+<!-- HAK boczny prawy, oś 950mm -> y=279 ; ramię 150mm=57px -->
+<g>
+<rect x="477.5" y="272" width="14" height="12" fill="#3a3f47"/>
+<path d="M491 278 h38 q10 0 10 10 v6" stroke="#2b2f36" stroke-width="9" fill="none" stroke-linecap="round"/>
+<!-- zwój kabla Ø330mm=125px, środek: hak y=278 + promień w dół -->
+<circle cx="527" cy="352" r="62" fill="none" stroke="#111" stroke-width="10" opacity="0.92"/>
+<circle cx="527" cy="352" r="62" fill="none" stroke="#333" stroke-width="7"/>
+<circle cx="527" cy="352" r="49" fill="none" stroke="#111" stroke-width="9" opacity="0.85"/>
+<text x="527" y="446" font-size="10.5" fill="#555" text-anchor="middle">zwój 7,5 m ≈ Ø330</text>
+</g>
+<!-- DASZEK: 420 szer x rzut, przód wysunięty; front 1530 tył 1470 -->
+<g>
+<polygon points="350,58 510,58 505,74 355,74" fill="#8f979f" stroke="#5c646d"/>
+<rect x="355" y="74" width="150" height="5" fill="#6d757e"/>
+<text x="518" y="66" font-size="10.5" fill="#555">daszek 420×340, spadek 10°</text>
+<!-- listwa LED -->
+<rect x="365" y="79" width="130" height="3" fill="#ffd34d"/>
+</g>
+<!-- logo -->
+<text x="430" y="99" font-size="9.5" fill="#c81e28" text-anchor="middle" font-weight="bold">AmperePoint</text>
+
+<!-- WYMIARY LEWE: całkowite -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="330" y1="640" x2="330" y2="58" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="340" y1="640" x2="322" y2="640"/>
+<line x1="350" y1="58" x2="322" y2="58"/>
+</g>
+<text x="322" y="350" font-size="11.5" fill="#111" text-anchor="end" transform="rotate(-90 318 350)">wys. całkowita ~1530</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="292" y1="640" x2="292" y2="89" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="382" y1="89" x2="284" y2="89"/>
+</g>
+<text x="284" y="360" font-size="11.5" fill="#111" text-anchor="end" transform="rotate(-90 280 360)">korpus 1450</text>
+<!-- strefy po lewej -->
+<g stroke="#777" stroke-width="1" fill="none">
+<line x1="360" y1="640" x2="360" y2="526" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="360" y1="526" x2="360" y2="374" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="382" y1="526" x2="354" y2="526"/><line x1="382" y1="374" x2="354" y2="374"/>
+</g>
+<text x="368" y="590" font-size="10" fill="#555" text-anchor="end">S1: 300</text>
+<text x="368" y="455" font-size="10" fill="#555" text-anchor="end">S2: 400</text>
+<!-- WYMIARY PRAWE: wysokości funkcji -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="660" y1="640" x2="660" y2="260" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="462" y1="260" x2="668" y2="260" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="668" y="452" font-size="11.5" fill="#111">1000 — oś gniazda CEE</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="700" y1="640" x2="700" y2="132" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="442" y1="132" x2="708" y2="132" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="708" y="390" font-size="11.5" fill="#111">1335 — RFID / wyświetlacz</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="620" y1="640" x2="620" y2="317" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="457" y1="317" x2="628" y2="317" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="628" y="480" font-size="11.5" fill="#111">850 — holster T2</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="760" y1="640" x2="760" y2="278" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="540" y1="278" x2="768" y2="278" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="768" y="430" font-size="11.5" fill="#111">950 — hak kabla (bok)</text>
+<!-- szerokości dół -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="382.5" y1="712" x2="477.5" y2="712" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="382.5" y1="646" x2="382.5" y2="718"/><line x1="477.5" y1="633" x2="477.5" y2="718"/>
+</g>
+<text x="430" y="730" font-size="11.5" fill="#111" text-anchor="middle">250</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="363.5" y1="744" x2="496.5" y2="744" marker-start="url(#ar)" marker-end="url(#ar)"/>
+<line x1="363.5" y1="646" x2="363.5" y2="750"/><line x1="496.5" y1="640" x2="496.5" y2="750"/>
+</g>
+<text x="430" y="758" font-size="11.5" fill="#111" text-anchor="middle">płyta 350</text>
+<!-- tytuł -->
+<text x="60" y="30" font-size="14" fill="#102a54" font-weight="bold">RYS. 1 — AP-T CHARGE, widok z przodu (wymiary w mm)</text>
+<text x="60" y="47" font-size="11" fill="#666">dock ładowarki Q22 + gniazdo CEE 32 A pod dockiem + holster T2 + hak boczny; skala pozioma = pionowa</text>
+</svg>
+<div class="cap"><b>Rys. 1.</b> Konfiguracja CHARGE. Kluczowe relacje: ogon CEE ładowarki (≈0,35&nbsp;m) trafia w gniazdo <b>150&nbsp;mm poniżej docka</b> — bez pętli i bez wystawania poza obrys daszka; zwój kabla T2 na haku bocznym kończy się ~620&nbsp;mm nad gruntem (nie dotyka ziemi, nie zbiera błota); RFID/wyświetlacz na 1335&nbsp;mm mieści się w oknie dostępności UDT przy dostępie bocznym (≤1,37&nbsp;m) — a po obniżeniu docka o 2 pola rastra (50&nbsp;mm) także przy dostępie czołowym (≤1,22&nbsp;m).</div>
+</div>
+
+<div class="fig">
+<svg viewBox="0 0 980 700" width="100%" style="max-width:960px">
+<defs>
+<pattern id="grunt2" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0,12 L12,0" stroke="#9aa4ae" stroke-width="1.2"/></pattern>
+<pattern id="beton" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1" fill="#aab"/><circle cx="8" cy="7" r="1.2" fill="#99a"/></pattern>
+<marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker>
+</defs>
+<!-- skala 0.38; grunt y=470; słupek: głębokość 160mm=61px; front po prawej. oś: front x=560, tył x=499 -->
+<rect x="60" y="470" width="860" height="24" fill="url(#grunt2)"/>
+<line x1="60" y1="470" x2="920" y2="470" stroke="#333" stroke-width="2"/>
+<!-- FUNDAMENT prefabrykat 250x700 -->
+<rect x="482" y="494" width="95" height="152" fill="url(#beton)" stroke="#667"/>
+<text x="586" y="560" font-size="11" fill="#556">AP-F 250×250×700</text>
+<text x="586" y="576" font-size="11" fill="#556">beton C30, ~105 kg</text>
+<!-- kanał centralny -->
+<rect x="516" y="494" width="27" height="152" fill="#fff" stroke="#99a"/>
+<!-- rura DVK50 łuk z lewej -->
+<path d="M180 610 H 470 Q 528 610 528 552 V 375" fill="none" stroke="#3f74b8" stroke-width="12" opacity="0.9"/>
+<path d="M180 610 H 470 Q 528 610 528 552 V 375" fill="none" stroke="#dfe9f5" stroke-width="7"/>
+<text x="200" y="598" font-size="11" fill="#3f74b8">rura DVK 50/75, gł. 0,7 m, łuk fabryczny R≥350</text>
+<!-- głębokość kabla wymiar -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="150" y1="470" x2="150" y2="610" marker-start="url(#ar2)" marker-end="url(#ar2)"/>
+</g>
+<text x="142" y="545" font-size="11" fill="#111" text-anchor="end">≥700</text>
+<!-- folia -->
+<line x1="180" y1="530" x2="470" y2="530" stroke="#2e6fd6" stroke-width="4" stroke-dasharray="14 7"/>
+<text x="240" y="524" font-size="10.5" fill="#2e6fd6">folia niebieska 25–35 cm nad kablem</text>
+<!-- KORPUS przekrój boczny: x 499..560, y 470-89 -->
+<rect x="499" y="89" width="61" height="381" fill="#23272e" stroke="#111"/>
+<!-- strefy linie -->
+<line x1="499" y1="356" x2="560" y2="356" stroke="#555"/>
+<line x1="499" y1="470" x2="560" y2="470" stroke="#555"/>
+<!-- S2 komora IP54: 300–700 mm -->
+<rect x="503" y="204" width="53" height="152" fill="#2c333c" stroke="#444"/>
+<rect x="508" y="214" width="10" height="60" fill="#8f979f"/>
+<rect x="524" y="214" width="10" height="60" fill="#8f979f"/>
+<circle cx="546" cy="224" r="4" fill="#d9e2ea"/>
+<text x="420" y="238" font-size="10.5" fill="#333" text-anchor="end">S2 = moduł IP54:</text>
+<text x="420" y="252" font-size="10.5" fill="#333" text-anchor="end">2× TH35, membrana DA084</text>
+<line x1="424" y1="243" x2="500" y2="243" stroke="#999" stroke-width="1"/>
+<!-- zapas kabla S1 pętla -->
+<path d="M528 375 q -18 30 0 46 q 16 14 2 30" stroke="#c81e28" stroke-width="3.5" fill="none" stroke-dasharray="6 4"/>
+<text x="470" y="452" font-size="9.5" fill="#c81e28" text-anchor="end">zapas 1,0–1,5 m</text>
+<!-- kabel przez korpus do aparatów -->
+<path d="M528 375 V 300" stroke="#c81e28" stroke-width="3" stroke-dasharray="6 4" fill="none"/>
+<!-- odejścia w S3 -->
+<path d="M528 204 V 150 q 0 -8 8 -8 h 12" stroke="#c81e28" stroke-width="2.5" stroke-dasharray="5 4" fill="none"/>
+<!-- rura 25cm ponad fundament wymiar -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="588" y1="470" x2="588" y2="375" marker-start="url(#ar2)" marker-end="url(#ar2)"/>
+<line x1="536" y1="375" x2="596" y2="375" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="596" y="428" font-size="10.5" fill="#111">rura +250 nad fundament</text>
+<!-- URZĄDZENIE na froncie (dock+ładowarka głębokość ~90mm=34px) -->
+<rect x="560" y="118" width="12" height="120" fill="#4a515b"/>
+<rect x="572" y="122" width="26" height="112" rx="8" fill="#15181d" stroke="#000"/>
+<!-- gniazdo CEE skośne pod dockiem: oś y=260(1000mm)-> skos -->
+<g transform="rotate(24 560 260)"><rect x="560" y="248" width="30" height="24" rx="4" fill="#c81e28"/></g>
+<text x="640" y="268" font-size="10.5" fill="#333">CEE 32 A skośne (6h), klapka IP44</text>
+<line x1="637" y1="264" x2="592" y2="260" stroke="#999" stroke-width="1"/>
+<!-- holster niżej -->
+<g transform="rotate(15 560 317)"><rect x="560" y="308" width="22" height="18" rx="4" fill="#3a3f47"/></g>
+<text x="640" y="322" font-size="10.5" fill="#333">holster T2, styki w dół 15°, odwodnienie</text>
+<line x1="637" y1="318" x2="585" y2="317" stroke="#999" stroke-width="1"/>
+<!-- DASZEK bokiem (skrót rysunkowy — korpus na tym rzucie ucięty w pionie) -->
+<polygon points="499,74 628,58 628,70 499,86" fill="#8f979f" stroke="#5c646d"/>
+<text x="660" y="66" font-size="10.5" fill="#555">daszek: wysunięcie 180 przed front, spadek 10° do tyłu</text>
+<!-- wymiar głębokości -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="499" y1="640" x2="560" y2="640" marker-start="url(#ar2)" marker-end="url(#ar2)"/>
+<line x1="499" y1="476" x2="499" y2="646"/><line x1="560" y1="476" x2="560" y2="646"/>
+</g>
+<text x="529" y="658" font-size="11" fill="#111" text-anchor="middle">160</text>
+<!-- szpilki -->
+<line x1="506" y1="470" x2="506" y2="440" stroke="#888" stroke-width="3"/>
+<line x1="553" y1="470" x2="553" y2="440" stroke="#888" stroke-width="3"/>
+<text x="620" y="490" font-size="10.5" fill="#333">4× szpilka M12 (rozstaw 200×120), nakrętki M12 pod/nad stopą + podlewka</text>
+<line x1="617" y1="486" x2="556" y2="466" stroke="#999" stroke-width="1"/>
+<!-- tytuł -->
+<text x="60" y="30" font-size="14" fill="#102a54" font-weight="bold">RYS. 2 — Przekrój boczny: trasa kabla i strefy (wymiary w mm)</text>
+<text x="60" y="47" font-size="11" fill="#666">czerwona linia = kabel zasilający: rura DVK z trasy 0,7 m → łuk fabryczny → +250 nad fundament → zapas 1,0–1,5 m w S1 → zaciski → S2 → odejścia do S3</text>
+</svg>
+<div class="cap"><b>Rys. 2.</b> Zasada szczelności: S1 otwarta ku fundamentowi (kondensat i ewentualna woda spływają do gruntu przez kanał prefabrykatu — dokładnie to wymusza w swojej instrukcji KEBA), S2 to wydzielony moduł IP54 z membraną, S3 „szczelna osprzętem". Gniazdo CEE zabudowane skośnie (6h) pod dockiem: klapka pracuje pod daszkiem, wtyk nie wystaje poza obrys płyty czołowej więcej niż 60&nbsp;mm.</div>
+</div>
+
+<h2 id="k4"><span class="no">4.</span>Panele funkcyjne P-xx</h2>
+
+<p>Panel = blacha alu 3&nbsp;mm (proszek jak korpus), obrys <b>200×wielokrotność 100&nbsp;mm</b>, otwory pod śruby M6 w podziałce rastra (25&nbsp;mm), uszczelka EPDM po obwodzie, fabryczny dławik/przelotka od tyłu, linka wyrównawcza PE z konektorem. Za każdą pozycją panelu w korpusie jest wycięcie rewizyjne — po zdjęciu panelu jest dostęp ręką do przestrzeni kablowej (podłączenie gniazda bez rozbierania słupka).</p>
+
+<table>
+<tr><th>Panel</th><th>Zawartość</th><th>Wysokość zabudowy (oś)</th><th>Uwagi konstrukcyjne</th></tr>
+<tr><td><b>P-UNI</b> (300×200)</td><td>płyta uniwersalna pod wallbox Prime i obce</td><td>środek urządzenia ~1250</td><td>otwory fasolowe poziome 8×30 co 20&nbsp;mm + pionowe — pokrywa wzory otworów rynku (lekcja Wallbox Discounter); nośność 15&nbsp;kg</td></tr>
+<tr><td><b>P-DOCK</b> (400×200)</td><td>uchwyt/dock ładowarki Q/P/B (obecny uchwyt AP + kołyska dolna)</td><td>RFID 1150–1335</td><td>ładowarka zdejmowana jednym ruchem („na wyjazd"); kołyska przenosi masę na raster, nie na zatrzask; prowadnica ogona CEE w dół</td></tr>
+<tr><td><b>P-CEE16 / P-CEE32</b> (200×200)</td><td>gniazdo CEE 16&nbsp;A lub 32&nbsp;A 400&nbsp;V (5p, 6h) <b>skośne</b>, IP44 z klapką; opcja wersja 1-faz. 32&nbsp;A (niebieska) dla P72</td><td>oś 950–1000</td><td>zabudowa skośna = wtyk pod daszkiem, woda nie stoi na klapce; opcja: interlock/kłódka (GARO-style) przeciw kradzieży prądu</td></tr>
+<tr><td><b>P-2S</b> (200×200)</td><td>2× Schuko IP54 z klapkami (osprzęt hermetyczny) <i>albo</i> 1× Dr.&nbsp;Storm (głowica 90°, kłódka)</td><td>oś 950–1050</td><td>klapki odchylane w dół; wersja Dr.&nbsp;Storm = spójność z ofertą sklepu (179&nbsp;zł)</td></tr>
+<tr><td><b>P-HOLSTER</b> (200×100)</td><td>holster T2 pochylony 15° stykami w dół + odwodnienie Ø6</td><td>oś 850</td><td>parkowanie wtyku bez kałuży na pinach; logo AP na czole</td></tr>
+<tr><td><b>P-AMP</b> (300×300)</td><td>interfejs szafy AMP-BOX: otwory 250×150 + żebra</td><td>dół szafy ~700</td><td>nośność 25&nbsp;kg + moment; AP-T staje się „nogą premium" dla AMP-BOX (zamiast słupka 80&nbsp;cm z zestawu)</td></tr>
+<tr><td><b>P-LICZNIK</b> (200×100)</td><td>okienko PC do odczytu licznika w S2 (alternatywa: licznik za drzwiczkami)</td><td>1000–1100 (opcjonalnie w S3)</td><td>tylko wariant FIRMA/PRO</td></tr>
+<tr><td><b>P-BLIND</b> (200×100/200)</td><td>zaślepka</td><td>—</td><td>estetyczne wykończenie wolnych pól rastra</td></tr>
+</table>
+
+<div class="box"><b class="t">Zasada „ogona CEE" (najważniejszy detal ergonomii z obserwacji zdjęć)</b>
+Ładowarki Q/P mają krótki przewód zakończony wtykiem CEE. Dziś ten wtyk wisi luzem albo sterczy z gniazda przykręconego na szczycie słupka. W AP-T: <b>gniazdo CEE siedzi zawsze 150–250&nbsp;mm pod dolną krawędzią docka, skośnie</b> — ogon wpina się ruchem w dół, bez pętli, bez wystawania ponad obrys, pod daszkiem. Wypięcie ładowarki na wyjazd: wyjmij wtyk, zdejmij ładowarkę z kołyski — 10 sekund, zero narzędzi. Gniazdo zostaje jako pełnoprawne gniazdo siłowe (kompresor, spawarka, przyczepa kempingowa).</div>
+
+<h2 id="k5"><span class="no">5.</span>Konfiguracje handlowe (SKU)</h2>
+
+<div class="fig">
+<svg viewBox="0 0 980 430" width="100%" style="max-width:960px">
+<defs><pattern id="g3" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0,12 L12,0" stroke="#9aa4ae" stroke-width="1.2"/></pattern></defs>
+<!-- 5 sylwetek: skala 0.22 px/mm ; wys korpusu 1450*0.22=319 ; grunt y=380 ; korpus szer 55 -->
+<text x="30" y="28" font-size="14" fill="#102a54" font-weight="bold">RYS. 3 — Rodzina AP-T: jedna platforma, pięć konfiguracji</text>
+<rect x="20" y="380" width="940" height="16" fill="url(#g3)"/>
+<line x1="20" y1="380" x2="960" y2="380" stroke="#333" stroke-width="2"/>
+<!-- wspólna funkcja rysująca słupek: korpus 61..380 (319px) -->
+<!-- 1. BASE -->
+<g transform="translate(60,0)">
+<polygon points="-8,58 66,58 62,66 -4,66" fill="#8f979f"/>
+<rect x="0" y="61" width="55" height="319" fill="#23272e"/>
+<rect x="6" y="300" width="43" height="70" fill="#2e333b"/>
+<rect x="6" y="215" width="43" height="78" fill="#2e333b"/>
+<rect x="10" y="90" width="35" height="110" fill="#2b2f36" stroke="#3a3f47" stroke-dasharray="4 3"/>
+<rect x="10" y="140" width="35" height="8" fill="#3a3f47"/>
+<text x="27" y="410" font-size="12.5" fill="#111" text-anchor="middle" font-weight="bold">BASE</text>
+<text x="27" y="426" font-size="10.5" fill="#555" text-anchor="middle">korpus + zaślepki</text>
+</g>
+<!-- 2. SOCKET -->
+<g transform="translate(240,0)">
+<polygon points="-8,58 66,58 62,66 -4,66" fill="#8f979f"/>
+<rect x="0" y="61" width="55" height="319" fill="#23272e"/>
+<rect x="6" y="300" width="43" height="70" fill="#2e333b"/>
+<rect x="6" y="215" width="43" height="78" fill="#2e333b"/>
+<rect x="8" y="150" width="39" height="46" rx="4" fill="#3a3f47"/>
+<circle cx="27" cy="167" r="11" fill="#c81e28"/><circle cx="27" cy="167" r="6" fill="#eee"/>
+<rect x="8" y="100" width="39" height="42" rx="4" fill="#3a3f47"/>
+<circle cx="18" cy="120" r="8" fill="#d8dee6"/><circle cx="37" cy="120" r="8" fill="#d8dee6"/>
+<text x="27" y="410" font-size="12.5" fill="#111" text-anchor="middle" font-weight="bold">SOCKET</text>
+<text x="27" y="426" font-size="10.5" fill="#555" text-anchor="middle">CEE16 + 2×Schuko + RCBO</text>
+</g>
+<!-- 3. CHARGE -->
+<g transform="translate(420,0)">
+<polygon points="-8,58 66,58 62,66 -4,66" fill="#8f979f"/>
+<rect x="0" y="61" width="55" height="319" fill="#23272e"/>
+<rect x="6" y="300" width="43" height="70" fill="#2e333b"/>
+<rect x="6" y="215" width="43" height="78" fill="#2e333b"/>
+<rect x="10" y="80" width="35" height="80" rx="6" fill="#15181d"/>
+<rect x="10" y="104" width="35" height="9" fill="#8f979f"/>
+<circle cx="27" cy="93" r="6" fill="#d9d2c0"/>
+<rect x="12" y="166" width="31" height="26" rx="4" fill="#3a3f47"/>
+<circle cx="27" cy="179" r="9" fill="#c81e28"/><circle cx="27" cy="179" r="5" fill="#eee"/>
+<ellipse cx="27" cy="212" rx="7" ry="8" fill="#14171c"/>
+<path d="M55 186 h14 q6 0 6 7" stroke="#2b2f36" stroke-width="5" fill="none"/>
+<circle cx="76" cy="222" r="26" fill="none" stroke="#222" stroke-width="5"/>
+<text x="27" y="410" font-size="12.5" fill="#111" text-anchor="middle" font-weight="bold">CHARGE ★</text>
+<text x="27" y="426" font-size="10.5" fill="#555" text-anchor="middle">dock Q + CEE32 + holster + hak</text>
+</g>
+<!-- 4. WALLBOX -->
+<g transform="translate(620,0)">
+<polygon points="-8,58 66,58 62,66 -4,66" fill="#8f979f"/>
+<rect x="0" y="61" width="55" height="319" fill="#23272e"/>
+<rect x="6" y="300" width="43" height="70" fill="#2e333b"/>
+<rect x="6" y="215" width="43" height="78" fill="#2e333b"/>
+<rect x="4" y="84" width="47" height="64" rx="6" fill="#15181d" stroke="#000"/>
+<rect x="4" y="104" width="47" height="9" fill="#8f979f"/>
+<rect x="12" y="160" width="31" height="24" rx="4" fill="#3a3f47"/>
+<circle cx="27" cy="172" r="8" fill="#c81e28"/><circle cx="27" cy="172" r="4.5" fill="#eee"/>
+<ellipse cx="27" cy="204" rx="7" ry="8" fill="#14171c"/>
+<text x="27" y="410" font-size="12.5" fill="#111" text-anchor="middle" font-weight="bold">WALLBOX</text>
+<text x="27" y="426" font-size="10.5" fill="#555" text-anchor="middle">P-UNI + Prime + CEE + holster</text>
+</g>
+<!-- 5. DUO -->
+<g transform="translate(810,0)">
+<polygon points="-12,58 70,58 66,66 -8,66" fill="#8f979f"/>
+<rect x="0" y="61" width="55" height="319" fill="#23272e"/>
+<rect x="6" y="300" width="43" height="70" fill="#2e333b"/>
+<rect x="6" y="215" width="43" height="78" fill="#2e333b"/>
+<rect x="-14" y="84" width="16" height="70" rx="4" fill="#15181d"/>
+<rect x="53" y="84" width="16" height="70" rx="4" fill="#15181d"/>
+<ellipse cx="-6" cy="176" rx="6" ry="7" fill="#14171c"/>
+<ellipse cx="61" cy="176" rx="6" ry="7" fill="#14171c"/>
+<text x="27" y="410" font-size="12.5" fill="#111" text-anchor="middle" font-weight="bold">DUO / FIRMA</text>
+<text x="27" y="426" font-size="10.5" fill="#555" text-anchor="middle">2 stanowiska plecami + licznik + loop-out</text>
+</g>
+</svg>
+<div class="cap"><b>Rys. 3.</b> Wszystkie konfiguracje = ta sama platforma (korpus, S1, S2, fundament). Różnią się wyłącznie panelami i obsadą szyny TH35. Gwiazdka: CHARGE to konfiguracja flagowa — nośnik modelu sprzedaży „ładowarka przenośna + gniazdo".</div>
+</div>
+
+<table>
+<tr><th>SKU</th><th>Panele</th><th>Aparatura w S2 (typowa)</th><th>Klient docelowy</th><th>Cena docelowa netto*</th></tr>
+<tr><td><b>AP-T BASE</b></td><td>P-BLIND ×2–3</td><td>pusta TH35 (przygotowana), zaciski przelotowe, PE</td><td>instalator konfigurujący po swojemu</td><td class="price">899–999&nbsp;zł</td></tr>
+<tr><td><b>AP-T SOCKET</b></td><td>P-CEE16 + P-2S</td><td>RCBO B16 A (CEE) + RCBO B16 A (Schuko)</td><td>ogród/warsztat/działka, kemping mini</td><td class="price">1&nbsp;390–1&nbsp;590&nbsp;zł</td></tr>
+<tr><td><b>AP-T CHARGE ★</b></td><td>P-DOCK + P-CEE32 + P-HOLSTER (+hak)</td><td>RCD 4P 40A typ A + C32 (punkt EV); RCBO B16 (serwisowe Schuko opcja); SPD T2 (opcja/standard)</td><td>posiadacz ładowarki Q/P/B — rdzeń bazy klientów AP</td><td class="price">1&nbsp;790–1&nbsp;990&nbsp;zł (bez ładowarki)</td></tr>
+<tr><td><b>AP-T WALLBOX</b></td><td>P-UNI + P-CEE32 (zasilanie wtyku Prime) + P-HOLSTER</td><td>RCD 4P 40A typ A + C32; SPD opcja</td><td>klient Prime 11/22; także obce wallboxy</td><td class="price">1&nbsp;590–1&nbsp;790&nbsp;zł</td></tr>
+<tr><td><b>AP-T DUO</b></td><td>2× komplet paneli (przód+tył)</td><td>2 obwody punktów + wspólny SPD; DLB po RS-485 między ładowarkami</td><td>2 auta / parking firmowy</td><td class="price">2&nbsp;690–2&nbsp;990&nbsp;zł</td></tr>
+<tr><td><b>AP-T FIRMA</b></td><td>dowolne + P-LICZNIK</td><td>+ podlicznik DIN (MID przy odsprzedaży), + rozłącznik główny, loop-out do następnego słupka</td><td>floty 1–30 aut (strategia AP), wynajem</td><td class="price">+&nbsp;390–690&nbsp;zł do SKU</td></tr>
+<tr><td><b>Akcesoria</b></td><td colspan="3">fundament AP-F 399–499&nbsp;zł • zestaw kotew chemicznych 149&nbsp;zł • 3× śruba ziemna z adapterem 549&nbsp;zł • daszek LED +199&nbsp;zł • grzałka z higrostatem +179&nbsp;zł • odbojnica SD-50 149&nbsp;zł • panel Dr.&nbsp;Storm 219&nbsp;zł • drugi hak 59&nbsp;zł</td><td class="price">—</td></tr>
+</table>
+<p class="small">* Uzasadnienie cen w rozdz. 13 (BOM). Pozycjonowanie: między Platinetem (1100&nbsp;zł, zero elektryki) a Rolec Classic (~2600&nbsp;zł, import, bez EV) — w pustce funkcjonalnej zidentyfikowanej w Części 1 §10.3.</p>
+
+<h2 id="k6"><span class="no">6.</span>Wymiary i wysokości — uzasadnienia normowe</h2>
+<table>
+<tr><th>Parametr</th><th>Wartość AP-T</th><th>Uzasadnienie (norma / research)</th></tr>
+<tr><td>Przekrój korpusu</td><td><b>250×160&nbsp;mm</b></td><td>mieści: TH35 2×9 modułów (162&nbsp;mm szer. każda) + wiązki boczne; zabudowę skośną CEE32 (głęb. ~110&nbsp;mm); rozstaw AMP-BOX 250×150 w licu; smuklejszy niż Bals 250×250, masywniejszy niż Easee 160×80 (za mały na CEE+aparaturę); klasa GIFAS GAS230 (230×150)</td></tr>
+<tr><td>Wysokość korpusu / całkowita</td><td>1450 / <b>~1530&nbsp;mm</b> (z daszkiem)</td><td>mediana rynku 1300–1500; wyżej = lepsza ochrona daszkiem wpiętego wtyku T2 w aucie? nie dotyczy — daszek chroni słupek; 1450 pozwala na dock z RFID ≤1,37&nbsp;m</td></tr>
+<tr><td>Strefa S1 / S2 / S3</td><td>300 / 400 / 750&nbsp;mm</td><td>S1: zapas kabla 1,5&nbsp;m w pętli Ø~250 + zaciski; S2: 2×TH35 + kanały (400&nbsp;mm jak rozdzielnice 2-rzędowe); S3: dock 350 + CEE 150 + holster 100 + rezerwa</td></tr>
+<tr><td>Oś gniazd CEE / Schuko</td><td><b>950–1050&nbsp;mm</b></td><td>norma 0,5–1,5&nbsp;m (708/722); środek pasma = wygoda + zapas na śnieg (PL: zaspy 30–50&nbsp;cm nie sięgają klapek)</td></tr>
+<tr><td>RFID / wyświetlacz ładowarki</td><td><b>1150–1335&nbsp;mm</b> (regulacja rastrem co 25&nbsp;mm)</td><td>UDT: 0,80–1,22&nbsp;m przód / do 1,37&nbsp;m bok; DIN SPEC 0,85–1,05; regulowany dock godzi normę z ergonomią stojącego użytkownika</td></tr>
+<tr><td>Holster T2</td><td>oś <b>850&nbsp;mm</b>, pochylenie 15° stykami w dół</td><td>wtyk poniżej gniazd (nie zasłania), powyżej zwoju; odwodnienie — brak lodu na pinach zimą</td></tr>
+<tr><td>Hak kabla</td><td>oś <b>950&nbsp;mm</b> na boku; ramię 150&nbsp;mm; promień siodła 80&nbsp;mm; nośność 15&nbsp;kg</td><td>zwój 7,5&nbsp;m (Ø330) kończy się ~620&nbsp;mm nad gruntem; 12×D dla kabla Ø16,8 → R≥100&nbsp;mm na zgięciu nośnym — siodło 80 + wybieg = OK; 15&nbsp;kg = kabel 10&nbsp;m + oblodzenie + szarpnięcie</td></tr>
+<tr><td>Daszek</td><td>420×340&nbsp;mm, spadek 10°, przód +180&nbsp;mm</td><td>kryje dock, CEE (wtyk wystaje ~60&nbsp;mm ze skosu), holster; derating 32&nbsp;A w słońcu (KEBA) — cień na urządzeniu; większy niż FLOWEV (300×160) i AP-S1 v2 (400×350 — utrzymany duch)</td></tr>
+<tr><td>Płyta podstawy</td><td>350×260×8&nbsp;mm; szpilki <b>M12 rozstaw 200×120</b></td><td>moment od AMP-BOX 25&nbsp;kg na wysięgu + wiatr + szarpnięcie 150&nbsp;N na 1&nbsp;m: rozstaw 200×120 z M12 daje kilkukrotny zapas (Enelion nosi 2×22&nbsp;kW na 120×120); 350×260 wchodzi na prefabrykat 250×250 z kołnierzem</td></tr>
+<tr><td>Masa (etap 1, blacha alu)</td><td>~15–17&nbsp;kg (bez aparatury)</td><td>korpus ~10&nbsp;kg + panele/daszek/podstawa; transport kurierem, montaż 1 osoba</td></tr>
+</table>
+
+<h2 id="k7"><span class="no">7.</span>Elektryka wewnętrzna + schemat jednokreskowy</h2>
+
+<div class="fig">
+<svg viewBox="0 -50 980 610" width="100%" style="max-width:960px">
+<defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<text x="30" y="-24" font-size="14" fill="#102a54" font-weight="bold">RYS. 4 — Schemat jednokreskowy AP-T (konfiguracja CHARGE + elementy opcjonalne kreską przerywaną)</text>
+<!-- WLZ wejście -->
+<g stroke="#111" stroke-width="2.2" fill="none">
+<path d="M60 500 H 180"/>
+</g>
+<text x="62" y="462" font-size="11.5" fill="#111">WLZ z rozdzielnicy: YKY(żo) 5×6…5×16</text>
+<text x="62" y="516" font-size="10.5" fill="#666">TN-S (zakaz PEN)</text>
+<text x="62" y="530" font-size="10.5" fill="#666">lub TT z uziomem</text>
+<!-- ZACISKI PRZELOTOWE -->
+<rect x="180" y="470" width="120" height="60" fill="#f4f6f9" stroke="#102a54" stroke-width="1.6"/>
+<text x="240" y="494" font-size="11" fill="#102a54" text-anchor="middle" font-weight="bold">X1: zaciski</text>
+<text x="240" y="509" font-size="10.5" fill="#102a54" text-anchor="middle">przelotowe 5×16 mm²</text>
+<!-- loop out -->
+<g stroke="#111" stroke-width="2.2" fill="none"><path d="M300 500 H 420" stroke-dasharray="7 5"/></g>
+<text x="310" y="490" font-size="10.5" fill="#666">loop-out → następny AP-T (opcja FIRMA)</text>
+<!-- pion do rozłącznika -->
+<g stroke="#111" stroke-width="2.2" fill="none"><path d="M240 470 V 420"/></g>
+<!-- ROZŁĄCZNIK opcja -->
+<rect x="205" y="370" width="70" height="50" fill="#fff" stroke="#102a54" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="240" y="391" font-size="10.5" fill="#102a54" text-anchor="middle">FR 40A 4P</text>
+<text x="240" y="405" font-size="9.5" fill="#666" text-anchor="middle">(FIRMA/PRO)</text>
+<g stroke="#111" stroke-width="2.2" fill="none"><path d="M240 370 V 330"/></g>
+<!-- SPD odgałęzienie -->
+<g stroke="#111" stroke-width="2" fill="none"><path d="M240 348 H 360" stroke-dasharray="6 4"/></g>
+<rect x="360" y="326" width="86" height="44" fill="#fff" stroke="#b26a00" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="403" y="344" font-size="10.5" fill="#b26a00" text-anchor="middle">SPD typ 2</text>
+<text x="403" y="358" font-size="9" fill="#b26a00" text-anchor="middle">gdy &gt;10 m od RG</text>
+<g stroke="#b26a00" stroke-width="1.6" fill="none"><path d="M403 370 V 392"/><path d="M395 392 h16 M398 397 h10 M401 402 h4" stroke-linecap="round"/></g>
+<!-- LICZNIK opcja -->
+<rect x="205" y="270" width="70" height="50" fill="#fff" stroke="#102a54" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="240" y="291" font-size="10.5" fill="#102a54" text-anchor="middle">kWh (MID)</text>
+<text x="240" y="305" font-size="9.5" fill="#666" text-anchor="middle">FIRMA/PRO, okienko</text>
+<g stroke="#111" stroke-width="2.2" fill="none"><path d="M240 270 V 235"/></g>
+<!-- SZYNA rozdziału -->
+<line x1="120" y1="235" x2="820" y2="235" stroke="#102a54" stroke-width="4"/>
+<text x="828" y="239" font-size="10.5" fill="#102a54">szyna S2</text>
+<!-- OBWÓD 1: punkt EV -->
+<g stroke="#111" stroke-width="2" fill="none"><path d="M240 235 V 200"/></g>
+<rect x="196" y="150" width="88" height="50" fill="#fdeeee" stroke="#c81e28" stroke-width="1.8"/>
+<text x="240" y="169" font-size="10.5" fill="#c81e28" text-anchor="middle" font-weight="bold">RCD 4P 40A</text>
+<text x="240" y="183" font-size="10" fill="#c81e28" text-anchor="middle">30 mA typ A</text>
+<g stroke="#111" stroke-width="2" fill="none"><path d="M240 150 V 118"/></g>
+<rect x="210" y="76" width="60" height="42" fill="#fff" stroke="#102a54" stroke-width="1.6"/>
+<text x="240" y="94" font-size="10.5" fill="#102a54" text-anchor="middle">MCB C32 3P</text>
+<text x="240" y="107" font-size="9" fill="#666" text-anchor="middle">selektywność do RG</text>
+<g stroke="#111" stroke-width="2" fill="none"><path d="M240 76 V 58" marker-end="url(#ar3)"/></g>
+<text x="240" y="32" font-size="10.5" fill="#111" text-anchor="middle" font-weight="bold">CEE 32A 6h → dock Q22</text>
+<text x="240" y="46" font-size="9.5" fill="#555" text-anchor="middle">(RDC-DD 6 mA w ładowarce)</text>
+<!-- OBWÓD 2: Schuko -->
+<g stroke="#111" stroke-width="2" fill="none"><path d="M480 235 V 200"/></g>
+<rect x="436" y="150" width="88" height="50" fill="#eaf6ef" stroke="#1a7f4b" stroke-width="1.8"/>
+<text x="480" y="169" font-size="10.5" fill="#1a7f4b" text-anchor="middle" font-weight="bold">RCBO B16</text>
+<text x="480" y="183" font-size="10" fill="#1a7f4b" text-anchor="middle">30 mA typ A, 1P+N</text>
+<g stroke="#111" stroke-width="2" fill="none"><path d="M480 150 V 58" marker-end="url(#ar3)"/></g>
+<text x="480" y="32" font-size="10.5" fill="#111" text-anchor="middle" font-weight="bold">2× Schuko IP54 / Dr. Storm</text>
+<text x="480" y="46" font-size="9.5" fill="#555" text-anchor="middle">(osobny obwód — 708)</text>
+<!-- OBWÓD 3: opcja drugi punkt -->
+<g stroke="#111" stroke-width="2" fill="none"><path d="M700 235 V 200" stroke-dasharray="6 4"/></g>
+<rect x="656" y="150" width="88" height="50" fill="#fff" stroke="#c81e28" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="700" y="169" font-size="10.5" fill="#c81e28" text-anchor="middle">RCD+C32 / RCBO</text>
+<text x="700" y="183" font-size="10" fill="#666" text-anchor="middle">punkt 2 (DUO)</text>
+<g stroke="#111" stroke-width="2" fill="none"><path d="M700 150 V 58" marker-end="url(#ar3)" stroke-dasharray="6 4"/></g>
+<text x="700" y="32" font-size="10.5" fill="#111" text-anchor="middle">punkt 2: CEE / P-UNI tył</text>
+<text x="700" y="46" font-size="9.5" fill="#555" text-anchor="middle">(1 punkt = 1 obwód — 722)</text>
+<!-- PE -->
+<g stroke="#1a7f4b" stroke-width="1.8" fill="none">
+<path d="M180 520 q -30 0 -30 -14"/>
+<path d="M141 520 h18 M144 526 h12 M147 532 h6" stroke-linecap="round"/>
+</g>
+<text x="120" y="548" font-size="10.5" fill="#1a7f4b">PE: śruba M8 + linki do paneli/daszka; TT: uziom ≤10 Ω</text>
+<!-- RS485 -->
+<g stroke="#666" stroke-width="1.6" fill="none"><path d="M840 470 V 300" stroke-dasharray="4 4"/></g>
+<rect x="800" y="470" width="120" height="40" fill="#f4f6f9" stroke="#666"/>
+<text x="860" y="487" font-size="10" fill="#333" text-anchor="middle">RS-485 / DLB</text>
+<text x="860" y="501" font-size="9" fill="#666" text-anchor="middle">skrętka 120 Ω, osobna rurka</text>
+<text x="852" y="290" font-size="9.5" fill="#666">do ładowarek (DLB do 4 stacji)</text>
+</svg>
+<div class="cap"><b>Rys. 4.</b> Elektryka zgodna z listą kontrolną z Części 1 §7: 1 punkt = 1 obwód; RCD typ A wystarcza, bo każda ładowarka AP ma wbudowany RDC-DD 6&nbsp;mA (deklaracja producenta — do potwierdzenia w DTR przy certyfikacji); Schuko na osobnym RCBO (708); SPD typ 2 przy trasie &gt;10&nbsp;m; zaciski przelotowe umożliwiają łańcuch słupków; komunikacja DLB w osobnej rurce. Aparatura: 9–13 modułów → mieści się na 2×TH35 9M.</div>
+</div>
+
+<h3>7.1. Obsada aparatury per SKU (netto, ceny katalogowe popularnych marek)</h3>
+<table>
+<tr><th>SKU</th><th>Aparaty</th><th>Moduły</th><th>Koszt aparatury*</th></tr>
+<tr><td>BASE</td><td>X1 (zaciski 16&nbsp;mm²) + listwy N/PE</td><td>0 (przygotowanie)</td><td class="price">~90&nbsp;zł</td></tr>
+<tr><td>SOCKET</td><td>2× RCBO B16 1P+N typ A</td><td>4</td><td class="price">~200&nbsp;zł</td></tr>
+<tr><td>CHARGE</td><td>RCD 4P 40A/30&nbsp;mA typ A + MCB C32 3P (+ opcja RCBO Schuko, + opcja SPD T2)</td><td>7–13</td><td class="price">~300&nbsp;zł (+250 SPD)</td></tr>
+<tr><td>WALLBOX</td><td>jak CHARGE</td><td>7–13</td><td class="price">~300&nbsp;zł</td></tr>
+<tr><td>DUO</td><td>2× (RCD 4P + C32) + SPD</td><td>14–18 → komora XL lub selekcja</td><td class="price">~850&nbsp;zł</td></tr>
+<tr><td>FIRMA (dodatek)</td><td>FR 40A 4P + licznik 3f DIN (MID przy odsprzedaży)</td><td>+7</td><td class="price">+350–650&nbsp;zł</td></tr>
+</table>
+<p class="small">* Rzędy wielkości z rynku PL 2026: RCD 4P typ A 150–220&nbsp;zł; C32 3P 45–70&nbsp;zł; RCBO 1P+N typ A 70–120&nbsp;zł; SPD T2 4P 180–350&nbsp;zł; licznik MID 3f 250–400&nbsp;zł. DUO z pełną aparaturą wymaga 2 rzędów TH35 — zaplanowane. <b>Zasada selektywności edelboxx:</b> dobierać B16/C32 w słupku tak, by przy zwarciu wypadał słupek, nie rozdzielnica domu (kaskada z B25/B40 w RG).</p>
+
+<h2 id="k8"><span class="no">8.</span>Kable: dobór, zapas, wejście do słupka</h2>
+
+<h3>8.1. Tabela doboru WLZ do słupka (do instrukcji montażu i konfiguratora sklepu)</h3>
+<table>
+<tr><th>Zastosowanie</th><th>≤10&nbsp;m</th><th>≤25&nbsp;m</th><th>≤50&nbsp;m</th><th>≤80&nbsp;m</th><th>Zabezpieczenie w RG</th></tr>
+<tr><td>SOCKET (gniazda do 16&nbsp;A 3f)</td><td>5×2,5</td><td>5×4</td><td>5×4</td><td>5×6</td><td>B20–B25 3f + RCD wg instalacji</td></tr>
+<tr><td>CHARGE/WALLBOX 11&nbsp;kW (16&nbsp;A)</td><td>5×4</td><td>5×4</td><td>5×4…5×6</td><td>5×6</td><td>B16/B20 3f (selektywnie do C… w słupku? — patrz uwaga)</td></tr>
+<tr><td>CHARGE/WALLBOX 22&nbsp;kW (32&nbsp;A)</td><td>5×6</td><td>5×6</td><td>5×10</td><td>5×10 (5×16 z rezerwą)</td><td>B40 3f</td></tr>
+<tr><td>DUO 2×22&nbsp;kW (DLB 63&nbsp;A)</td><td colspan="2">5×16</td><td colspan="2">5×16…5×25 (uwaga na obciążalność w rurze!)</td><td>B63 3f</td></tr>
+</table>
+<div class="box"><b class="t">Trzy twarde zasady kablowe AP-T (z Części 1 §9)</b>
+1) <b>Spadek napięcia ≤3%</b> na WLZ do słupka (rezerwa do 5% łącznie z instalacją wewnętrzną) — tabela powyżej to gwarantuje.<br>
+2) <b>Zapas 1,0–1,5&nbsp;m kabla ponad fundament</b>, zwinięty w pętlę w S1 (Ø pętli ≥ 20×D — dla 5×10 to Ø≥360&nbsp;mm → pętla leżąca w cokole 250×160 wychodzi jako owal — dlatego S1 ma 300&nbsp;mm wysokości i pełną głębokość); dodatkowy zapas „S" ~2&nbsp;m w wykopie przed słupkiem.<br>
+3) <b>Rura DVK50</b> (1 kabel ≤5×10) / <b>DVK75</b> (5×16, dwa kable, pod wjazdem), łuk fabryczny, wyprowadzenie <b>+250&nbsp;mm nad fundament</b>, w S1 uszczelnienie pianką niskoprężną/dławikiem membranowym przeciw gryzoniom.</div>
+
+<h3>8.2. Kable po stronie urządzeń (przewidziane w konstrukcji)</h3>
+<table>
+<tr><th>Kabel</th><th>Długość / trasa w AP-T</th><th>Rozwiązanie konstrukcyjne</th></tr>
+<tr><td>Ogon CEE ładowarki Q/P (fabryczny, ~0,3–0,4&nbsp;m)</td><td>dock → gniazdo 150–250&nbsp;mm niżej</td><td>prowadnica na panelu P-DOCK; zero pętli; wtyk chowa się pod daszkiem</td></tr>
+<tr><td>Kabel T2 5&nbsp;m (Mamba) / 6&nbsp;m / 7,5&nbsp;m (Q37)</td><td>zwój na haku bocznym</td><td>hak: ramię 150, promień 80, nośność 15&nbsp;kg; drugi hak (opcja) na drugim boku dla DUO</td></tr>
+<tr><td>Wtyk T2 (parkowanie)</td><td>holster na 850&nbsp;mm</td><td>15° stykami w dół + otwór odwadniający; wersja „dummy socket" premium w roadmapie</td></tr>
+<tr><td>Przewód wallboxa Prime z wtykiem CEE</td><td>wallbox → P-CEE32 obok/niżej</td><td>wymiana wallboxa bez elektryka (wypnij wtyk); zgodne z filozofią „z wtyczką" oferty AP</td></tr>
+<tr><td>RS-485 (DLB do 4 stacji)</td><td>między słupkami, osobna rurka DVK40</td><td>przepust w S1 + dławik; skrętka 120&nbsp;Ω, terminacja na końcach</td></tr>
+</table>
+
+<h2 id="k9"><span class="no">9.</span>Posadowienie: fundament AP-F i 3 warianty montażu</h2>
+
+<div class="fig">
+<svg viewBox="0 0 980 520" width="100%" style="max-width:960px">
+<defs>
+<pattern id="g4" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0,12 L12,0" stroke="#9aa4ae" stroke-width="1.2"/></pattern>
+<pattern id="bet2" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1" fill="#aab"/><circle cx="8" cy="7" r="1.2" fill="#99a"/></pattern>
+<marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker>
+</defs>
+<text x="30" y="28" font-size="14" fill="#102a54" font-weight="bold">RYS. 5 — Trzy warianty posadowienia (przekroje; wymiary w mm)</text>
+<!-- wspólny grunt -->
+<rect x="20" y="230" width="940" height="18" fill="url(#g4)"/>
+<line x1="20" y1="230" x2="960" y2="230" stroke="#333" stroke-width="2"/>
+<!-- ===== WARIANT A: prefabrykat AP-F ===== skala 0.3 -->
+<g transform="translate(80,0)">
+<text x="105" y="60" font-size="12.5" fill="#102a54" text-anchor="middle" font-weight="bold">A. Prefabrykat AP-F (produkt)</text>
+<!-- słupek nad gruntem (fragment) -->
+<rect x="70" y="80" width="75" height="148" fill="#23272e"/>
+<rect x="55" y="222" width="105" height="8" fill="#2b2f36"/>
+<!-- prefabrykat 250x700: 75px x 210px -->
+<rect x="67" y="248" width="81" height="210" fill="url(#bet2)" stroke="#667"/>
+<!-- kanał centralny -->
+<rect x="95" y="248" width="25" height="210" fill="#fff" stroke="#99a"/>
+<!-- wejścia DVK z 2 stron -->
+<path d="M0 400 H 70 Q 95 400 98 370" fill="none" stroke="#3f74b8" stroke-width="9"/>
+<path d="M215 430 H 148 Q 120 430 118 395" fill="none" stroke="#3f74b8" stroke-width="9" opacity="0.55"/>
+<text x="-2" y="390" font-size="9.5" fill="#3f74b8">DVK50</text>
+<text x="218" y="420" font-size="9.5" fill="#3f74b8" opacity="0.8">DVK50 (2. strona / loop)</text>
+<!-- szpilki -->
+<line x1="78" y1="222" x2="78" y2="266" stroke="#888" stroke-width="4"/>
+<line x1="137" y1="222" x2="137" y2="266" stroke="#888" stroke-width="4"/>
+<text x="105" y="285" font-size="9" fill="#445" text-anchor="middle">4× M12 zatopione (200×120)</text>
+<!-- wymiary -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="40" y1="248" x2="40" y2="458" marker-start="url(#ar4)" marker-end="url(#ar4)"/>
+<line x1="67" y1="248" x2="34" y2="248"/><line x1="67" y1="458" x2="34" y2="458"/>
+</g>
+<text x="30" y="356" font-size="10.5" fill="#111" text-anchor="end">700</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="67" y1="478" x2="148" y2="478" marker-start="url(#ar4)" marker-end="url(#ar4)"/>
+<line x1="67" y1="462" x2="67" y2="484"/><line x1="148" y1="462" x2="148" y2="484"/>
+</g>
+<text x="107" y="496" font-size="10.5" fill="#111" text-anchor="middle">250×250</text>
+<text x="105" y="512" font-size="9.5" fill="#556" text-anchor="middle">~105 kg • wykop 400×400×750 • zasypka warstwami</text>
+</g>
+<!-- ===== WARIANT B: kotwy chemiczne ===== -->
+<g transform="translate(420,0)">
+<text x="105" y="60" font-size="12.5" fill="#102a54" text-anchor="middle" font-weight="bold">B. Kotwy chemiczne (istniejący beton)</text>
+<rect x="70" y="80" width="75" height="148" fill="#23272e"/>
+<rect x="55" y="222" width="105" height="8" fill="#2b2f36"/>
+<!-- płyta betonowa istniejąca -->
+<rect x="0" y="230" width="215" height="60" fill="url(#bet2)" stroke="#667"/>
+<text x="107" y="322" font-size="9.5" fill="#556" text-anchor="middle">płyta/ława betonowa min. C20/25, gr. ≥150</text>
+<!-- kotwy -->
+<line x1="78" y1="222" x2="78" y2="278" stroke="#888" stroke-width="4"/>
+<line x1="137" y1="222" x2="137" y2="278" stroke="#888" stroke-width="4"/>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="240" y1="230" x2="240" y2="278" marker-start="url(#ar4)" marker-end="url(#ar4)"/>
+<line x1="140" y1="278" x2="246" y2="278" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="248" y="258" font-size="10" fill="#111">≥110 osadzenia</text>
+<text x="107" y="345" font-size="9.5" fill="#556" text-anchor="middle">4× M12 wklejane • moment 40–54 Nm • NIE w kostkę!</text>
+<text x="107" y="362" font-size="9.5" fill="#556" text-anchor="middle">kabel: przepust Ø50 wiercony lub wejście boczne S1 (dławik)</text>
+</g>
+<!-- ===== WARIANT C: śruby ziemne ===== -->
+<g transform="translate(720,0)">
+<text x="110" y="60" font-size="12.5" fill="#102a54" text-anchor="middle" font-weight="bold">C. Śruby ziemne (bez betonu)</text>
+<rect x="72" y="80" width="75" height="148" fill="#23272e"/>
+<rect x="42" y="222" width="135" height="8" fill="#2b2f36"/>
+<text x="110" y="218" font-size="9" fill="#889" text-anchor="middle">rama adaptera</text>
+<!-- 2 śruby -->
+<g>
+<polygon points="60,230 74,230 70,470 64,470" fill="#7c828a"/>
+<path d="M56 300 h22 M56 340 h22 M56 380 h22 M56 420 h22" stroke="#7c828a" stroke-width="5"/>
+<polygon points="146,230 160,230 156,470 150,470" fill="#7c828a"/>
+<path d="M142 300 h22 M142 340 h22 M142 380 h22 M142 420 h22" stroke="#7c828a" stroke-width="5"/>
+</g>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="196" y1="230" x2="196" y2="470" marker-start="url(#ar4)" marker-end="url(#ar4)"/>
+</g>
+<text x="204" y="356" font-size="10" fill="#111">865</text>
+<text x="110" y="496" font-size="9.5" fill="#556" text-anchor="middle">2–3× KRINNER KSF U (250–600 kg/szt.)</text>
+<text x="110" y="512" font-size="9.5" fill="#556" text-anchor="middle">montaż &lt;1 h, odwracalny (najem!) • grunty spoiste</text>
+</g>
+</svg>
+<div class="cap"><b>Rys. 5.</b> Wariant A to produkt (AP-F, 399–499&nbsp;zł): żelbet C30 z zatopionymi szpilkami M12 (rozstaw 200×120 — <b>deklarowany jako stały standard AP na przyszłe generacje</b>), centralny kanał kablowy i DWA boczne wejścia DVK50 z łukiem (drugie dla pętli loop-out lub rurki RS-485). Poziomowanie: nakrętki M12 pod i nad stopą + podlewka. Głębokość 700&nbsp;mm — poniżej typowej granicy wysadzin dla lekkiej konstrukcji (praktyka rynkowa 550–700; „pod gwarancję KEBA" można pogłębić wykop do strefy przemarzania). Benchmark kosztu: prefabrykat oświetleniowy F100 328&nbsp;zł, Green Wallbox 399&nbsp;zł, Greenkick 895&nbsp;zł.</div>
+</div>
+
+<h3>9.1. Procedura montażu (docelowo 1 monter, &lt;2 h bez wykopu)</h3>
+<ol>
+<li>Wykop 400×400×750 + rów kablowy 700&nbsp;mm (osobna wycena robót ziemnych); podsypka 100&nbsp;mm zagęszczona.</li>
+<li>Osadzenie AP-F, wpięcie łuków DVK, poziomowanie prefabrykatu, zasypka warstwami co 100&nbsp;mm.</li>
+<li>Przeciągnięcie YKY (zapas 1,5&nbsp;m ponad prefabrykat), folia niebieska 25–35&nbsp;cm nad kablem w rowie.</li>
+<li>Słupek na szpilki: nakrętki poziomujące → pion 2 płaszczyzny → nakrętki górne 40–45&nbsp;Nm → podlewka.</li>
+<li>Podłączenie: X1 (L1L2L3+N+PE), PE korpusu, test klinów paneli; drzwiczki S2: aparatura fabrycznie okablowana — tylko WLZ.</li>
+<li>Pomiary: ciągłość PE, RISO &gt;1&nbsp;MΩ/500&nbsp;V, Zs (stan C adapterem EVSE), RCD/RDC-DD, (TT: uziom ≤10&nbsp;Ω) → protokół (szablon AP w komplecie dokumentów).</li>
+</ol>
+
+<h2 id="k10"><span class="no">10.</span>Zarządzanie kablem ładowania (hak + holster)</h2>
+
+<div class="fig">
+<svg viewBox="0 0 980 475" width="100%" style="max-width:960px">
+<defs><marker id="ar5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<text x="30" y="28" font-size="14" fill="#102a54" font-weight="bold">RYS. 6 — Detale: hak kablowy i holster T2 (skala ~1:2,5; wymiary w mm)</text>
+<!-- HAK: widok z boku. skala 0.8 px/mm dla detalu -->
+<g transform="translate(80,70)">
+<text x="150" y="0" font-size="12.5" fill="#102a54" font-weight="bold">HAK AP (bok słupka)</text>
+<!-- sciana slupka -->
+<rect x="0" y="10" width="16" height="300" fill="#23272e"/>
+<!-- podstawa haka -->
+<rect x="16" y="60" width="14" height="70" rx="3" fill="#3a3f47"/>
+<!-- ramię: 150mm=120px, siodło R80=64px -->
+<path d="M30 80 H 130 Q 194 80 194 144 Q 194 176 170 190" fill="none" stroke="#2b2f36" stroke-width="18" stroke-linecap="round"/>
+<path d="M30 80 H 130 Q 194 80 194 144 Q 194 176 170 190" fill="none" stroke="#565e68" stroke-width="12" stroke-linecap="round"/>
+<!-- końcówka anty-zsuw -->
+<circle cx="167" cy="193" r="11" fill="#565e68" stroke="#2b2f36" stroke-width="3"/>
+<!-- kabel zwój przekrój: kilka kółek na siodle -->
+<g fill="#111">
+<circle cx="118" cy="66" r="7"/><circle cx="133" cy="66" r="7"/><circle cx="148" cy="67" r="7"/><circle cx="161" cy="71" r="7"/><circle cx="126" cy="55" r="7"/><circle cx="141" cy="55" r="7"/><circle cx="155" cy="58" r="7"/>
+</g>
+<text x="140" y="40" font-size="10" fill="#555" text-anchor="middle">zwój 5–7,5 m (do 15 kg)</text>
+<!-- wymiary -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="30" y1="230" x2="194" y2="230" marker-start="url(#ar5)" marker-end="url(#ar5)"/>
+<line x1="30" y1="90" x2="30" y2="236"/><line x1="194" y1="150" x2="194" y2="236"/>
+</g>
+<text x="112" y="248" font-size="11" fill="#111" text-anchor="middle">ramię 150</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="240" y1="80" x2="240" y2="144" marker-start="url(#ar5)" marker-end="url(#ar5)"/>
+<line x1="196" y1="144" x2="246" y2="144" stroke-dasharray="3 3" stroke="#999"/>
+<line x1="130" y1="80" x2="246" y2="80" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="248" y="116" font-size="11" fill="#111">R siodła 80</text>
+<text x="0" y="340" font-size="10.5" fill="#556">• spód ramienia z podcięciem ściekowym • końcówka kulowa anty-zsuw</text>
+<text x="0" y="358" font-size="10.5" fill="#556">• mocowanie: 2× M6 w raster boczny (co 50 mm) → wysokość dowolna</text>
+<text x="0" y="376" font-size="10.5" fill="#556">• test: 15 kg statycznie + 30 kg szarpnięcie (współczynnik 2)</text>
+</g>
+<!-- HOLSTER -->
+<g transform="translate(600,70)">
+<text x="120" y="0" font-size="12.5" fill="#102a54" font-weight="bold">HOLSTER T2 (front, przekrój)</text>
+<!-- panel frontowy pochylony -->
+<rect x="0" y="10" width="14" height="300" fill="#23272e"/>
+<rect x="14" y="40" width="10" height="220" fill="#3a3f47"/>
+<!-- korpus holstera pochylony 15deg -->
+<g transform="rotate(15 24 140)">
+<rect x="24" y="112" width="120" height="66" rx="14" fill="#2e333b" stroke="#14171c" stroke-width="2"/>
+<!-- gniazdo pod wtyk -->
+<ellipse cx="118" cy="145" rx="24" ry="27" fill="#14171c"/>
+<circle cx="118" cy="145" r="15" fill="#3f4650"/>
+<!-- wtyk T2 zaparkowany -->
+<rect x="60" y="128" width="52" height="34" rx="10" fill="#191d22"/>
+<rect x="30" y="136" width="34" height="18" rx="8" fill="#111"/>
+</g>
+<!-- kąt -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="24" y1="140" x2="180" y2="140" stroke-dasharray="4 3" stroke="#999"/>
+<path d="M120 140 A 40 40 0 0 1 116 165" stroke="#c81e28" stroke-width="1.6"/>
+</g>
+<text x="150" y="168" font-size="11" fill="#c81e28">15° w dół</text>
+<!-- odwodnienie -->
+<circle cx="120" cy="205" r="3.5" fill="none" stroke="#3f74b8" stroke-width="2"/>
+<path d="M120 210 v14 M116 220 l4 8 4-8" stroke="#3f74b8" stroke-width="1.6" fill="none"/>
+<text x="132" y="222" font-size="10.5" fill="#3f74b8">odwodnienie Ø6</text>
+<text x="0" y="340" font-size="10.5" fill="#556">• styki wtyku skierowane w dół — deszcz i lód nie siadają na pinach</text>
+<text x="0" y="358" font-size="10.5" fill="#556">• krawędź najazdowa prowadzi wtyk jedną ręką (bez celowania)</text>
+<text x="0" y="376" font-size="10.5" fill="#556">• wariant PRO (roadmapa): „dummy socket" z klapką — pełne IP44 parkingu</text>
+</g>
+</svg>
+<div class="cap"><b>Rys. 6.</b> Wymiary wynikają z fizyki kabla 22&nbsp;kW (Część 1 §5.4): Ø16,8&nbsp;mm, zwój Ø30–35&nbsp;cm, 4,8&nbsp;kg przy 7,5&nbsp;m. Tanie słupki mają haki o ramieniu 60–90&nbsp;mm — zwój 22&nbsp;kW z nich spada; holstery „gniazdem do góry" zimą zbierają lód na stykach. Te dwa detale są tanie w produkcji (gięty pręt/odlew + kubek PA6), a natychmiast odczuwalne przez użytkownika — idealny stosunek koszt/efekt.</div>
+</div>
+
+<h2 id="k11"><span class="no">11.</span>Klimat: daszek, kondensacja, zima/lato</h2>
+<table>
+<tr><th>Zjawisko</th><th>Ryzyko</th><th>Rozwiązanie AP-T</th></tr>
+<tr><td>Słońce latem (+35&nbsp;°C, nasłonecznienie)</td><td>derating ładowarki przy 32&nbsp;A (KEBA: max +40&nbsp;°C „bez bezpośredniego słońca"); miękkie tworzywa klapek</td><td>daszek 420×340 kryje urządzenie i gniazda; zalecenie w instrukcji: front na N/NE gdy możliwe; kolor czarny korpusu, ale urządzenie w cieniu daszka</td></tr>
+<tr><td>Kondensacja (cykle dobowe, jesień)</td><td>rosa na aparatach, zaparowane okienko licznika, korozja styków</td><td>S2 = moduł IP54 z <b>membraną STEGO DA&nbsp;084</b> (wyrównanie ciśnienia bez wilgoci); S1/S3 wentylowane grawitacyjnie; <b>dno otwarte do fundamentu</b> — kondensat spływa (wymóg KEBA); opcja grzałka 15&nbsp;W + higrostat (wersje z licznikiem)</td></tr>
+<tr><td>Mróz −25…−30&nbsp;°C</td><td>sztywnienie uszczelek, lód na wtykach, kabel YKY łamliwy przy montażu</td><td>EPDM (nie PVC) na uszczelki; holster stykami w dół; instrukcja: układanie kabla od −5&nbsp;°C; aparatura modułowa znosi −25&nbsp;°C</td></tr>
+<tr><td>Śnieg / zaspy</td><td>zasypanie gniazd nisko osadzonych</td><td>najniższy element czynny (holster) na 850&nbsp;mm; gniazda 950–1050&nbsp;mm — powyżej typowej pokrywy śnieżnej PL</td></tr>
+<tr><td>Deszcz ukośny</td><td>woda na klapkach CEE przy poziomej zabudowie</td><td>zabudowa skośna 6h + daszek; klapki pracują „w dół"</td></tr>
+<tr><td>Wandalizm / potrącenie</td><td>IK10 = 20&nbsp;J to NIE najazd auta (5–50&nbsp;kJ)</td><td>IK10 konstrukcyjnie (alu 3&nbsp;mm + panele); wymienny słupek na szpilkach (po szkodzie: nowy korpus na stary fundament); oferta odbojnicy 149&nbsp;zł przy parkingach; opcja „strefa łamania" jak Etrel — odrzucona w v1 (koszt certyfikacji) → ryzyka §15</td></tr>
+</table>
+
+<h2 id="k12"><span class="no">12.</span>Konstrukcja i produkcja (etap 1: blacha alu → etap 2: profil wytłaczany)</h2>
+
+<div class="fig">
+<svg viewBox="0 0 980 470" width="100%" style="max-width:960px">
+<defs><marker id="ar6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<text x="30" y="28" font-size="14" fill="#102a54" font-weight="bold">RYS. 7 — Przekrój poziomy korpusu 250×160: etap 1 (blacha 5754) i etap 2 (profil 6060 T66)</text>
+<!-- ETAP 1: skala 1.1 px/mm -> 275x176 -->
+<g transform="translate(110,90)">
+<text x="137" y="-14" font-size="12.5" fill="#102a54" text-anchor="middle" font-weight="bold">ETAP 1 — blacha gięta, skręcana</text>
+<!-- korpus C (tył + boki) -->
+<path d="M6 0 H 269 V 176 H 6 Z" fill="none"/>
+<path d="M20 3 H 255 M3 20 V 156 M272 20 V 156" stroke="none"/>
+<path d="M30 3 L 12 3 Q 3 3 3 12 L 3 164 Q 3 173 12 173 L 30 173" fill="none" stroke="#23272e" stroke-width="6"/>
+<path d="M245 3 L 263 3 Q 272 3 272 12 L 272 164 Q 272 173 263 173 L 245 173" fill="none" stroke="#23272e" stroke-width="6"/>
+<path d="M28 3 H 247" stroke="#23272e" stroke-width="6"/>
+<!-- front zdejmowany -->
+<path d="M28 173 H 247" stroke="#3a3f47" stroke-width="8"/>
+<text x="137" y="196" font-size="10.5" fill="#3a3f47" text-anchor="middle">płyta czołowa zdejmowana (uszczelka EPDM, 6× M6)</text>
+<!-- zakładki + nitonakrętki -->
+<g fill="#8f979f">
+<rect x="24" y="160" width="10" height="10"/><rect x="241" y="160" width="10" height="10"/>
+<rect x="24" y="6" width="10" height="10"/><rect x="241" y="6" width="10" height="10"/>
+</g>
+<circle cx="29" cy="165" r="2.5" fill="#c81e28"/><circle cx="246" cy="165" r="2.5" fill="#c81e28"/>
+<text x="137" y="152" font-size="9.5" fill="#889" text-anchor="middle">zagięcia „na zamek" + nitonakrętki M6 (zero spawania obwodowego)</text>
+<!-- przegroda kablowa -->
+<line x1="100" y1="9" x2="100" y2="167" stroke="#565e68" stroke-width="3" stroke-dasharray="8 5"/>
+<text x="52" y="90" font-size="9.5" fill="#565e68" text-anchor="middle">kanał WLZ</text>
+<text x="180" y="90" font-size="9.5" fill="#565e68" text-anchor="middle">strefa osprzętu / TH35</text>
+<!-- wymiary -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="3" y1="220" x2="272" y2="220" marker-start="url(#ar6)" marker-end="url(#ar6)"/>
+<line x1="3" y1="178" x2="3" y2="226"/><line x1="272" y1="178" x2="272" y2="226"/>
+</g>
+<text x="137" y="238" font-size="11" fill="#111" text-anchor="middle">250</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="308" y1="3" x2="308" y2="173" marker-start="url(#ar6)" marker-end="url(#ar6)"/>
+<line x1="276" y1="3" x2="314" y2="3"/><line x1="276" y1="173" x2="314" y2="173"/>
+</g>
+<text x="318" y="92" font-size="11" fill="#111">160</text>
+<text x="137" y="262" font-size="10" fill="#556" text-anchor="middle">blacha EN AW-5754 H22, 3 mm • proszek Qualicoat kl. 2</text>
+<text x="137" y="278" font-size="10" fill="#556" text-anchor="middle">CAPEX ≈ 0 • start produkcji 2–3 tyg. • ~10 kg korpus</text>
+</g>
+<!-- ETAP 2 -->
+<g transform="translate(590,90)">
+<text x="137" y="-14" font-size="12.5" fill="#102a54" text-anchor="middle" font-weight="bold">ETAP 2 — profil wytłaczany (matryca)</text>
+<!-- profil zamknięty z T-slotami -->
+<rect x="3" y="3" width="269" height="170" rx="12" fill="none" stroke="#23272e" stroke-width="8"/>
+<!-- T-sloty front: 2 kanały -->
+<g stroke="#23272e" stroke-width="3" fill="#fff">
+<path d="M62 173 v-10 h-8 v-6 h22 v6 h-8 v10" fill="#fbfcfe"/>
+<path d="M213 173 v-10 h-8 v-6 h22 v6 h-8 v10" fill="#fbfcfe"/>
+<path d="M62 3 v10 h-8 v6 h22 v-6 h-8 v-10" fill="#fbfcfe"/>
+<path d="M213 3 v10 h-8 v6 h22 v-6 h-8 v-10" fill="#fbfcfe"/>
+</g>
+<text x="137" y="200" font-size="10.5" fill="#3a3f47" text-anchor="middle">kanały T-slot (przód+tył, rozstaw 140) — kamień M6 w dowolnym punkcie</text>
+<!-- kanały śrubowe w narożach -->
+<circle cx="20" cy="20" r="6" fill="none" stroke="#23272e" stroke-width="3"/>
+<circle cx="255" cy="20" r="6" fill="none" stroke="#23272e" stroke-width="3"/>
+<circle cx="20" cy="156" r="6" fill="none" stroke="#23272e" stroke-width="3"/>
+<circle cx="255" cy="156" r="6" fill="none" stroke="#23272e" stroke-width="3"/>
+<text x="137" y="152" font-size="9.5" fill="#889" text-anchor="middle">kanały śrubowe naroży (daszek/denko bez spawania)</text>
+<!-- przegroda -->
+<line x1="100" y1="7" x2="100" y2="169" stroke="#565e68" stroke-width="4"/>
+<text x="52" y="90" font-size="9.5" fill="#565e68" text-anchor="middle">komora WLZ</text>
+<text x="180" y="90" font-size="9.5" fill="#565e68" text-anchor="middle">komora osprzętu</text>
+<text x="137" y="238" font-size="10" fill="#556" text-anchor="middle">EN AW-6060 T66 • anoda 20 µm lub proszek • ścianka 3 mm</text>
+<text x="137" y="254" font-size="10" fill="#556" text-anchor="middle">matryca 6–15 tys. zł • MOQ ~500 kg (≈60 szt.) • 480–750 zł/szt. @200</text>
+<text x="137" y="270" font-size="10" fill="#556" text-anchor="middle">przegroda i T-sloty WYCISKANE = zero operacji dodatkowych</text>
+</g>
+<text x="30" y="440" font-size="11" fill="#333">Wspólne dla obu etapów: obrys 250×160, raster paneli 25 mm, płyta podstawy i fundament — panele i daszek przechodzą między generacjami.</text>
+</svg>
+<div class="cap"><b>Rys. 7.</b> Strategia produkcyjna z Części 1 §8: pilotaż bez CAPEX-u na blasze 5754 (konstrukcja skręcana — spaw alu 13–17&nbsp;zł/cm jest zakazany projektowo), przejście na profil przy ~150–200&nbsp;szt./rok. Wykonawcy PL: laser+gięcie (dowolny zakład blacharski), tłocznie: Grupa Kęty / Hydro Trzcianka / Final / Yawal; anodownie i proszkownie z półki. Wariant marina: korpus jak wyżej + osprzęt 316L / anoda 25&nbsp;µm (C4–C5).</div>
+</div>
+
+<h3>12.1. Detale konstrukcyjne przejęte od najlepszych</h3>
+<table>
+<tr><th>Detal</th><th>Wzorzec</th><th>Wykonanie w AP-T</th></tr>
+<tr><td>Zdejmowany front zamiast drzwiczek na zawiasach (S1, S3)</td><td>Walther / edelboxx</td><td>panele na M6; drzwiczki tylko w S2 (aparatura) — mniej uszczelek, mniej zawiasów, sztywniej</td></tr>
+<tr><td>Okienko odczytowe + reset bez otwierania frontu</td><td>GIFAS (klapki Makrolon)</td><td>drzwiczki S2 z oknem PC 3&nbsp;mm; wariant FIRMA: klapka serwisowa na trójkąt nad samym RCBO</td></tr>
+<tr><td>Zamek</td><td>standard energetyki (ZK)</td><td>kaseta Euro-Locks F550 IP65: wkładka trójkąt 8&nbsp;mm (serwis) wymienna na patent (klient prywatny) ~30&nbsp;zł</td></tr>
+<tr><td>Ciągłość PE</td><td>61439-7</td><td>śruba M8 PE w S1 + linki 6&nbsp;mm² do drzwiczek/paneli/daszka (konektory nasuwane)</td></tr>
+<tr><td>Wyprowadzenie kabla przy zamkniętym słupku</td><td>GIFAS RONDO / Walther</td><td>przelotka szczotkowa przy P-DOCK (ogon CEE) i pod holsterem (kabel T2 w trakcie ładowania)</td></tr>
+<tr><td>LED zmierzchowa</td><td>Rolec / ABL POLEMH3</td><td>listwa 12&nbsp;V IP65 pod daszkiem + zasilacz na TH35 (2M) — opcja +199&nbsp;zł</td></tr>
+<tr><td>Tabliczka + QR</td><td>rozp. 1316 §4/§12 + strategia AI-serwis AP</td><td>tabliczka znamionowa + QR do zgłoszeń serwisowych (zdjęcie + numer seryjny → automatyzacja zgłoszeń, którą AP rozwija)</td></tr>
+</table>
+
+<h2 id="k13"><span class="no">13.</span>Zestawienie materiałowe i kalkulacja (BOM, seria pilotażowa 50 szt., netto)</h2>
+<table>
+<tr><th>Pozycja</th><th>Wykonanie</th><th>Koszt/szt. @50</th></tr>
+<tr><td>Korpus: blacha 5754 3&nbsp;mm (laser + gięcie, konstrukcja skręcana)</td><td>~10&nbsp;kg; rozwinięcia: tył+boki, front S3, panele S1/S2</td><td class="price">420–620&nbsp;zł</td></tr>
+<tr><td>Nitonakrętki M6 A2 (~60 szt.) + złącza + śruby</td><td>osadzane na prasce przy gięciu</td><td class="price">45–70&nbsp;zł</td></tr>
+<tr><td>Płyta podstawy 350×260×8 + żebra</td><td>alu 8&nbsp;mm lub stal ocynk (skręcana z korpusem)</td><td class="price">70–110&nbsp;zł</td></tr>
+<tr><td>Daszek 420×340 (blacha 2&nbsp;mm, RAL 9006)</td><td>gięty, 4× M6</td><td class="price">55–85&nbsp;zł</td></tr>
+<tr><td>Malowanie proszkowe kl. 2 (korpus RAL 9005 struktura)</td><td>~1,3&nbsp;m²</td><td class="price">90–140&nbsp;zł</td></tr>
+<tr><td>Drzwiczki S2 + zamek F550 + okno PC + uszczelki EPDM</td><td>—</td><td class="price">90–140&nbsp;zł</td></tr>
+<tr><td>Moduł S2: 2× TH35, złączki N/PE, membrana DA&nbsp;084, dławiki</td><td>—</td><td class="price">110–160&nbsp;zł</td></tr>
+<tr><td>Zaciski przelotowe X1 5×16&nbsp;mm² + śruba PE + linki</td><td>—</td><td class="price">70–110&nbsp;zł</td></tr>
+<tr><td>2–3 panele funkcyjne (blacha + proszek + uszczelki + przelotki)</td><td>wg SKU</td><td class="price">60–120&nbsp;zł</td></tr>
+<tr><td>Hak + holster (gięty pręt/odlew + kubek PA6 UV)</td><td>—</td><td class="price">45–80&nbsp;zł</td></tr>
+<tr><td><b>RAZEM platforma (bez aparatury i gniazd)</b></td><td>≈ masa 15–17&nbsp;kg</td><td class="price"><b>1&nbsp;055–1&nbsp;635&nbsp;zł (typowo ~1&nbsp;300)</b></td></tr>
+<tr><td>+ aparatura wg SKU (rozdz. 7.1)</td><td>SOCKET ~200 / CHARGE ~300–550</td><td class="price">200–850&nbsp;zł</td></tr>
+<tr><td>+ osprzęt gniazdowy</td><td>CEE32 skośne IP44 90–140; 2×Schuko IP54 60–90; Dr.&nbsp;Storm (z własnej oferty)</td><td class="price">60–230&nbsp;zł</td></tr>
+</table>
+<div class="box green"><b class="t">Aktualizacja po weryfikacji cen (25.07, szczegóły: komponenty_v1)</b>
+Potwierdzone w sklepach: gniazdo CEE32 skośne <b>PCE 425-6 — 32,14 zł brutto</b> (zakładano 90–140!), RCD 4P 40A typ A <b>Hager CDA440J — 125 zł netto</b>, licznik MID <b>Eastron SDM72D-M V2 — 338 zł netto</b> (z Modbus RS-485). Suma elektryki CHARGE ~657–1050 zł netto = widełki BOM potwierdzone; gniazda skośne są na tyle tanie, że mogą wejść do KAŻDEJ konfiguracji w standardzie. Uwaga przeciwna: RCBO 1P+N w typie A jest droższy niż zakładano (110–250 zł) — dla SOCKET rozważyć wspólny RCD 2P typ A + 2× MCB B16.</div>
+<div class="box"><b class="t">Wniosek kosztowy (uczciwie, bez „999 zł" z v2)</b>
+Koszt wytworzenia CHARGE @50&nbsp;szt. ≈ <b>1&nbsp;700–2&nbsp;400&nbsp;zł netto</b> → cena 1&nbsp;790–1&nbsp;990&nbsp;zł netto jest osiągalna przy serii 100+ (spadek kosztów blachy/proszku o 20–30% i aparatura w hurcie), a na starcie CHARGE może być pozycjonowany 2&nbsp;190&nbsp;zł z bundlem (np. + Mamba 22 gratis). BASE za 899–999&nbsp;zł jest realny od razu (platforma bez S2-obsady i bez gniazd: ~1&nbsp;100&nbsp;zł kosztu → marża ujemna? NIE — BASE bez modułu S2-okablowanego i z 1 panelem: koszt ~950–1&nbsp;050&nbsp;zł; cena 999 = marża zerowa na pozyskanie → podnieść do 1&nbsp;190&nbsp;zł lub traktować jako produkt wejściowy). Przy przejściu na profil (etap 2, @200): platforma tanieje o ~250–400&nbsp;zł/szt. → marże zdrowieją bez zmiany cen.</div>
+
+<h2 id="k14"><span class="no">14.</span>Porównanie z konkurencją — „lepszy pod każdym względem"</h2>
+<table>
+<tr><th>Kryterium</th><th><b>AP-T (ten projekt)</b></th><th>FLOWEV 695&nbsp;zł</th><th>Platinet 1100&nbsp;zł</th><th>Green Wallbox 649/799</th><th>WBD €229</th><th>Rolec Classic ~2600</th><th>Enelion Vertica 14&nbsp;tys.</th></tr>
+<tr><td>Gniazda 230/400&nbsp;V w standardzie</td><td><b>TAK, z aparaturą per gniazdo</b></td><td>„możliwość", wiercenie</td><td>nie</td><td>nie</td><td>nie</td><td>tak (16A camping)</td><td>nie</td></tr>
+<tr><td>Dock ładowarki przenośnej + CEE pod nim</td><td><b>TAK (jedyny)</b></td><td>nie</td><td>nie</td><td>nie</td><td>nie</td><td>nie</td><td>nie</td></tr>
+<tr><td>Uniwersalna płyta wallbox</td><td><b>TAK (siatka + panele dedykowane)</b></td><td>otwory</td><td>adapter 1 szt.</td><td>wersje per marka</td><td>15 adapterów</td><td>nie</td><td>tylko własne moduły</td></tr>
+<tr><td>Miejsce na RCBO/SPD/licznik</td><td><b>TAK, 2×TH35 + okienko</b></td><td>nie</td><td>nie</td><td>nie</td><td>nie</td><td>tak</td><td>tak</td></tr>
+<tr><td>Loop-in/loop-out</td><td><b>TAK, 5×16</b></td><td>nie</td><td>nie</td><td>nie</td><td>nie</td><td>nie (opcje)</td><td>tak (system)</td></tr>
+<tr><td>Zapas kabla / przyłącze wg instrukcji producenckich</td><td><b>TAK: S1 300&nbsp;mm, 1,5&nbsp;m, rura +250</b></td><td>brak danych</td><td>brak danych</td><td>brak danych</td><td>brak danych</td><td>tak</td><td>tak</td></tr>
+<tr><td>Daszek kryjący gniazda i wtyki</td><td><b>TAK 420×340</b> + LED opcja</td><td>mały 300×160</td><td>tak (mały)</td><td>nie</td><td>nie</td><td>nie</td><td>nie</td></tr>
+<tr><td>Hak policzony pod 22&nbsp;kW/7,5&nbsp;m + holster z odwodnieniem</td><td><b>TAK (150/R80/15&nbsp;kg; 15° w dół)</b></td><td>hak opcja</td><td>uchwyt prosty</td><td>wieszak w zest.</td><td>zależnie od adaptera</td><td>n/d</td><td>tak (spirala)</td></tr>
+<tr><td>Fundament jako produkt + standard rozstawu na lata</td><td><b>TAK: AP-F 399–499, M12 200×120 „na zawsze"</b></td><td>kotwy</td><td>kotwy</td><td>tak 399&nbsp;zł</td><td>nie</td><td>nie</td><td>tak 140&nbsp;zł</td></tr>
+<tr><td>DUO z jednej konstrukcji</td><td><b>TAK (raster tylny)</b></td><td>nie</td><td>nie</td><td>tak (799)</td><td>tak</td><td>nie</td><td>tak</td></tr>
+<tr><td>Deklarowane IP/IK/masa/nośności</td><td><b>TAK — pełna karta</b></td><td>częściowo</td><td>częściowo</td><td>nie</td><td>nie</td><td>tak</td><td>tak</td></tr>
+<tr><td>Zgodność deklarowana 61439-7 / 708 / 722</td><td><b>TAK (cel certyfikacyjny)</b></td><td>nie</td><td>nie</td><td>nie</td><td>nie</td><td>tak (BS)</td><td>tak</td></tr>
+<tr><td>Cena za komplet funkcji</td><td><b>1,4–2,0&nbsp;tys.</b></td><td colspan="4">0,65–1,1&nbsp;tys. — ale bez elektryki i gniazd</td><td>~2,6&nbsp;tys. — bez EV, import</td><td>5,7–14&nbsp;tys.</td></tr>
+</table>
+<p class="small">Uwaga metodyczna: „lepszy pod każdym względem" rozumiemy jako <b>dominację funkcjonalną w swojej klasie cenowej</b> — od Rolca/Enelionu AP-T nie przejmuje płatności chmurowych ani OCPP (świadomie: strategia AP = prostota + Tuya + licznik), wygrywa z nimi ceną i uniwersalnością; z tanim segmentem wygrywa wszystkim poza ceną absolutną BASE.</p>
+
+<h2 id="k15"><span class="no">15.</span>Ryzyka i decyzje do podjęcia</h2>
+<table>
+<tr><th>#</th><th>Ryzyko / decyzja</th><th>Rekomendacja v1</th></tr>
+<tr><td>R1</td><td><b>Certyfikacja 61439-7</b> (badania typu: udary, przyrosty temperatur) — koszt i czas</td><td>etap 1: deklaracja zgodności na bazie komponentów certyfikowanych + badania własne; pełny certyfikat przy wariancie PRO/przetargowym; wycenić w 2 jednostkach (np. BBJ/PIMOT-podobne)</td></tr>
+<tr><td>R2</td><td>RDC-DD w ładowarkach AP — deklaracja „RCD typ A wystarczy" wisi na DTR chińskiego producenta</td><td>uzyskać pisemne potwierdzenie zgodności z IEC 62955 dla każdej serii; w razie braku: wariant aparatury z RCD typ B (+~1&nbsp;000&nbsp;zł) jako opcja</td></tr>
+<tr><td>R3</td><td>Rozstaw AMP-BOX 250×150 vs szerokość korpusu 250</td><td>P-AMP wystaje 25&nbsp;mm na boki — akceptowalne wizualnie; alternatywnie korpus 260 szer. (decyzja przy DXF)</td></tr>
+<tr><td>R4</td><td>DUO z pełną aparaturą = 14–18 modułów</td><td>komora S2 mieści 2×9M; przy DUO FIRMA (licznik×2) → S2 wydłużona do 500&nbsp;mm (korpus bez zmian, przesunięcie granicy S1/S2) — zaplanowane w rastrze</td></tr>
+<tr><td>R5</td><td>Kanibalizacja AMP-BOX (999&nbsp;zł)</td><td>pozycjonować AMP-BOX = „schowaj wszystko pod klucz", AP-T = „urządzenia na wierzchu, elegancko"; P-AMP łączy oba światy (szafa na słupku AP-T)</td></tr>
+<tr><td>R6</td><td>Nazwa: kolizja „AP-S1" z poprzednią wersją dokumentacji</td><td>nowe oznaczenie AP-T („Ampere Tower") — czysty start, v2 archiwum</td></tr>
+<tr><td>R7</td><td>Kradzież ładowarki przenośnej z docka</td><td>opcja: pałąk na kłódkę w kołysce docka + interlock gniazda CEE (kłódka jak GARO); komunikować jako opcję, nie straszyć w standardzie</td></tr>
+<tr><td>R8</td><td>Odpowiedzialność za dobór WLZ przez klienta</td><td>tabela doboru w instrukcji + konfigurator w sklepie (długość trasy → przekrój) + „montaż przez elektryka z uprawnieniami, protokół pomiarów" w warunkach gwarancji</td></tr>
+</table>
+
+<h2 id="k16"><span class="no">16.</span>Roadmapa wdrożenia i plan testów prototypu</h2>
+<ol class="exec">
+<li><b>Decyzje kierunkowe</b> (tydzień 1): akceptacja architektury 250×160 / stref / rozstawu M12 200×120; wybór osprzętu CEE (PCE vs Bals vs Mennekes — wycena 3 ofert); potwierdzenie RDC-DD (R2).</li>
+<li><b>DXF + prototyp α (2 szt., blacha 5754)</b> (tygodnie 2–5): rozwinięcia, gięcie, proszek; AP-F: forma tracona u lokalnego prefabrykatora (wycena wg F100); montaż konfiguracji CHARGE i SOCKET w zakładzie.</li>
+<li><b>Testy prototypu</b> (tygodnie 5–7): <b>(a)</b> zalewanie deszczownicą 30&nbsp;min → inspekcja S2 (cel: zero wody, membrana sucha); <b>(b)</b> hak: 15&nbsp;kg 24&nbsp;h + 30&nbsp;kg szarpnięcie ×50; <b>(c)</b> moment: 25&nbsp;kg na P-AMP + 150&nbsp;N poziomo na 1&nbsp;m — ugięcie &lt;5&nbsp;mm, zero trwałych; <b>(d)</b> cykl termiczny: noc w −20&nbsp;°C (chłodnia/zima) → kondensacja na aparatach?; <b>(e)</b> 32&nbsp;A ciągłe 4&nbsp;h latem pod daszkiem vs bez daszka — pomiar temperatury ładowarki (dowód na daszek do marketingu!); <b>(f)</b> montaż przez 1 montera ze stoperem (cel &lt;2&nbsp;h od gotowego wykopu).</li>
+<li><b>Poprawki + seria pilotażowa 20–50 szt.</b> (tygodnie 8–12): karta produktu z PEŁNYMI danymi (IP/IK/masy/nośności/momenty), instrukcja montażu z tabelą kabli, szablon protokołu pomiarów, sesja foto (showroom = pierwsze wdrożenie własne — wymiana obecnych słupków!).</li>
+<li><b>Sklep + bundle</b>: AP-T CHARGE + Q22 + Mamba; AP-T SOCKET dla „ogrodowych"; konfigurator długości WLZ; akcesoria (AP-F, daszek LED, odbojnica).</li>
+<li><b>Etap 2</b> (po ~150 szt./rok): matryca profilu 6060 T66 (wycena Kęty/Hydro/Final/Yawal), panele bez zmian; wariant PRO (MID + UDT-ready) i wariant marina (316L/anoda 25&nbsp;µm) wg popytu; retrofit AP-R1 dla bazy istniejących słupków.</li>
+</ol>
+
+<footer>
+AMPERE POINT — projekt koncepcyjny AP-T „Ampere Tower", v1, 25.07.2026. Rysunki koncepcyjne (podstawa do DXF), wymiary w mm. Liczby rynkowe i normowe: patrz Część 1 (research) w tym samym folderze; wartości normowe zweryfikować w aktualnych PN przed dokumentacją wykonawczą. Wersjonowanie: kolejne iteracje jako _v2, _v3 — stare pliki zostają.
+</footer>
+
+</div>
+</body>
+</html>

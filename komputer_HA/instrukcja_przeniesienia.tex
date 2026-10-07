@@ -1,0 +1,219 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+\usepackage{polyglossia}
+\setmainlanguage{polish}
+
+\setmainfont{Calibri}
+\newfontfamily\monofont{Consolas}
+
+\definecolor{szary}{gray}{0.35}
+\definecolor{ramka}{gray}{0.92}
+
+\titleformat{\section}{\Large\bfseries}{\thesection.}{0.6em}{}
+\titlespacing{\section}{0pt}{1.4em}{0.6em}
+\titleformat{\subsection}{\large\bfseries}{}{0em}{}
+
+\newcommand{\kod}[1]{{\monofont #1}}
+\newcommand{\dlaczego}[1]{\par\smallskip{\color{szary}\textit{Dlaczego:} #1}\par\smallskip}
+
+\setlist[enumerate]{itemsep=0.35em, topsep=0.4em}
+\setlist[itemize]{itemsep=0.25em, topsep=0.35em}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries Przeniesienie Home Assistanta na Della OptiPlex 3050 Micro}\\[0.4em]
+{\large Instrukcja sesji przy komputerze}\\[0.3em]
+{\color{szary} 18 wrze\'snia 2026}
+\end{center}
+
+\vspace{0.6em}
+
+\noindent
+Ca\l{}o\'s\'c zajmuje oko\l{}o p\'o\l{} godziny przy komputerze plus kilkana\'scie minut z laptopa.
+Monitor i klawiatura s\k{a} potrzebne tylko na t\k{e} jedn\k{a} sesj\k{e} --- potem OptiPlex pracuje
+bez niczego wpi\k{e}tego w gniazda USB.
+
+\section{Co wzi\k{a}\'c ze sob\k{a}}
+
+\begin{itemize}
+  \item OptiPlex 3050 Micro wraz z jego zasilaczem,
+  \item pendrive SanDisk z Ubuntu (nagrany i sprawdzony 18 wrze\'snia),
+  \item monitor i kabel --- komputer ma z ty\l{}u zar\'owno HDMI, jak i DisplayPort, wystarczy jeden z nich,
+  \item klawiatur\k{e} na USB; mysz u\l{}atwia, ale da si\k{e} bez niej,
+  \item kabel sieciowy do gniazdka sieci biura,
+  \item laptop.
+\end{itemize}
+
+\section{Pod\l{}\k{a}czenie}
+
+Pod\l{}\k{a}cz po kolei: monitor, klawiatur\k{e}, kabel sieciowy, pendrive w jedno z niebieskich gniazd
+z ty\l{}u, a zasilacz na samym ko\'ncu. \textbf{Jeszcze nie w\l{}\k{a}czaj.}
+
+\section{Ustawienia komputera}
+
+W\l{}\k{a}cz komputer i od razu stukaj klawisz \textbf{F2} mniej wi\k{e}cej co sekund\k{e}, a\.z pojawi si\k{e}
+ekran ustawie\'n. Do zmiany s\k{a} trzy rzeczy.
+
+\subsection*{a) Wy\l{}\k{a}czenie sprawdzania podpisu programu rozruchowego}
+
+Dzia\l{} \kod{Secure Boot} $\rightarrow$ \kod{Secure Boot Enable} $\rightarrow$ ustaw na \kod{Disabled}.
+
+\dlaczego{Komputer przy ka\.zdym starcie sprawdza, czy program uruchamiaj\k{a}cy system ma podpis
+producenta uznanego przez Microsoft. System Home Assistanta takiego podpisu nie ma. Z w\l{}\k{a}czon\k{a} kontrol\k{a} komputer odm\'owi startu --- i nie powie tego nigdzie, dostaniesz tylko ciemny ekran.}
+
+\subsection*{b) Potwierdzenie trybu startu}
+
+Dzia\l{} \kod{General} $\rightarrow$ \kod{Boot Sequence} $\rightarrow$ \kod{Boot List Option} ma by\'c
+ustawione na \kod{UEFI}, nie \kod{Legacy}.
+
+\dlaczego{Home Assistant startuje wy\l{}\k{a}cznie w tym trybie. Najprawdopodobniej jest tak ustawione
+fabrycznie --- to sprawdzenie, nie zmiana.}
+
+\subsection*{c) Automatyczny start po zaniku napi\k{e}cia}
+
+Dzia\l{} \kod{Power Management} $\rightarrow$ \kod{AC Recovery} $\rightarrow$ ustaw na \kod{Power On}.
+
+\dlaczego{Bez tego po ka\.zdym zaniku pr\k{a}du w biurze serwer zostaje wy\l{}\k{a}czony i kto\'s musi
+tam p\'oj\'s\'c i wcisn\k{a}\'c przycisk. Ustawienie \kod{Power On} sprawia, \.ze komputer w\l{}\k{a}cza
+si\k{e} sam, gdy tylko wr\'oci napi\k{e}cie.}
+
+\subsection*{d) Przy okazji spisz, co jest w \'srodku}
+
+Dzia\l{} \kod{General} $\rightarrow$ \kod{System Information}: jaki dysk i ile pami\k{e}ci. Przyda si\k{e}
+i nie wymaga osobnej wizyty.
+
+\medskip
+\noindent Na koniec \kod{Apply}, potem \kod{Exit}. Komputer si\k{e} zrestartuje.
+
+\section{Start z pendrive'a}
+
+Zaraz po restarcie stukaj klawisz \textbf{F12}, a\.z pojawi si\k{e} lista, z czego komputer ma wystartowa\'c.
+Wybierz pozycj\k{e}, przy kt\'orej jest s\l{}owo \kod{UEFI} i nazwa \kod{SanDisk}.
+
+\medskip
+\noindent\textit{Gdyby pendrive'a nie by\l{}o na li\'scie:} wr\'o\'c klawiszem F2 do ustawie\'n, dzia\l{}
+\kod{System Configuration} $\rightarrow$ \kod{USB Configuration} --- ma by\'c w\l{}\k{a}czone
+\kod{Enable Boot Support}.
+
+\section{Uruchomienie Ubuntu}
+
+Na pierwszym ekranie wybierz \textbf{,,Try Ubuntu''} --- \textbf{nie ,,Install Ubuntu''}.
+
+\dlaczego{Ubuntu ma tylko popracowa\'c w pami\k{e}ci komputera jako narz\k{e}dzie i nie dotyka\'c dysku.
+Wybranie instalacji nadpisa\l{}oby ten sam dysk, na kt\'ory za chwil\k{e} idzie Home Assistant.}
+
+\noindent Po chwili poka\.ze si\k{e} pulpit. Sprawd\'z w prawym g\'ornym rogu, czy jest po\l{}\k{a}czenie
+sieciowe.
+
+\section{Zdobycie pliku Home Assistanta}
+
+Potrzebny jest plik \kod{haos\_generic-x86-64-18.2.img.xz} (552 MB). S\k{a} trzy drogi --- wystarczy jedna:
+
+\begin{enumerate}
+  \item \textbf{Z internetu.} Otw\'orz przegl\k{a}dark\k{e} i wpisz:\\[0.3em]
+    \kod{github.com/home-assistant/operating-system/releases/}\\
+    \kod{download/18.2/haos\_generic-x86-64-18.2.img.xz}
+  \item \textbf{Z laptopa po sieci biura.} Napisz do mnie --- uruchomi\k{e} na laptopie prosty serwer
+    plik\'ow i podam adres do wpisania. Nie wymaga internetu.
+  \item \textbf{Z dowolnego no\'snika}, na kt\'orym wcze\'sniej dograsz ten plik z laptopa.
+\end{enumerate}
+
+\medskip
+\noindent\textbf{Nie rozpakowuj tego pliku.} Program zapisuj\k{a}cy przyjmuje go w tej postaci.
+
+\section{Zapis na dysk OptiPlexa}
+
+\begin{enumerate}
+  \item Kliknij \textbf{,,Show Applications''} w lewym dolnym rogu, wpisz \kod{Disks} i otw\'orz ten program.
+  \item Po lewej stronie jest lista dysk\'ow. \textbf{Wybierz wewn\k{e}trzny dysk OptiPlexa} --- nie pendrive'a.
+    Pendrive rozpoznasz po nazwie \kod{SanDisk} i pojemno\'sci 28 GB.
+  \item Kliknij trzy kropki u g\'ory i wybierz \textbf{,,Restore Disk Image\ldots''}.
+  \item Wska\.z pobrany plik, kliknij \textbf{,,Start Restoring\ldots''} i potwierd\'z \textbf{,,Restore''}.
+  \item Poczekaj do ko\'nca. Program sam sprawdza, co zapisa\l{}.
+\end{enumerate}
+
+\begin{center}
+\fcolorbox{black}{ramka}{\parbox{0.93\textwidth}{\medskip
+\textbf{To jest moment, w kt\'orym mo\.zna zrobi\'c szkod\k{e}.} Wskazanie pendrive'a zamiast dysku
+wewn\k{e}trznego skasuje Ubuntu i sesja si\k{e} na tym sko\'nczy. Przed klikni\k{e}ciem
+\kod{Restore} przeczytaj jeszcze raz, co jest zaznaczone po lewej stronie.
+\medskip}}
+\end{center}
+
+\section{Pierwszy start Home Assistanta}
+
+\begin{enumerate}
+  \item Zamknij Ubuntu (prawy g\'orny r\'og $\rightarrow$ wy\l{}\k{a}cz komputer).
+  \item \textbf{Wyjmij pendrive.}
+  \item W\l{}\k{a}cz komputer. Monitor mo\.zesz ju\.z odpi\k{a}\'c --- dalej wszystko idzie z laptopa.
+  \item Na laptopie otw\'orz \kod{http://homeassistant.local:8123}
+\end{enumerate}
+
+\noindent Pierwsze uruchomienie trwa kilka minut --- system rozszerza si\k{e} na ca\l{}y dysk.
+Gdyby ten adres nie odpowiada\l{}, sprawd\'z w routerze, jaki adres dosta\l{} nowy komputer,
+i wejd\'z pod \kod{http://<adres>:8123}.
+
+\section{Wgranie kopii z laptopa}
+
+Na ekranie powitalnym \textbf{nie zak\l{}adaj nowego konta}. Wybierz \textbf{,,Wgraj kopi\k{e}
+zapasow\k{a}''} i wska\.z plik z laptopa:
+
+\begin{center}
+\kod{Desktop$\backslash$AMPERE\_POINT$\backslash$komputer\_HA$\backslash$}\\
+\kod{kopia\_HA\_2026.6.4\_2026-09-18\_09.53\_dce0accb.tar}
+\end{center}
+
+\noindent Kopia jest nieszyfrowana, wi\k{e}c \.zaden klucz nie b\k{e}dzie potrzebny. Po odtworzeniu
+logujesz si\k{e} swoim dotychczasowym kontem --- has\l{}a przesz\l{}y razem z kopi\k{a}.
+
+Wchodzi wszystko: konfiguracja, automatyzacje, panel biura, obie wtyczki Tuya, wtyczka AmperePoint,
+HACS, rejestr urz\k{a}dze\'n i historia pomiar\'ow.
+
+\section{Co robi\k{e} potem ja, z laptopa}
+
+\begin{itemize}
+  \item sta\l{}y adres dla OptiPlexa w routerze, \.zeby panel zawsze by\l{} pod tym samym adresem,
+  \item dodatek Samba --- \.zeby dalej edytowa\'c pliki konfiguracyjne z laptopa tak jak dotychczas,
+  \item sprawdzenie po kolei trzech klimatyzacji, \l{}adowarek i falownika,
+  \item ustawienie automatycznych kopii, tym razem z kluczem zapisanym poza tym komputerem,
+  \item na ko\'ncu zatrzymanie Home Assistanta na laptopie, \.zeby automatyzacje nie chodzi\l{}y podw\'ojnie.
+\end{itemize}
+
+\section{Gdyby co\'s nie zagra\l{}o}
+
+\begin{center}
+\begin{tabular}{p{0.44\textwidth}p{0.48\textwidth}}
+\toprule
+\textbf{Objaw} & \textbf{Przyczyna i co zrobi\'c} \\
+\midrule
+Ciemny ekran po wybraniu pendrive'a z listy & Sprawdzanie podpisu dalej w\l{}\k{a}czone. Wr\'o\'c do
+ustawie\'n (F2) i ustaw \kod{Secure Boot Enable} na \kod{Disabled}. \\
+\addlinespace
+Pendrive'a nie ma na li\'scie po F12 & Wy\l{}\k{a}czona obs\l{}uga startu z USB.
+\kod{System Configuration} $\rightarrow$ \kod{USB Configuration}. \\
+\addlinespace
+Program \kod{Disks} nie pokazuje dysku wewn\k{e}trznego & Dysku albo nie ma w komputerze,
+albo wypad\l{} ze z\l{}\k{a}cza. Zajrzyj do \'srodka. \\
+\addlinespace
+\kod{homeassistant.local} nie odpowiada po kilku minutach & Sprawd\'z w routerze adres nowego
+urz\k{a}dzenia i wejd\'z po adresie. \\
+\addlinespace
+Ekran powitalny nie proponuje wgrania kopii & Cofnij si\k{e} przegl\k{a}dark\k{a}; opcja jest na
+pierwszym ekranie, przed zak\l{}adaniem konta. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{1em}
+\noindent{\color{szary}\small Gdyby cokolwiek posz\l{}o inaczej ni\.z tu opisano --- nie improwizuj
+przy zapisie na dysk, tylko napisz. Dysk laptopa i kopia Home Assistanta s\k{a} poza zasi\k{e}giem
+tej operacji, wi\k{e}c nic pilnego nie jest zagro\.zone.}
+
+\end{document}

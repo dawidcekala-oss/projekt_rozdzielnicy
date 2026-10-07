@@ -1,0 +1,52 @@
+% !TEX program = xelatex
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\usepackage{xcolor}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc,shapes.geometric}
+\definecolor{tuya}{HTML}{B45309}
+\definecolor{shelly}{HTML}{0E7C86}
+\definecolor{ocpp}{HTML}{15803D}
+\definecolor{inny}{HTML}{1D4ED8}
+\definecolor{szary}{HTML}{6B7280}
+\definecolor{nasz}{HTML}{7C3AED}
+\tikzset{
+  box/.style={draw=#1, fill=#1!9, rounded corners=3pt, line width=0.8pt, align=center, font=\small, inner sep=4pt, minimum height=1.25cm, minimum width=2.9cm},
+  grp/.style={draw=#1, dashed, rounded corners=7pt, line width=0.8pt, inner sep=7pt},
+  glab/.style={font=\scriptsize\bfseries, text=#1, anchor=south west, inner sep=2pt},
+  lang/.style={font=\scriptsize, text=#1, fill=white, inner sep=1.5pt, align=center},
+  link/.style={{Stealth[length=2.4mm]}-{Stealth[length=2.4mm]}, line width=1.3pt, #1},
+  note/.style={font=\scriptsize, text=szary, align=left},
+}
+\newcommand{\legenda}[2]{%
+  \node[anchor=north west, font=\scriptsize, align=left] at (#1,#2) {%
+  {\color{tuya}\rule[0.5ex]{0.7cm}{1.3pt}}\ język Tuya\quad
+  {\color{shelly}\rule[0.5ex]{0.7cm}{1.3pt}}\ język Shelly\quad
+  {\color{ocpp}\rule[0.5ex]{0.7cm}{1.3pt}}\ OCPP\quad
+  {\color{szary}\rule[0.5ex]{0.7cm}{0.8pt}}\ niezależne od OCPP\quad
+  {\color{nasz}\rule{0.32cm}{0.32cm}}\ tu działa tłumacz OCPP};}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[box=tuya] (mcua) at (0,0) {\textbf{Sterownik Q11}\\mikrokontroler\\ładuje auto};
+\node[box=shelly] (moda) at (3.9,0) {\textbf{DevKit}\\system Shelly\\+ nasz skrypt};
+\draw[link=tuya] (mcua) -- node[lang=tuya, above=1pt] {Tuya} node[lang=tuya, below=1pt] {przewód} (moda);
+\begin{scope}[on background layer]
+\node[grp=tuya, fit=(mcua)(moda)] (qa) {};
+\end{scope}
+\node[glab=tuya] at (qa.north west) {Ładowarka Q11 w biurze};
+
+\node[box=nasz] (most) at (9.3,0) {\textbf{Most OCPP}\\\texttt{most\_q11.py}\\tłumacz Shelly ↔ OCPP};
+\node[box=ocpp] (csms) at (13.6,0) {\textbf{Serwer testowy}\\\texttt{csms\_test.py}\\udaje operatora};
+\begin{scope}[on background layer]
+\node[grp=inny, fit=(most)(csms)] (lap) {};
+\end{scope}
+\node[glab=inny] at (lap.north west) {Laptop w biurze};
+\draw[link=shelly] (moda) -- node[lang=shelly, above=1pt] {Shelly} node[lang=shelly, below=1pt] {Wi-Fi biura} (most);
+\draw[link=ocpp] (most) -- node[lang=ocpp, above=1pt] {OCPP} (csms);
+\node[note, anchor=north west] at (-1.5,-1.5) {Wszystko w sieci biura. Test z 25.09.2026: rejestracja, stan, pomiary, limit prądu i zdalny start przeszły przez cały łańcuch.};
+\legenda{-1.5}{-2.1}
+
+\end{tikzpicture}
+\end{document}

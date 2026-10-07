@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMPERE POINT AP-T — Instrukcja montażu + protokół pomiarów (v1, draft)</title>
+<style>
+:root{--navy:#102a54;--red:#c81e28;--soft:#f4f6f9;--line:#d8dee6;--ok:#1a7f4b;--warn:#b26a00}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",system-ui,Arial,sans-serif;margin:0;color:#1b2430;font-size:14.5px;line-height:1.5;background:#fff}
+.wrap{max-width:1000px;margin:0 auto;padding:26px 32px 70px}
+header.doc{border-bottom:4px solid var(--navy);padding:14px 0 12px;margin-bottom:16px}
+h1{color:var(--navy);font-size:23px;margin:0}
+h1 .b{color:var(--red)}
+.sub{color:#444;font-size:13.5px;margin-top:5px}
+.meta{color:#888;font-size:12px;margin-top:6px}
+h2{color:var(--navy);font-size:18px;border-bottom:2px solid var(--line);padding-bottom:5px;margin:30px 0 10px}
+h2 .no{color:var(--red);margin-right:8px}
+h3{color:var(--navy);font-size:15px;margin:18px 0 6px}
+table{border-collapse:collapse;width:100%;font-size:12.8px;margin:10px 0}
+th{background:var(--navy);color:#fff;padding:6px 8px;text-align:left}
+td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+tr:nth-child(even) td{background:var(--soft)}
+.box{background:var(--soft);border-left:4px solid var(--navy);padding:10px 14px;margin:12px 0;border-radius:0 5px 5px 0}
+.box.red{border-left-color:var(--red)}
+.box.warn{border-left-color:var(--warn)}
+.box b.t{display:block;color:var(--navy);margin-bottom:3px}
+ol.steps{counter-reset:s;padding-left:0;list-style:none}
+ol.steps>li{margin:12px 0;padding:12px 14px 12px 56px;background:var(--soft);border-radius:6px;position:relative}
+ol.steps>li::before{counter-increment:s;content:"K" counter(s);position:absolute;left:12px;top:12px;width:32px;height:32px;border-radius:6px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+ol.steps b.st{display:block;color:var(--navy);margin-bottom:4px;font-size:14.5px}
+ul{margin:6px 0;padding-left:20px}
+li{margin:3px 0}
+.check td:first-child{width:26px;text-align:center;font-size:15px}
+.proto{border:2px solid var(--navy);border-radius:8px;padding:18px 22px;margin-top:20px}
+.proto h2{border:none;margin-top:0}
+.pfield{display:inline-block;border-bottom:1px dotted #888;min-width:180px;color:#888;font-size:12px;padding:0 4px}
+.psmall{font-size:11.5px;color:#666}
+footer{margin-top:40px;border-top:2px solid var(--line);padding-top:10px;color:#888;font-size:11.5px}
+@media print{
+  .steps>li{break-inside:avoid}
+  .proto{page-break-before:always}
+  body{font-size:12px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+<h1><span class="b">AMPERE POINT</span> AP-T — Instrukcja montażu <span style="color:#888;font-weight:400">(draft v1 do prototypu)</span></h1>
+<div class="sub">Słupek uniwersalny AP-T (BASE / SOCKET / CHARGE / WALLBOX / DUO / FIRMA) • dotyczy posadowienia A (fundament AP-F), B (kotwy chemiczne), C (śruby ziemne)</div>
+<div class="meta">v1 • 25.07.2026 • dokument towarzyszący koncepcji AP-T v1; po prototypie α zaktualizować momenty i rysunki do stanu produkcyjnego • na końcu: szablon protokołu pomiarów (strona do druku)</div>
+</header>
+
+<div class="box red"><b class="t">Bezpieczeństwo — warunki konieczne</b>
+Montaż przyłącza i aparatury: wyłącznie <b>elektryk z uprawnieniami SEP E (≤1 kV)</b>; pomiary odbiorcze: osoba z E+pomiary (protokół obowiązkowy — warunek gwarancji AP). Prace przy WLZ tylko po wyłączeniu i zabezpieczeniu obwodu w rozdzielnicy (LOTO — kłódka/tabliczka). Obwód punktu ładowania: <b>bez wspólnego PEN</b> (TN-S od punktu rozdziału) lub TT z uziomem. Zakaz zasilania słupka przedłużaczem (rozp. Dz.U. 2019/1316 §10).</div>
+
+<h2><span class="no">0.</span>Przed montażem — dobór i uzgodnienia</h2>
+<table>
+<tr><th>Co ustalić</th><th>Jak</th></tr>
+<tr><td>Moc punktu i przekrój WLZ</td><td>tabela niżej (spadek ≤3%); przy 2 słupkach na 1 WLZ — 5×16 i DLB</td></tr>
+<tr><td>Zabezpieczenie w rozdzielnicy głównej (RG)</td><td>11 kW → B16-20 3f; 22 kW → B40 3f; kaskada selektywna do aparatów w słupku (w słupku C32/B16)</td></tr>
+<tr><td>Układ sieci</td><td>TN-C → rozdział na TN-S przed słupkiem (PEN dzielony w RG); TT → uziom przy słupku (K7)</td></tr>
+<tr><td>SPD</td><td>trasa &gt;10 m od ostatniego SPD → SPD typ 2 w słupku (standard w CHARGE/FIRMA)</td></tr>
+<tr><td>Trasa kabla</td><td>możliwie bez przejść pod jezdnią; kolizje z mediami sprawdzić przed kopaniem (mapy/ZUD przy terenie obcym)</td></tr>
+</table>
+
+<h3>Tabela doboru kabla YKY(żo) (ziemia, spadek ≤3%)</h3>
+<table>
+<tr><th>Konfiguracja</th><th>≤10 m</th><th>≤25 m</th><th>≤50 m</th><th>≤80 m</th></tr>
+<tr><td>SOCKET (gniazda ≤16 A 3f)</td><td>5×2,5</td><td>5×4</td><td>5×4</td><td>5×6</td></tr>
+<tr><td>11 kW (16 A)</td><td>5×4</td><td>5×4</td><td>5×4–5×6</td><td>5×6</td></tr>
+<tr><td>22 kW (32 A)</td><td>5×6</td><td>5×6</td><td>5×10</td><td>5×10</td></tr>
+<tr><td>DUO 2×22 kW (DLB 63 A)</td><td colspan="2">5×16</td><td colspan="2">5×16–5×25 (uwaga: obciążalność w rurze spada)</td></tr>
+</table>
+<p class="psmall">YKXS zamiast YKY przy długich trasach/rurach (+20% obciążalności). Promień gięcia ≥12×D (5×6 → ~19 cm; 5×10 → ~22 cm). Układanie w temp. ≥ −5 °C.</p>
+
+<h3>Narzędzia i materiały montażysty</h3>
+<table>
+<tr><td><b>Narzędzia</b></td><td>klucz dynamometryczny 5–50 Nm (nasadki 13/19), poziomica 60 cm, wkrętaki PH2/PZ2 + płaskie do zacisków, klucze do dławnic, nóż do izolacji + ściągacz, miernik instalacyjny (RISO/Zs/RCD) + <b>adapter testowy EVSE (wymuszenie stanu C)</b>, kamera/telefon (dokumentacja)</td></tr>
+<tr><td><b>Materiały</b></td><td>kabel wg tabeli, rura DVK50 (lub 75) + łuk, folia niebieska ≥0,5 mm, piasek na podsypkę/obsypkę, podlewka niskoskurczowa (worek 5 kg), opaski UV, końcówki tulejkowe na żyły, wazelina/pasta do Al (jeśli YAKXS), kołki/kotwy wg wariantu</td></tr>
+</table>
+
+<h2><span class="no">1.</span>Kroki montażu</h2>
+<ol class="steps">
+<li><b class="st">Roboty ziemne — trasa</b>
+Rów gł. <b>0,7 m</b> (pod chodnikiem 0,5 m dopuszczalne dla obw. oświetleniowych — dla zasilania słupka trzymać 0,7; pod wjazdem 1,0 m w rurze). Dno: podsypka piasku 10 cm. Kabel w rurze DVK na całej długości (zalecenie AP — wymienialność) lub min. na przejściach; obsypka 10 cm piasku nad kablem, <b>folia niebieska 25–35 cm nad kablem</b>, zasypka zagęszczana warstwami. Przy słupku zostawić zapas „S" ~2 m w wykopie.</li>
+
+<li><b class="st">Posadowienie — wariant A: fundament AP-F (zalecany)</b>
+Wykop <b>400×400×750</b>. Podsypka 10 cm zagęszczona (piasek/pospółka). Osadzić prefabrykat AP-F (250×250×700, ~105 kg — 2 osoby lub miniżuraw/HDS): korona <b>+10…+30 mm nad docelowy poziom nawierzchni</b>, wypoziomować na podsypce. Wpiąć łuki DVK w boczne wejścia (kierunek: od trasy i ewent. drugi na loop-out/RS-485); rura ma wystawać <b>+250 mm nad koronę</b>. Zasypka warstwami po 10 cm z zagęszczeniem. Kostkę/nawierzchnię dociąć do korony.</li>
+
+<li><b class="st">Posadowienie — wariant B: kotwy chemiczne (istniejący beton)</b>
+Tylko płyta/ława betonowa min. C20/25, grubość ≥150 mm — <b>nigdy w samą kostkę</b>. Trasowanie z szablonu AP (rozstaw 200×120). Wiercenie Ø14×110, czyszczenie (szczotka+dmuchawa ×3), żywica winyloestrowa, pręty M12 kl. 8.8 ocynk (wystawanie 40–50 mm). Czas utwardzenia wg karty żywicy (typ. 45 min @20 °C). Kabel: przepust Ø50 wiercony w płycie pod S1 albo wejście boczne przez dławik w cokole (wariant „po wierzchu" tylko w rurce stalowej ≤0,5 m).</li>
+
+<li><b class="st">Posadowienie — wariant C: śruby ziemne (bez betonu, odwracalny)</b>
+2–3× KRINNER KSF U 66×865 (lub równoważne, nośność ≥250 kg/szt.) wkręcane przez ramę adaptera AP; kontrola pionu po każdym obrocie. Grunt spoisty/piaszczysty zagęszczony; w nasypach i torfach — tylko wariant A. Kabel jak w wariancie B (dławik boczny) lub rurą między śrubami.</li>
+
+<li><b class="st">Kabel do słupka</b>
+Przeciągnąć YKY przez rurę; zostawić <b>zapas 1,0–1,5 m ponad koronę fundamentu</b>. Uszczelnić szczelinę rura–kabel (pianka niskoprężna lub dławik membranowy) — bariera dla gryzoni i gazów gruntowych. Zapas zwinąć w owalną pętlę i wsunąć do S1 (pętla ≥20×D — nie ciaśniej!).</li>
+
+<li><b class="st">Ustawienie słupka</b>
+Nakrętki poziomujące M12 nakręcić na szpilki (~20 mm nad koronę), założyć słupek, wstępnie skręcić. Pion w dwóch płaszczyznach (poziomica na dwóch prostopadłych ścianach korpusu). Dokręcić nakrętki górne <b>40–45 Nm</b> na krzyż. Szczelinę pod płytą wypełnić podlewką niskoskurczową (pełne podparcie — nie zostawiać słupka „na nakrętkach"). Po 24 h kontrola momentów.</li>
+
+<li><b class="st">Podłączenie elektryczne (panel S1 + komora S2)</b>
+Zdjąć panel S1 (4× M6). WLZ na zaciski X1: <b>L1-L2-L3-N-PE</b>, żyły z tulejkami, momenty wg oznaczenia zacisków (typ. 2,5–4 Nm dla 16 mm²). Sprawdzić kolejność faz (pole wirujące — ważne dla niektórych ładowarek 3f). PE: dodatkowo śruba M8 korpusu (linka 6 mm² z WLZ lub bednarki uziomu w TT); skontrolować wpięcie linek PE: drzwiczki S2, panele, daszek. Opcja FIRMA: loop-out drugim kablem z X1 (nie skręcać dwóch żył w jednym gnieździe, użyć podwójnych zacisków). RS-485: skrętka 120 Ω osobną rurką, ekran uziemiony jednostronnie, terminacja na końcach magistrali. <b>TT:</b> uziom szpilkowy przy słupku (K7→pomiar), bednarka/linka do śruby PE.</li>
+
+<li><b class="st">Uruchomienie punktów</b>
+CHARGE: zawiesić ładowarkę w docku, wpiąć ogon CEE w gniazdo pod dockiem; w aplikacji ustawić prąd ≤ nastawie zabezpieczenia obwodu (16/32 A). WALLBOX: wallbox na P-UNI (śruby M6 + poziomica), wtyk CEE do gniazda. Test klapek gniazd, zamka S2, ułożenia kabla T2 na haku (zwój nie dotyka gruntu). DLB: sparować stacje wg instrukcji ładowarki (do 4 szt.).</li>
+
+<li><b class="st">Pomiary odbiorcze i protokół</b>
+Zakres minimalny — tabela niżej; wyniki do protokołu (szablon na końcu). Kopia protokołu do dokumentacji gwarancyjnej AP (QR na tabliczce → upload zdjęcia protokołu).</li>
+
+<li><b class="st">Przekazanie użytkownikowi (10 minut instruktażu)</b>
+Pokaż: reset RCBO/RCD (drzwiczki S2 — klucz właściciela), zdejmowanie ładowarki na wyjazd (wypnij CEE → zdejmij z kołyski), wieszanie kabla (zwój na hak, wtyk w holster stykami w dół), co robić przy zadziałaniu zabezpieczenia (1× załącz; 2× → serwis QR), zakaz przedłużaczy i rozgałęziaczy w gniazdach słupka do ładowania EV.</li>
+</ol>
+
+<h3>Momenty dokręcania (draft — zweryfikować na prototypie)</h3>
+<table>
+<tr><th>Połączenie</th><th>Moment</th><th>Uwagi</th></tr>
+<tr><td>Nakrętki fundamentowe M12 (8.8)</td><td>40–45 Nm</td><td>na krzyż, kontrola po 24 h</td></tr>
+<tr><td>Panele / daszek M6 w nitonakrętki alu</td><td>5–6 Nm</td><td>NIE dokręcać udarowo; gwint w aluminium</td></tr>
+<tr><td>Zaciski X1 16 mm²</td><td>2,5–4 Nm (wg nadruku)</td><td>tulejki na linkach obowiązkowo</td></tr>
+<tr><td>Zaciski aparatów modułowych</td><td>2–2,4 Nm</td><td>wg karty aparatu</td></tr>
+<tr><td>Śruba PE M8</td><td>8–10 Nm</td><td>podkładka ząbkowana na powłoce zdartej do metalu</td></tr>
+<tr><td>Dławnice M25/M32</td><td>ręcznie + 1/4 obrotu</td><td>kontrola uszczelnienia po ułożeniu kabla</td></tr>
+</table>
+
+<h3>Pomiary odbiorcze — wartości odniesienia</h3>
+<table>
+<tr><th>Pomiar</th><th>Kryterium (draft)</th></tr>
+<tr><td>Ciągłość PE (X1→korpus, panele, daszek)</td><td>wynik stabilny, rzędu ≤0,3 Ω (przewody ochronne + linki)</td></tr>
+<tr><td>RISO @500 V DC (L-L, L-N, L-PE, przy odpiętych urządzeniach)</td><td>≥1 MΩ (praktycznie ≥10 MΩ dla nowej instalacji)</td></tr>
+<tr><td>Zs pętli zwarcia (na gnieździe CEE / w stanie C przez adapter EVSE)</td><td>Zs ≤ Uo/Ia dla zabezpieczenia obwodu (B16: Ia=80 A → Zs≤2,87 Ω; C32: Ia=320 A → Zs≤0,72 Ω)</td></tr>
+<tr><td>RCD 30 mA typ A (każdy)</td><td>IΔ zadziałania 15–30 mA; t przy 1×IΔn ≤300 ms (typ ogólny); przycisk TEST</td></tr>
+<tr><td>RDC-DD ładowarki</td><td>autotest ładowarki wg DTR (jeśli dostępny) — odnotować</td></tr>
+<tr><td>Uziom (TT / SPD / wyrównanie)</td><td>RA: zalecane ≤10 Ω (formalnie RA×30 mA ≤ 50 V); metoda 3-biegunowa lub cęgowa</td></tr>
+<tr><td>Kolejność faz + napięcia L-N</td><td>zgodna na X1 i gniazdach 3f; 230 V ±10%</td></tr>
+</table>
+
+<div class="box warn"><b class="t">Najczęstsze błędy (checklista „NIE")</b>
+☐ NIE kotwić w samą kostkę brukową &nbsp;☐ NIE zostawiać kabla bez zapasu (min. 1,0 m) &nbsp;☐ NIE pomijać folii ostrzegawczej &nbsp;☐ NIE prowadzić PEN do słupka (rozdział na TN-S wcześniej) &nbsp;☐ NIE zasilać przez przedłużacz &nbsp;☐ NIE zostawiać słupka na samych nakrętkach bez podlewki &nbsp;☐ NIE dokręcać M6 w alu udarówką &nbsp;☐ NIE oddawać instalacji bez protokołu pomiarów &nbsp;☐ NIE wieszać zwoju kabla tak, by dotykał gruntu</div>
+
+<h3>Orientacyjny czas montażu (1–2 osoby)</h3>
+<table>
+<tr><th>Etap</th><th>Czas</th></tr>
+<tr><td>Roboty ziemne (trasa 25 m, teren zielony)</td><td>3–5 h (koparka łańcuchowa: 1–2 h)</td></tr>
+<tr><td>Fundament AP-F + zasypka</td><td>1–1,5 h</td></tr>
+<tr><td>Słupek: ustawienie + podłączenie + panele</td><td>1,5–2 h</td></tr>
+<tr><td>Pomiary + protokół + instruktaż</td><td>0,5–1 h</td></tr>
+<tr><td><b>Razem (bez robót ziemnych)</b></td><td><b>&lt; pół dnia — cel projektowy AP-T</b></td></tr>
+</table>
+
+<!-- ===================== PROTOKÓŁ ===================== -->
+<div class="proto">
+<h2 style="color:var(--navy)">PROTOKÓŁ POMIARÓW ODBIORCZYCH — stanowisko AP-T <span style="font-size:12px;color:#888;font-weight:400">(druk: 1 strona)</span></h2>
+<table style="font-size:12px">
+<tr><td style="width:50%">Obiekt / adres: <span class="pfield">&nbsp;</span></td><td>Data: <span class="pfield" style="min-width:90px">&nbsp;</span> Nr protokołu: <span class="pfield" style="min-width:90px">&nbsp;</span></td></tr>
+<tr><td>Konfiguracja AP-T: ☐ BASE ☐ SOCKET ☐ CHARGE ☐ WALLBOX ☐ DUO ☐ FIRMA &nbsp; Nr seryjny: <span class="pfield" style="min-width:110px">&nbsp;</span></td><td>Posadowienie: ☐ AP-F ☐ kotwy ☐ śruby ziemne</td></tr>
+<tr><td>WLZ: typ/przekrój <span class="pfield" style="min-width:110px">&nbsp;</span> długość <span class="pfield" style="min-width:50px">&nbsp;</span> m; zabezpieczenie w RG: <span class="pfield" style="min-width:80px">&nbsp;</span></td><td>Układ sieci: ☐ TN-S ☐ TT &nbsp; SPD w słupku: ☐ tak ☐ nie</td></tr>
+<tr><td>Wykonawca / uprawnienia nr: <span class="pfield">&nbsp;</span></td><td>Miernik (typ, nr, świadectwo): <span class="pfield">&nbsp;</span></td></tr>
+</table>
+
+<table style="font-size:12px">
+<tr><th>Lp</th><th>Pomiar</th><th>Punkt/obwód</th><th>Wynik</th><th>Kryterium</th><th>Ocena</th></tr>
+<tr><td>1</td><td>Ciągłość PE korpus/panele/daszek</td><td>—</td><td>____ Ω</td><td>stabilny, niski (≈≤0,3 Ω)</td><td>☐ OK ☐ NOK</td></tr>
+<tr><td>2</td><td>RISO L1-PE / L2-PE / L3-PE / N-PE</td><td>WLZ+słupek</td><td>__ / __ / __ / __ MΩ</td><td>≥1 MΩ @500 V</td><td>☐ OK ☐ NOK</td></tr>
+<tr><td>3</td><td>Zs (stan C przez adapter EVSE)</td><td>punkt EV</td><td>____ Ω</td><td>≤ Uo/Ia zabezp.</td><td>☐ OK ☐ NOK</td></tr>
+<tr><td>4</td><td>Zs gniazdo CEE / Schuko</td><td>gniazda</td><td>____ / ____ Ω</td><td>≤ Uo/Ia zabezp.</td><td>☐ OK ☐ NOK</td></tr>
+<tr><td>5</td><td>RCD punktu EV: IΔ / t(1×IΔn)</td><td>RCD 4P A</td><td>____ mA / ____ ms</td><td>15–30 mA / ≤300 ms</td><td>☐ OK ☐ NOK</td></tr>
+<tr><td>6</td><td>RCBO gniazd: IΔ / t</td><td>każde</td><td>____ mA / ____ ms</td><td>15–30 mA / ≤300 ms</td><td>☐ OK ☐ NOK</td></tr>
+<tr><td>7</td><td>Test RDC-DD ładowarki (wg DTR)</td><td>ładowarka</td><td>—</td><td>autotest pozytywny</td><td>☐ OK ☐ n/d</td></tr>
+<tr><td>8</td><td>Rezystancja uziomu RA</td><td>TT/SPD</td><td>____ Ω</td><td>≤10 Ω (zalec.)</td><td>☐ OK ☐ n/d</td></tr>
+<tr><td>9</td><td>Kolejność faz / U L-N</td><td>X1 + CEE</td><td>☐ zgodna; __ / __ / __ V</td><td>230 V ±10%</td><td>☐ OK ☐ NOK</td></tr>
+<tr><td>10</td><td>Próba funkcjonalna ładowania (auto/tester)</td><td>punkt EV</td><td>____ kW</td><td>zgodna z nastawą</td><td>☐ OK ☐ NOK</td></tr>
+</table>
+<table style="font-size:12px">
+<tr><td style="width:33%">Momenty fundamentu 40–45 Nm: ☐ potwierdzam (po 24 h: ☐)</td><td style="width:33%">Zapas kabla ≥1,0 m w S1: ☐</td><td>Folia ostrzegawcza na trasie: ☐</td></tr>
+<tr><td>Instruktaż użytkownika wykonany: ☐</td><td>Zdjęcia dokumentacyjne (min. 4): ☐</td><td>Protokół przekazany + QR: ☐</td></tr>
+</table>
+<p style="font-size:12px">Wynik końcowy: ☐ <b>INSTALACJA NADAJE SIĘ DO EKSPLOATACJI</b> &nbsp; ☐ nie nadaje się — uwagi: <span class="pfield" style="min-width:340px">&nbsp;</span></p>
+<table style="font-size:12px;margin-top:14px">
+<tr><td style="width:50%;height:52px">Podpis wykonawcy pomiarów:</td><td>Podpis użytkownika/inwestora:</td></tr>
+</table>
+</div>
+
+<footer>AMPERE POINT AP-T — instrukcja montażu, draft v1 (25.07.2026), do walidacji na prototypie α. Wartości normowe (0,7 m; folia 25–35 cm; RISO; czasy RCD) wg N SEP-E-004 / PN-HD 60364-6 — zweryfikować w aktualnych wydaniach przed publikacją. Dokumenty powiązane: research v1, koncepcja AP-T v1, one-pager v1 (folder Stojak).</footer>
+</div>
+</body>
+</html>

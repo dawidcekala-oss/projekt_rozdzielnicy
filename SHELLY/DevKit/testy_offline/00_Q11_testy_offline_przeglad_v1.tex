@@ -1,0 +1,283 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small AMPERE POINT — testy offline, przegląd · Q11 z modułem Shelly · v1 · 2026-09-28}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Testy offline: Q11 z modułem Shelly — przegląd\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+\emph{Poziomy łączności, porównanie z Tuya, wspólne założenia i kolejność testów z trzech dokumentów · AMPERE POINT · 28 września 2026 · oprac. Dawid Cekała}
+
+
+\section*{W skrócie}
+
+\begin{itemize}
+\item \textbf{Cel dla użytkownika.} Zwykły użytkownik, bez Home Assistant, ma prosto sterować ładowarką bez chmury, z aplikacji przez Bluetooth albo ze strony modułu. Po zaniku zasilania ładowarka ma pamiętać to, co powinna.
+\item \textbf{Trzy dokumenty testów, po jednym na poziom łączności:}
+\end{itemize}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.45cm}>{\raggedright\arraybackslash}p{9.23cm}>{\raggedright\arraybackslash}p{1.59cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Dokument} & \textbf{Poziom} & \textbf{Testy} \\
+\midrule\endhead
+\bottomrule\endfoot
+01 Testy bez chmury & B: Wi-Fi i internet są, chmura Shelly wyłączona & B1–B12 \\
+02 Testy bez internetu & C: Wi-Fi i sieć lokalna są, internetu nie ma & C1–C12 \\
+03 Testy bez Wi-Fi & D: bez routera; Bluetooth albo sieć modułu & D1–D9 \\
+\end{longtable}
+
+\begin{itemize}
+\item \textbf{Ten dokument} zawiera poziomy łączności, pojęcia, porównanie z Tuya w trzech tabelach, wspólne założenia i kolejność wszystkich testów.
+\item \textbf{Najważniejsze testy:} C8, zanik zasilania: czy moduł po starcie nie narzuci sterownikowi zapamiętanego limitu prądu. D5 i D6: godzina bez Wi-Fi.
+\item \textbf{Poprzednie wersje planu} (v1–v3) leżą w podfolderze \texttt{archiwum}. Stare numery testów T0–T7 mają odpowiedniki w rozdziale 7.
+\end{itemize}
+
+\section{Poziomy łączności}
+
+„Offline” może znaczyć kilka różnych rzeczy. Rozróżniamy pięć poziomów:
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{3.46cm}>{\raggedright\arraybackslash}p{1.82cm}>{\raggedright\arraybackslash}p{4.30cm}>{\raggedright\arraybackslash}p{1.81cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Poziom} & \textbf{Co działa} & \textbf{Czego nie ma} & \textbf{Przykład z życia} & \textbf{Dokument} \\
+\midrule\endhead
+\bottomrule\endfoot
+A. Z chmurą & Wi-Fi, internet, chmura producenta & — & zwykła praca; aplikacja z dowolnego miejsca & — \\
+B. Bez chmury & Wi-Fi i internet & chmura producenta wyłączona w module & nasze próby od 25.09 & 01 \\
+C. Bez internetu & Wi-Fi i sieć lokalna & internet & awaria łącza; firma, która nie wpuszcza ładowarek do internetu & 02 \\
+D. Bez Wi-Fi & Bluetooth albo własna sieć modułu, telefon obok ładowarki & router & garaż bez zasięgu Wi-Fi & 03 \\
+E. Bez niczego & sama ładowarka & żadnej łączności & tylko menu i przyciski & 03, funkcje sterownika \\
+\end{longtable}
+
+Na poziomie B większość już sprawdziliśmy. Poziomu C dotąd naprawdę nie sprawdzaliśmy: internet był zawsze w tle, a jego brak symulowaliśmy tylko dla serwera czasu.
+
+
+\section{Pojęcia}
+
+\begin{itemize}
+\item \textbf{Menu ładowarki.} Ustawienia na samej Q11: wyświetlacz i dwa przyciski na obudowie, 5 języków. Działa bez żadnego modułu. „Z menu” znaczy: ktoś stoi przy ładowarce i ustawia przyciskami.
+\item \textbf{Okno godzin ładowania.} Ustawienie sterownika Q11: godzina od i godzina do, w których wolno ładować, np. 22–6 dla nocnej taryfy. Działa w trybie „harmonogram”. Sterownik pilnuje okna sam, potrzebuje tylko aktualnej godziny od modułu. Zapisane w dwóch bajtach: godzina startu i godzina końca, \textbf{bez minut}.
+\item \textbf{Harmonogram w aplikacji Tuya.} Wpisy tworzy aplikacja, a przechowuje chmura. Telefon do wykonania nie jest potrzebny. Kto wykonuje wpis, nie jest rozstrzygnięte, bo źródła są sprzeczne. Za chmurą przemawia definicja produktu Q21 w Tuya: \emph{CloudTiming: „cloud timing without local timing”}. Za modułem Tuya przemawiają logi ładowarki testowej (Q11 PRO): wykonanie wpisu widać tylko jako raport samej ładowarki, bez polecenia z chmury, które pojawia się przy scenach. Rozstrzyga test C12.
+\item \textbf{Harmonogram w module Shelly.} Do 20 zadań zapisanych w samym module, np. „o 22:00 ustaw 16 A”. Moduł wykonuje je sam, bez chmury i internetu. Potrzebuje godziny.
+\item \textbf{API.} Zestaw poleceń, którymi inne programy rozmawiają z modułem, np. „podaj stan” albo „ustaw limit 10 A”. Te same polecenia idą różnymi drogami: HTTP, WebSocket, MQTT, Bluetooth.
+\item \textbf{Webhook.} Adres WWW, który moduł \textbf{sam} wywołuje, gdy coś się stanie, np. „zaczęło się ładowanie”. To odwrotność API: przy API program pyta moduł, przy webhooku moduł sam zawiadamia program.
+\item \textbf{Zapamiętywanie pola.} Ustawienie pola w portalu Shelly („persisted”): moduł trzyma wartość w swojej pamięci i po restarcie ją odtwarza. U nas zapamiętywane są limit prądu i włącznik ładowania.
+\item \textbf{Sieć modułu.} Moduł może sam wystawić sieć Wi-Fi (punkt dostępowy), do której łączy się telefon, bez routera. \textbf{Stacja Wi-Fi} to druga strona: moduł jako klient sieci biura.
+\item \textbf{Serwer czasu.} Urządzenie w sieci, od którego moduł pobiera godzinę. Z internetem to serwer publiczny; bez internetu trzeba mieć własny w sieci lokalnej.
+\end{itemize}
+
+\section{Tuya a Shelly na każdym poziomie łączności}
+
+Trzy tabele, po jednej na poziom. W każdej: co może Q11 na Tuya, co może Q11 na Shelly i czy to sprawdziliśmy.
+
+
+\textbf{Czy działa:} \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} działa · \leavevmode{\symbolfont\color{apamber}\textbf{◐}} częściowo · \leavevmode{\symbolfont\color{apred}\textbf{✘}} nie działa · ? nie wiadomo.
+
+
+\textbf{Sprawdzone?:}
+
+\begin{itemize}
+\item \textbf{tak} — sprawdzone u nas na sprzęcie, z datą;
+\item \textbf{z użytkowania} — znane z pracy ładowarek u klientów i w serwisie, bez osobnego testu;
+\item \textbf{z dokumentacji} — wiemy od producenta, nie sprawdzaliśmy;
+\item \textbf{wniosek} — wynika z budowy systemu, nikt nie sprawdzał;
+\item \textbf{nie {\symbolfont→} B…, C…, D…} — sprawdzi test z dokumentu 01, 02 albo 03.
+\end{itemize}
+
+Funkcje samego sterownika, czyli menu, przyciski, start po podłączeniu auta i limit z menu, nie zależą od łączności. Są w tabeli 3.3, ale obowiązują na każdym poziomie.
+
+
+\subsection{Bez chmury: Wi-Fi i internet są, chmury producenta nie ma}
+
+Tuya nie ma wyłącznika chmury. Dla Tuya ten poziom znaczy: internet jest, ale z chmury Tuya nie korzystamy, bo jest niedostępna albo zablokowana.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.39cm}>{\raggedright\arraybackslash}p{3.25cm}>{\raggedright\arraybackslash}p{2.35cm}>{\raggedright\arraybackslash}p{3.06cm}>{\raggedright\arraybackslash}p{2.35cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Funkcja} & \textbf{Q11 na Tuya} & \textbf{Sprawdzone?} & \textbf{Q11 na Shelly} & \textbf{Sprawdzone?} \\
+\midrule\endhead
+\bottomrule\endfoot
+Sterowanie z telefonu spoza domu & \leavevmode{\symbolfont\color{apred}\textbf{✘}} zdalny dostęp idzie przez chmurę & wniosek & \leavevmode{\symbolfont\color{apred}\textbf{✘}} tak samo & nie {\symbolfont→} B1 \\
+Aplikacja producenta w tej samej sieci & ? polecenia idą lokalnie, ale do logowania aplikacja potrzebuje chmury & polecenia lokalne: tak, 07.09; bez chmury: nie & ? & nie {\symbolfont→} B1 \\
+Strona WWW modułu w przeglądarce & \leavevmode{\symbolfont\color{apred}\textbf{✘}} moduł Tuya jej nie ma & z dokumentacji & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} działa; na produkcie Q11 jeszcze nie sprawdzona & tak, 24.09 na symulatorze; Q11 {\symbolfont→} B2 \\
+Sterowanie z komputera w sieci lokalnej & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} tylko kluczem lokalnym, który trzeba raz pobrać z konta Tuya & tak, nasza integracja Home Assistant & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} HTTP i WebSocket, bez klucza & tak, 25.09 \\
+Home Assistant & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} tuya local z naszym profilem & tak, 24.09 & ? oficjalna integracja Shelly & nie {\symbolfont→} B3 \\
+MQTT do własnego systemu & \leavevmode{\symbolfont\color{apred}\textbf{✘}} moduł łączy się tylko z brokerem w chmurze Tuya & wniosek & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} własny broker & tak, 25.09 \\
+OCPP & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & wniosek & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} przez most; bez pełnej transakcji & tak, 25.09 \\
+Moduł sam łączy się z naszym serwerem & \leavevmode{\symbolfont\color{apred}\textbf{✘}} tylko z chmurą Tuya & wniosek & ? wychodzący WebSocket & nie {\symbolfont→} B8 \\
+Godzina dla sterownika & ? przychodzi z chmury Tuya & wniosek & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} z publicznego serwera czasu & tak, 25.09, 11:51 \\
+Harmonogram & ? zależy, kto wykonuje wpis: chmura czy moduł & nie {\symbolfont→} C12 & ? do 20 zadań w module & nie {\symbolfont→} B4 \\
+Powiadomienie do własnego systemu & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & wniosek & ? webhook & nie {\symbolfont→} B5 \\
+Granice API: wartości spoza zakresu, hasło, połączenia naraz & — & — & ? & nie {\symbolfont→} B7, B9, B11 \\
+Ikona sieci na wyświetlaczu & ? & nie & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} pokazuje „chmura”, choć chmury nie ma & tak, 25.09 \\
+Aktualizacja oprogramowania modułu & \leavevmode{\symbolfont\color{apred}\textbf{✘}} tylko z chmury Tuya & wniosek & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} z portalu przez Bluetooth; komputer potrzebuje internetu, moduł nie & tak, 24.09 \\
+\end{longtable}
+
+\textbf{Wniosek.} Shelly bez chmury traci zdalny dostęp z telefonu, a zyskuje wszystko lokalnie: API, MQTT, OCPP przez most i godzinę z internetu. Większość z tego sprawdziliśmy 24–25.09. Tuya bez chmury działa lokalnie tylko u kogoś, kto pobierze klucz lokalny i postawi Home Assistant.
+
+
+\subsection{Bez internetu: Wi-Fi i sieć lokalna są, internetu nie ma}
+
+Zdalny dostęp i wszystko, co idzie przez chmurę, odpada w obu systemach, więc tych wierszy tu nie powtarzamy.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.95cm}>{\raggedright\arraybackslash}p{2.28cm}>{\raggedright\arraybackslash}p{2.35cm}>{\raggedright\arraybackslash}p{2.65cm}>{\raggedright\arraybackslash}p{3.18cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Funkcja} & \textbf{Q11 na Tuya} & \textbf{Sprawdzone?} & \textbf{Q11 na Shelly} & \textbf{Sprawdzone?} \\
+\midrule\endhead
+\bottomrule\endfoot
+Aplikacja producenta w tej samej sieci & ? polecenia idą lokalnie, ale logowanie wymaga chmury & nie {\symbolfont→} C11 & ? & nie {\symbolfont→} C1 \\
+Strona WWW modułu & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & z dokumentacji & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} działa; Q11 jeszcze nie & tak, 24.09 na symulatorze; bez internetu {\symbolfont→} C4 \\
+Sterowanie z komputera w sieci lokalnej & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} kluczem lokalnym; ruch zostaje w sieci & nie & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} ruch zostaje w sieci & tak, 25.09, ale z internetem w tle; bez {\symbolfont→} C4 \\
+Home Assistant & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} tuya local & nie & ? & nie {\symbolfont→} B3, C4 \\
+MQTT, własny broker & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & wniosek & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & tak, 25.09, z internetem w tle; bez {\symbolfont→} C4 \\
+OCPP przez most & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & wniosek & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} most w sieci lokalnej & tak, 25.09, z internetem w tle; bez {\symbolfont→} C4 \\
+Godzina dla sterownika & \leavevmode{\symbolfont\color{apred}\textbf{✘}} czas tylko z chmury Tuya & wniosek & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} tylko z lokalnym serwerem czasu; bez niego zerowa data & tak, 25.09, oba przypadki; po starcie {\symbolfont→} C3 \\
+Serwer czasu podany przez router & — & — & ? & nie {\symbolfont→} C10 \\
+Okno godzin ładowania & ? sterownik ma okno, ale nie ma godziny & nie & ? z lokalnym serwerem czasu & nie {\symbolfont→} C6 \\
+Harmonogram & ? & nie {\symbolfont→} C12 & ? z lokalnym serwerem czasu & nie {\symbolfont→} C7 \\
+Powiadomienie do własnego systemu & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & wniosek & ? webhook & nie {\symbolfont→} C7 \\
+Ikona sieci na wyświetlaczu & ? & nie & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} pokazuje „chmura” & nie {\symbolfont→} C5 \\
+Pamięć ustawień po zaniku zasilania & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} sterownik pamięta swoje & wniosek & ? dwa układy z pamięcią & nie {\symbolfont→} C8 \\
+Restart samego modułu w trakcie ładowania & ? & nie & ? & nie {\symbolfont→} C9 \\
+\end{longtable}
+
+\textbf{Wniosek.} W sieci lokalnej Shelly robi to samo co bez chmury. Jedyna różnica to godzina: trzeba lokalnego serwera czasu, a w przyszłości, jeśli Shelly to zmieni, wystarczy czas z telefonu. Tuya bez internetu to Home Assistant z kluczem lokalnym, w dodatku bez godziny dla sterownika.
+
+
+\subsection{Bez Wi-Fi: tylko telefon albo laptop obok ładowarki}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.73cm}>{\raggedright\arraybackslash}p{2.57cm}>{\raggedright\arraybackslash}p{2.35cm}>{\raggedright\arraybackslash}p{3.23cm}>{\raggedright\arraybackslash}p{2.52cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Funkcja} & \textbf{Q11 na Tuya} & \textbf{Sprawdzone?} & \textbf{Q11 na Shelly} & \textbf{Sprawdzone?} \\
+\midrule\endhead
+\bottomrule\endfoot
+Aplikacja producenta przez Bluetooth & ? moduł Tuya ma Bluetooth, sterowanie nim niesprawdzone & nie & ? aplikacja wymaga konta w chmurze & nie {\symbolfont→} D3 \\
+Strona WWW przez sieć modułu & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & z dokumentacji & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} działa bez routera i bez aplikacji & tak, 24.09 na symulatorze; Q11 {\symbolfont→} D4, D8 \\
+Polecenia z komputera przez Bluetooth & \leavevmode{\symbolfont\color{apred}\textbf{✘}} brak otwartego sposobu & wniosek & ? włączone w konfiguracji modułu & konfiguracja: tak, 25.09; działanie {\symbolfont→} D2 \\
+Godzina dla sterownika & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & wniosek & \leavevmode{\symbolfont\color{apred}\textbf{✘}} czas ustawiony ręcznie nie trafia do sterownika & tak, 25.09; czas z telefonu {\symbolfont→} D5 \\
+Okno godzin ładowania & ? bez godziny & nie & ? bez godziny & nie {\symbolfont→} D6 \\
+Harmonogram & \leavevmode{\symbolfont\color{apred}\textbf{✘}} bez sieci & wniosek & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} działa, dopóki moduł pamięta godzinę sprzed utraty sieci; po zaniku zasilania nie & nie {\symbolfont→} D8 \\
+MQTT, OCPP, Home Assistant & \leavevmode{\symbolfont\color{apred}\textbf{✘}} brak sieci & wniosek & \leavevmode{\symbolfont\color{apred}\textbf{✘}} brak sieci & wniosek \\
+Start ładowania po podłączeniu auta & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & z użytkowania & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & tak, 25.09 \\
+Limit prądu z menu ładowarki & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & z użytkowania & ? & nie {\symbolfont→} D7 \\
+Tryb, okno godzin i limit energii z menu & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} ustawienie działa; okno wymaga godziny & z użytkowania & ? & nie {\symbolfont→} C6, D7 \\
+Reset sieci z menu ładowarki & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} moduł wchodzi w parowanie & z dokumentacji Tuya & ? & nie {\symbolfont→} D9 \\
+\end{longtable}
+
+\textbf{Wniosek.} Bez Wi-Fi Tuya ma tylko menu ładowarki. Shelly ma dodatkowo stronę WWW przez własną sieć modułu, bez aplikacji i bez konta; na symulatorze to działało. Przeszkodą jest godzina: bez Wi-Fi nie ma serwera czasu, a czasu ustawionego ręcznie moduł sterownikowi nie przekazuje. Dopóki Shelly tego nie zmieni, okno godzin i harmonogramy bez Wi-Fi nie mają godziny po zaniku zasilania.
+
+
+\section{Wspólne założenia}
+
+\begin{itemize}
+\item Chmura Shelly wyłączona przez cały czas, jak dotąd.
+\item \textbf{Serwer czasu.} Na poziomie B moduł bierze godzinę z publicznego serwera w internecie, jak u klienta. Lokalny serwer czasu (kontener na 192.168.0.57) jest potrzebny na poziomie C i w testach D5–D6. Wtedy musi działać \textbf{przed} każdym włączeniem ładowarki, bo moduł pyta o czas zaraz po starcie.
+\item \textbf{Broker MQTT} (kontener na 192.168.0.57) to pośrednik: przez niego laptop, a u klienta jego system, odbiera stan modułu i wysyła polecenia. Potrzebny w teście C4.
+\item Monitor logu przez Wi-Fi uruchomiony przed każdym testem. Przy zaniku zasilania monitor sam się wznawia po powrocie modułu.
+\item Symulator auta podłączony: stany „podłączone” (9 V) i „ładuje” (6 V). Bez obciążenia prądowego, więc prąd i moc faz zostają poza programem.
+\item Wi-Fi laptopa i router zostają bez zmian. Brak internetu dla modułu uzyskujemy po stronie modułu (dokument 02).
+\item DevKit zasilany z płytki Q11: nigdy nie podłączamy jednocześnie USB.
+\item Po każdym teście wpis w tabeli wyników na końcu dokumentu: \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} działa, \leavevmode{\symbolfont\color{apamber}\textbf{◐}} działa z zastrzeżeniem, \leavevmode{\symbolfont\color{apred}\textbf{✘}} nie działa, z opisem tego, co zaobserwowano.
+\end{itemize}
+
+\section{Kolejność i czas}
+
+Kolejność idzie od bezpiecznych do ryzykownych, niezależnie od dokumentu.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{4.48cm}>{\raggedright\arraybackslash}p{1.49cm}>{\raggedright\arraybackslash}p{1.33cm}>{\raggedright\arraybackslash}p{1.82cm}>{\raggedright\arraybackslash}p{1.84cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Kolejność} & \textbf{Testy} & \textbf{Dokument} & \textbf{Ryzyko} & \textbf{Czas} & \textbf{Potrzebny użytkownik} \\
+\midrule\endhead
+\bottomrule\endfoot
+1 & B1–B3 aplikacja, strona WWW, Home Assistant & 01 & małe & 50 min & tak, telefon \\
+2 & D1–D4 Bluetooth, aplikacja przez Bluetooth, sieć modułu & 03 & małe & 1 h 35 min z narzędziem & tak, telefon \\
+3 & D5 czas z telefonu & 03 & małe & 15 min & tak, telefon \\
+4 & B4–B6 harmonogram, webhook, pamięć & 01 & małe & 1 h & nie \\
+5 & B7–B10, B12 API & 01 & małe & 1 h 30 min & nie \\
+6 & Przejście na poziom C, C1–C5 & 02 & małe & 1 h 25 min & tak, telefon i symulator \\
+7 & C8 zanik zasilania, pierwsza runda; C9 restart modułu & 02 & małe & 1 h 5 min & tak, wyłącznik \\
+8 & C6 okno godzin, C7 harmonogram i webhook & 02 & małe & 1 h 20 min & tak, menu \\
+9 & C8 druga runda & 02 & małe & 45 min & tak, wyłącznik \\
+10 & Powrót modułu na poziom B & 02 & małe & 10 min & nie \\
+11 & D6 okno bez godziny, D7 menu & 03 & małe & 50 min & tak, menu \\
+12 & B11 hasło do API & 01 & średnie & 20 min & nie \\
+13 & D8 moduł naprawdę bez Wi-Fi & 03 & średnie & 30 min & tak, telefon jako droga awaryjna \\
+14 & D9 reset sieci z menu & 03 & duże & 20 min plus ewentualne dodanie do sieci & tak \\
+\end{longtable}
+
+Razem około 12 godzin, czyli trzy dni pracy. Testy opcjonalne C10–C12 poza tym czasem. Po wszystkim: wyniki do analizy GAP v4 i uzupełnienie dokumentacji dla fabryki o wyniki C8 i D9.
+
+
+\section{Czego program nie obejmuje}
+
+\begin{itemize}
+\item Prąd i moc faz pod obciążeniem, pełna sesja z energią: wymaga obciążenia, osobny test.
+\item Zapis trybu, okna godzin i limitu energii z modułu: wymaga nowych pól w produkcie, osobny etap po C6.
+\item Aktualizacja sterownika przez moduł: wymaga pliku od fabryki.
+\item Ekran ładowarki w aplikacji Shelly: sprawa portalu, nie łączności.
+\end{itemize}
+
+\section{Stare numery testów}
+
+Plan v1–v3 numerował testy T0–T7. Odpowiedniki:
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.71cm}>{\raggedright\arraybackslash}p{3.71cm}>{\raggedright\arraybackslash}p{3.71cm}>{\raggedright\arraybackslash}p{3.71cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Stary numer} & \textbf{Nowy} & \textbf{Stary numer} & \textbf{Nowy} \\
+\midrule\endhead
+\bottomrule\endfoot
+T0a & C11 & T4a, T4e & B4 \\
+T0b & C12 & T4b, T4c & B5 \\
+T1a & D1 & T4d & B6 \\
+T1b & D2 & T5a–T5i & C8 \\
+T1c & D3 & T5j & C9 \\
+T1d, T1e & D8 & T6 & D9 \\
+T1f & D4 & T7a & B7 \\
+T1g & C1 & T7b & B8 \\
+T2a, T2c & C2 & T7c & B9 \\
+T2b & D7 & T7d & B10 \\
+T2d & C3 & T7e & B11 \\
+T2e & C5 & T7f & B12 \\
+T2f & C4 & T7g & B3 \\
+T3a, T3c & C6 & nowe & B1, B2, C7, C10, D5 \\
+T3b & D6 &  &  \\
+T3d & D7 &  &  \\
+\end{longtable}
+
+\end{document}

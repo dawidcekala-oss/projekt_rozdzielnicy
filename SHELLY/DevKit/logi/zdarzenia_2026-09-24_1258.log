@@ -1,0 +1,46 @@
+12:58:11  Monitor DevKitu na COM5. Ustawienia na starcie:
+12:58:11      Symulacja: samochód: A, odłączony
+12:58:11      Symulacja: awaria uziemienia: nie
+12:58:11      Ładowanie włączone: tak
+12:58:11      Limit prądu: 16 A
+12:58:11      Tryb ładowania: Natychmiast
+12:58:11      Energia docelowa: 10 kWh
+12:58:11      Początek harmonogramu: 22 h
+12:58:11      Koniec harmonogramu: 6 h
+12:58:11      Stan ładowarki: Wolna
+12:58:11      Sygnał Control Pilot: 12 V: brak auta
+12:58:11      Błędy: brak
+12:58:11      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 37,1 °C
+12:58:12      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 36,7 °C
+12:58:24      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 34,4 °C
+12:58:36      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 32,5 °C
+12:58:46      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 31,1 °C
+12:58:58      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 29,8 °C
+12:59:10      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 28,7 °C
+12:59:22      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 27,7 °C
+12:59:34      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 26,9 °C
+12:59:46      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 26,3 °C
+12:59:56      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 25,8 °C
+13:00:08      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 25,3 °C
+13:00:20      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 24,9 °C
+13:00:32      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 24,6 °C
+13:00:46      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 24,3 °C
+13:01:02      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 24 °C
+13:01:16      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 23,8 °C
+13:01:34      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 23,6 °C
+13:01:38  [SHC] polecenie shc.channelready
+13:01:44      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 23,5 °C
+13:01:58      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 23,4 °C
+13:02:01  [strona WWW] polecenie RPC.Ping
+13:02:14      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 23,3 °C
+13:02:36      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 23,2 °C
+13:02:59  !!  E shos_rpc_inst.c:223     No handler for Service.ListConfigOptions
+13:03:10      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 23,1 °C
+13:03:54  [strona WWW] polecenie boolean.setconfig
+13:04:22      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 1,03 kWh | temperatura 23 °C
+13:11:40  [strona WWW] polecenie Group.Set
+13:12:22  [strona WWW] polecenie schedule.list
+13:13:25  [strona WWW] polecenie boolean.set
+13:13:25  [strona WWW] Ładowanie włączone: tak na nie
+13:13:28  [strona WWW] polecenie Group.Set
+13:13:43  [strona WWW] polecenie schedule.list

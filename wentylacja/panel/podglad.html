@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Podgląd panelu biura</title>
+<style>
+  :root{
+    --primary-text-color:#e9ecf1;
+    --card-background-color:#181a20;
+    --divider-color:rgba(255,255,255,.09);
+    --state-climate-cool-color:#3fb6f5;
+    --error-color:#f05252;
+  }
+  body{
+    margin:0; padding:26px; min-height:100vh;
+    background:radial-gradient(1200px 600px at 20% -10%, #20242e, #101116 60%);
+    font-family:Inter,Roboto,system-ui,sans-serif; color:var(--primary-text-color);
+  }
+  .pasek{ display:flex; gap:10px; align-items:center; max-width:1180px; margin:0 auto 16px; flex-wrap:wrap; }
+  .pasek h1{ font-size:.9rem; font-weight:600; margin:0; opacity:.6; letter-spacing:.4px; }
+  .rozp{ flex:1 }
+  .tryb{
+    padding:7px 14px; border-radius:999px; cursor:pointer; font-size:.76rem; font-weight:550;
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:inherit;
+  }
+  .tryb.akt{ background:rgba(63,182,245,.18); border-color:rgba(63,182,245,.4); color:#7fd0fb; }
+  .scena{ max-width:1180px; margin:0 auto; }
+  .stopka{ max-width:1180px; margin:14px auto 0; font-size:.72rem; opacity:.4; line-height:1.6; }
+  .jasny{ --primary-text-color:#1b1e24; --card-background-color:#fff; --divider-color:rgba(0,0,0,.1); }
+  body.jasny{ background:radial-gradient(1200px 600px at 20% -10%, #eef1f6, #dfe3ea 60%); }
+</style>
+</head>
+<body>
+  <div class="pasek">
+    <h1>PODGLĄD KARTY — dane symulowane</h1>
+    <div class="rozp"></div>
+    <button class="tryb akt" id="tDzis">Stan dzisiejszy</button>
+    <button class="tryb" id="tDocel">Stan docelowy</button>
+    <button class="tryb" id="tMotyw">Motyw jasny</button>
+  </div>
+  <div class="scena"><biuro-panel id="karta"></biuro-panel></div>
+  <p class="stopka">
+    Podgląd offline: encje są udawane, wywołania usług trafiają do konsoli.
+    „Stan dzisiejszy" = jeden zamontowany moduł. „Stan docelowy" = wszystkie dziewięć.
+  </p>
+
+<script type="module">
+import './biuro-panel.js';
+
+const E = (id, nazwa) => 'sensor.' + id;
+
+function encjeDla(pre) {
+  return {
+    pracuje:      `binary_sensor.${pre}_pracuje`,
+    online:       `binary_sensor.${pre}_sonda_online`,
+    alarm:        `binary_sensor.${pre}_sterowanie_nieskuteczne`,
+    klapy:        `binary_sensor.${pre}_klapy`,
+    bieg:         `sensor.${pre}_wentylator`,
+    temperatura:  `sensor.${pre}_temperatura`,
+    wymiennik:    `sensor.${pre}_wymiennik`,
+    potwierdzenie:`sensor.${pre}_potwierdzenie`,
+    wlacznik:     `switch.${pre}`,
+    nastawa:      `number.${pre}_nastawa`,
+    tryb:         `select.${pre}_tryb`,
+    bieg_zadany:  `select.${pre}_bieg`,
+  };
+}
+
+// --- udawany hass -----------------------------------------------------------
+const stany = {};
+function wpisz(pre, o) {
+  stany[`binary_sensor.${pre}_pracuje`]  = { state: o.pracuje ? 'on' : 'off' };
+  stany[`binary_sensor.${pre}_sonda_online`] = { state: o.online === false ? 'off' : 'on' };
+  stany[`binary_sensor.${pre}_sterowanie_nieskuteczne`] = { state: o.alarm ? 'on' : 'off' };
+  stany[`binary_sensor.${pre}_klapy`]    = { state: o.klapy ? 'on' : 'off' };
+  stany[`sensor.${pre}_wentylator`]      = { state: o.bieg || 'stoi' };
+  stany[`sensor.${pre}_temperatura`]     = { state: String(o.t) };
+  stany[`sensor.${pre}_wymiennik`]       = { state: String(o.w) };
+  stany[`sensor.${pre}_potwierdzenie`]   = { state: o.potw || 'brak' };
+  stany[`switch.${pre}`]                 = { state: o.pracuje ? 'on' : 'off' };
+  stany[`number.${pre}_nastawa`]         = { state: String(o.nastawa) };
+  stany[`select.${pre}_tryb`]            = { state: o.tryb || 'chlodzenie' };
+  stany[`select.${pre}_bieg`]            = { state: o.biegZad || 'auto' };
+}
+
+stany['automation.gree_sterowanie_nieskuteczne'] = {
+  state: 'on',
+  attributes: { friendly_name: 'Klimatyzacja — komenda nie doszła', last_triggered: null },
+};
+stany['automation.nocne_wylaczenie'] = {
+  state: 'on',
+  attributes: { friendly_name: 'Wyłącz wszystko po 19:00', last_triggered: '2026-08-30T19:00:12+02:00' },
+};
+stany['automation.poranne_chlodzenie'] = {
+  state: 'off',
+  attributes: { friendly_name: 'Schłodź salę przed 8:00', last_triggered: '2026-08-28T07:30:04+02:00' },
+};
+
+const hass = {
+  states: stany,
+  callService(dom, usl, dane) {
+    console.log('callService', dom, usl, dane);
+    // prymitywna reakcja, żeby podgląd był interaktywny
+    const id = dane.entity_id;
+    if (dom === 'switch') stany[id] = { state: usl === 'turn_on' ? 'on' : 'off' };
+    if (dom === 'number') stany[id] = { state: String(dane.value) };
+    if (dom === 'select') stany[id] = { state: dane.option };
+    if (dom === 'automation') stany[id] = { ...stany[id], state: usl === 'turn_on' ? 'on' : 'off' };
+    karta.hass = hass;
+  },
+};
+
+// --- konfiguracja karty -----------------------------------------------------
+const KONF_DZIS = {
+  jednostki: [
+    { slot: 'k1', nazwa: 'Hala — płd.-zach.', encje: encjeDla('klimatyzacja_biuro') },
+    { slot: 'k2', nazwa: 'Hala — płn.-zach.' },
+    { slot: 'k3', nazwa: 'Hala — północ' },
+    { slot: 'k4', nazwa: 'Open space' },
+    { slot: 'j1', nazwa: 'Lada — lewa' },
+    { slot: 'j2', nazwa: 'Lada — prawa' },
+    { slot: 'j3', nazwa: 'Sala 1' },
+    { slot: 'j4', nazwa: 'Sala 2' },
+    { slot: 'j5', nazwa: 'Sala 3' },
+  ],
+};
+
+const OPISY = {
+  k1: 'Hala — płd.-zach.', k2: 'Hala — płn.-zach.', k3: 'Hala — północ', k4: 'Open space',
+  j1: 'Lada — lewa', j2: 'Lada — prawa', j3: 'Sala 1', j4: 'Sala 2', j5: 'Sala 3',
+};
+const KONF_DOCEL = {
+  jednostki: Object.keys(OPISY).map((s) => ({
+    slot: s, nazwa: OPISY[s], encje: encjeDla(s === 'k1' ? 'klimatyzacja_biuro' : 'klima_' + s),
+  })),
+};
+
+function ustawDane(docelowo) {
+  wpisz('klimatyzacja_biuro', { pracuje: true, bieg: 'sredni', biegZad: 'sredni', t: 22, w: 4, nastawa: 24, klapy: true, potw: 'tak' });
+  if (docelowo) {
+    wpisz('klima_k2', { pracuje: true,  bieg: 'niski',  biegZad: 'niski',  t: 23, w: 9,  nastawa: 23, klapy: true,  potw: 'tak' });
+    wpisz('klima_k3', { pracuje: false, bieg: 'stoi',   biegZad: 'auto',   t: 24, w: 24, nastawa: 24, klapy: false, potw: 'brak' });
+    wpisz('klima_k4', { pracuje: true,  bieg: 'wysoki', biegZad: 'wysoki', t: 25, w: 6,  nastawa: 22, klapy: true,  potw: 'tak' });
+    wpisz('klima_j1', { pracuje: true,  bieg: 'niski',  biegZad: 'auto',   t: 22, w: 11, nastawa: 23, klapy: true,  potw: 'tak' });
+    wpisz('klima_j2', { pracuje: false, bieg: 'stoi',   biegZad: 'auto',   t: 23, w: 22, nastawa: 24, klapy: false, potw: 'brak' });
+    wpisz('klima_j3', { pracuje: true,  bieg: 'sredni', biegZad: 'sredni', t: 21, w: 7,  nastawa: 21, klapy: true,  potw: 'tak' });
+    wpisz('klima_j4', { pracuje: false, bieg: 'stoi',   biegZad: 'auto',   t: 24, w: 23, nastawa: 24, klapy: false, alarm: true, potw: 'nie' });
+    wpisz('klima_j5', { pracuje: true,  bieg: 'niski',  biegZad: 'niski',  t: 22, w: 10, nastawa: 23, klapy: true,  online: false });
+  }
+}
+
+const karta = document.getElementById('karta');
+function zaladuj(docelowo) {
+  Object.keys(stany).forEach((k) => { if (!k.startsWith('automation.')) delete stany[k]; });
+  ustawDane(docelowo);
+  karta.setConfig(docelowo ? KONF_DOCEL : KONF_DZIS);
+  karta.hass = hass;
+}
+zaladuj(false);
+
+document.getElementById('tDzis').onclick = (e) => { przelacz(e.target); zaladuj(false); };
+document.getElementById('tDocel').onclick = (e) => { przelacz(e.target); zaladuj(true); };
+function przelacz(btn) {
+  document.querySelectorAll('.tryb').forEach((b) => { if (b.id !== 'tMotyw') b.classList.remove('akt'); });
+  btn.classList.add('akt');
+}
+document.getElementById('tMotyw').onclick = (e) => {
+  document.body.classList.toggle('jasny');
+  e.target.textContent = document.body.classList.contains('jasny') ? 'Motyw ciemny' : 'Motyw jasny';
+};
+</script>
+</body>
+</html>

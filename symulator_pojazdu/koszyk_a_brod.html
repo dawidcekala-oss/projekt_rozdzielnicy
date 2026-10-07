@@ -1,0 +1,173 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Koszyk a_brod — symulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#F5F7F9; --surface:#FFFFFF; --surface-2:#EDF1F5;
+  --ink:#131820; --ink-2:#525E6E; --ink-3:#7C8797;
+  --line:#DCE2EA; --line-2:#C6CEDA;
+  --accent:#B5470B; --accent-soft:#FBEDE3;
+  --opt:#4A6A8A; --opt-soft:#E7EEF5; --ok:#2E7D46;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1218; --surface:#161C25; --surface-2:#1D242F;
+    --ink:#E6EAF0; --ink-2:#9AA5B4; --ink-3:#77828F;
+    --line:#26303C; --line-2:#33404F;
+    --accent:#F0925A; --accent-soft:#2A1D14;
+    --opt:#8FB0CE; --opt-soft:#182533; --ok:#7BC594;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1218; --surface:#161C25; --surface-2:#1D242F;
+  --ink:#E6EAF0; --ink-2:#9AA5B4; --ink-3:#77828F;
+  --line:#26303C; --line-2:#33404F;
+  --accent:#F0925A; --accent-soft:#2A1D14;
+  --opt:#8FB0CE; --opt-soft:#182533; --ok:#7BC594;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:40px 20px 72px;display:flex;flex-direction:column;gap:24px}
+header{display:flex;flex-direction:column;gap:12px}
+h1{font-family:Archivo,system-ui,sans-serif;font-weight:700;
+  font-size:clamp(1.6rem,4vw,2.1rem);letter-spacing:-.02em;margin:0}
+.sumy{display:flex;flex-wrap:wrap;gap:10px}
+.suma{display:flex;align-items:baseline;gap:8px;background:var(--surface);
+  border:1px solid var(--line);border-radius:10px;padding:9px 14px}
+.suma b{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1rem;
+  font-variant-numeric:tabular-nums}
+.suma span{font-size:.8rem;color:var(--ink-2)}
+.suma.mocna{border-color:var(--line-2);background:var(--surface-2)}
+.klucz{font-size:.85rem;color:var(--ink-2);margin:0}
+.znacznik{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  font-weight:600;padding:1px 6px;border-radius:5px;background:var(--opt-soft);
+  color:var(--opt);border:1px solid var(--line);margin-left:6px;vertical-align:1px}
+.sklep{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.sklep-gora{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 18px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.sklep-nazwa{font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:1.05rem}
+.sklep-nazwa a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line-2)}
+.sklep-nazwa a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.sklep-nazwa small{display:block;font-family:"IBM Plex Sans",sans-serif;font-weight:400;
+  font-size:.78rem;color:var(--ink-2);margin-top:3px}
+.sklep-suma{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1.05rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.sklep-suma small{display:block;font-family:"IBM Plex Sans",sans-serif;font-weight:500;
+  font-size:.74rem;color:var(--ok)}
+.poz{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:14px;
+  padding:14px 18px;border-top:1px solid var(--line);color:inherit;text-decoration:none;
+  transition:background .12s ease}
+.sklep-gora + .poz{border-top:none}
+a.poz:hover{background:var(--accent-soft)}
+a.poz:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.nazwa{font-weight:500;line-height:1.35}
+.nazwa small{display:block;font-weight:400;font-size:.79rem;color:var(--ink-3);margin-top:3px}
+.ile{font-family:"IBM Plex Mono",monospace;font-size:.85rem;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.cena{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.95rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap;min-width:62px;text-align:right}
+a.poz::after{content:"↗";color:var(--ink-3);font-size:.9rem;grid-column:4}
+a.poz:hover::after{color:var(--accent)}
+.razem{display:flex;justify-content:space-between;align-items:baseline;
+  padding:14px 18px;border-top:2px solid var(--line-2);background:var(--surface-2);
+  font-weight:600}
+.razem b{font-family:"IBM Plex Mono",monospace;font-size:1.1rem;font-variant-numeric:tabular-nums}
+.uwaga{background:var(--surface);border:1px dashed var(--line-2);border-radius:14px;
+  padding:16px 18px;font-size:.88rem;color:var(--ink-2)}
+.uwaga b{color:var(--ink)}
+.uwaga ul{margin:8px 0 0;padding-left:20px}
+.uwaga li{margin:5px 0}
+@media (max-width:620px){
+  .poz{grid-template-columns:1fr auto;gap:10px;padding:12px 14px}
+  .ile{grid-column:1;grid-row:2;font-size:.8rem}
+  .cena{grid-column:2;grid-row:1}
+  a.poz::after{grid-column:2;grid-row:2;text-align:right}
+  .sklep-gora{padding:12px 14px}
+}
+footer{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;
+  font-size:.82rem;color:var(--ink-3);border-top:1px solid var(--line);padding-top:16px}
+footer span{font-family:"IBM Plex Mono",monospace}
+</style>
+
+<div class="wrap">
+
+<header>
+  <h1>Koszyk: a_brod</h1>
+  <div class="sumy">
+    <div class="suma mocna"><b>60,17 zł</b><span>5 pozycji &middot; jeden sprzedawca</span></div>
+    <div class="suma"><b>0 zł</b><span>dostawa (próg 49,90 zł)</span></div>
+    <div class="suma"><b>jutro</b><span>przy zamówieniu do 14:00</span></div>
+  </div>
+  <p class="klucz">Części do symulatora pojazdu. Kliknięcie wiersza otwiera ofertę.</p>
+</header>
+
+<section class="sklep">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa"><a href="https://allegro.pl/uzytkownik/a_brod">a_brod</a>
+      <small>Super Sprzedawca &middot; dostawa jutro (zamówienie do 14:00) &middot; darmowa dostawa powyżej 49,90 zł</small>
+    </div>
+    <div class="sklep-suma">60,17 zł<small>powyżej progu</small></div>
+  </div>
+
+  <a class="poz" href="https://allegro.pl/produkt/jrc23f-hfd23-5v-przekaznik-fbb6b557-8bb0-47dd-9570-9a45a3d285e8">
+    <span class="nazwa">Przekaźnik sygnałowy 5 V, styk przełączny (JRC23F / HFD23)
+      <small>pięć sztuk pracuje w układzie, dwie na zapas. Musi to być przekaźnik <b>sygnałowy</b>, a nie gotowy moduł z niebieską kostką na 10 A — tamten ma styki srebrne, które przy prądzie kilku miliamperów przestają przewodzić. Sprawdź w opisie, czy styki są pozłacane; jeśli nie ma takiej informacji, pewnym zamiennikiem jest Omron G5V-2 na 5 V, około 15 zł za sztukę.</small></span>
+    <span class="ile">7 × 5,87</span>
+    <span class="cena">41,09</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/produkt/pc814-ltv814a-transoptor-2-szt-071e5518-60b9-4541-bb8b-6260993ba9e7">
+    <span class="nazwa">Transoptor PC814 (opakowanie 2 szt.)
+      <small>oddziela elektronikę od sieci i wykrywa obecność napięcia na każdej z trzech faz. Ma wejście przystosowane do prądu przemiennego, więc nie trzeba prostownika. Potrzebne trzy sztuki, stąd dwa opakowania — czwarta zostaje na zapas.</small></span>
+    <span class="ile">2 × 3,37</span>
+    <span class="cena">6,74</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/produkt/koncowka-mocy-prc-uln2003-dip16-c7a6a92c-d554-496f-9cea-7a619fb6354c">
+    <span class="nazwa">Układ ULN2003 w obudowie DIP-16<span class="znacznik">zapas</span>
+      <small>steruje cewkami wszystkich pięciu przekaźników z pinów procesora i ma wbudowane diody gaszące. Jeden masz już w zapasach, te dwa to rezerwa — kość łatwo uszkodzić przy pomyłce w podłączeniu, a kosztuje tyle co nic.</small></span>
+    <span class="ile">2 × 3,16</span>
+    <span class="cena">6,32</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/produkt/rezystor-1-2w-0-5w-270-ohm-1-20szt-508c4f1e-016e-4f52-9d40-5a15a8746a49">
+    <span class="nazwa">Rezystor 270 Ω, tolerancja 1%, 0,5 W (opakowanie 20 szt.)
+      <small>gałąź stanu, w którym pojazd żąda wentylacji. Przy tolerancji 1% mieścimy się w oknie normy bez dobierania miernikiem.</small></span>
+    <span class="ile">1 × 3,00</span>
+    <span class="cena">3,00</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/produkt/rezystor-1-4-0-25w-120-kohm-100-szt-183-6f9130a4-2626-4de3-9f0e-4386619827a7">
+    <span class="nazwa">Rezystor 120 kΩ, 0,25 W (opakowanie 100 szt.)
+      <small>dzielnik toru pomiarowego linii pilota oraz ograniczenie prądu transoptorów wykrywających fazy — w obu miejscach idzie po kilka sztuk, więc opakowanie starcza z zapasem.</small></span>
+    <span class="ile">1 × 3,02</span>
+    <span class="cena">3,02</span>
+  </a>
+
+  <div class="razem">
+    <span>Razem</span>
+    <b>60,17 zł</b>
+  </div>
+</section>
+
+<div class="uwaga">
+  <b>Czego w tym koszyku nie ma — i gdzie to jest:</b>
+  <ul>
+    <li><b>Płytka Nano z gniazdem USB, dwie płytki ESP32, wyświetlacz, grzybek awaryjny, przycisk, brzęczyk i przekładniki prądowe</b> — tego a_brod nie prowadzi (ESP32 nie ma w ogóle, tylko gołe moduły ESP8266 bez gniazda USB). Wszystko to jest w drugim koszyku u sprzedawcy elektroweb.</li>
+    <li><b>Gniazdo siłowe, przewody 6 mm², tulejki i dławnica</b> — do hurtowni elektrycznej, od ręki i taniej niż z wysyłką.</li>
+    <li><b>Rezystory 2,7 kΩ i 1,3 kΩ</b> tworzące dwa pozostałe stany — nie kupujemy. Wybierz je z własnej szuflady mierząc multimetrem: dopuszczalne zakresy to 2660–2820 Ω oraz 1261–1339 Ω. Tak trafisz bliżej niż kupionym w ciemno rezystorem 1%.</li>
+  </ul>
+</div>
+
+<footer>
+  <div>1 sprzedawca &middot; 5 pozycji &middot; dostawa jutro</div>
+  <div><span>2026-09-17</span> &middot; ceny i dostępność sprawdzone tego dnia</div>
+</footer>
+
+</div>

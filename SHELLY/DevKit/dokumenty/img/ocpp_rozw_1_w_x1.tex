@@ -1,0 +1,51 @@
+% !TEX program = xelatex
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\usepackage{xcolor}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc,shapes.geometric}
+\definecolor{tuya}{HTML}{B45309}
+\definecolor{shelly}{HTML}{0E7C86}
+\definecolor{ocpp}{HTML}{15803D}
+\definecolor{inny}{HTML}{1D4ED8}
+\definecolor{szary}{HTML}{6B7280}
+\definecolor{nasz}{HTML}{7C3AED}
+\tikzset{
+  box/.style={draw=#1, fill=#1!9, rounded corners=3pt, line width=0.8pt, align=center, font=\small, inner sep=4pt, minimum height=1.25cm, minimum width=2.9cm},
+  grp/.style={draw=#1, dashed, rounded corners=7pt, line width=0.8pt, inner sep=7pt},
+  glab/.style={font=\scriptsize\bfseries, text=#1, anchor=south west, inner sep=2pt},
+  lang/.style={font=\scriptsize, text=#1, fill=white, inner sep=1.5pt, align=center},
+  link/.style={{Stealth[length=2.4mm]}-{Stealth[length=2.4mm]}, line width=1.3pt, #1},
+  note/.style={font=\scriptsize, text=szary, align=left},
+}
+\newcommand{\legenda}[2]{%
+  \node[anchor=north west, font=\scriptsize, align=left] at (#1,#2) {%
+  {\color{tuya}\rule[0.5ex]{0.7cm}{1.3pt}}\ język Tuya\quad
+  {\color{shelly}\rule[0.5ex]{0.7cm}{1.3pt}}\ język Shelly\quad
+  {\color{ocpp}\rule[0.5ex]{0.7cm}{1.3pt}}\ OCPP\quad
+  {\color{szary}\rule[0.5ex]{0.7cm}{0.8pt}}\ niezależne od OCPP\quad
+  {\color{nasz}\rule{0.32cm}{0.32cm}}\ tu działa tłumacz OCPP};}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[box=tuya] (mcu) at (0,0) {\textbf{Sterownik Q11}\\mikrokontroler\\ładuje auto};
+\node[box=nasz, minimum width=4.2cm] (sys) at (4.6,0.95) {\textbf{System Shelly}, pisze Shelly\\\textbf{+ OCPP}, dopisane przez Shelly};
+\node[box=shelly, minimum width=4.2cm] (skr) at (4.6,-0.95) {\textbf{Nasz skrypt usługi}, piszemy my\\tłumacz punktów danych ↔ pola\\bez zmian względem testu};
+\draw[shelly, line width=0.8pt, {Stealth[length=2mm]}-{Stealth[length=2mm]}] (sys) -- node[font=\scriptsize, right=2pt, text=shelly] {pola, np. limit prądu} (skr);
+\begin{scope}[on background layer]
+\node[grp=shelly, fit=(sys)(skr)] (x1) {};
+\node[grp=tuya, fit=(mcu)(x1)] (q) {};
+\end{scope}
+\node[glab=shelly] at (x1.north west) {Moduł X1};
+\node[glab=tuya] at (q.north west) {Ładowarka Q11 u klienta};
+\draw[link=tuya] (mcu) -- node[lang=tuya, above=1pt] {Tuya} (x1.west |- mcu);
+\node[box=szary, minimum width=2.1cm] (rt) at (9.6,0.95) {Router\\klienta};
+\node[box=ocpp, minimum width=3.3cm] (csms) at (14.2,0.95) {\textbf{Serwer operatora}\\CSMS\\karty, rozliczenia,\\zdalne sterowanie};
+\draw[link=ocpp] (sys) -- node[lang=ocpp, above=1pt] {OCPP} (rt);
+\draw[link=ocpp] (rt) -- node[lang=ocpp, above=1pt] {OCPP} node[lang=ocpp, below=1pt] {internet} (csms);
+\node[note, anchor=north west] at (-1.5,-2.4) {Tłumacz OCPP, dziś \texttt{most\_q11.py} na laptopie, przenosi się do systemu w module X1. Pisze go i utrzymuje Shelly.\\Instalator wpisuje w ładowarce adres serwera operatora, identyfikator ładowarki i hasło.};
+\legenda{-1.5}{-3.2}
+
+\end{tikzpicture}
+\end{document}

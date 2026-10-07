@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>AP-T — karta danych technicznych (v1, dane projektowe)</title>
+<style>
+:root{--navy:#102a54;--red:#c81e28;--soft:#f4f6f9;--line:#d8dee6;--ok:#1a7f4b;--warn:#b26a00}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",system-ui,Arial,sans-serif;margin:0;color:#1b2430;font-size:13.5px;line-height:1.45}
+.wrap{max-width:960px;margin:0 auto;padding:24px 30px 56px}
+.head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:4px solid var(--navy);padding-bottom:12px;margin-bottom:14px}
+h1{color:var(--navy);font-size:22px;margin:0}
+h1 .b{color:var(--red)}
+.sub{color:#555;font-size:12.5px;margin-top:4px;max-width:640px}
+.stamp{background:#fff7e6;border:1px solid #f0ddb0;color:var(--warn);border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;text-align:center}
+h2{color:var(--navy);font-size:15.5px;border-bottom:2px solid var(--line);padding-bottom:3px;margin:20px 0 8px}
+table{border-collapse:collapse;width:100%;font-size:12.4px;margin:6px 0}
+th{background:var(--navy);color:#fff;padding:5px 8px;text-align:left}
+td{border:1px solid var(--line);padding:4.5px 8px;vertical-align:top}
+tr:nth-child(even) td{background:var(--soft)}
+td.k{width:270px;color:#555}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.foot{color:#888;font-size:10.5px;margin-top:16px;border-top:1px solid var(--line);padding-top:7px}
+.price{white-space:nowrap;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="head">
+<div>
+<h1><span class="b">AMPERE POINT</span> AP-T „Ampere Tower" — karta danych</h1>
+<div class="sub">Uniwersalny słupek zasilająco-ładujący: gniazda Schuko/CEE • dock ładowarki przenośnej Q/P/B • wallbox • szafa AMP-BOX — na jednej platformie, z aparaturą zabezpieczającą przy stanowisku i fundamentem systemowym.</div>
+</div>
+<div class="stamp">DANE PROJEKTOWE v1<br>do walidacji na prototypie α<br>25.07.2026</div>
+</div>
+
+<div class="grid">
+<div>
+<h2>Dane mechaniczne</h2>
+<table>
+<tr><td class="k">Przekrój / wysokość korpusu</td><td><b>250 × 160 mm / 1450 mm</b> nad poziom terenu</td></tr>
+<tr><td class="k">Wysokość całkowita z daszkiem</td><td>~1530 mm</td></tr>
+<tr><td class="k">Daszek</td><td>420 × 340 mm, spadek 10° do tyłu, wysunięcie 180 mm przed lico frontu</td></tr>
+<tr><td class="k">Materiał (etap 1 / etap 2)</td><td>blacha EN AW-5754 3 mm, konstrukcja skręcana / profil wytłaczany EN AW-6060 T66 z kanałami T-slot</td></tr>
+<tr><td class="k">Powłoka</td><td>lakier proszkowy poliestrowy kl. 2 (Qualicoat), RAL 9005 struktura; daszek RAL 9006; opcja anodowanie (etap 2), opcja anty-graffiti</td></tr>
+<tr><td class="k">Masa platformy</td><td>15–17 kg (bez aparatury i urządzeń)</td></tr>
+<tr><td class="k">Stopień ochrony</td><td>system IP44; komora aparatowa <b>IP54</b> (membrana wyrównawcza); szczelność funkcjonalna w osprzęcie (gniazda IP44/54, urządzenia IP65/66)</td></tr>
+<tr><td class="k">Odporność mechaniczna</td><td>cel <b>IK10</b> (korpus 3 mm alu + panele); ochrona przed najazdem: odbojnica (akcesorium)</td></tr>
+<tr><td class="k">Temperatura pracy</td><td>−30…+50 °C; pełne 32 A latem dzięki osłonie daszkiem (bez bezpośredniego słońca na urządzeniu)</td></tr>
+<tr><td class="k">Raster montażowy</td><td>pasy nitonakrętek M6 co 25 mm (rozstaw pasów 140 mm), przód + tył (DUO); boki co 50 mm (haki)</td></tr>
+<tr><td class="k">Zamknięcia</td><td>komora aparatowa: kaseta z wkładką trójkąt 8 mm (serwis) wymienną na wkładkę patentową (klient); panele: M6 imbus/Torx</td></tr>
+</table>
+
+<h2>Nośności (wartości projektowe)</h2>
+<table>
+<tr><td class="k">Panel P-UNI (wallbox)</td><td>15 kg</td></tr>
+<tr><td class="k">Panel P-AMP (szafa AMP-BOX)</td><td>25 kg (rozstaw otworów 250×150 mm)</td></tr>
+<tr><td class="k">Hak kablowy</td><td>15 kg statycznie (test 30 kg szarpnięcie); ramię 150 mm, promień siodła 80 mm — zwój 5–7,5 m kabla 22 kW</td></tr>
+<tr><td class="k">Dock ładowarki Q/P/B</td><td>kołyska nośna + prowadnica ogona CEE; zdejmowanie bez narzędzi</td></tr>
+</table>
+</div>
+
+<div>
+<h2>Dane elektryczne</h2>
+<table>
+<tr><td class="k">Napięcie / układ sieci</td><td>230/400 V AC 50 Hz; TN-S (zakaz PEN w obwodzie punktu) lub TT</td></tr>
+<tr><td class="k">Prąd znamionowy zestawu</td><td>do 40 A (jedno stanowisko) / do 63 A (DUO z DLB)</td></tr>
+<tr><td class="k">Przyłącze (strefa S1)</td><td>zaciski przelotowe 5×16 mm² (loop-in/loop-out — łańcuch słupków); dławnice M25/M32; śruba PE M8; zapas kabla 1,0–1,5 m wewnątrz cokołu</td></tr>
+<tr><td class="k">Komora aparatowa (S2)</td><td>2× TH35 (2×9 modułów), 300–700 mm nad terenem, okienko odczytowe, membrana STEGO DA 084; opcja grzałka 15 W z termostatem</td></tr>
+<tr><td class="k">Zabezpieczenia punktu EV</td><td>RCD 4P 40 A 30 mA <b>typ A</b> + MCB C32 3P (RDC-DD 6 mA DC wbudowany w ładowarki AMPERE POINT) — 1 punkt = 1 obwód</td></tr>
+<tr><td class="k">Zabezpieczenia gniazd</td><td>RCBO B16 30 mA typ A na obwód gniazd (wg PN-HD 60364-7-708); max 4 gniazda w zestawie</td></tr>
+<tr><td class="k">Ochrona przepięciowa</td><td>SPD typ 2 (standard przy trasie &gt;10 m od rozdzielnicy)</td></tr>
+<tr><td class="k">Pomiar energii (FIRMA/PRO)</td><td>licznik 3f DIN 100 A, MID, RS-485 Modbus (np. Eastron SDM72D-M V2)</td></tr>
+<tr><td class="k">Komunikacja</td><td>przepust na skrętkę RS-485 (DLB ładowarek AP do 4 stacji), osobna rurka</td></tr>
+<tr><td class="k">Wysokości interfejsów</td><td>gniazda 950–1050 mm; holster T2 850 mm; hak 950 mm; RFID/wyświetlacz 1150–1335 mm (regulacja co 25 mm); zakres dostępności wg UDT</td></tr>
+</table>
+
+<h2>Posadowienie</h2>
+<table>
+<tr><td class="k">A. Fundament AP-F (zalecany)</td><td>prefabrykat żelbetowy 250×250×700 mm (~105 kg), kanał centralny, 2× wejście DVK50, 4 szpilki M12 zatopione</td></tr>
+<tr><td class="k">Rozstaw kotew (standard AP)</td><td><b>200 × 120 mm, M12</b> — utrzymywany między generacjami produktu</td></tr>
+<tr><td class="k">B. Kotwy chemiczne</td><td>beton min. C20/25 gr. ≥150 mm; Ø14×110; nigdy w samą kostkę</td></tr>
+<tr><td class="k">C. Śruby ziemne</td><td>2–3× Ø66×865 przez ramę adaptera; montaż &lt;1 h, odwracalny</td></tr>
+<tr><td class="k">Momenty</td><td>nakrętki fundamentowe M12: 40–45 Nm (kontrola po 24 h); panele M6: 5–6 Nm; podlewka niskoskurczowa pod płytą obowiązkowa</td></tr>
+<tr><td class="k">Kabel zasilający</td><td>YKY(żo)/YKXS wg tabeli doboru (11 kW: 5×4; 22 kW: 5×6 do 25 m, 5×10 do 80 m); rura DVK50/75 wyprowadzona +250 mm nad fundament</td></tr>
+</table>
+</div>
+</div>
+
+<h2>Warianty (SKU)</h2>
+<table>
+<tr><th>SKU</th><th>Panele / wyposażenie</th><th>Aparatura standard</th><th>Zastosowanie</th></tr>
+<tr><td><b>AP-T BASE</b></td><td>zaślepki; przygotowana TH35, X1, PE</td><td>—</td><td>baza dla instalatora</td></tr>
+<tr><td><b>AP-T SOCKET</b></td><td>CEE16 skośne + 2×Schuko IP54 (lub Dr. Storm)</td><td>zabezpieczenia obwodów gniazd 30 mA typ A</td><td>ogród, warsztat, działka, kemping</td></tr>
+<tr><td><b>AP-T CHARGE</b></td><td>dock Q/P/B + CEE32 skośne pod dockiem + holster + hak</td><td>RCD 4P A + C32; SPD opcja</td><td>ładowarka przenośna AP — konfiguracja flagowa</td></tr>
+<tr><td><b>AP-T WALLBOX</b></td><td>płyta P-UNI + CEE32 (zasilanie wtyku) + holster</td><td>RCD 4P A + C32; SPD opcja</td><td>Prime 11/22 kW i wallboxy obce</td></tr>
+<tr><td><b>AP-T DUO</b></td><td>2× komplet paneli (przód/tył)</td><td>2 obwody punktów + SPD</td><td>2 auta, parking firmowy</td></tr>
+<tr><td><b>AP-T FIRMA</b></td><td>dowolny + licznik MID z okienkiem</td><td>+ rozłącznik FR 40A, loop-out</td><td>floty 1–30 aut, rozliczenia</td></tr>
+</table>
+
+<h2>Akcesoria</h2>
+<table>
+<tr><td>Fundament AP-F • zestaw kotew chemicznych • rama na śruby ziemne (2–3× KSF) • daszek z listwą LED (zmierzchówka) • grzałka 15 W z termostatem • odbojnica stalowa • panel Dr. Storm • drugi hak kablowy • panel P-AMP (szafa AMP-BOX) • wkładka patentowa zamka</td></tr>
+</table>
+
+<h2>Zgodność (cel certyfikacyjny)</h2>
+<table>
+<tr><td>PN-EN IEC 61439-7 (zestaw ACCS/AEVCS — deklaracja producenta) • instalacja wg PN-HD 60364-7-722 (punkty ładowania) i -708 (gniazda) • osprzęt CEE wg PN-EN 60309-2 • IK wg PN-EN 62262 • wyrób pod montaż przez elektryka z uprawnieniami; protokół pomiarów = warunek gwarancji • stacje ogólnodostępne: wariant PRO (MID, UDT) na zapytanie</td></tr>
+</table>
+
+<div class="foot">AMPERE POINT AP-T — karta danych v1 (dane projektowe, 25.07.2026). Wartości oznaczone jako projektowe zostaną potwierdzone badaniami prototypu α (deszczownica, nośności, cykl termiczny, montaż &lt;2 h). Dokumenty źródłowe: research v1, koncepcja AP-T v1, instrukcja montażu v1, komponenty v1 — folder Stojak. Karta wzorowana na strategii „pełne dane vs rynkowe b.d." (research §10, luka L7).</div>
+</div>
+</body>
+</html>

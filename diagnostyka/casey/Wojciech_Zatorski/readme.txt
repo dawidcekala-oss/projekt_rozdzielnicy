@@ -1,0 +1,1 @@
+na filmikach widać dokładnie to co koleś opisuje

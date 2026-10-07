@@ -1,0 +1,991 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\usepackage{polyglossia}
+\setmainlanguage{polish}
+\usepackage[a4paper,top=2.4cm,bottom=2.6cm,left=2.4cm,right=2.4cm]{geometry}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning}
+\usepackage{xcolor}
+\definecolor{navy}{RGB}{0,51,102}
+\definecolor{lightnavy}{RGB}{232,238,246}
+\definecolor{warnred}{RGB}{153,0,0}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\sffamily\color{navy}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{navy}}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\sffamily\color{navy}}{\thesubsubsection.}{0.6em}{}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,framerule=0.3pt,rulecolor=\color{navy},backgroundcolor=\color{lightnavy},tabsize=2,columns=fullflexible,keepspaces=true}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\small\textcolor{navy}{AMPERE POINT --- Automatyzacje i integracje w Home Assistant}}
+\fancyhead[R]{\sffamily\small\textcolor{navy}{v1 --- 2026-07-06}}
+\fancyfoot[C]{\sffamily\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=navy}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\emergencystretch=3em
+\sloppy
+
+\newcommand{\uwaga}[1]{\par\medskip\noindent\textcolor{warnred}{\textbf{UWAGA:}} #1\par\medskip}
+\newcommand{\wskazowka}[1]{\par\medskip\noindent\textcolor{navy}{\textbf{Wskazówka:}} #1\par\medskip}
+\newcommand{\ciekawostka}[1]{\par\medskip\noindent\textcolor{navy}{\textbf{Dla ciekawych:}} #1\par\medskip}
+
+\begin{document}
+
+\begin{center}
+{\huge\bfseries\sffamily\color{navy} Automatyzacje i integracje urządzeń\\[2pt] w Home Assistant}\\[8pt]
+{\large Poradnik od podstaw do zaawansowanych przepisów: jak Home Assistant jest zbudowany,\\ jakimi protokołami rozmawia z urządzeniami, jak pisać niezawodne automatyzacje\\[2pt] --- z wyjaśnieniami technicznymi dla ciekawych}\\[6pt]
+{\normalsize wersja 1 --- 6 lipca 2026 --- dokument wewnętrzny projektu AMPERE\_POINT}\\[2pt]
+{\small Uzupełnia: \texttt{AMPERE\_POINT\_przewodnik\_HA\_instalacja\_integracja\_v2} (instalacja i konfiguracja od zera)\\ oraz \texttt{AMPERE\_POINT\_home\_assistant\_xtend\_tuya\_raport\_v1} (łańcuch Tuya w szczegółach).}
+\end{center}
+
+\vspace{4pt}
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{Wstęp --- co jest w tym poradniku i jak go czytać}
+
+Home Assistant (dalej: HA) potrafi być jednocześnie prostym pilotem do włączania ładowarki i pełnoprawnym systemem sterowania budynkiem, który sam podejmuje decyzje. Różnica między jednym a drugim nie leży w sprzęcie, lecz w zrozumieniu trzech rzeczy: \emph{jak HA jest zbudowany w środku}, \emph{jak urządzenia się z nim komunikują} oraz \emph{jak poprawnie zapisywać reguły automatyzacji}. Dokładnie w tej kolejności prowadzi ten poradnik.
+
+Rozdziały \ref{sec:arch}--\ref{sec:ekosystemy} budują fundament: architektura systemu, protokoły komunikacji (od Wi-Fi i MQTT po Zigbee, Thread/Matter i Modbus) oraz przegląd ekosystemów urządzeń z praktycznymi wskazówkami. Rozdziały \ref{sec:anatomia}--\ref{sec:helpery} to warsztat automatyzacji: anatomia reguły, język szablonów, elementy pomocnicze. Rozdział \ref{sec:przepisy} zawiera siedem kompletnych, skomentowanych przepisów --- od taniej taryfy po dynamiczne ładowanie nadwyżką z fotowoltaiki. Na końcu: diagnostyka (rozdz.~\ref{sec:debug}), pomiary energii (rozdz.~\ref{sec:energia}), niezawodność i dostęp zdalny (rozdz.~\ref{sec:niezawodnosc}), tabela problemów i słowniczek.
+
+Zasady zapisu są takie same jak w pozostałych dokumentach projektu: ścieżki menu zapisujemy jako \textbf{Ustawienia $\to$ Automatyzacje i sceny}, kod i identyfikatory czcionką maszynową (\texttt{sensor.moc}), a każdy skrót rozwijamy przy pierwszym użyciu. Ramki \textcolor{navy}{\textbf{Dla ciekawych}} można pominąć bez szkody dla instrukcji --- ale to w nich siedzi zrozumienie, \emph{dlaczego} rzeczy działają.
+
+Wszystkie przykłady YAML (YAML Ain't Markup Language --- tekstowy format konfiguracji, w którym wcięcia wyznaczają strukturę) zapisano w \textbf{nowej składni} automatyzacji, obowiązującej od wydania HA 2024.10; ramka w rozdziale \ref{sec:anatomia} wyjaśnia, jak czytać starszą składnię, wciąż spotykaną w internecie.
+
+%=====================================================================
+\section{Jak Home Assistant jest zbudowany}
+\label{sec:arch}
+
+\subsection{Encja, stan, zdarzenie --- trzy pojęcia, na których stoi wszystko}
+
+\textbf{Encja} (entity) to najmniejsza jednostka, jaką HA widzi: jeden czujnik, jeden przełącznik, jedna wartość. Każda encja ma identyfikator złożony z domeny i nazwy (\texttt{sensor.ladowarka\_moc}, \texttt{switch.ladowarka}), bieżący \textbf{stan} zapisany zawsze jako tekst (o tym ważnym szczególe więcej w rozdz.~\ref{sec:jinja}) oraz \textbf{atrybuty} --- dodatkowe pola, np. jednostkę miary czy ikonę. Encje grupują się w \textbf{urządzenia} (device --- teczka na encje z jednego fizycznego sprzętu), a urządzenia w \textbf{obszary} (pokoje, strefy budynku).
+
+Sercem systemu jest \textbf{maszyna stanów} (state machine): tabela w pamięci, w której każda encja ma swój aktualny stan. Każda zmiana stanu generuje \textbf{zdarzenie} (event) \texttt{state\_changed}, publikowane na wewnętrznej \textbf{magistrali zdarzeń} (event bus). Magistrala działa jak tablica ogłoszeń: kto chce, ten nasłuchuje. Automatyzacje to w istocie właśnie nasłuchiwacze --- ich wyzwalacze są subskrypcjami zdarzeń.
+
+\begin{center}
+\begin{tikzpicture}[font=\sffamily\small,
+box/.style={draw=navy,fill=lightnavy,rounded corners,minimum height=0.95cm,align=center,inner sep=6pt},
+buss/.style={draw=navy,fill=navy,text=white,rounded corners,minimum height=0.95cm,align=center,inner sep=8pt},
+arr/.style={->,thick,color=navy}]
+\node[box] (int) at (0,2.1) {integracje\\ \scriptsize Tuya, Modbus, MQTT, Zigbee\ldots};
+\node[box] (sm) at (7.6,2.1) {maszyna stanów\\ \scriptsize aktualne stany encji};
+\node[buss,minimum width=11.6cm] (bus) at (3.8,0) {\textbf{magistrala zdarzeń} \quad \scriptsize state\_changed, call\_service, zdarzenia własne\ldots};
+\node[box] (aut) at (-0.4,-2.1) {automatyzacje\\ \scriptsize nasłuchują i wywołują akcje};
+\node[box] (rec) at (4.1,-2.1) {recorder\\ \scriptsize historia $\to$ SQLite};
+\node[box] (ui) at (8.3,-2.1) {panel www / aplikacja\\ \scriptsize WebSocket};
+\draw[arr] (int.south) -- node[left,font=\scriptsize]{raporty urządzeń} ($(bus.north)+(-3.8,0)$);
+\draw[arr] ($(bus.north)+(3.4,0)$) -- node[right,font=\scriptsize]{aktualizacje stanów} (sm.south);
+\draw[arr] ($(bus.south)+(-4.2,0)$) -- (aut.north);
+\draw[arr] (aut.east) -- node[below,font=\scriptsize]{wywołania akcji} ($(bus.south)+(-2.0,0)$);
+\draw[arr] ($(bus.south)+(0.3,0)$) -- (rec.north);
+\draw[arr] ($(bus.south)+(4.5,0)$) -- (ui.north);
+\end{tikzpicture}
+\end{center}
+
+\ciekawostka{Cały HA jest programem w języku Python zbudowanym wokół jednej \emph{pętli zdarzeń} (asyncio): zamiast wielu wątków czekających na urządzenia, jedna pętla obsługuje tysiące operacji naprzemiennie, przełączając się przy każdym oczekiwaniu na sieć. Dlatego HA na Raspberry Pi potrafi obsłużyć setki encji --- większość czasu i tak czeka na odpowiedzi urządzeń. Konsekwencja praktyczna: pojedyncza źle napisana integracja, która blokuje pętlę, potrafi ,,przyciąć'' cały system --- stąd ostrożność przy dodatkach spoza oficjalnego zestawu.}
+
+\subsection{Skąd HA pamięta historię: recorder i baza danych}
+
+Bieżące stany żyją w pamięci, ale zakładka \textbf{Historia} i wykresy wymagają zapisu na dysk. Robi to komponent \textbf{recorder}, który strumień zdarzeń zapisuje do bazy danych --- domyślnie \textbf{SQLite}, czyli bazy w jednym pliku (\texttt{home-assistant\_v2.db} w katalogu konfiguracji). Obok pełnej historii (domyślnie 10 dni) HA prowadzi \textbf{statystyki długoterminowe}: raz na godzinę zapisuje minimum, maksimum i średnią (dla liczników --- przyrost) i trzyma je bezterminowo. To dzięki nim panel Energia pokazuje zeszły rok, choć szczegółowa historia dawno się przewinęła.
+
+\wskazowka{Im mniej encji-śmieci, tym mniejsza i szybsza baza. Encje, których nie potrzebujesz, wyłączaj w \textbf{Ustawienia $\to$ Urządzenia i usługi $\to$ Encje}; głośne, a potrzebne tylko ,,na teraz'' (np. siła sygnału) można wykluczyć z zapisu w konfiguracji recordera.}
+
+\subsection{Integracje i wpisy konfiguracyjne}
+
+\textbf{Integracja} to moduł tłumaczący świat zewnętrzny na encje. Skonfigurowana integracja zostawia po sobie \textbf{wpis konfiguracyjny} (config entry) w ukrytym katalogu \texttt{.storage} --- zapamiętane konto, adres, tokeny. Ta sama integracja może mieć wiele wpisów (dwa konta Tuya, trzy bramki). Z projektu znamy żelazną regułę: \emph{pliki integracji bez wpisu konfiguracyjnego nie robią nic} --- kreator (config flow) trzeba przejść do końca.
+
+\ciekawostka{Obok rejestru encji HA prowadzi rejestry urządzeń i obszarów (również w \texttt{.storage}). Dzięki nim zmiana nazwy encji nie psuje automatyzacji budowanych w edytorze graficznym --- edytor zapisuje odwołania do identyfikatorów rejestrowych, nie do nazw. W YAML pisanym ręcznie odwołujemy się jednak do \texttt{entity\_id} --- dlatego po zmianie identyfikatora encji trzeba poprawić automatyzacje, które go używają.}
+
+\subsection{Warianty instalacji --- przypomnienie w jednym akapicie}
+
+Szczegóły instalacji opisuje przewodnik (dokument towarzyszący); tu tylko mapa: \textbf{HA OS} (np. na Raspberry Pi) to pełny zestaw z Supervisorem, sklepem dodatków i kopiami zapasowymi; \textbf{HA Container} (nasz wariant Docker na Windows) to sam rdzeń --- lżejszy, ale bez sklepu dodatków. W obu przypadkach automatyzacje, integracje i wszystko, co opisuje ten poradnik, działa identycznie. Różnica praktyczna pojawi się tylko tam, gdzie wspominamy o \emph{dodatkach} (add-ons) --- w wariancie kontenerowym ich odpowiedniki uruchamia się jako osobne kontenery Dockera.
+
+%=====================================================================
+\section{Jak urządzenia trafiają do Home Assistant}
+\label{sec:trafiaja}
+
+\subsection{Odkrywanie: skąd HA wie, że coś jest w sieci}
+
+Po starcie HA nasłuchuje kilku mechanizmów ogłaszania się urządzeń i pokazuje znaleziska w \textbf{Ustawienia $\to$ Urządzenia i usługi} jako karty ,,Wykryto'':
+
+\begin{description}[style=nextline]
+\item[mDNS / zeroconf] urządzenia rozgłaszają w sieci lokalnej swoją nazwę i typ usługi (np. drukarka, ESPHome, Apple HomeKit) --- to ten sam mechanizm, dzięki któremu działa adres \texttt{homeassistant.local}.
+\item[SSDP / UPnP] (Simple Service Discovery Protocol / Universal Plug and Play) --- starszy mechanizm ogłoszeń używany m.in. przez telewizory, odtwarzacze i routery.
+\item[Nasłuch DHCP] HA obserwuje, jakie urządzenia pobierają adresy z routera; po adresie sprzętowym MAC (Media Access Control --- unikalny identyfikator karty sieciowej) i nazwie potrafi rozpoznać znane rodziny sprzętu.
+\item[Bluetooth] jeżeli komputer z HA ma adapter Bluetooth (albo tzw. proxy --- rozdz.~\ref{sec:ble}), HA odbiera rozgłoszenia BLE czujników.
+\end{description}
+
+Odkrycie to tylko zaproszenie --- integracja i tak przechodzi swój kreator (konto, kod PIN, potwierdzenie).
+
+\subsection{Cztery klasy łączności: lokalnie/chmurowo $\times$ push/poll}
+
+Każda integracja w oficjalnej dokumentacji ma zadeklarowaną tzw. klasę IoT (Internet of Things --- internet rzeczy), złożoną z dwóch decyzji:
+
+\begin{itemize}
+\item \textbf{Lokalnie czy przez chmurę?} Lokalnie = HA rozmawia z urządzeniem bezpośrednio po sieci domowej (działa bez internetu). Chmurowo = pośredniczy serwer producenta (jak w Tuya --- bez internetu encje stają się ,,niedostępne'').
+\item \textbf{Push czy poll?} Push = urządzenie samo zgłasza zmiany (natychmiastowe reakcje, mało ruchu). Poll = HA cyklicznie odpytuje (opóźnienie do długości cyklu; typowo 10--60 s).
+\end{itemize}
+
+Kombinacja \texttt{local\_push} jest złotym standardem (Zigbee, ESPHome, Shelly po włączeniu zdarzeń); \texttt{cloud\_poll} --- najwolniejszym, ale często jedynym, co oferuje producent. Warto znać klasę swoich integracji, bo wyjaśnia ona zachowania: czujnik Zigbee reaguje w ułamku sekundy, a chmurowy odpytywany co minutę --- właśnie co minutę.
+
+\ciekawostka{Skąd chmurowe integracje ,,push'' znają zmiany bez odpytywania? Utrzymują stałe połączenie zwrotne --- najczęściej WebSocket (kanał dwukierunkowy otwarty przez przeglądarkowy protokół HTTP) albo MQTT --- którym serwer producenta wypycha zdarzenia. Tak działa m.in. kanał konta aplikacji w Tuya: integracja loguje się jak druga aplikacja mobilna i dostaje ten sam strumień powiadomień, który zasila telefon.}
+
+\subsection{Obie decyzje na jednym rysunku}
+
+\begin{center}
+\begin{tikzpicture}[font=\sffamily\small]
+\draw[->,thick,color=navy] (0,0) -- (10.4,0) node[below left]{reakcja};
+\draw[->,thick,color=navy] (0,0) -- (0,5.0) node[rotate=90,above left,yshift=2pt,xshift=-34pt]{niezależność od internetu};
+\node[anchor=west] at (1.1,-0.35) {\textbf{poll} (odpytywanie cykliczne)};
+\node[anchor=west] at (6.6,-0.35) {\textbf{push} (urządzenie zgłasza samo)};
+\node[rotate=0,anchor=west] at (0.15,4.75) {\textbf{lokalnie}};
+\node[rotate=0,anchor=west] at (0.15,0.35) {\textbf{chmura}};
+\node[draw=navy,fill=lightnavy,rounded corners,minimum width=4.4cm,minimum height=1.5cm,align=center] at (2.9,3.5) {\texttt{local\_poll}\\ np. Modbus (falownik),\\ kamera ONVIF};
+\node[draw=navy,fill=green!12,rounded corners,minimum width=4.4cm,minimum height=1.5cm,align=center] at (7.9,3.5) {\texttt{local\_push} $\star$\\ Zigbee, ESPHome, Shelly,\\ MQTT --- złoty standard};
+\node[draw=navy,fill=red!8,rounded corners,minimum width=4.4cm,minimum height=1.5cm,align=center] at (2.9,1.2) {\texttt{cloud\_poll}\\ typowe API producentów,\\ prognozy pogody};
+\node[draw=navy,fill=lightnavy,rounded corners,minimum width=4.4cm,minimum height=1.5cm,align=center] at (7.9,1.2) {\texttt{cloud\_push}\\ Tuya (kanał konta aplikacji),\\ powiadomienia chmurowe};
+\end{tikzpicture}
+\end{center}
+
+Gwiazdką oznaczono kwadrant, do którego warto migrować, gdy tylko urządzenie daje taką możliwość.
+
+%=====================================================================
+\section{Protokoły --- jak naprawdę rozmawia się z urządzeniami}
+\label{sec:protokoly}
+
+Ten rozdział jest mapą świata urządzeń. Nie trzeba znać wszystkich protokołów, żeby korzystać z HA --- ale kilka minut zrozumienia, \emph{czym} różnią się drogi komunikacji, oszczędza później godziny zgadywania, czemu czujnik ,,muli'', a przełącznik nie reaguje.
+
+\subsection{Wi-Fi i sieć domowa: HTTP, REST, WebSocket}
+
+Najprostsza droga: urządzenie jest w tej samej sieci co HA i wystawia \textbf{API} (Application Programming Interface --- ,,okienko podawcze'' dla programów) po protokole \textbf{HTTP} --- tym samym, którym przeglądarka pobiera strony. Styl takich API nazywa się \textbf{REST} (Representational State Transfer): proste żądania ,,pobierz stan'' (GET) i ,,ustaw wartość'' (POST) pod czytelnymi adresami. HA ma do tego gotowe integracje (\texttt{rest}, \texttt{rest\_command}), a w drugą stronę --- \textbf{webhooki}: unikalne adresy URL, pod które dowolne urządzenie lub usługa może ,,zapukać'' i tym samym wyzwolić automatyzację.
+
+Tam, gdzie potrzebna jest ciągła dwukierunkowa rozmowa (panel www HA, ESPHome, Shelly nowszych generacji), używa się \textbf{WebSocket} --- połączenia, które po nawiązaniu przez HTTP pozostaje otwarte i pozwala obu stronom wysyłać wiadomości w dowolnym momencie, bez odpytywania.
+
+\ciekawostka{Cały interfejs HA w przeglądarce to jedna aplikacja rozmawiająca z serwerem właśnie przez WebSocket. Gdy klikasz przełącznik, do HA leci wiadomość \texttt{call\_service}, a z powrotem --- zdarzenie \texttt{state\_changed}. To dlatego dwa okna przeglądarki aktualizują się nawzajem ,,same z siebie''.}
+
+\subsection{MQTT --- wspólny język automatyki}
+\label{sec:mqtt}
+
+\textbf{MQTT} (Message Queuing Telemetry Transport) to lekki protokół ,,publikuj--subskrybuj'', zaprojektowany dekady temu dla telemetrii rurociągów, a dziś będący lingua franca automatyki domowej. Zamiast rozmawiać każdy z każdym, wszyscy rozmawiają przez pośrednika --- \textbf{brokera}:
+
+\begin{center}
+\begin{tikzpicture}[font=\sffamily\small,
+box/.style={draw=navy,fill=lightnavy,rounded corners,minimum height=0.9cm,align=center,inner sep=6pt},
+arr/.style={->,thick,color=navy}]
+\node[box] (pub) at (0,1.4) {czujnik\\(publikuje)};
+\node[box] (pub2) at (0,-1.4) {ładowarka\\(publikuje)};
+\node[box,fill=navy,text=white,minimum width=3.0cm,minimum height=1.6cm] (broker) at (4.6,0) {\textbf{broker MQTT}\\ (np. Mosquitto)};
+\node[box] (ha) at (9.4,1.4) {Home Assistant\\(subskrybuje \texttt{\#})};
+\node[box] (inne) at (9.4,-1.4) {inny program\\(subskrybuje temat)};
+\draw[arr] (pub) -- node[above=2pt,sloped,pos=0.58]{\scriptsize\texttt{dom/salon/temperatura}} (broker);
+\draw[arr] (pub2) -- node[below=2pt,sloped,pos=0.58]{\scriptsize\texttt{dom/garaz/ladowarka/stan}} (broker);
+\draw[arr] (broker) -- (ha);
+\draw[arr] (broker) -- (inne);
+\end{tikzpicture}
+\end{center}
+
+Kluczowe pojęcia, które wystarczą do sprawnego użycia:
+
+\begin{description}[style=nextline]
+\item[Temat (topic)] hierarchiczny adres wiadomości, np. \texttt{dom/garaz/ladowarka/stan}. Subskrybować można z wieloznacznikami: \texttt{+} (jeden poziom) i \texttt{\#} (wszystko poniżej).
+\item[QoS (Quality of Service)] poziom gwarancji doręczenia: 0 --- ,,wyślij i zapomnij'', 1 --- ,,dotrze przynajmniej raz'', 2 --- ,,dotrze dokładnie raz''. W sieci domowej niemal zawsze wystarcza 0 lub 1.
+\item[Retain (wiadomość zatrzymana)] broker pamięta ostatnią wiadomość z tematu i wręcza ją każdemu nowemu subskrybentowi. Dzięki temu po restarcie HA od razu zna stany, zamiast czekać na kolejne raporty.
+\item[LWT (Last Will and Testament --- ,,testament'')] wiadomość, którą broker opublikuje \emph{za} urządzenie, gdy to zniknie bez pożegnania. Tak właśnie encje MQTT wiedzą, że urządzenie jest \texttt{offline}.
+\item[Odkrywanie (MQTT Discovery)] urządzenie publikuje pod specjalnym tematem \texttt{homeassistant/\ldots/config} opis swoich encji --- a HA tworzy je automatycznie, bez ręcznej konfiguracji. Z tego mechanizmu korzysta m.in. Zigbee2MQTT i Tasmota.
+\end{description}
+
+W praktyce: brokera (najczęściej \textbf{Mosquitto}) instaluje się jako dodatek HA OS albo osobny kontener, w HA dodaje integrację \textbf{MQTT} (adres brokera, login), a urządzenia kieruje na ten sam broker. Domyślny port to 1883 (8883 w wersji szyfrowanej TLS).
+
+\subsection{Zigbee --- radiowa siatka czujników}
+\label{sec:zigbee}
+
+\textbf{Zigbee} to radiowy standard krótkiego zasięgu (oparty o normę IEEE 802.15.4) w paśmie 2,4 GHz, zaprojektowany pod \emph{maleńkie zużycie energii}: czujnik drzwi potrafi żyć dwa lata na baterii pastylkowej. Ceną jest przepustowość --- to sieć do meldunków ,,otwarto/zamknięto, 21,5 stopnia'', nie do strumieni wideo.
+
+Sieć Zigbee jest \textbf{siatką} (mesh): urządzenia zasilane z gniazdka (żarówki, wtyczki) pełnią rolę \textbf{routerów} i przekazują pakiety dalej, a bateryjne \textbf{urządzenia końcowe} tylko meldują i śpią. Całością dyryguje \textbf{koordynator} --- u nas: układ radiowy w formie modułu USB wpiętego do komputera z HA.
+
+\begin{center}
+\begin{tikzpicture}[font=\sffamily\footnotesize,
+gw/.style={draw=navy,fill=navy,text=white,circle,minimum size=0.85cm,align=center,inner sep=1pt},
+rt/.style={draw=navy,fill=lightnavy,circle,minimum size=0.75cm,align=center,inner sep=1pt},
+ed/.style={draw=navy,fill=white,circle,minimum size=0.65cm,align=center,inner sep=1pt}]
+% gwiazda Wi-Fi
+\node[gw] (r) at (1.9,1.5) {router};
+\foreach \a/\n in {150/a,90/b,30/c,210/d,330/e}{\node[ed] (w\n) at ($(r)+(\a:1.7)$) {}; \draw[color=navy] (r)--(w\n);}
+\node[align=center] at (1.9,-1.1) {\textbf{Wi-Fi: gwiazda}\\ wszystko przez jeden punkt};
+% mesh
+\node[gw] (k) at (8.2,1.5) {koord.};
+\node[rt] (r1) at (6.7,2.3) {R};
+\node[rt] (r2) at (9.7,2.3) {R};
+\node[rt] (r3) at (8.2,0.2) {R};
+\node[ed] (e1) at (5.6,1.5) {};
+\node[ed] (e2) at (10.8,1.5) {};
+\node[ed] (e3) at (7.0,-0.5) {};
+\node[ed] (e4) at (9.4,-0.5) {};
+\draw[color=navy] (k)--(r1) (k)--(r2) (k)--(r3) (r1)--(r2) (r1)--(e1) (r2)--(e2) (r3)--(e3) (r3)--(e4) (r1)--(r3);
+\node[align=center] at (8.2,-1.1) {\textbf{Zigbee/Z-Wave/Thread: siatka}\\ routery (R) przekazują dalej, sieć sama się naprawia};
+\end{tikzpicture}
+\end{center}
+
+W HA są dwie równorzędne drogi obsługi Zigbee:
+\begin{itemize}
+\item \textbf{ZHA} (Zigbee Home Automation) --- integracja wbudowana: najprostszy start, wszystko w HA;
+\item \textbf{Zigbee2MQTT} --- osobny program, który tłumaczy Zigbee na MQTT (rozdz.~\ref{sec:mqtt}); nieco więcej konfiguracji, za to największa na rynku baza obsługiwanych urządzeń i drobiazgowe raporty.
+\end{itemize}
+Obu naraz na jednym koordynatorze użyć nie można. Parowanie wygląda tak samo: w integracji włącza się tryb dołączania (permit join), a urządzenie wprowadza w tryb parowania (zwykle przytrzymanie przycisku); po dołączeniu następuje ,,przesłuchanie'' (interview), w którym urządzenie opowiada, co potrafi --- z tego powstają encje.
+
+\uwaga{Zigbee i Wi-Fi dzielą pasmo 2,4 GHz. Koordynator wpięty bezpośrednio w port USB komputera bywa zagłuszany przez sam komputer --- \textbf{zawsze używaj przedłużacza USB} (pół metra wystarcza) i trzymaj koordynator z dala od routera. Przy uporczywych problemach pomaga zmiana kanału Zigbee (15, 20 i 25 leżą między typowymi kanałami Wi-Fi 1/6/11).}
+
+\subsection{Z-Wave --- siatka na osobnej częstotliwości}
+
+\textbf{Z-Wave} działa podobnie do Zigbee (siatka, urządzenia bateryjne i routery), ale w Europie nadaje w paśmie \textbf{868 MHz}. Dłuższa fala lepiej przenika ściany i --- co równie ważne --- nie tłoczy się w zatłoczonym 2,4 GHz. Urządzenia przechodzą obowiązkową certyfikację (mniejsza loteria zgodności niż w Zigbee), za co płaci się wyższą ceną. W HA obsługę zapewnia \textbf{Z-Wave JS}: osobny serwer (dodatek albo kontener) plus integracja; kontroler to znów moduł USB. Dołączanie (inclusion) nowszych urządzeń używa zabezpieczeń \textbf{S2} z kodem PIN z naklejki.
+
+\subsection{Thread i Matter --- nowy porządek}
+\label{sec:matter}
+
+Te dwa słowa pojawiają się dziś na pudełkach razem, ale oznaczają co innego --- i to rozróżnienie warto mieć w głowie:
+
+\begin{itemize}
+\item \textbf{Thread} to \emph{transport}: radiowa siatka jak Zigbee (ta sama norma IEEE 802.15.4, pasmo 2,4 GHz), tyle że każde urządzenie ma normalny adres \textbf{IPv6}. Do połączenia siatki z siecią domową potrzebny jest \textbf{border router} (router brzegowy) --- tę rolę pełnią m.in. głośniki i przystawki Apple/Google oraz moduły obsługiwane przez HA.
+\item \textbf{Matter} to \emph{język aplikacji}: wspólny standard opisu urządzeń (,,jestem żarówką, umiem ściemniać''), działający po IP --- obojętnie, czy przez Thread, Wi-Fi czy Ethernet. Urządzenie dołącza się kodem QR (komisjonowanie), a dzięki \textbf{multi-admin} może być jednocześnie w HA i np. w ekosystemie telefonu.
+\end{itemize}
+
+Dla nas najważniejsze: Matter jest \textbf{lokalny} (chmura niepotrzebna do działania) i wspierany w HA przez wbudowany serwer Matter. Rynek urządzeń dojrzewa z każdym rokiem; przy zakupach nowych czujników i wtyczek warto sprawdzać logo Matter/Thread --- to inwestycja w niezależność od chmur producentów.
+
+\subsection{Bluetooth Low Energy}
+\label{sec:ble}
+
+\textbf{BLE} (Bluetooth Low Energy) to oszczędna odmiana Bluetooth: czujniki (termometry, wagi, opaski) okresowo \emph{rozgłaszają} pomiary, a HA je biernie odbiera --- bez parowania. Zasięg pojedynczego adaptera jest mały, ale problem elegancko rozwiązuje \textbf{Bluetooth Proxy}: dowolny moduł ESP32 (mikrokontroler za kilkanaście złotych) z oprogramowaniem ESPHome przekazuje odebrane rozgłoszenia do HA przez Wi-Fi. Kilka takich ,,uszu'' rozstawionych po budynku daje pokrycie całości. Otwarty format rozgłoszeń nazywa się \textbf{BTHome}.
+
+\subsection{Kamery: RTSP i ONVIF}
+
+Świat kamer opisują dwa standardy, które znamy już z praktyki (kamera Imou w projekcie): \textbf{RTSP} (Real Time Streaming Protocol) to sposób pobierania samego strumienia wideo (adres zaczyna się od \texttt{rtsp://}, typowy port 554, kodeki H.264/H.265), a \textbf{ONVIF} --- warstwa zarządzania: odkrywanie kamery, lista strumieni, sterowanie głowicą PTZ (pan--tilt--zoom), zdarzenia detekcji ruchu. W HA: integracja \textbf{ONVIF} tworzy encje kamery i zdarzeń, a podgląd w panelu serwuje wbudowany \textbf{go2rtc}, który potrafi przetłumaczyć strumień na niskolatencyjny WebRTC do przeglądarki.
+
+\ciekawostka{Nagrywanie i rozpoznawanie obiektów (osoba/samochód/zwierzę) to domena zewnętrznego programu \textbf{Frigate}, który konsumuje strumienie RTSP, a wyniki publikuje przez MQTT --- kolejny przykład, jak MQTT skleja niezależne systemy w całość.}
+
+\subsection{Modbus --- język przemysłu (i falowników)}
+
+\textbf{Modbus} pochodzi z automatyki przemysłowej lat 70. i przeżył wszystkich swoich następców dzięki prostocie: urządzenie wystawia ponumerowane \textbf{rejestry} (komórki 16-bitowe), które można czytać i zapisywać. Odmiana \textbf{RTU} biegnie po skrętce RS-485, odmiana \textbf{TCP} --- po zwykłej sieci (port 502). Wartości większe niż 16 bitów składa się z dwóch rejestrów, a liczby ułamkowe przekazuje jako całkowite ze skalą (np. \texttt{2305} = 230,5 V) --- dokładnie ten mechanizm znamy z symulatora falownika SUN2000 w projekcie. W HA: dedykowane integracje (np. \texttt{huawei\_solar}) albo uniwersalna integracja \texttt{modbus}, w której rejestry mapuje się ręcznie w YAML.
+
+\subsection{Ściąga porównawcza}
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.7cm} p{2.1cm} p{2.5cm} p{2.2cm} p{3.4cm}}
+\toprule
+\textbf{Technologia} & \textbf{Pasmo} & \textbf{Topologia} & \textbf{Zasilanie urządzeń} & \textbf{Typowe zastosowanie}\\
+\midrule
+Wi-Fi & 2,4 / 5 GHz & gwiazda & sieciowe & ładowarki, kamery, gniazdka\\
+Zigbee & 2,4 GHz & siatka & baterie / sieciowe & czujniki, żarówki, piloty\\
+Z-Wave & 868 MHz (EU) & siatka & baterie / sieciowe & zamki, rolety, czujniki\\
+Thread / Matter & 2,4 GHz / IP & siatka / dowolna & baterie / sieciowe & nowe czujniki i wtyczki\\
+BLE & 2,4 GHz & rozgłoszenia & baterie & termometry, wagi, opaski\\
+MQTT & (po sieci IP) & przez brokera & --- & spoiwo systemów\\
+Modbus & RS-485 / IP & żądanie--odpowiedź & sieciowe & falowniki, liczniki, HVAC\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}[font=\sffamily\footnotesize]
+\draw[->,thick,color=navy] (0,0) -- (12.6,0) node[below left]{częstotliwość};
+\foreach \x/\l in {1.2/868 MHz, 6.4/2{,}4 GHz, 11.2/5 GHz}{\draw[color=navy] (\x,-0.09)--(\x,0.09); \node[below] at (\x,-0.12) {\l};}
+\node[above,align=center,color=navy] at (1.2,0.25) {Z-Wave\\ \scriptsize (daleko, przez ściany)};
+\node[above,align=center,color=navy] at (6.4,0.25) {Wi-Fi 2,4 $\cdot$ Zigbee $\cdot$ Thread $\cdot$ BLE\\ \scriptsize (tłoczno! --- rozdz.~\ref{sec:zigbee})};
+\node[above,align=center,color=navy] at (11.2,0.25) {Wi-Fi 5 GHz\\ \scriptsize (szybko, blisko)};
+\end{tikzpicture}
+\end{center}
+
+%=====================================================================
+\section{Ekosystemy w praktyce --- czym i jak łączyć konkretne urządzenia}
+\label{sec:ekosystemy}
+
+\subsection{Urządzenia Tuya (w tym ładowarki AMPERE POINT)}
+
+Pełną, przećwiczoną w boju procedurę opisują dokumenty towarzyszące (przewodnik instalacji oraz raport xtend\_tuya); tu tylko esencja architektoniczna. Urządzenie Tuya rozmawia \emph{wyłącznie} z chmurą producenta (klasa \texttt{cloud\_push} przez kanał konta aplikacji + \texttt{cloud\_poll} przez OpenAPI). Wszystkie wielkości płyną jako \textbf{punkty danych} (DP, data point): ponumerowane zmienne o zadeklarowanym typie i skali. Oficjalna integracja pokazuje ich okrojony, ,,ugrzeczniony'' podzbiór; dodatek \textbf{xtend\_tuya} dokłada resztę, a tryb \textbf{DP Instruction} na platformie deweloperskiej odsłania komplet. Alternatywą uniezależniającą od chmury jest \textbf{tuya-local} (rozmowa po sieci lokalnej z użyciem klucza urządzenia) --- opłacalna tam, gdzie liczy się czas reakcji i odporność na przerwy internetu.
+
+\subsection{ESPHome --- własne urządzenia w godzinę}
+\label{sec:esphome}
+
+\textbf{ESPHome} zasługuje na osobną gwiazdkę: to projekt, w którym \emph{opisujesz} urządzenie w YAML, a system \emph{kompiluje} z tego gotowe oprogramowanie dla mikrokontrolera \textbf{ESP32/ESP8266}. Czujnik temperatury do rozdzielnicy, licznik impulsów wodomierza, przekaźnik --- wszystko sprowadza się do kilkunastu linii:
+
+\begin{lstlisting}
+esphome:
+  name: czujnik-rozdzielnica
+
+esp32:
+  board: esp32dev
+
+wifi:
+  ssid: "NazwaSieci"
+  password: "HasloSieci"
+
+api:            # szyfrowane polaczenie z HA (local_push)
+ota:            # aktualizacje przez Wi-Fi
+
+sensor:
+  - platform: dallas_temp
+    pin: GPIO4
+    name: "Temperatura rozdzielnicy"
+    update_interval: 30s
+\end{lstlisting}
+
+Po pierwszym wgraniu (kablem USB) kolejne aktualizacje lecą przez Wi-Fi (\textbf{OTA} --- Over The Air), a HA wykrywa urządzenie sam (mDNS) i łączy się z nim natywnym, szyfrowanym API w klasie \texttt{local\_push}. To najkrótsza droga od pomysłu ,,przydałby się czujnik X'' do encji w HA --- i fundament wspomnianych Bluetooth Proxy.
+
+\subsection{Shelly i podobne: Wi-Fi, ale lokalnie}
+
+Przekaźniki i mierniki \textbf{Shelly} pokazują, że Wi-Fi nie musi oznaczać chmury: mają lokalne API (nowsze generacje: WebSocket/RPC), integrację w HA klasy \texttt{local\_push} i opcjonalnie MQTT. Montowane w puszkach za istniejącymi włącznikami dodają ,,inteligencję'' bez wymiany osprzętu --- a pomiar mocy w wersjach PM czyni z nich tanie liczniki częściowe do panelu Energia.
+
+\subsection{Telefon jako urządzenie: aplikacja Companion}
+\label{sec:companion}
+
+Aplikacja \textbf{Home Assistant Companion} (Android/iOS) robi z telefonu pełnoprawne urządzenie: dostarcza \texttt{device\_tracker} (obecność w strefach --- rozdz.~\ref{sec:przepisy}), dziesiątki sensorów (bateria, ładowanie, sieć Wi-Fi, kroki), a przede wszystkim usługę \textbf{notify} --- kanał powiadomień, którego używają nasze przepisy. Powiadomienia mogą być \emph{aktywne} (actionable): z przyciskami, których naciśnięcie wraca do HA jako zdarzenie --- przepis \ref{sec:przepis-actionable} pokazuje pełny obieg.
+
+\subsection{Co wybierać na przyszłość --- krótki kompas}
+
+Do istniejącej instalacji AMPERE POINT (ładowarki Tuya + planowany falownik po Modbus) najbardziej naturalne rozszerzenia to: czujniki i wtyczki \textbf{Zigbee} (tania, dojrzała siatka --- wymaga tylko koordynatora USB) lub \textbf{Matter/Thread} (nowocześniejsza alternatywa), \textbf{ESPHome} do pomiarów nietypowych oraz \textbf{Shelly} tam, gdzie trzeba wpiąć się w istniejącą elektrykę. Wspólny mianownik: wszystko działa lokalnie, więc awaria internetu zatrzymuje tylko chmurę Tuya --- nie dom.
+
+%=====================================================================
+\section{Anatomia automatyzacji}
+\label{sec:anatomia}
+
+\subsection{Trzy człony i jeden tryb}
+
+Każda automatyzacja składa się z tych samych klocków: \textbf{wyzwalaczy} (triggers --- ,,kiedy w ogóle się obudzić?''), opcjonalnych \textbf{warunków} (conditions --- ,,czy na pewno działać?'') i \textbf{akcji} (actions --- ,,co zrobić?''). Nad całością czuwa \textbf{tryb} (mode), który rozstrzyga, co się stanie, gdy reguła zostanie wyzwolona ponownie, zanim skończyła poprzedni przebieg.
+
+\begin{center}
+\begin{tikzpicture}[font=\sffamily\small,
+box/.style={draw=navy,fill=lightnavy,rounded corners,minimum height=1.0cm,align=center,inner sep=6pt},
+arr/.style={->,thick,color=navy}]
+\node[box] (t1) at (0,0.9) {wyzwalacz A\\ \scriptsize np. stan przekroczył próg};
+\node[box] (t2) at (0,-0.9) {wyzwalacz B\\ \scriptsize np. godzina 22:00};
+\node[box,fill=white] (c) at (4.6,0) {warunki\\ \scriptsize wszystkie muszą być\\ \scriptsize spełnione (domyślnie I)};
+\node[box] (a) at (8.9,0) {akcje\\ \scriptsize sekwencja kroków:\\ \scriptsize wywołania, decyzje, pauzy};
+\draw[arr] (t1.east) -- node[above,sloped]{\scriptsize LUB} (c.west);
+\draw[arr] (t2.east) -- (c.west);
+\draw[arr] (c) -- node[above]{\scriptsize przeszły?} (a);
+\node[below=0.5cm of c,align=center,text=navy] {\scriptsize tryb: single / restart / queued / parallel};
+\end{tikzpicture}
+\end{center}
+
+Dwie zasady, które oszczędzają godziny zdziwienia:
+\begin{itemize}
+\item \textbf{Wyzwalacze łączą się przez LUB} --- zadziałanie któregokolwiek budzi regułę. \textbf{Warunki łączą się przez I} --- wszystkie muszą przepuścić (chyba że jawnie użyjesz \texttt{or}).
+\item Wyzwalacze reagują na \emph{zmianę} (przekroczenie progu, wejście w stan), a nie na \emph{trwanie}. Jeżeli moc jest powyżej progu ,,od zawsze'', wyzwalacz progowy nie strzeli, dopóki wartość nie spadnie i nie przekroczy progu ponownie. Do pilnowania trwania służą warunki i parametr \texttt{for}.
+\end{itemize}
+
+\subsection{Nowa i stara składnia YAML --- jak czytać cudze przykłady}
+
+Od wydania 2024.10 edytor zapisuje automatyzacje kluczami w liczbie mnogiej: \texttt{triggers:}, \texttt{conditions:}, \texttt{actions:}; typ wyzwalacza wskazuje klucz \texttt{trigger:}, a wywołanie usługi --- \texttt{action:}. Starsza składnia (\texttt{trigger:} z \texttt{platform:} oraz \texttt{action:} z \texttt{service:}) \textbf{działa nadal i bezterminowo} --- oba zapisy można nawet mieszać. W internecie spotkasz oba; tłumaczenie jest mechaniczne:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Stary zapis} & \textbf{Nowy zapis}\\
+\midrule
+\texttt{trigger:} (lista) & \texttt{triggers:}\\
+\texttt{- platform: state} & \texttt{- trigger: state}\\
+\texttt{condition:} (lista) & \texttt{conditions:}\\
+\texttt{action:} (lista) & \texttt{actions:}\\
+\texttt{- service: switch.turn\_on} & \texttt{- action: switch.turn\_on}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Przegląd wyzwalaczy --- z krótkimi przykładami}
+
+\begin{description}[style=nextline]
+\item[state --- zmiana stanu] najczęstszy. Opcje \texttt{from}/\texttt{to} zawężają przejście, a \texttt{for} żąda, by nowy stan \emph{utrzymał się} przez zadany czas (licznik zeruje się przy każdej zmianie!):
+\begin{lstlisting}
+triggers:
+  - trigger: state
+    entity_id: sensor.ladowarka_status
+    to: "charger_charging"
+    for: "00:00:10"
+\end{lstlisting}
+\item[numeric\_state --- próg liczbowy] strzela w momencie \emph{przekroczenia} progu (\texttt{above}/\texttt{below}), również z \texttt{for}:
+\begin{lstlisting}
+triggers:
+  - trigger: numeric_state
+    entity_id: sensor.moc_eksportu
+    above: 3000
+    for: "00:05:00"
+\end{lstlisting}
+\item[time i time\_pattern] konkretna godzina (\texttt{at: "22:00:00"}, też encja \texttt{input\_datetime}) albo rytm (\texttt{time\_pattern} z \texttt{minutes: "/5"} = co pięć minut). Rytmów używaj oszczędnie --- to odpytywanie świata na siłę; zwykle lepszy jest wyzwalacz zdarzeniowy.
+\item[sun --- słońce] wschód/zachód z przesunięciem: \texttt{event: sunset}, \texttt{offset: "-00:30:00"}. Do progów jasności lepsza bywa elewacja słońca w warunku szablonowym.
+\item[template --- dowolny warunek jako wyzwalacz] strzela, gdy szablon (rozdz.~\ref{sec:jinja}) zmieni wynik na prawdę; z \texttt{for} pilnuje trwania. Najpotężniejszy i najłatwiejszy do przekombinowania.
+\item[zone --- strefy] wejście/wyjście osoby (śledzonej przez aplikację Companion) ze strefy zdefiniowanej na mapie: \texttt{zone: zone.dom}, \texttt{event: enter}.
+\item[webhook] unikalny adres URL; żądanie HTTP pod ten adres wyzwala regułę --- najprostszy most z zewnętrznych systemów.
+\item[event, mqtt, device] surowe zdarzenie z magistrali (np. akcja z powiadomienia --- przepis \ref{sec:przepis-actionable}), wiadomość MQTT na temacie, albo ,,wyzwalacz urządzenia'' generowany przez edytor. Ten ostatni jest wygodny w kreatorze, ale w ręcznym YAML czytelniejsze są wyzwalacze encji.
+\item[homeassistant --- start systemu] \texttt{event: start} pozwala odtworzyć pożądane stany po restarcie (patrz pułapki, rozdz.~\ref{sec:debug}).
+\end{description}
+
+Każdemu wyzwalaczowi można nadać \texttt{id} --- etykietę, po której akcje rozpoznają, \emph{co} obudziło regułę (używa jej przepis taryfowy w rozdz.~\ref{sec:przepisy}).
+
+\subsection{Warunki}
+
+Warunki mają te same rodzaje co wyzwalacze (\texttt{state}, \texttt{numeric\_state}, \texttt{time}, \texttt{sun}, \texttt{zone}, \texttt{template}) plus spójniki \texttt{and}/\texttt{or}/\texttt{not}. Dwa niuanse:
+
+\begin{itemize}
+\item \texttt{time} jako warunek przyjmuje też dni tygodnia: \texttt{weekday: [mon, tue, wed, thu, fri]}.
+\item Warunek \texttt{state} z \texttt{for} pyta ,,czy encja jest w tym stanie \emph{co najmniej od}\ldots'' --- to uzupełnienie wyzwalacza, nie duplikat.
+\end{itemize}
+
+\subsection{Akcje --- pełny repertuar}
+
+Akcje wykonują się po kolei, jak skrypt. Poza zwykłymi wywołaniami (\texttt{action: switch.turn\_on} z \texttt{target:}) masz do dyspozycji strukturę sterującą:
+
+\begin{description}[style=nextline]
+\item[choose / default] rozgałęzienie ,,pierwszy pasujący wariant'': lista opcji, każda z własnymi warunkami i sekwencją. Idealne w parze z \texttt{trigger\_id}.
+\item[if / then / else] prostsza, dwugałęziowa wersja \texttt{choose}.
+\item[repeat] pętla: \texttt{count} (n razy), \texttt{while} (dopóki warunek), \texttt{until} (aż warunek). Wewnątrz dostępny licznik \texttt{repeat.index}.
+\item[wait\_for\_trigger / wait\_template] zatrzymaj się i czekaj na zdarzenie albo na spełnienie szablonu; zawsze dodawaj \texttt{timeout} i decyduj o \texttt{continue\_on\_timeout}, inaczej reguła może wisieć godzinami.
+\item[delay] pauza. Pamiętaj: restart HA przerywa trwające \texttt{delay} i \texttt{wait} --- automatyzacja ,,zapomina'', że czekała. Długie odliczania bezpieczniej realizować pomocnikiem \texttt{timer}, który potrafi wznowić się po restarcie.
+\item[parallel] gałęzie równoległe (np. powiadom trzy osoby naraz).
+\item[stop] zakończ przebieg (z opcjonalnym komunikatem w śladzie); wariant z \texttt{error: true} oznacza przebieg jako błędny.
+\item[variables] zmienne lokalne przebiegu --- policz raz, użyj wielokrotnie (przepis PV, rozdz.~\ref{sec:przepis-pv}).
+\end{description}
+
+\subsection{Tryby wykonania}
+
+\begin{center}
+\begin{tabular}{lp{10.2cm}}
+\toprule
+\textbf{Tryb} & \textbf{Zachowanie przy ponownym wyzwoleniu w trakcie pracy}\\
+\midrule
+\texttt{single} (domyślny) & nowy przebieg jest \emph{pomijany} (w dzienniku: ostrzeżenie). Dobry do reguł, które nie powinny się nakładać.\\
+\texttt{restart} & bieżący przebieg jest przerywany, rusza nowy. Naturalny dla ,,światło na 5 minut od ostatniego ruchu''.\\
+\texttt{queued} & przebiegi ustawiają się w kolejkę (limit \texttt{max}). Dla sekwencji, które muszą wykonać się wszystkie, po kolei.\\
+\texttt{parallel} & przebiegi biegną równolegle (limit \texttt{max}). Dla reguł obsługujących wiele niezależnych obiektów naraz.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\uwaga{Najczęstsza zagadka ,,czemu automatyzacja nie zadziałała'' u początkujących to tryb \texttt{single} + długie \texttt{delay}/\texttt{wait} w akcjach: reguła wciąż ,,pracuje'', więc kolejne wyzwolenia przepadają. Rozwiązania: tryb \texttt{restart}, krótsze czekania albo przeniesienie odliczania do pomocnika \texttt{timer}.}
+
+%=====================================================================
+\section{Szablony Jinja2 --- język, w którym HA myśli}
+\label{sec:jinja}
+
+\textbf{Jinja2} to język szablonów: tekst, w którym fragmenty w podwójnych klamrach \{\{ \ldots \}\} są obliczane, a bloki \{\% \ldots \%\} sterują logiką. Szablony pojawiają się wszędzie: w wyzwalaczach \texttt{template}, warunkach, treściach powiadomień, encjach szablonowych. Poligonem doświadczalnym jest \textbf{Narzędzia deweloperskie $\to$ Szablon} --- wynik widać na żywo, w miarę pisania.
+
+\subsection{Absolutna podstawa: stany są tekstem}
+
+Funkcja \texttt{states('sensor.moc')} zwraca stan encji --- \textbf{zawsze jako tekst}, nawet gdy wygląda jak liczba. Porównanie tekstu z liczbą to klasyczna pułapka: \texttt{'7' > 30} nie znaczy tego, co podpowiada intuicja. Dlatego liczby zawsze konwertujemy filtrem, z wartością awaryjną na wypadek stanu nieliczbowego:
+
+\begin{lstlisting}
+{{ states('sensor.moc_eksportu') | float(0) }}
+{{ (states('sensor.energia') | float(0)) > 3.5 }}
+\end{lstlisting}
+
+Wartość awaryjna (tu: 0) ratuje przed stanami \texttt{unknown} (jeszcze nieznany) i \texttt{unavailable} (integracja straciła urządzenie) --- oba zdarzają się każdemu czujnikowi, choćby po restarcie. Czystszy test dostępności: \texttt{has\_value('sensor.moc')}.
+
+\subsection{Niezbędnik --- funkcje i filtry, które załatwiają 95\% potrzeb}
+
+\begin{center}
+\begin{tabular}{lp{8.3cm}}
+\toprule
+\textbf{Wyrażenie} & \textbf{Co robi}\\
+\midrule
+\texttt{states('sensor.x')} & stan encji jako tekst\\
+\texttt{is\_state('switch.x','on')} & czy encja jest w danym stanie (bezpieczne porównanie)\\
+\texttt{state\_attr(enc,'atrybut')} & wartość atrybutu encji (albo \texttt{None}), np. \texttt{('sun.sun','elevation')}\\
+\texttt{has\_value('sensor.x')} & czy stan jest liczbowo/logicznie użyteczny\\
+\texttt{| float(0)}, \texttt{| int(0)} & konwersja na liczbę z wartością awaryjną\\
+\texttt{| round(1)} & zaokrąglenie\\
+\texttt{| default('---')} & wartość zastępcza, gdy zmienna nie istnieje\\
+\texttt{now()} & bieżący czas (obiekt datetime, strefa lokalna)\\
+\texttt{today\_at('06:30')} & dzisiejsza data o podanej godzinie\\
+\texttt{as\_timestamp(x)} & czas na sekundy epoki (do arytmetyki)\\
+\texttt{timedelta(minutes=15)} & odcinek czasu do dodawania/odejmowania\\
+\texttt{states.sensor.x.last\_changed} & kiedy stan ostatnio się zmienił\\
+\texttt{expand('group.czujniki')} & rozwinięcie grupy do listy encji\\
+\texttt{| selectattr(...) | list} & filtrowanie list (np. tylko encje w stanie \texttt{on})\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Dwa przykłady ,,z życia'', które łączą klocki:
+
+\begin{lstlisting}
+{# Ile minut trwa biezaca sesja ladowania? #}
+{{ ((now() - states.sensor.ladowarka_status.last_changed).total_seconds() / 60) | round(0) }}
+
+{# Ktore czujniki sa niedostepne? #}
+{{ states.sensor | selectattr('state','in',['unknown','unavailable'])
+                 | map(attribute='entity_id') | list | join(', ') }}
+\end{lstlisting}
+
+\wskazowka{W wyzwalaczu i warunku \texttt{template} obowiązuje subtelna zasada: wyzwalacz przelicza się tylko wtedy, gdy zmieni się któraś z encji \emph{użytych w szablonie} (HA sam je wykrywa). Szablon bez żadnej encji --- np. sam \texttt{now()} --- nie będzie się odświeżał tak, jak intuicja podpowiada; do reguł czasowych służą wyzwalacze \texttt{time}/\texttt{time\_pattern}.}
+
+%=====================================================================
+\section{Elementy pomocnicze: helpery, skrypty, sceny, blueprinty}
+\label{sec:helpery}
+
+\subsection{Helpery --- pamięć i pokrętła Twoich reguł}
+
+Helpery (\textbf{Ustawienia $\to$ Urządzenia i usługi $\to$ Pomocnicy}) to encje tworzone ręcznie, bez fizycznego urządzenia. To one czynią automatyzacje konfigurowalnymi i odpornymi na restart:
+
+\begin{description}[style=nextline]
+\item[input\_boolean] wirtualny przełącznik --- flaga trybu (,,goście'', ,,wakacje'', ,,serwis''). Automatyzacje sprawdzają go w warunkach; Ty przełączasz z pulpitu.
+\item[input\_number] liczba z suwakiem --- progi i nastawy (cena prądu, minimalna nadwyżka PV). Zmieniasz próg bez edycji reguły.
+\item[input\_select] lista opcji --- tryby pracy (,,Eko / Komfort / Poza domem'').
+\item[input\_datetime, input\_text] godzina/data i tekst do wpisania.
+\item[timer] odliczanie z encją i zdarzeniem \texttt{timer.finished}; w przeciwieństwie do \texttt{delay} ma opcję przetrwania restartu (\texttt{restore}).
+\item[counter] licznik zdarzeń (ile sesji ładowania w tym tygodniu?).
+\item[schedule] tygodniowy grafik ,,włącz/wyłącz'' rysowany myszką --- encja jest \texttt{on} w zaznaczonych oknach. Wymarzony do taryf (przepis \ref{sec:przepis-taryfa}).
+\item[grupa, próg, pochodna, statystyki, Riemann] gotowe encje przetwarzające: grupowanie, binarne przekroczenie progu, pochodna (szybkość zmian), statystyki kroczące oraz całka Riemanna --- najważniejsza z nich dla energetyki (rozdz.~\ref{sec:energia}).
+\end{description}
+
+\subsection{Skrypty i sceny}
+
+\textbf{Skrypt} to nazwana sekwencja akcji --- wielokrotnego użytku, wywoływana z automatyzacji, pulpitu albo głosowo. Skrypt może przyjmować parametry (sekcja \texttt{fields}) i --- od nowszych wydań --- zwracać wynik (\texttt{response\_variable}). Reguła kciuka: logika, którą chcesz wywołać z więcej niż jednego miejsca, idzie do skryptu; automatyzacje tylko decydują \emph{kiedy}.
+
+\textbf{Scena} to zapamiętany zestaw stanów (światła 30\%, rolety w dół). \texttt{scene.turn\_on} przywraca zestaw; sprytny wariant: \texttt{scene.create} robi ,,migawkę'' bieżących stanów, a po chwili można do niej wrócić --- np. mrugnij światłami na czerwono przy błędzie ładowarki, potem odtwórz, co było.
+
+\subsection{Blueprinty --- automatyzacje z formularzem}
+
+\textbf{Blueprint} to szablon automatyzacji z polami do wypełnienia (,,wybierz czujnik ruchu'', ,,wybierz światło''). Z jednego blueprintu tworzy się dziesiątki instancji; społeczność publikuje setki gotowych (import: \textbf{Ustawienia $\to$ Automatyzacje i sceny $\to$ Blueprinty $\to$ Importuj}, wklejenie adresu URL). Dla firmy takiej jak AMPERE POINT blueprint to także sposób dystrybucji sprawdzonych reguł do klientów --- jedna dopracowana ,,ładowarka po taniej taryfie'' zamiast indywidualnego YAML u każdego.
+
+%=====================================================================
+\section{Przepisy --- kompletne automatyzacje z komentarzem}
+\label{sec:przepisy}
+
+Wszystkie przepisy używają przykładowych identyfikatorów (\texttt{switch.ladowarka}, \texttt{sensor.ladowarka\_status} itd.) --- podmień je na własne z zakładki Encje. Statusy ładowarek serii Q przyjmują wartości \texttt{charger\_free}, \texttt{charger\_insert}, \texttt{charger\_wait}, \texttt{charger\_charging}, \texttt{charger\_pause}, \texttt{charger\_end}, \texttt{charger\_fault} (Q37: encja \texttt{x\_work\_state} o analogicznych stanach). Każdy przepis wklejysz w edytorze automatyzacji przez menu ,,\ldots'' $\to$ \textbf{Edytuj w YAML}.
+
+\subsection{Ładowanie w taniej taryfie --- wersja dojrzała (helper schedule)}
+\label{sec:przepis-taryfa}
+
+Zamiast wpisywać godziny w regułę, rysujemy grafik: pomocnik \textbf{schedule} o nazwie \texttt{schedule.tania\_taryfa} (np. 22--6 w dni robocze, całe weekendy). Automatyzacja robi się trywialna, a zmiana taryfy to edycja grafiku, nie kodu:
+
+\begin{lstlisting}
+alias: Ladowarka wg taniej taryfy
+description: Wlacza ladowanie w oknach grafiku, wylacza poza nimi
+mode: single
+triggers:
+  - trigger: state
+    entity_id: schedule.tania_taryfa
+    id: zmiana
+actions:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: schedule.tania_taryfa
+            state: "on"
+        sequence:
+          - action: switch.turn_on
+            target: { entity_id: switch.ladowarka }
+    default:
+      - action: switch.turn_off
+        target: { entity_id: switch.ladowarka }
+\end{lstlisting}
+
+Komentarz: wyzwalaczem jest \emph{każda} zmiana stanu grafiku (wejście i wyjście z okna); \texttt{choose} z gałęzią domyślną załatwia obie strony jedną regułą. Chcesz wyjątek ,,ładuj natychmiast''? Dodaj \texttt{input\_boolean.laduj\_teraz} i warunek \texttt{off} na nim w gałęzi wyłączającej.
+
+\subsection{Powiadomienie o końcu ładowania --- z danymi sesji}
+
+\begin{lstlisting}
+alias: Koniec ladowania - powiadomienie
+mode: single
+triggers:
+  - trigger: state
+    entity_id: sensor.ladowarka_status
+    from: "charger_charging"
+    to:
+      - "charger_end"
+      - "charger_free"
+actions:
+  - action: notify.mobile_app_telefon
+    data:
+      title: "Ladowarka"
+      message: >-
+        Ladowanie zakonczone. Sesja:
+        {{ states('sensor.ladowarka_energia_sesji') | float(0) | round(2) }} kWh
+        ({{ (states('sensor.ladowarka_energia_sesji') | float(0)
+            * states('input_number.cena_kwh') | float(1)) | round(2) }} zl).
+\end{lstlisting}
+
+Komentarz: \texttt{to:} przyjmuje listę --- łapiemy i naturalny koniec (\texttt{charger\_end}), i wypięcie wtyczki. Koszt liczy szablon z pomocnika \texttt{input\_number.cena\_kwh} --- cena prądu jest nastawą na pulpicie, nie liczbą zaszytą w regule.
+
+\subsection{Flagowy: ładowanie nadwyżką z fotowoltaiki z płynną regulacją prądu}
+\label{sec:przepis-pv}
+
+Cel: gdy dom oddaje energię do sieci, ładowarka ma ją przechwycić --- i \emph{dopasowywać prąd} do bieżącej nadwyżki, zamiast tylko włączać się i wyłączać. Założenia: czujnik \texttt{sensor.moc\_eksportu} (dodatni = oddajemy; z falownika po Modbus albo z naszego symulatora SUN2000), ładowarka trójfazowa z nastawą \texttt{number.ladowarka\_limit\_pradu} (6--16 A), histereza w pomocnikach: \texttt{input\_number.pv\_prog\_startu} (np. 4200 W) i \texttt{input\_number.pv\_prog\_stopu} (np. 800 W).
+
+\begin{lstlisting}
+alias: Ladowanie nadwyzka PV (3 fazy, plynna regulacja)
+description: >-
+  Start powyzej progu startu, plynne dopasowanie pradu co minute,
+  stop po spadku ponizej progu stopu utrzymanym 5 minut.
+mode: single
+triggers:
+  - trigger: numeric_state
+    entity_id: sensor.moc_eksportu
+    above: input_number.pv_prog_startu
+    for: "00:03:00"
+    id: start
+  - trigger: time_pattern
+    minutes: "/1"
+    id: koryguj
+  - trigger: numeric_state
+    entity_id: sensor.moc_eksportu
+    below: input_number.pv_prog_stopu
+    for: "00:05:00"
+    id: stop
+conditions:
+  - condition: state
+    entity_id: sensor.ladowarka_status
+    state:
+      - "charger_insert"
+      - "charger_wait"
+      - "charger_charging"
+      - "charger_pause"
+actions:
+  - variables:
+      eksport: "{{ states('sensor.moc_eksportu') | float(0) }}"
+      pobor_ladowarki: "{{ states('sensor.ladowarka_moc') | float(0) }}"
+      do_dyspozycji: "{{ eksport + pobor_ladowarki }}"
+      prad: >-
+        {{ [16, [6, (do_dyspozycji / (3 * 230)) | int] | max] | min }}
+  - choose:
+      - conditions: "{{ trigger.id == 'stop' }}"
+        sequence:
+          - action: switch.turn_off
+            target: { entity_id: switch.ladowarka }
+      - conditions: "{{ trigger.id == 'start' }}"
+        sequence:
+          - action: number.set_value
+            target: { entity_id: number.ladowarka_limit_pradu }
+            data: { value: "{{ prad }}" }
+          - action: switch.turn_on
+            target: { entity_id: switch.ladowarka }
+      - conditions: >-
+          {{ trigger.id == 'koryguj'
+             and is_state('switch.ladowarka','on')
+             and (prad - states('number.ladowarka_limit_pradu')|float(0)) | abs >= 1 }}
+        sequence:
+          - action: number.set_value
+            target: { entity_id: number.ladowarka_limit_pradu }
+            data: { value: "{{ prad }}" }
+\end{lstlisting}
+
+Komentarz linia po linii, bo to najgęstszy przepis poradnika:
+\begin{itemize}
+\item \textbf{Trzy wyzwalacze z \texttt{id}}: start (nadwyżka utrzymana 3 min --- chmura przelatująca nad domem nie wystartuje ładowania), korekta co minutę, stop (spadek utrzymany 5 min --- auto nie ,,mruga''). Progi są encjami \texttt{input\_number}, więc stroisz je z pulpitu.
+\item \textbf{Warunek wspólny}: pojazd w ogóle podłączony (lista akceptowanych stanów).
+\item \textbf{Kluczowa zmienna \texttt{do\_dyspozycji}}: do bieżącego eksportu \emph{dodajemy} aktualny pobór ładowarki --- bo gdy ładowarka już pracuje, jej pobór pomniejszył eksport; bez tej poprawki reguła ,,dusiłaby'' sama siebie (najczęstszy błąd w tego typu automatyzacjach w internecie!).
+\item \textbf{Przeliczenie na prąd}: moc dzielona przez $3 \times 230$~V (trzy fazy; dla ładowarki jednofazowej usuń ,,3~*''), obcięta do widełek 6--16~A zapisem ,,min--max'' na listach Jinja2.
+\item \textbf{Korekta tylko przy różnicy $\geq 1$~A} --- oszczędzamy urządzeniu ciągłego przestawiania o ułamki ampera.
+\item Tryb \texttt{single}: gdyby przebieg jeszcze trwał, kolejny tik minutowy po prostu przepadnie --- tu to pożądane.
+\end{itemize}
+
+\uwaga{Minimalny prąd ładowania według normy IEC 61851 to 6~A --- poniżej auto przerywa sesję. Dlatego widełki zaczynają się od 6~A, a start ma osobny, wyższy próg mocy: $6\,\mathrm{A} \times 3 \times 230\,\mathrm{V} \approx 4{,}1$~kW nadwyżki musi być, żeby w ogóle ruszyć trójfazowo.}
+
+\subsection{Alarm błędu z eskalacją --- aż ktoś potwierdzi}
+
+Pomocnik: \texttt{input\_boolean.alarm\_potwierdzony}. Reguła powiadamia co 10 minut, maksymalnie 6 razy, dopóki ktoś nie przełączy potwierdzenia (z pulpitu albo przyciskiem w powiadomieniu --- patrz następny przepis):
+
+\begin{lstlisting}
+alias: Blad ladowarki - eskalacja
+mode: single
+triggers:
+  - trigger: state
+    entity_id: sensor.ladowarka_status
+    to: "charger_fault"
+actions:
+  - action: input_boolean.turn_off
+    target: { entity_id: input_boolean.alarm_potwierdzony }
+  - repeat:
+      until:
+        - condition: or
+          conditions:
+            - condition: state
+              entity_id: input_boolean.alarm_potwierdzony
+              state: "on"
+            - "{{ repeat.index >= 6 }}"
+      sequence:
+        - action: notify.mobile_app_telefon
+          data:
+            title: "UWAGA: blad ladowarki ({{ repeat.index }}/6)"
+            message: "Stan: {{ states('sensor.ladowarka_status') }}"
+        - wait_for_trigger:
+            - trigger: state
+              entity_id: input_boolean.alarm_potwierdzony
+              to: "on"
+          timeout: "00:10:00"
+          continue_on_timeout: true
+\end{lstlisting}
+
+Komentarz: \texttt{repeat.until} sprawdza warunek \emph{po} każdym obiegu; \texttt{wait\_for\_trigger} z \texttt{timeout} realizuje ,,czekaj 10 minut albo do potwierdzenia --- co pierwsze''. Zwróć uwagę na zerowanie flagi na początku: każdy nowy błąd zaczyna eskalację od czysta.
+
+\subsection{Powiadomienie z przyciskami (actionable) --- pełny obieg}
+\label{sec:przepis-actionable}
+
+Dwie reguły. Pierwsza wysyła powiadomienie z przyciskiem; druga nasłuchuje zdarzenia, które aplikacja Companion odsyła po naciśnięciu:
+
+\begin{lstlisting}
+alias: Auto podlaczone - zapytaj o start
+mode: single
+triggers:
+  - trigger: state
+    entity_id: sensor.ladowarka_status
+    to: "charger_insert"
+actions:
+  - action: notify.mobile_app_telefon
+    data:
+      title: "Ladowarka"
+      message: "Auto podlaczone. Rozpoczac ladowanie?"
+      data:
+        actions:
+          - action: "START_LADOWANIA"
+            title: "Laduj teraz"
+          - action: "POTWIERDZ_ALARM"
+            title: "Potwierdz alarm"
+\end{lstlisting}
+
+\begin{lstlisting}
+alias: Obsluga przyciskow z powiadomien
+mode: parallel
+triggers:
+  - trigger: event
+    event_type: mobile_app_notification_action
+    event_data: { action: "START_LADOWANIA" }
+    id: laduj
+  - trigger: event
+    event_type: mobile_app_notification_action
+    event_data: { action: "POTWIERDZ_ALARM" }
+    id: potwierdz
+actions:
+  - choose:
+      - conditions: "{{ trigger.id == 'laduj' }}"
+        sequence:
+          - action: switch.turn_on
+            target: { entity_id: switch.ladowarka }
+      - conditions: "{{ trigger.id == 'potwierdz' }}"
+        sequence:
+          - action: input_boolean.turn_on
+            target: { entity_id: input_boolean.alarm_potwierdzony }
+\end{lstlisting}
+
+Komentarz: przycisk nie wywołuje niczego bezpośrednio --- odsyła \emph{zdarzenie} na magistralę (rozdz.~\ref{sec:arch}), a dopiero reguła-odbiornik decyduje, co ono znaczy. Tryb \texttt{parallel}: naciśnięcia z dwóch telefonów nie będą się blokować.
+
+\subsection{Watchdog niedostępności --- system pilnuje sam siebie}
+
+\begin{lstlisting}
+alias: Watchdog - encje ladowarki niedostepne
+mode: single
+triggers:
+  - trigger: state
+    entity_id:
+      - sensor.ladowarka_status
+      - sensor.ladowarka_moc
+    to:
+      - "unavailable"
+      - "unknown"
+    for: "00:10:00"
+actions:
+  - action: notify.mobile_app_telefon
+    data:
+      title: "HA: utracono kontakt z ladowarka"
+      message: >-
+        {{ trigger.entity_id }} jest {{ trigger.to_state.state }}
+        od 10 minut. Sprawdz internet / zasilanie / chmure Tuya.
+\end{lstlisting}
+
+Komentarz: \texttt{for} odsiewa sekundowe czknięcia chmury; zmienna \texttt{trigger} w szablonie mówi, \emph{która} encja i \emph{w jakim} stanie --- jedna reguła obsłuży dziesiątki encji.
+
+\subsection{Raport dzienny o 21:00}
+
+Zakłada licznik dzienny \texttt{sensor.ladowarka\_energia\_dzienna} z pomocnika \texttt{utility\_meter} (rozdz.~\ref{sec:energia}):
+
+\begin{lstlisting}
+alias: Raport dzienny ladowania
+mode: single
+triggers:
+  - trigger: time
+    at: "21:00:00"
+conditions:
+  - condition: numeric_state
+    entity_id: sensor.ladowarka_energia_dzienna
+    above: 0.1
+actions:
+  - action: notify.mobile_app_telefon
+    data:
+      title: "Raport ladowania - {{ now().strftime('%d.%m') }}"
+      message: >-
+        Dzis naladowano
+        {{ states('sensor.ladowarka_energia_dzienna') | float(0) | round(1) }} kWh
+        za ok. {{ (states('sensor.ladowarka_energia_dzienna') | float(0)
+                 * states('input_number.cena_kwh') | float(1)) | round(2) }} zl.
+\end{lstlisting}
+
+Komentarz: warunek ,,powyżej 0,1 kWh'' wycisza raport w dni bez ładowania; format daty ustawia \texttt{strftime} --- ten sam mechanizm przyda się w każdym powiadomieniu z datą.
+
+%=====================================================================
+\section{Diagnostyka --- gdy reguła nie robi tego, co miała}
+\label{sec:debug}
+
+\subsection{Ślady (traces) --- najpotężniejsze i najmniej znane narzędzie}
+
+Każdy przebieg automatyzacji zostawia \textbf{ślad}: edytor reguły $\to$ zakładka \textbf{Ślady}. Zobaczysz graf wykonania krok po kroku: który wyzwalacz strzelił, jak wypadły warunki, którą gałąź \texttt{choose} wybrano, jakie wartości miały zmienne --- łącznie z pełnym obiektem \texttt{trigger}. HA trzyma domyślnie pięć ostatnich śladów na regułę. Dziewięć na dziesięć zagadek rozwiązuje się właśnie tutaj, bez zgadywania.
+
+\subsection{Reszta niezbędnika}
+
+\begin{itemize}
+\item \textbf{Dziennik} (Logbook) --- oś czasu ,,co się działo'': zmiany stanów i kto/co je wywołało.
+\item \textbf{Narzędzia deweloperskie $\to$ Stany} --- podgląd i \emph{ręczne ustawienie} dowolnego stanu (tylko do testów --- integracja nadpisze przy najbliższym raporcie). Nieocenione do prowokowania reguł.
+\item \textbf{Narzędzia deweloperskie $\to$ Zdarzenia} --- nasłuch magistrali (np. \texttt{mobile\_app\_notification\_action} przy debugowaniu przycisków powiadomień).
+\item \textbf{Narzędzia deweloperskie $\to$ Szablon} --- poligon Jinja2 na żywo.
+\item \textbf{Logi} (Ustawienia $\to$ System $\to$ Logi) z filtrem po nazwie integracji; poziom szczegółowości podnosi się usługą \texttt{logger.set\_level} bez restartu.
+\end{itemize}
+
+\subsection{Pułapki, które łapią każdego}
+
+\begin{itemize}
+\item \textbf{Tryb \texttt{single} + długie czekanie} --- kolejne wyzwolenia przepadają (rozdz.~\ref{sec:anatomia}).
+\item \textbf{\texttt{for} zeruje się przy każdej zmianie stanu} --- czujnik migoczący wokół progu nigdy nie ,,uzbiera'' czasu; pomaga histereza (dwa progi) albo pomocnik \emph{próg} z wbudowaną histerezą.
+\item \textbf{Wyzwalacz progowy nie strzela ,,bo już jest powyżej''} --- \texttt{numeric\_state} reaguje na \emph{przekroczenie}, nie na trwanie. Po restarcie HA nic nie ,,przekracza'' --- stany dopiero się ładują. Reguły krytyczne uzupełnij wyzwalaczem \texttt{homeassistant: start} plus warunkami.
+\item \textbf{\texttt{unknown}/\texttt{unavailable} w arytmetyce} --- zawsze \texttt{| float(0)} / \texttt{has\_value()} (rozdz.~\ref{sec:jinja}); jedna niedostępna encja potrafi po cichu wyłączyć całą regułę na dobę.
+\item \textbf{Restart przerywa \texttt{delay}/\texttt{wait}} --- długie odliczania przenoś do pomocnika \texttt{timer} z opcją \texttt{restore}.
+\item \textbf{Pętla sprzężenia} --- reguła zmienia encję, którą sama jest wyzwalana. Ślady pokażą to od razu; rozwiązaniem bywa warunek odcinający albo rozdzielenie na dwie reguły.
+\end{itemize}
+
+%=====================================================================
+\section{Pomiary energii --- od encji do panelu Energia}
+\label{sec:energia}
+
+\subsection{Co encja musi mieć, żeby panel ją przyjął}
+
+Panel Energia przyjmuje wyłącznie encje-liczniki: \texttt{device\_class: energy}, jednostka kWh oraz \texttt{state\_class: total\_increasing} --- czyli wartość \emph{narastającą} (jak licznik w rozdzielnicy), która może się co najwyżej wyzerować (HA rozpozna zerowanie i policzy przyrost poprawnie). Chwilowa moc (W) ma \texttt{state\_class: measurement} i do panelu jako źródło energii się nie nadaje --- to najczęstsze nieporozumienie.
+
+W ładowarkach serii Q rolę licznika pełni \texttt{forward\_energy\_total}. Gdy urządzenie daje tylko moc, energię wytwarza pomocnik \textbf{Integracja --- suma Riemanna} (całkuje moc po czasie; wybierz metodę \emph{lewostronną} --- dla skokowych przebiegów mocy nie zawyża wyniku).
+
+\subsection{Taryfy i okresy: utility\_meter}
+
+Pomocnik \textbf{utility\_meter} tnie licznik źródłowy na okresy (dzienny, miesięczny --- stąd \texttt{sensor.ladowarka\_energia\_dzienna} w przepisie raportu) i opcjonalnie na \textbf{taryfy}. Przy taryfach pomocnik tworzy encję wyboru; przełączanie taryfy to jedna automatyzacja sprzężona z grafikiem z przepisu \ref{sec:przepis-taryfa}:
+
+\begin{lstlisting}
+triggers:
+  - trigger: state
+    entity_id: schedule.tania_taryfa
+actions:
+  - action: select.select_option
+    target: { entity_id: select.energia_ladowarki }
+    data:
+      option: >-
+        {{ 'tania' if is_state('schedule.tania_taryfa','on') else 'droga' }}
+\end{lstlisting}
+
+Koszty w panelu Energia: cena stała, encja ceny (np. z pomocnika \texttt{input\_number.cena\_kwh}) albo cennik godzinowy z integracji giełdowej --- panel przeliczy zużycie na złotówki za każdy okres.
+
+%=====================================================================
+\section{Niezawodność, kopie zapasowe, dostęp zdalny}
+\label{sec:niezawodnosc}
+
+\subsection{Kopie zapasowe}
+
+W HA OS: \textbf{Ustawienia $\to$ System $\to$ Kopie zapasowe} --- od wydań 2025 z harmonogramem automatycznym i szyfrowaniem; kopię \emph{pobieraj} poza urządzenie (karta SD, która umarła, zabiera też kopię na sobie). W wariancie kontenerowym kopią jest folder \texttt{config} (nasz przewodnik, rozdz. o kopiach). Rytuał minimum: kopia przed każdą aktualizacją i raz w tygodniu automatycznie.
+
+\subsection{Aktualizacje bez dramatów}
+
+Czytaj noty wydania (sekcja \emph{Breaking changes} --- zmiany niekompatybilne); nie aktualizuj w dniu premiery, chyba że lubisz przygody --- poprawkowe wydanie \texttt{.1}--\texttt{.3} wychodzi zwykle w ciągu dni; po aktualizacji przejrzyj \textbf{Ustawienia $\to$ System $\to$ Naprawy} i logi. Dodatki społecznościowe (xtend\_tuya!) sprawdzaj pod kątem zgodności \emph{przed} dużym skokiem wersji rdzenia.
+
+\subsection{Dostęp spoza domu --- trzy drogi}
+
+\begin{description}[style=nextline]
+\item[Home Assistant Cloud (Nabu Casa)] abonament: szyfrowany tunel bez konfiguracji, plus asystenci głosowi; przy okazji finansuje rozwój projektu. Najprostsze i bezpieczne.
+\item[VPN (Virtual Private Network --- wirtualna sieć prywatna)] np. WireGuard albo Tailscale: telefon ,,wchodzi'' do sieci domowej i widzi HA jak z kanapy. Darmowe, bardzo bezpieczne, wymaga kwadransa konfiguracji.
+\item[Wystawienie portu / reverse proxy] dla zaawansowanych: własna domena, certyfikaty TLS, obowiązkowo uwierzytelnianie dwuskładnikowe. Największa kontrola --- i największa odpowiedzialność; nigdy nie wystawiaj HA ,,gołym'' portem 8123 bez HTTPS.
+\end{description}
+
+Niezależnie od drogi: załóż osobne konta domownikom (bez uprawnień administratora), włącz uwierzytelnianie dwuskładnikowe na kontach administracyjnych, a do integracji zewnętrznych używaj \emph{tokenów długoterminowych} zamiast hasła.
+
+%=====================================================================
+\section{Najczęstsze problemy --- ściąga}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}p{9.8cm}}
+\toprule
+\textbf{Objaw} & \textbf{Pierwszy ruch}\\
+\midrule
+\endhead
+Automatyzacja ,,czasem nie działa'' & Zakładka Ślady: który wyzwalacz, które warunki. W 90\% winne: tryb \texttt{single} albo warunek na encji \texttt{unavailable}.\\
+\addlinespace
+Reguła progowa nie startuje po restarcie & \texttt{numeric\_state} reaguje tylko na przekroczenie; dodaj wyzwalacz startu HA + warunki.\\
+\addlinespace
+Powiadomienia nie przychodzą & Sprawdź nazwę usługi \texttt{notify.mobile\_app\_*} (Narzędzia deweloperskie $\to$ Akcje), zezwolenia aplikacji na telefonie, tryb oszczędzania baterii.\\
+\addlinespace
+Przycisk z powiadomienia nic nie robi & Nasłuchaj zdarzenia \texttt{mobile\_app\_notification\_action} w Narzędziach deweloperskich $\to$ Zdarzenia --- literówka w \texttt{action} to klasyk.\\
+\addlinespace
+Panel Energia nie widzi encji & Brak \texttt{state\_class: total\_increasing} / złej jednostki; użyj licznika (\texttt{forward\_energy\_total}), nie mocy.\\
+\addlinespace
+Wartości energii ,,skaczą'' po restarcie urządzenia & Licznik urządzenia się wyzerował --- \texttt{total\_increasing} to obsłuży; nie używaj \texttt{total} bez potrzeby.\\
+\addlinespace
+Zigbee gubi urządzenia & Koordynator na przedłużaczu USB, z dala od routera i dysków USB 3.0; dołóż routery (wtyczki); rozważ kanał 15/20/25.\\
+\addlinespace
+Encje chmurowe co noc \texttt{unavailable} & Restart routera / przerwa u operatora / serwis chmury --- watchdog z przepisów odsieje sekundowe czknięcia od realnych awarii.\\
+\addlinespace
+Szablon działa w testerze, w regule nie & W testerze patrzysz na wynik, w wyzwalaczu liczy się \emph{zmiana} wyniku i encje wykryte w szablonie; sprawdź ślad.\\
+\addlinespace
+Po aktualizacji HA coś zniknęło & Ustawienia $\to$ System $\to$ Naprawy + noty wydania; dodatki HACS mogły wymagać własnej aktualizacji.\\
+\bottomrule
+\end{longtable}
+
+%=====================================================================
+\section{Słowniczek pojęć i skrótów}
+
+\begin{description}[style=nextline,itemsep=1pt]
+\item[Akcja (action)] pojedynczy krok automatyzacji: wywołanie usługi, decyzja, pauza.
+\item[API] interfejs programistyczny --- ,,okienko podawcze'' dla programów.
+\item[BLE / BTHome] energooszczędny Bluetooth / otwarty format rozgłoszeń czujników.
+\item[Blueprint] szablon automatyzacji z polami do wypełnienia.
+\item[Border router] urządzenie łączące siatkę Thread z siecią domową IP.
+\item[Broker] pośrednik MQTT rozdzielający wiadomości (np. Mosquitto).
+\item[Config entry (wpis konfiguracyjny)] zapisany wynik kreatora integracji; bez niego integracja nie działa.
+\item[DP (data point)] ponumerowana zmienna urządzenia Tuya (typ + skala).
+\item[Encja / urządzenie / obszar] wartość $\to$ teczka wartości $\to$ pomieszczenie.
+\item[ESPHome] system budowy własnych urządzeń na ESP32 z konfiguracji YAML.
+\item[Helper (pomocnik)] encja tworzona ręcznie: flaga, liczba, grafik, licznik, minutnik.
+\item[HTTP / REST / WebSocket] protokół stron www / styl API ,,pobierz--ustaw'' / stałe łącze dwukierunkowe.
+\item[IoT class] deklaracja integracji: lokalnie czy chmurowo, push czy poll.
+\item[Jinja2] język szablonów HA (\{\{ \ldots \}\}).
+\item[LWT] ,,testament'' MQTT --- wiadomość publikowana przez brokera po zniknięciu urządzenia.
+\item[Magistrala zdarzeń (event bus)] wewnętrzna tablica ogłoszeń HA; wszystko jest zdarzeniem.
+\item[Matter / Thread] wspólny język urządzeń po IP / radiowa siatka IPv6 (IEEE 802.15.4).
+\item[mDNS / SSDP / DHCP] mechanizmy, którymi HA wykrywa urządzenia w sieci.
+\item[Mesh (siatka)] topologia, w której urządzenia przekazują pakiety dalej (Zigbee, Z-Wave, Thread).
+\item[Modbus (RTU/TCP)] przemysłowy protokół rejestrów 16-bitowych (RS-485 / port 502).
+\item[MQTT / QoS / retain] protokół publikuj--subskrybuj / poziom gwarancji doręczenia / wiadomość zatrzymana.
+\item[ONVIF / RTSP] standard zarządzania kamerami / protokół strumienia wideo.
+\item[OTA] aktualizacja urządzenia ,,przez powietrze''.
+\item[Recorder / SQLite] komponent zapisu historii / domyślna baza danych w jednym pliku.
+\item[Scena / skrypt] zapamiętany zestaw stanów / nazwana sekwencja akcji.
+\item[state\_class (measurement / total\_increasing)] klasa statystyk encji: wartość chwilowa / licznik narastający.
+\item[Ślad (trace)] zapis przebiegu automatyzacji krok po kroku.
+\item[Tryb (mode)] zachowanie reguły przy ponownym wyzwoleniu: single, restart, queued, parallel.
+\item[utility\_meter] pomocnik tnący licznik na okresy i taryfy.
+\item[Warunek / wyzwalacz] filtr ,,czy działać'' / zdarzenie budzące regułę.
+\item[Webhook] adres URL wyzwalający automatyzację żądaniem HTTP.
+\item[ZHA / Zigbee2MQTT] dwie drogi obsługi Zigbee w HA (wbudowana / przez MQTT).
+\item[Z-Wave JS] serwer i integracja obsługi Z-Wave.
+\end{description}
+
+\vspace{8pt}
+\begin{center}
+\textcolor{navy}{\rule{0.6\textwidth}{0.4pt}}\\[4pt]
+{\small Koniec dokumentu --- wersja 1, 2026-07-06. Kolejne wersje oznaczać v2, v3\ldots{} bez usuwania poprzednich.\\
+Dokumenty powiązane: przewodnik instalacji (v2), raport xtend\_tuya (v1), poradnik kliencki www (v2), \texttt{pv\_sim} (symulator falownika).}
+\end{center}
+
+\end{document}

@@ -1,0 +1,254 @@
+% !TEX program = xelatex
+% English version of schemat_polaczen_DevKit_U10_Q11_v2.tex (pages 1-2) for the Q11 factory. AMPERE POINT, 2026-09-28.
+\documentclass[10pt]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\newfontfamily\sym{Segoe UI Symbol}
+\usepackage[table]{xcolor}
+\usepackage{geometry}
+\geometry{a4paper,landscape,margin=0.8cm}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{booktabs,array,longtable}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\definecolor{txblue}{HTML}{1D4ED8}
+\definecolor{rxgreen}{HTML}{15803D}
+\definecolor{pwrred}{HTML}{B91C1C}
+\definecolor{ncgrey}{HTML}{6B7280}
+\definecolor{copper}{HTML}{C2410C}
+\definecolor{padfill}{HTML}{F59E0B}
+\definecolor{boardfill}{HTML}{F3F4F6}
+\definecolor{modblue}{HTML}{DBEAFE}
+\definecolor{x1purple}{HTML}{7C3AED}
+
+\newcommand{\ra}{{\sym →}}
+\newcommand{\la}{{\sym ←}}
+\newcommand{\approxs}{{\sym ≈}}
+
+\begin{document}
+
+%======================================================================
+% PAGE 1: WIRING
+%======================================================================
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[anchor=north west, text width=27.5cm] at (0,19.3) {%
+{\Large\bfseries Wiring diagram: Shelly DevKit M1 \ra\ site U10 (WBR3 footprint) on the Q11 control board}\\[3pt]
+{\small Control board X2Q322\_K\_V4 (260703), controller X2Q311OW. Q11 board viewed from the component side, board edge with the module antenna at the bottom.
+DevKit viewed from the top, as in the photo. DevKit powered from the Q11 board through a removable jumper.\\ \mbox{AMPERE POINT}, 28 September 2026, EN v1 (from PL v2 of 24 September 2026).}};
+
+% ---------------- DevKit ----------------
+\draw[rounded corners=4pt, fill=boardfill, draw=black!70, line width=0.9pt] (2.0,9.6) rectangle (20.4,15.8);
+% USB-C
+\draw[fill=black!30, draw=black] (1.2,12.3) rectangle (2.3,13.5);
+\node[rotate=90, font=\scriptsize, align=center, text=pwrred] at (0.55,12.9) {\textbf{USB-C only with}\\\textbf{the jumper removed}};
+% USB-UART bridge
+\draw[fill=white, draw=black!60] (3.3,12.7) rectangle (5.7,14.3);
+\node[font=\scriptsize, align=center] at (4.5,13.5) {USB--UART bridge\\CP210x};
+\draw[black!60] (2.3,12.9) -- (3.3,13.1);
+% buttons
+\draw[fill=black!35] (2.65,14.05) circle (0.24); \node[font=\tiny] at (2.65,13.6) {BOOT};
+\draw[fill=black!35] (2.65,11.35) circle (0.24); \node[font=\tiny] at (2.65,11.8) {RST};
+% LED
+\draw[fill=white, draw=black!70] (13.7,13.3) circle (0.22);
+\node[font=\scriptsize, anchor=west] at (13.95,13.3) {RGB LED};
+% MOD1 module
+\draw[fill=black!20, draw=black] (16.4,12.6) rectangle (19.4,14.5);
+\draw[fill=modblue, draw=black, dashed] (19.4,12.9) rectangle (21.0,14.2);
+\node[font=\scriptsize, align=center] at (17.9,13.55) {Shelly-X-MOD1-H8\\ESP32-C3 core};
+\node[font=\tiny, rotate=90] at (20.2,13.55) {antenna};
+\node[font=\small\bfseries, align=center] at (9.6,13.55) {Shelly DevKit M1\\[-1pt]{\scriptsize\mdseries powered from the Q11 board or from USB, never both}};
+
+% top row (J1), from the left
+\foreach \i/\lab/\desc in {
+ 0/GND/ground, 1/5V/{5 V, unused}, 2/5V/{5 V, unused}, 3/GND/ground, 4/10/{GPIO10, unused},
+ 5/1/{GPIO1, unused}, 6/0/{GPIO0, unused}, 7/GND/ground, 8/RST/{chip reset}, 9/GND/ground,
+ 10/3/{GPIO3, unused}, 11/2/{GPIO2, strapping}, 12/3V3/{3.3 V, unused}, 13/3V3/{3.3 V \la\ VCC}, 14/GND/ground}{
+  \pgfmathsetmacro{\x}{3.8+1.1*\i}
+  \draw[fill=black!45, draw=black] (\x-0.17,15.13) rectangle (\x+0.17,15.47);
+  \node[font=\scriptsize\bfseries] at (\x,14.85) {\lab};
+  \node[font=\scriptsize, rotate=90, anchor=west, text=black!65] at (\x,16.0) {\desc};
+}
+\node[font=\scriptsize\itshape, text=black!60, anchor=east] at (3.5,16.6) {top row};
+
+% bottom row (J3), from the left
+\foreach \i/\lab/\desc in {
+ 0/GND/ground, 1/19/{USB D+}, 2/18/{USB D−}, 3/GND/ground, 4/4/{TX \ra\ Q11},
+ 5/5/{RX \la\ Q11}, 6/6/unused, 7/7/unused, 8/GND/ground, 9/8/{RGB LED},
+ 10/9/{BOOT}, 11/GND/ground, 12/RX/{log, USB}, 13/TX/{log, USB}, 14/GND/ground}{
+  \pgfmathsetmacro{\x}{3.8+1.1*\i}
+  \draw[fill=black!45, draw=black] (\x-0.17,9.93) rectangle (\x+0.17,10.27);
+  \node[font=\scriptsize\bfseries] at (\x,10.55) {\lab};
+  \node[font=\scriptsize, rotate=90, anchor=west, text=black!65] at (\x,10.95) {\desc};
+}
+\node[font=\scriptsize\itshape, text=black!60, anchor=east] at (3.5,9.35) {bottom row};
+
+% highlighted pins
+\draw[fill=txblue, draw=black] (8.2-0.19,9.91) rectangle (8.2+0.19,10.29);
+\draw[fill=rxgreen, draw=black] (9.3-0.19,9.91) rectangle (9.3+0.19,10.29);
+\draw[fill=black, draw=black] (12.6-0.19,9.91) rectangle (12.6+0.19,10.29);
+\draw[fill=pwrred, draw=black] (18.1-0.19,15.11) rectangle (18.1+0.19,15.49);
+% RX/TX on the header are the USB/log port
+\foreach \x in {17.0,18.1}{
+  \draw[pwrred, line width=1.6pt] (\x-0.28,9.82) -- (\x+0.28,10.38);
+  \draw[pwrred, line width=1.6pt] (\x-0.28,10.38) -- (\x+0.28,9.82);
+}
+\node[font=\scriptsize\bfseries, text=pwrred, align=center, fill=white, inner sep=1.5pt] at (17.55,9.3) {RX and TX: NOT THESE!\\USB and log port};
+\node[font=\scriptsize\bfseries, text=txblue, fill=white, inner sep=1.5pt] at (8.75,9.3) {wires to the Q11: pins 4 and 5};
+
+% ---------------- site U10 ----------------
+\fill[modblue] (14.6,0.0) rectangle (20.6,0.7);
+\node[font=\scriptsize, text=black!70] at (17.6,0.35) {module antenna over the board cut-out, board edge};
+\draw[fill=white, draw=black, line width=0.9pt] (14.6,0.7) rectangle (20.6,8.9);
+\node[align=center, font=\small] at (17.6,4.8) {\textbf{U10}\\WBR3\\footprint};
+\fill (21.05,0.75) circle (0.07);
+\node[font=\tiny, anchor=west] at (21.15,0.75) {dot on the board = pad 1};
+
+% left column: 9..16 from the top
+\foreach \k/\n/\name in {0/9/GND,1/10/A\_12,2/11/A\_16,3/12/A\_17,4/13/A\_18,5/14/A\_19,6/15/RXD,7/16/TXD}{
+  \pgfmathsetmacro{\y}{8.3-1.0*\k}
+  \draw[fill=padfill, draw=copper] (14.25,\y-0.18) rectangle (14.95,\y+0.18);
+  \node[anchor=west, font=\scriptsize\bfseries] at (15.05,\y) {\n\ \ \name};
+}
+% right column: 8..1 from the top
+\foreach \k/\n/\name in {0/8/VCC,1/7/A\_4,2/6/A\_3,3/5/A\_2,4/4/A\_11,5/3/EN,6/2/A\_7,7/1/NC}{
+  \pgfmathsetmacro{\y}{8.3-1.0*\k}
+  \draw[fill=padfill, draw=copper] (20.25,\y-0.18) rectangle (20.95,\y+0.18);
+  \node[anchor=east, font=\scriptsize\bfseries] at (20.15,\y) {\name\ \ \n};
+}
+
+% unconnected pads, left column (10..14)
+\foreach \k in {1,2,3,4,5}{
+  \pgfmathsetmacro{\y}{8.3-1.0*\k}
+  \draw[ncgrey, line width=0.8pt] (14.25,\y) -- (13.85,\y);
+  \node[font=\scriptsize, text=ncgrey, anchor=east] at (13.8,\y) {× not connected};
+}
+
+% right column descriptions (outside)
+\draw[pwrred, line width=1.7pt] (20.95,8.3) -- (21.6,8.3) -- (21.6,11.25);
+\draw[pwrred, line width=1.7pt] (21.6,12.15) -- (21.6,15.65) -- (18.1,15.65) -- (18.1,15.49);
+\draw[pwrred, line width=1.2pt, fill=white] (21.6,11.35) circle (0.1);
+\draw[pwrred, line width=1.2pt, fill=white] (21.6,12.05) circle (0.1);
+\draw[pwrred, line width=1.2pt, fill=white] (21.35,11.25) rectangle (21.85,12.15);
+\fill[pwrred] (21.6,11.35) circle (0.06);
+\fill[pwrred] (21.6,12.05) circle (0.06);
+\node[anchor=west, font=\scriptsize, text=pwrred, text width=5.2cm] at (21.95,11.7) {\textbf{jumper}: remove before connecting USB; insert and remove only with the charger switched off};
+\node[anchor=west, font=\scriptsize\bfseries, text=pwrred] at (21.7,9.2) {3.3 V from the board \ra\ DevKit 3V3};
+\node[anchor=west, font=\scriptsize\bfseries, text=pwrred] at (21.7,14.6) {to the top row, pin 14: 3V3};
+\foreach \k/\t in {1/{module GPIO}, 2/{module GPIO}, 3/{module GPIO}, 4/{module GPIO}, 5/{WBR3 enable; the DevKit has its own RST}, 6/{module GPIO}}{
+  \pgfmathsetmacro{\y}{8.3-1.0*\k}
+  \draw[ncgrey, line width=0.8pt] (20.95,\y) -- (21.3,\y);
+  \node[anchor=west, font=\scriptsize, text=ncgrey] at (21.35,\y) {× not connected: \t};
+}
+\node[anchor=west, font=\scriptsize, text=ncgrey] at (21.1,1.3) {× pad not connected (NC)};
+
+% ---------------- wires ----------------
+\draw[txblue, line width=1.7pt] (8.2,9.91) -- (8.2,1.3) -- (14.25,1.3);
+\draw[rxgreen, line width=1.7pt] (9.3,9.91) -- (9.3,2.3) -- (14.25,2.3);
+\draw[black, line width=1.7pt] (12.6,9.91) -- (12.6,8.3) -- (14.25,8.3);
+\draw[fill=white, draw=txblue, line width=1.2pt] (8.02,7.35) rectangle (8.38,8.35);
+\draw[fill=white, draw=rxgreen, line width=1.2pt] (9.12,7.35) rectangle (9.48,8.35);
+\node[font=\scriptsize\bfseries, text=txblue, rotate=90] at (7.8,7.85) {470 {\sym Ω}};
+\node[font=\scriptsize\bfseries, text=rxgreen, rotate=90] at (9.7,7.85) {470 {\sym Ω}};
+\node[font=\tiny, text=black!60, rotate=90] at (9.98,7.85) {recommended, note 3};
+% direction arrows
+\draw[-{Stealth[length=3.4mm,width=2.6mm]}, txblue, line width=1.7pt] (12.2,1.3) -- (13.4,1.3);
+\draw[-{Stealth[length=3.4mm,width=2.6mm]}, rxgreen, line width=1.7pt] (9.3,5.2) -- (9.3,6.5);
+\draw[-{Stealth[length=3.4mm,width=2.6mm]}, txblue, line width=1.7pt] (8.2,6.5) -- (8.2,5.2);
+% wire labels
+\node[font=\scriptsize\bfseries, text=txblue, anchor=south west] at (8.35,1.33) {DevKit pin 4, TX output \ra\ pad TXD \ra\ controller RX input (PA3)};
+\node[font=\scriptsize\bfseries, text=rxgreen, anchor=south west] at (9.45,2.33) {DevKit pin 5, RX input \la\ pad RXD \la\ controller TX output (PA2)};
+\node[font=\scriptsize\bfseries, anchor=south] at (13.45,8.33) {ground};
+
+% controller: direction note
+\node[draw=black!50, dashed, rounded corners=3pt, align=center, font=\scriptsize, text width=2.3cm, fill=white] at (11.0,5.6) {%
+\textbf{Q11 controller}\\(X2Q311OW) on the same board, connected by tracks:\\[2pt]
+pad TXD \ra\ its RX\\pad RXD \la\ its TX};
+
+% ---------------- legend and notes ----------------
+\node[anchor=north west, draw=black!40, rounded corners=3pt, fill=white, text width=6.75cm, font=\scriptsize, inner sep=5pt] at (0.2,9.15) {%
+\textbf{Legend}\\[2pt]
+{\color{txblue}\rule[0.5ex]{0.8cm}{1.7pt}}\ transmit: DevKit \ra\ controller\\
+{\color{rxgreen}\rule[0.5ex]{0.8cm}{1.7pt}}\ receive: controller \ra\ DevKit\\
+{\color{black}\rule[0.5ex]{0.8cm}{1.7pt}}\ common ground\\
+\fbox{\rule{0pt}{0.8ex}\hspace{0.6cm}}\ 470 {\sym Ω} series resistor, at the DevKit\\
+{\color{pwrred}\rule[0.5ex]{0.8cm}{1.7pt}}\ 3.3 V from the board, through the jumper\\
+{\color{ncgrey}×}\ pad left open\\[4pt]
+\textbf{Notes}\\[2pt]
+1. Solder the wires to the DevKit pins labelled \textbf{4 and 5}, the fifth and sixth from the USB-C connector in the bottom row. \textbf{Not to the pins labelled RX and TX} at the end of that row: they are the DevKit's USB and log port. Pin 4 to pad TXD, pin 5 to pad RXD, no crossing.\\[2pt]
+2. \textbf{Power from the board or from USB, never both.} Insert and remove the jumper only with the charger switched off.\\[2pt]
+3. The 470 {\sym Ω} resistors are recommended; they protect against a wiring mistake (3.3 V / 470 {\sym Ω} \approxs\ 7 mA) and do not affect the signal (470 {\sym Ω} × 20 pF \approxs\ 10 ns against a 104 µs bit at 9600 baud).\\[2pt]
+4. Before soldering, charger on: VCC–GND \approxs\ 3.3 V, RXD–GND \approxs\ 3.3 V (idle high).\\[2pt]
+5. In operation, with Wi-Fi active: VCC–GND at least 3.2 V.\\[2pt]
+6. In the Shelly portal: IO4 = TX, IO5 = RX; IO number = pin label.\\[2pt]
+7. Pads A\_x and EN: measured, no continuity to anything on this board.\\[2pt]
+8. DevKit inside the enclosure: insulated, fixed, away from mains-voltage parts.};
+
+\end{tikzpicture}
+
+\newpage
+%======================================================================
+% PAGE 2: SITE U10 - FUNCTION OF EVERY PAD
+%======================================================================
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[anchor=north west, text width=27.5cm] at (0,19.3) {%
+{\Large\bfseries Site U10: function of every pad with the WBR3 \ra\ with the DevKit \ra\ with the Shelly X1 at the same position}\\[3pt]
+{\small Component side, board edge with the antenna at the bottom. Left column: pads 9–16 from the top. Right column: pads 1–8 from the bottom, dot next to ``U10'' = pad 1.
+Pad names from the WBR3 datasheet. X1 pad names from the Shelly X1 datasheet v14 (IO layout), derived by overlaying the two footprints; to be verified on a physical X1 sample.}};
+
+\fill[modblue] (10.7,0.6) rectangle (16.9,1.6);
+\node[font=\footnotesize, text=black!70] at (13.8,1.1) {module antenna over the board cut-out};
+\draw[fill=white, draw=black, line width=1pt] (10.7,1.6) rectangle (16.9,17.2);
+\node[align=center, font=\large] at (13.8,9.4) {\textbf{U10}\\[2pt]\normalsize module site\\\normalsize 2 × 8 pads, 2 mm pitch};
+\fill (17.5,1.8) circle (0.09);
+\node[font=\scriptsize, anchor=west] at (17.65,1.8) {dot = pad 1};
+
+% left column
+\foreach \k/\n/\name in {0/9/GND,1/10/A\_12,2/11/A\_16,3/12/A\_17,4/13/A\_18,5/14/A\_19,6/15/RXD,7/16/TXD}{
+  \pgfmathsetmacro{\y}{16.4-2.0*\k}
+  \draw[fill=padfill, draw=copper] (10.25,\y-0.25) rectangle (11.15,\y+0.25);
+  \node[anchor=west, font=\normalsize\bfseries] at (11.3,\y) {\n\ \ \name};
+}
+% right column
+\foreach \k/\n/\name in {0/8/VCC,1/7/A\_4,2/6/A\_3,3/5/A\_2,4/4/A\_11,5/3/EN,6/2/A\_7,7/1/NC}{
+  \pgfmathsetmacro{\y}{16.4-2.0*\k}
+  \draw[fill=padfill, draw=copper] (16.45,\y-0.25) rectangle (17.35,\y+0.25);
+  \node[anchor=east, font=\normalsize\bfseries] at (16.3,\y) {\name\ \ \n};
+}
+
+% left column descriptions
+\newcommand{\gpioL}[1]{{\color{black!55}WBR3: module GPIO. No continuity to anything on the Q11 board.}\\\ra\ {\color{ncgrey}\textbf{DevKit: not connected.}}\\\ra\ {\color{x1purple}\textbf{X1 here: #1}}}
+\foreach \k/\t in {
+ 0/{{\color{black!55}WBR3: module ground.}\\\ra\ \textbf{DevKit: ground. Wire to any DevKit GND, e.g. bottom row between 7 and 8.}\\\ra\ {\color{x1purple}\textbf{X1 here: GND}}},
+ 1/{\gpioL{Sys btn, left open}}, 2/{\gpioL{U0TXD, service UART, left open}}, 3/{\gpioL{U0RXD, service UART, left open}}, 4/{\gpioL{IO7, unused}}, 5/{\gpioL{IO6, unused}},
+ 6/{{\color{black!55}WBR3: module serial input. Receives Tuya frames from the controller TX output (PA2).}\\\ra\ {\color{rxgreen}\textbf{DevKit: pin 5 (IO5, RX), 3.3 V input, via 470 {\sym Ω}. Receives the same frames.}}\\\ra\ {\color{x1purple}\textbf{X1 here: IO5 = RX}}},
+ 7/{{\color{black!55}WBR3: module serial output. Sends Tuya frames to the controller RX input (PA3).}\\\ra\ {\color{txblue}\textbf{DevKit: pin 4 (IO4, TX), 3.3 V output, via 470 {\sym Ω}. Sends frames instead of the WBR3.}}\\\ra\ {\color{x1purple}\textbf{X1 here: IO4 = TX}}}}{
+  \pgfmathsetmacro{\y}{16.4-2.0*\k}
+  \draw[black!30] (10.25,\y) -- (10.05,\y);
+  \node[anchor=east, align=right, text width=9.6cm, font=\footnotesize] at (10.0,\y) {\t};
+}
+
+% right column descriptions
+\newcommand{\gpioR}[1]{{\color{black!55}WBR3: module GPIO. No continuity to anything on the Q11 board.}\\\ra\ {\color{ncgrey}\textbf{DevKit: not connected.}}\\\ra\ {\color{x1purple}\textbf{X1 here: #1}}}
+\foreach \k/\t in {
+ 0/{{\color{black!55}WBR3: 3.3 V supply input from the control board regulator; reaches controller pins 1, 13, 19, 32, 48, 64.}\\\ra\ {\color{pwrred}\textbf{DevKit: through the jumper to DevKit 3V3, top row, pin 14.}} Powers the DevKit instead of USB.\\\ra\ {\color{x1purple}\textbf{X1 here: 3V3}}},
+ 1/{\gpioR{IO3, unused}}, 2/{\gpioR{IO2, unused}}, 3/{\gpioR{IO1, unused}}, 4/{\gpioR{IO0, unused}},
+ 5/{{\color{black!55}WBR3: module enable input (high = run, low = module off). No continuity to anything on the Q11 board: the controller cannot switch the module off.}\\\ra\ {\color{ncgrey}\textbf{DevKit: not connected.} The DevKit has its own reset (RST).}\\\ra\ {\color{x1purple}\textbf{X1 here: NC}}},
+ 6/{\gpioR{NTC, left open}},
+ 7/{{\color{black!55}WBR3: not connected (NC).}\\\ra\ {\color{ncgrey}\textbf{DevKit: nothing.}}\\\ra\ {\color{x1purple}\textbf{X1 here: RESET, left open}}}}{
+  \pgfmathsetmacro{\y}{16.4-2.0*\k}
+  \draw[black!30] (17.35,\y) -- (17.55,\y);
+  \node[anchor=west, align=left, text width=9.8cm, font=\footnotesize] at (17.6,\y) {\t};
+}
+
+\node[anchor=south west, font=\footnotesize] at (0.2,0.2) {%
+Colours: {\color{txblue}\textbf{blue}} transmit DevKit \ra\ controller,
+{\color{rxgreen}\textbf{green}} receive controller \ra\ DevKit, \textbf{black} ground,
+{\color{pwrred}\textbf{red}} 3.3 V from the board to the DevKit, {\color{ncgrey}\textbf{grey}} pad left open, {\color{x1purple}\textbf{purple}} Shelly X1 pad at the same position.};
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,163 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+
+\title{\textbf{AMPERE POINT --- Wielofunkcyjne urządzenie pomiarowe (custom device)}\\[4pt]
+\large Koncepcja budowy --- wersja 2 (rewizja różnicowa): rekuperacyjny moduł obciążenia}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{7 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+
+\noindent\textbf{Status dokumentu:} rewizja różnicowa koncepcji v1 (2026-07-03, zatwierdzonej z punktami Z1--Z6).
+Zmienia się \emph{wyłącznie} realizacja modułu obciążenia (blok B3): zamiast rezystancyjnego banku grzałek ---
+\textbf{rekuperacyjny moduł obciążenia} (prostowniki PFC + magazyn LiFePO4 + falownik hybrydowy), który energię
+testów zwraca do instalacji zakładu zamiast zamieniać ją w bezużyteczne ciepło. Wszystkie pozostałe ustalenia v1
+(topologia Z1/Z2, PM701E + serwa, łańcuch bezpieczeństwa, bloki B1--B2 i B4--B10, sekwencja pomiarowa) oraz
+poprawki schematu v3 \textbf{pozostają w mocy}. Nowe punkty do zatwierdzenia: Z7--Z10 (rozdz.~\ref{sec:zatw}).
+Dokumenty powiązane: schemat elektryczny v4 (EPLAN), wizualizacja 3D v2 (\texttt{...wizualizacja\_3D\_v2\_rekuperacja.html}).
+
+\tableofcontents
+
+\section{Motywacja zmiany}
+Bank grzałek z v1 realizuje pobór prądu poprawnie, ale całą energię testu (do 7,4~kW 1F / $\sim$11~kW 3F,
+soak 15--30~min) zamienia w ciepło wymagające wydmuchania na zewnątrz. Przy regularnych testach (kontrola importu,
+serwis) to realny koszt energii i kłopot cieplny. Cel v2: \textbf{konstruktywne zużycie} --- urządzenie nadal
+,,udaje samochód'', ale energia zostaje w zakładzie.
+
+\section{Zasada: tor identyczny z pokładową ładowarką auta}
+Pokładowa ładowarka EV (OBC) to prostownik z aktywnym PFC ładujący baterię trakcyjną. Moduł B v2 odtwarza
+dokładnie ten tor:
+\begin{enumerate}
+\item \textbf{Prostowniki PFC 48 V} --- 6 szt. modułów telekomunikacyjnych klasy \textbf{Huawei R4850G2}
+(3~kW/szt., sprawność $\sim$96\%, PF$>$0,99, niskie THD), prąd wyjściowy \textbf{zadawany cyfrowo po CAN}.
+Pobór z sieci jest sinusoidalny, z cos$\varphi\approx$1 --- \emph{wierniejsza} symulacja auta niż rezystory,
+z płynną regulacją 0--100\% zamiast skoków, rampami i zadawaną asymetrią per faza.
+\item \textbf{Magazyn LiFePO4 48 V, 10--14 kWh} z BMS --- bufor pochłaniający moc testu
+(soak 30~min przy 11~kW $\approx$ 5,5~kWh; ładowanie $\sim$0,8--1,1C dla 10--14~kWh --- dopuszczalne dla LFP,
+z kontrolą temperatury).
+\item \textbf{Falownik hybrydowy 48 V $\rightarrow$ 230/400 V} (5--12~kW, np. klasy Victron MultiPlus-II /
+Deye SUN) --- energia zasila odbiory warsztatu/biura (tryb ESS/UPS). \textbf{Zrzut nadmiaru}: gdy bateria pełna
+i brak odbioru --- grzałka w zasobniku CWU (ciepła woda użytkowa: ciepło również użyteczne, w~odróżnieniu od
+,,gołej'' grzałki z v1).
+\end{enumerate}
+
+\textbf{Bilans energii:} odzysk $\sim$85--92\% (PFC $\sim$96\% $\times$ bateria round-trip $\sim$95\%
+$\times$ falownik $\sim$95\%). Do odprowadzenia zostaje \textbf{0,5--1,2 kW strat zamiast 11 kW} ---
+wystarczą małe wentylatory szafy zamiast kanału wentylacyjnego; praca znacząco cichsza.
+
+\section{Konfiguracja mocy i faz}
+\begin{longtable}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.26\textwidth}@{}}
+\toprule
+\textbf{Tryb testu} & \textbf{Przydział prostowników} & \textbf{Pokrycie}\\
+\midrule
+3F symetrycznie do 3$\times$16 A (Q11, 11 kW) & 2 szt./fazę (2$\times$3 kW $=$ 6 kW $>$ 3,7 kW/fazę) & pełne, z zapasem\\
+1F do 32 A (P/B, 7,4 kW) & 3 szt. na L1 (9 kW) --- trzeci moduł przełączany z L2 stycznikiem konfiguracyjnym -K14 & pełne\\
+margines 3$\times$32 A ($\sim$22 kW) & wymagałoby 12 szt. & opcja rozbudowy, nie wymóg\\
+\bottomrule
+\end{longtable}
+Załączanie sekcji AC: styczniki \textbf{-K11..-K13} (po jednym na fazę) + \textbf{-K14} (przełączenie
+L2$\rightarrow$L1 dla trybu 1F 32 A); cewki 24 V w torze zezwolenia jak w v1. Dwunastu styczników stopni
+z v1 \textbf{nie ma} --- wartość prądu zadaje CAN, nie kombinacja załączeń.
+
+\section{Sterowanie i integracja z modułem A}
+\begin{itemize}
+\item \textbf{Magistrala CAN}: ESP32-S3 ma sprzętowy kontroler CAN (TWAI) --- wystarczy transceiver
+(np. SN65HVD230) z izolacją cyfrową. -A1 zadaje prąd każdego prostownika (kroki 25/50/75/100\% deklaracji CP,
+rampy, asymetria) i odczytuje telemetrię (U/I/T modułów). Protokół R4850G2 jest nieoficjalny, ale szeroko
+udokumentowany społecznościowo --- weryfikacja w etapie 0 (ryzyko R9).
+\item \textbf{Spójność CP$\leftrightarrow$pobór} bez zmian: sekwencer zadaje po CAN wyłącznie prąd
+$\le$ deklaracji z pokrętła PM701E; pomiar rzeczywisty nadal przez -T1..-T3/-U2 (arkusz E1/E3) ---
+niezależna weryfikacja toru CAN.
+\item \textbf{Sekwencja pomiarowa v1 bez zmian} --- krok 7 (obciążenie/soak) realizowany zadaniem prądu
+zamiast kombinacją styczników; reszta kroków identyczna.
+\item \textbf{BMS}: komunikacja (CAN/RS485) do -A1 --- SOC przed testem musi zostawiać zapas pojemności
+(np. start soak przy SOC $\le$60\%); temperatury ogniw dodatkowo na 1-Wire (-B5.x).
+\end{itemize}
+
+\section{Bezpieczeństwo (rozszerzenie B9)}
+Łańcuch 24 V z v1/v3 pozostaje w całości (E-STOP + -K4 przerwanie CP, krańcówka, zezwolenie -K10,
+watchdog -A2, -RB/START, potwierdzenie wentylatorów -K2). Zmiany i uzupełnienia:
+\begin{itemize}
+\item \textbf{Termiki KSD301 (-F11.x)}: przenoszą się z sekcji grzałek na \textbf{radiatory prostowników
+(6 szt.) i falownika (1--2 szt.)} --- nadal NC szeregowo w łańcuchu, przez złącze -X5.
+\item \textbf{Strona DC (nowa)}: bezpieczniki DC klasy mega \textbf{-F13.1/-F13.2} przy baterii,
+\textbf{rozłącznik DC -Q1} (serwisowy), \textbf{kontaktor BMS -KB} (odcięcie niezależne od MCU),
+przewody 48 V o przekroju $\ge$50 mm$^2$ przy 11 kW ($\sim$230 A po stronie DC!). Uwaga: przy 48 V prądy DC
+są duże --- staranność połączeń (momenty, mostki) jest krytyczna.
+\item \textbf{Bateria LFP}: chemia bezpieczna termicznie; wymagania: BMS z balansowaniem, czujniki temperatury,
+przewietrzanie szafy, wydzielenie od strefy AC.
+\item \textbf{Wentylatory strat}: -K3 (załączenie) + -K2 (potwierdzenie prądowe) jak w v3, tylko mniejsze.
+\end{itemize}
+
+\section{Kosztorys różnicowy (orientacyjny, PL 2026)}
+\begin{longtable}{@{}p{0.52\textwidth}r@{}}
+\toprule
+\textbf{Pozycja} & \textbf{zł}\\
+\midrule
+6$\times$ prostownik R4850G2 (rynek wtórny, 350--500 zł/szt.) & 2100--3000\\
+bateria LiFePO4 48 V 10--14 kWh (DIY ogniwa + BMS lub gotowy rack) & 4000--6500\\
+falownik hybrydowy 5--12 kW & 4000--7000\\
+strona DC: szyny, -F13.x, -Q1, -KB, przewody 50--70 mm$^2$ & 800--1500\\
+szafa rack/przemysłowa na kółkach + drobnica & 700--1200\\
+\emph{minus}: grzałki, kanał, wentylatory duże, 12 styczników stopni (v1) & $-$2600--4600\\
+\midrule
+\textbf{Delta względem v1 (netto)} & \textbf{$\sim$+9000--13600}\\
+\bottomrule
+\end{longtable}
+Delta częściowo się zwraca: energia testów wraca do zakładu, a szafa poza testami pracuje jako
+\textbf{magazyn energii / UPS warsztatu} (drugie życie inwestycji; synergia z wątkiem PV/HA zakładu).
+
+\section{Nowe ryzyka (uzupełnienie rejestru R1--R8 z v1)}
+\begin{enumerate}[label=\textbf{R\arabic*.},start=9]
+\item Protokół CAN R4850G2 nieoficjalny --- weryfikacja sterowania i limitów w etapie 0; fallback: prostowniki
+z oficjalnym CAN (Eltek Flatpack2 HE) lub sterowanie grupowe on/off.
+\item Dynamika prostowników przy skokach zadania (rampy zamiast skoków; test zgodności z oczekiwaniami DUT).
+\item Koordynacja SOC/BMS podczas soak (start przy niskim SOC; zrzut CWU jako odbiornik gwarantowany).
+\item Formalności oddawania energii: \textbf{rekomendacja --- tryb bez eksportu do sieci OSD} (zasilanie tylko
+odbiorów własnych za falownikiem) $=$ zero formalności; eksport/mikroinstalacja --- do decyzji later (Z9).
+\item Duże prądy DC przy 48 V (przekroje, złącza, ochrona zwarciowa strony bateryjnej).
+\end{enumerate}
+
+\section{Wpływ na etapy realizacji}
+Etap 0 (prototyp stołowy) rozszerza się o: 1 prostownik R4850G2 + sterowanie CAN z ESP32 (R9/R10),
+test ładowania małego pakietu LFP. Etap 1: szafa rekuperacji w konfiguracji 1F (3 prostowniki, bateria,
+falownik) $=$ pełny test P/B do 32 A. Etap 2: rozbudowa do 3F (Q11) + -K14. Etap 3 bez zmian.
+
+\section{Punkty do zatwierdzenia}
+\label{sec:zatw}
+\begin{enumerate}[label=\textbf{Z\arabic*.},start=7]
+\item \textbf{Zmiana modułu B na rekuperacyjny} (PFC+LiFePO4+falownik) zamiast banku grzałek.
+\emph{Rekomendacja: tak --- energia odzyskana, wierniejsza symulacja OBC, mniejsza termika i hałas.}
+\item \textbf{Parametry}: bateria 10--14 kWh / falownik 5--12 kW / 6 prostowników (+ -K14). \emph{Do akceptacji.}
+\item \textbf{Tryb pracy falownika}: bez eksportu (tylko odbiory własne) vs eksport do sieci wewnętrznej.
+\emph{Rekomendacja: start bez eksportu.}
+\item \textbf{Budżet delta} $\sim$+9--13,6 tys. zł względem v1. \emph{Do akceptacji kierunkowej.}
+\end{enumerate}
+
+\section{Warianty odrzucone (dla porządku)}
+\textbf{B --- bez baterii} (AFE/prostowniki + falownik on-grid): mniej elementów, ale oddawanie do sieci
+w każdej chwili testu $=$ formalności od razu; brak funkcji UPS/magazynu. \textbf{C --- czysto cieplny}
+(grzałki w zasobniku CWU 300 l): najtańszy, energia użyteczna tylko sezonowo, brak zalet regulacyjnych PFC.
+Wybrano wariant A (bufor bateryjny) jako najbardziej uniwersalny.
+
+\end{document}

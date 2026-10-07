@@ -1,0 +1,288 @@
+\documentclass[10pt,a4paper,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage[margin=1.0cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+\usepackage{parskip}
+\pagestyle{empty}
+\hyphenpenalty=3000 \emergencystretch=2em
+
+\tikzset{
+  blk/.style={draw, rounded corners=1.5pt, align=center, font=\footnotesize, inner sep=3pt, minimum height=8mm, fill=white},
+  blkS/.style={blk, font=\scriptsize, minimum height=6mm},
+  ext/.style={blk, dashed, fill=gray!8},
+  grp/.style={draw, rounded corners=3pt, inner sep=7pt, font=\small\bfseries},
+  moc/.style={-{Stealth}, very thick},
+  sig/.style={-{Stealth}, thin},
+  ster/.style={-{Stealth}, thin, dashed},
+  bezp/.style={-{Stealth}, thick, red!70!black},
+  lbl/.style={font=\tiny, fill=white, inner sep=1pt},
+  krok/.style={draw, rounded corners=1.5pt, align=center, font=\scriptsize, inner sep=2.5pt, minimum height=7mm, fill=white, text width=44mm},
+  bramka/.style={krok, fill=yellow!15},
+  stopblk/.style={krok, fill=red!10, text width=46mm},
+  kontakt/.style={draw, align=center, font=\scriptsize, inner sep=2.5pt, minimum height=7mm, fill=white}
+}
+
+\begin{document}
+
+% =====================================================================
+% STRONA TYTUŁOWA
+% =====================================================================
+\begin{center}
+\vspace*{2.5cm}
+{\LARGE\bfseries AMPERE POINT --- custom device}\\[6pt]
+{\Large Schematy ideowe --- wersja 1}\\[14pt]
+{\normalsize 3 lipca 2026}\\[22pt]
+\begin{tabular}{ll}
+\textbf{Arkusz 1} & Schemat blokowy całości (topologia Z1/Z2: przelot mocy z~odczepem sterującym, dwa moduły)\\[2pt]
+\textbf{Arkusz 2} & Sekwencja pomiarowa z~bramkami i~ścieżkami błędów\\[2pt]
+\textbf{Arkusz 3} & Łańcuch bezpieczeństwa (sprzętowy, niezależny od MCU)\\
+\end{tabular}\\[20pt]
+\begin{minipage}{0.72\textwidth}\small
+Podstawa: \emph{AMPERE\_POINT\_custom\_device\_koncepcja\_v1.pdf} (zatwierdzona z~punktami Z1--Z6, 2026-07-03).
+Schematy ideowe --- poziom architektury; wartości zabezpieczeń, przekroje i~oznaczenia aparatów zostaną
+uszczegółowione w~schemacie elektrycznym (EPLAN) po testach etapu~0.\\[6pt]
+\textbf{Legenda:} linia gruba $=$ tor mocy (L1/L2/L3/N/PE); linia cienka $=$ sygnał pomiarowy;
+linia przerywana $=$ sterowanie / magistrale cyfrowe; linia czerwona $=$ łańcuch bezpieczeństwa /
+ścieżka błędu; blok szary przerywany $=$ element zewnętrzny (DUT, przyrząd wzorcowany).
+\end{minipage}
+\end{center}
+\newpage
+
+% =====================================================================
+% ARKUSZ 1 — SCHEMAT BLOKOWY
+% =====================================================================
+\noindent{\small\textbf{Arkusz 1/3 --- Schemat blokowy całości} \hfill custom device v1 --- 2026-07-03}\par\vspace{0.5mm}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+% ---------- zewnętrzne (lewa kolumna) ----------
+\node[ext, text width=26mm] (inst) at (1.6,17.3) {Instalacja zasilająca obiektu (TN/TT)};
+\node[ext, text width=26mm, minimum height=11mm] (dut) at (1.6,15.1) {\textbf{Ładowarka badana (DUT)}\\ P/B 1F 32 A\\ Q11 3F 16 A};
+\node[ext, text width=24mm] (ut595) at (1.6,11.0) {UT595 --- izolacja, ciągłość, Zs, RCD A (wzorcowany)};
+\node[ext, text width=24mm] (ut522) at (1.6,5.6) {UT522 --- uziom 3-elektrodowy};
+\draw[moc] (inst) -- (dut);
+
+% ---------- tor mocy (górny rząd) ----------
+\node[blk, text width=28mm] (inlet) at (5.9,16.2) {Gniazdo pojazdowe Type 2 32 A 3F\\ + blokada wtyku};
+\node[blkS] (q0) at (8.9,16.2) {Rozłącznik\\ Q0};
+\node[blkS] (fuse) at (11.35,16.2) {Bezpieczniki\\ gG 32 A};
+\node[blkS, text width=19mm] (cdsr) at (13.75,16.2) {CDSR --- RCM\\ (okno L1L2L3N)};
+\node[blkS] (ct) at (16.1,16.2) {3$\times$CT\\ 40 A};
+\node[blkS] (k1) at (18.4,16.2) {Stycznik\\ główny K1};
+\node[blkS, text width=18mm] (cee) at (21.1,16.2) {Gniazdo CEE\\ 32 A 5p};
+
+\draw[moc] (dut.east) -- ++(0.45,0) |- node[lbl, pos=0.75, above]{kabel Type 2 DUT} (inlet.west);
+\draw[moc] (inlet) -- (q0);
+\draw[moc] (q0) -- (fuse);
+\draw[moc] (fuse) -- (cdsr);
+\draw[moc] (cdsr) -- (ct);
+\draw[moc] (ct) -- (k1);
+\draw[moc] (k1) -- (cee);
+
+% ---------- PM701E + serwa + bananowe ----------
+\node[blkS, text width=32mm] (serwa) at (5.0,14.25) {2$\times$ serwo DS3218 + rama (PWM)};
+\node[blk, text width=38mm, minimum height=12mm] (pm) at (7.4,12.7) {\textbf{PM701E} (nienaruszony)\\ pokrętła: stan BB/C/A/B/D,\\ prąd NC/13/20/32/63 A};
+\node[blkS, text width=28mm] (banan) at (7.4,10.8) {gniazda bananowe\\ L1/N/PE/L2/L3};
+\node[blkS, text width=18mm] (esh) at (4.0,6.9) {zaciski\\ E/S/H};
+
+\draw[sig] (inlet.south) -- ++(0,-0.45) node[lbl, right, yshift=-1mm]{odczep Type 2 (CP/PP/PE/L/N, $\le$1 m)} -| (pm.north);
+\draw[ster] (serwa.east) -| node[lbl, pos=0.9, right]{na pokrętłach} ($(pm.north west)+(0.5,0)$);
+\draw[sig] (pm) -- (banan);
+\draw[sig, dashed] (banan.west) -- ++(-1.0,0) |- (ut595.east);
+\draw[sig, dashed] (esh.west) -- ++(-0.5,0) |- (ut522.east);
+
+% ---------- kolumny analogowe ----------
+\node[blkS, text width=28mm] (separ) at (11.9,13.9) {przekaźniki separujące\\ (tryb izolacji)};
+\node[blkS, text width=28mm] (gen) at (11.9,12.3) {generator upływu\\ DC 0--20 mA / AC (L$\rightarrow$PE)\\ bocznik + AMC1301};
+\node[blkS, text width=28mm] (cp) at (11.9,10.7) {akwizycja CP/PP\\ (dzielnik, komparator)};
+\node[blkS, text width=28mm] (met) at (15.8,13.9) {metering 3F --- SPI\\ ATM90E36A + dzielniki};
+\node[blkS, text width=28mm] (irx) at (15.8,12.3) {termowizja --- I2C\\ MLX90640 + 2$\times$MLX90614};
+\node[blkS, text width=28mm] (temp) at (15.8,10.7) {DS18B20 --- 1-Wire\\ szyny, K1, otoczenie};
+
+\draw[sig] (fuse.south) -- (fuse.south|-separ.north);
+\draw[sig] (separ) -- (gen);
+\draw[sig] (ct.south) -- node[lbl, right, pos=0.5]{prądy} (ct.south|-met.north);
+\draw[sig] ($(pm.east)+(0,-0.4)$) -- (9.65,12.3) -- node[lbl, left]{SIGNAL OUTPUT (CP)} (9.65,10.7) -- (cp.west);
+\draw[ster] (cp.south) -- node[lbl, right, pos=0.3]{poziomy + duty} (cp.south|-11.9,8.45);
+
+% ---------- magistrala cyfrowa ----------
+\draw[ster] (met.east) -- ++(0.4,0) coordinate (busTR);
+\draw[ster] (irx.east) -- ++(0.4,0);
+\draw[ster] (temp.east) -- ++(0.4,0);
+\draw[ster] (cdsr.south) -- node[lbl, left, pos=0.15]{SPI (RCM)} (13.75,8.85);
+\draw[ster] (busTR) -- (17.7,8.85) -- node[lbl, above, pos=0.5]{SPI / I2C / 1-Wire} (13.4,8.85) -- (13.4,8.45);
+
+% ---------- logika ----------
+\node[blk, text width=38mm, fill=red!5, draw=red!70!black] (chain) at (6.3,7.7) {\textbf{łańcuch bezpieczeństwa 24 V}\\ (arkusz 3) $\rightarrow$ cewka K1};
+\node[blk, text width=40mm, minimum height=13mm] (esp) at (11.6,7.7) {\textbf{ESP32-S3} --- sekwencer\\ + MCP23017 + ULN2803 (opto)\\ + microSD + RTC};
+\node[blkS, text width=28mm] (hmi) at (16.4,8.3) {HMI DWIN 7$''$ --- UART\\ START / E-STOP / LED};
+\node[blkS, text width=28mm] (sd) at (16.4,7.1) {protokoły CSV/JSON\\ (SD, znaczniki RTC)};
+\node[blkS, text width=28mm] (wifi) at (16.4,5.9) {WiFi / MQTT\\ $\rightarrow$ Home Assistant};
+\node[blkS, text width=28mm] (psu) at (20.8,8.3) {zasilacz 24/5/3,3 V\\ $\leftarrow$ przewód Schuko\\ (logika nie z~DUT)};
+
+\draw[ster] (esp.east|-hmi.west) -- (hmi.west);
+\draw[ster] (esp.east|-sd.west) -- (sd.west);
+\draw[ster] ($(esp.south)+(0.9,0)$) |- (wifi.west);
+\draw[sig] (psu.south) -- ++(0,-0.45) node[lbl, below]{zasilanie logiki i~cewek};
+\draw[ster] (esp.west) -- node[lbl, above]{enable + watchdog} (chain.east);
+\draw[bezp] (chain.north) -- (6.3,9.15) -- node[lbl, above, pos=0.18]{zezwolenie $\rightarrow$ cewka K1} (18.4,9.15) -- (k1.south);
+\draw[ster] ($(esp.north)+(-1.8,0)$) -- (9.8,9.45) -- node[lbl, above, pos=0.35]{PWM serw} (4.6,9.45) -- (4.6,13.9);
+
+% ---------- moduł B ----------
+\node[blkS, text width=30mm] (wtyk) at (25.0,16.2) {wtyk CEE 32 A 5p};
+\node[blk, text width=30mm] (stycz) at (25.0,14.5) {12$\times$ stycznik 25 A\\ (4 stopnie/fazę, cewki 24 V)};
+\node[blk, text width=30mm, minimum height=11mm] (grzalki) at (25.0,12.5) {grzałki żebrowane L1/L2/L3\\ 1,0/1,5/2,0/3,0 kW\\ ($\sim$7,5 kW/fazę)};
+\node[blkS, text width=30mm] (ksd) at (25.0,10.6) {KSD301 na sekcjach\\ (NC, szeregowo)};
+\node[blkS, text width=30mm] (fan) at (25.0,9.3) {2$\times$ wentylator 500 m$^3$/h\\ + potwierdzenie pracy};
+\node[blkS, text width=30mm] (harting) at (25.0,8.0) {złącze sterownicze\\ (cewki, termiki, wentyl.)};
+
+\draw[moc] (cee.east) -- node[lbl, below=1.5mm]{5$\times$6 mm$^2$} (wtyk.west);
+\draw[moc] (wtyk) -- (stycz);
+\draw[moc] (stycz) -- (grzalki);
+\draw[bezp] (ksd) -- (fan);
+\draw[bezp] (fan) -- (harting);
+\draw[bezp] (harting.west) -- ++(-0.25,0) -- (23.25,4.4) -- node[lbl, above, pos=0.55]{przewód sterowniczy: termiki + potwierdzenie wentylatorów $\rightarrow$ łańcuch (ark. 3)} (6.3,4.4) -- (chain.south);
+\draw[ster] (esp.south) -- (11.6,4.9) -- node[lbl, above, pos=0.68]{24 V --- cewki stopni obciążenia} (22.9,4.9) -- (22.9,14.5) -- (stycz.west);
+
+% ---------- kontenery ----------
+\node[grp, fit=(inlet)(cee)(serwa)(pm)(banan)(esh)(separ)(gen)(cp)(met)(irx)(temp)(chain)(esp)(hmi)(sd)(wifi)(psu)] (modA) {};
+\node[grp, fit=(wtyk)(stycz)(grzalki)(ksd)(fan)(harting)] (modB) {};
+\node[font=\small\bfseries, anchor=south west] at ($(modA.north west)+(0.15,0.03)$) {MODUŁ A --- jednostka sterująco-pomiarowa (IP54)};
+\node[font=\small\bfseries, anchor=south east] at ($(modB.north east)+(-0.1,0.03)$) {MODUŁ B --- obciążenie};
+
+\end{tikzpicture}
+\end{center}
+\newpage
+
+% =====================================================================
+% ARKUSZ 2 — SEKWENCJA POMIAROWA
+% =====================================================================
+\noindent{\small\textbf{Arkusz 2/3 --- Sekwencja pomiarowa (bramki i~ścieżki błędów)} \hfill custom device v1 --- 2026-07-03}\par\vspace{0.5mm}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm, node distance=3.5mm]
+
+% kolumna 1
+\node[krok, fill=green!12] (s0) at (3.1,15.8) {\textbf{0. SELF-TEST}\\ łańcuch bezp., wentylatory, czujniki,\\ kalibracja serw (BB/NC), komunikacja};
+\node[bramka, below=of s0] (s1) {\textbf{1. TRYB IZOLACJI} --- separacja własnej\\ elektroniki i~modułu B od magistrali;\\ UT595 przez PM701E: izolacja 250 V\\ \textbf{bramka: $\ge$1 M$\Omega$ (wpis HMI)}};
+\node[bramka, below=of s1] (s2) {\textbf{2. CIĄGŁOŚĆ PE} $\ge$200 mA\\ (UT595, wyjście PE)\\ \textbf{bramka: wpis wyniku}};
+\node[krok, below=of s2] (s3) {\textbf{3. STAN B} (serwo stanu $\rightarrow$ B)\\ potwierdzenie CP; pre-testy PM701E};
+\node[bramka, below=of s3] (s4) {\textbf{4. STAN C} (serwo $\rightarrow$ C, CP OK)\\ stycznik DUT zamyka; weryfikacja napięć\\ i~kolejności faz; blokada wtyku};
+
+% kolumna 2
+\node[krok] (s5) at (10.3,15.8) {\textbf{5a. RCD typ A protokołowo} (UT595):\\ I$_{\Delta n}$/2, I$_{\Delta n}$, 5I$_{\Delta n}$, czasy, U$_B$; wpis};
+\node[krok, below=of s5] (s5b) {\textbf{5b. RDC-DD 6 mA DC auto}:\\ rampa generatora, rejestracja prądu\\ i~czasu zadziałania (zanik L)};
+\node[krok, below=of s5b] (s5c) {po każdym zadziałaniu: prowadzony\\ \textbf{reset DUT} $\rightarrow$ powrót do stanu C};
+\node[krok, below=of s5c] (s6) {\textbf{6. PĘTLA Zs} (UT595, gniazda\\ bananowe); warunek Zs$\cdot$Ia $\le$ U$_0$; wpis};
+\node[bramka, below=of s6] (s7a) {\textbf{7. OBCIĄŻENIE}: serwo prądu $\rightarrow$\\ deklaracja (32 A 1F / 16 A 3F);\\ \textbf{bramka: łańcuch zamknięty\\ + START operatora} $\rightarrow$ K1};
+
+% kolumna 3
+\node[krok] (s7b) at (17.3,15.8) {stopnie 25/50/75/100\% deklaracji\\ (kombinacje $\le$ prąd z~CP)};
+\node[krok, below=of s7b] (s7c) {\textbf{SOAK 15--30 min}: log U/I/P per faza,\\ asymetria, $\Delta T$ wtyku (MLX),\\ temperatury wewn.; kryteria pass/fail};
+\node[krok, below=of s7c] (s8) {\textbf{8. TESTY BŁĘDÓW}: CP Error „E'',\\ PE Error (PM701E, etap 1 ręcznie);\\ pomiar czasu odcięcia DUT};
+\node[krok, below=of s8] (s9) {\textbf{9. UZIOM} (niezależnie czasowo):\\ UT522 na E/S/H; wpis do protokołu};
+\node[krok, fill=green!12, below=of s9] (s10) {\textbf{10. RAPORT}: CSV/JSON na SD,\\ MQTT $\rightarrow$ HA; protokół PDF na PC};
+
+% przepływ główny
+\draw[sig] (s0) -- (s1);
+\draw[sig] (s1) -- node[lbl, right]{T} (s2);
+\draw[sig] (s2) -- node[lbl, right]{T} (s3);
+\draw[sig] (s3) -- (s4);
+\draw[sig] (s4.south) -- ++(0,-0.3) -| (6.8,15.8) -- (s5.west);
+\draw[sig] (s5) -- (s5b);
+\draw[sig] (s5b) -- (s5c);
+\draw[sig] (s5c) -- (s6);
+\draw[sig] (s6) -- (s7a);
+\draw[sig] (s7a.south) -- ++(0,-0.3) -| (13.9,15.8) -- (s7b.west);
+\draw[sig] (s7b) -- (s7c);
+\draw[sig] (s7c) -- (s8);
+\draw[sig] (s8) -- (s9);
+\draw[sig] (s9) -- (s10);
+
+% blok przerwania + ścieżki błędów
+\node[stopblk, minimum height=16mm] (stop) at (23.7,10.2) {\textbf{PRZERWANIE / STAN BEZPIECZNY}\\ rozpad zezwolenia $\rightarrow$ K1 otwarty,\\ zrzut obciążenia, serwa $\rightarrow$ BB/NC,\\ komunikat HMI, log przyczyny;\\ wznowienie tylko przez START};
+
+\draw[bezp] (s1.west) -- node[lbl, above, pos=0.4]{N} (s1.west -| 0.5,0) -- (0.5,5.3) -- (23.7,5.3) -- (stop.south);
+\draw[bezp] (s2.west) -- node[lbl, above, pos=0.4]{N} (s2.west -| 0.5,0);
+\draw[bezp] (s4.west) -- node[lbl, above, pos=0.4]{CP$\neq$komenda} (s4.west -| 0.5,0);
+\draw[bezp] (s7c.east) -- ++(0.4,0) -| node[lbl, above, pos=0.25]{anomalia} ($(stop.north)+(-0.9,0)$);
+\draw[bezp] (s8.east) -- ++(0.7,0) -| node[lbl, above, pos=0.25]{brak reakcji DUT} ($(stop.north)+(0.9,0)$);
+
+\node[blkS, text width=44mm, align=left] at (17.3,6.8) {\scriptsize\textbf{Warunki ciągłe (każdy krok):} CP zgodne z~komendą; RCM (CDSR) poniżej progu; termiki OK; wentylatory OK; E-STOP niewciśnięty. Naruszenie $\rightarrow$ PRZERWANIE.};
+
+\end{tikzpicture}
+\end{center}
+\newpage
+
+% =====================================================================
+% ARKUSZ 3 — ŁAŃCUCH BEZPIECZEŃSTWA
+% =====================================================================
+\noindent{\small\textbf{Arkusz 3/3 --- Łańcuch bezpieczeństwa (sprzętowy, niezależny od MCU)} \hfill custom device v1 --- 2026-07-03}\par\vspace{4mm}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+% ---------- szczebel 1: łańcuch zezwolenia -> cewka RB ----------
+\node[font=\small\bfseries] at (0.7,13.4) {+24 V};
+\node[kontakt, text width=20mm] (estop) at (3.0,13.4) {\textbf{E-STOP}\\ grzybek, NC (panel A)};
+\node[kontakt, text width=26mm] (ksd) at (6.3,13.4) {\textbf{KSD301 $\times$12} --- NC\\ szeregowo (moduł B)};
+\node[kontakt, text width=22mm] (lid) at (9.6,13.4) {\textbf{krańcówka} pokrywy\\ strefy mocy (NC)};
+\node[kontakt, text width=26mm] (fans) at (12.9,13.4) {\textbf{potwierdzenie wentylatorów}\\ (przekaźnik prądowy)};
+\node[kontakt, text width=24mm] (mcuen) at (16.2,13.4) {\textbf{zezwolenie MCU}\\ (może tylko rozłączyć)};
+\node[kontakt, text width=20mm] (wdt) at (19.3,13.4) {\textbf{watchdog}\\ człon impulsowy};
+\node[kontakt, text width=22mm] (start) at (22.4,14.4) {\textbf{START}\\ przycisk NO};
+\node[kontakt, text width=22mm] (rbaux) at (22.4,12.4) {styk pomocniczy RB\\ (samopodtrzymanie)};
+\node[kontakt, text width=20mm] (cewkarb) at (25.6,13.4) {\textbf{cewka przekaźnika}\\ \textbf{bezpieczeństwa RB}};
+
+\draw[bezp] (1.1,13.4) -- (estop);
+\draw[bezp] (estop) -- (ksd);
+\draw[bezp] (ksd) -- (lid);
+\draw[bezp] (lid) -- (fans);
+\draw[bezp] (fans) -- (mcuen);
+\draw[bezp] (mcuen) -- (wdt);
+\draw[bezp] (wdt.east) -- (20.9,13.4);
+\draw[bezp] (20.9,13.4) |- (start.west);
+\draw[bezp] (20.9,13.4) |- (rbaux.west);
+\draw[bezp] (start.east) -| (24.2,13.4);
+\draw[bezp] (rbaux.east) -| (24.2,13.4);
+\draw[bezp] (24.2,13.4) -- (cewkarb.west);
+\draw[bezp] (cewkarb.east) -- (27.3,13.4) node[font=\small\bfseries, right]{0 V};
+
+\node[lbl, text width=56mm, align=left] at (23.3,11.2) {\scriptsize samopodtrzymanie: po każdym rozpadzie łańcucha ponowne załączenie wymaga fizycznego wciśnięcia START};
+
+% ---------- szczebel 2: styk główny RB -> cewka K1 ----------
+\node[font=\small\bfseries] at (0.7,5.6) {+24 V};
+\node[kontakt, text width=28mm] (rbmain) at (12.2,5.6) {\textbf{styk główny RB}\\ (wymuszony mechanicznie)};
+\node[kontakt, text width=28mm] (cewkak1) at (16.6,5.6) {\textbf{cewka stycznika głównego K1}\\ (tor mocy, arkusz 1)};
+\draw[bezp] (1.1,5.6) -- (rbmain.west);
+\draw[bezp] (rbmain) -- (cewkak1);
+\draw[bezp] (cewkak1.east) -- (19.4,5.6) node[font=\small\bfseries, right]{0 V};
+
+% sprzezenie mechaniczne RB
+\draw[ster] (cewkarb.south) -- (25.6,6.6) -- node[lbl, above, pos=0.5]{sprzężenie mechaniczne styków RB (styki wymuszone)} (12.2,6.6) -- (rbmain.north);
+
+% ---------- MCU: odczyt + enable + watchdog ----------
+\node[blkS, text width=56mm, align=left] (mcu) at (6.5,7.9) {\textbf{ESP32-S3 --- tylko odczyt i~zezwolenie:}\\ stan każdego członu przez optoizolację (diagnostyka na HMI); wyjście enable; generator impulsów watchdog (zanik impulsów $=$ rozpad); \emph{firmware nie może zmostkować żadnego elementu łańcucha}};
+
+\draw[ster] (estop.south) -- (3.0,12.35) -- node[lbl, above, pos=0.35]{odczyt stanu członów (optoizolacja)} (9.0,12.35) -- (9.0,8.95);
+\draw[ster] (ksd.south) -- (6.3,12.35);
+\draw[ster] (lid.south) -- (9.6,12.35);
+\draw[ster] (mcu.east) -- ++(0.4,0) -- (9.9,8.35) -- node[lbl, above, pos=0.6]{enable} (16.2,8.35) -- (mcuen.south);
+\draw[ster] ($(mcu.east)+(0,-0.5)$) -- ++(0.55,0) -- (10.05,7.4) -- node[lbl, above, pos=0.6]{impulsy watchdog} (19.3,7.4) -- (wdt.south);
+
+% ---------- uzupelnienia ----------
+\node[blkS, text width=62mm, align=left] (uzup) at (5.0,3.4) {\textbf{Uzupełniająco (poza łańcuchem):}\\
+$\bullet$ CDSR jako RCM --- próg awaryjny $\rightarrow$ zdjęcie enable\\
+$\bullet$ bezpieczniki gG na fazach i~stopniach obciążenia\\
+$\bullet$ rozłącznik główny Q0 (odcięcie ręczne)\\
+$\bullet$ blokada elektromagnesowa wtyku Type 2 w~stanie C\\
+$\bullet$ praca impulsowa/duty-cycle load banku (termika)};
+
+\node[blkS, text width=58mm, align=left] at (13.6,3.4) {\textbf{Zasada:} tor 24 V cewki K1 przechodzi wyłącznie przez styki sprzętowe. Awaria dowolnego członu, zanik zasilania, zawieszenie firmware lub E-STOP $\Rightarrow$ RB odpada $\Rightarrow$ K1 otwiera tor mocy do modułu obciążenia.};
+
+\end{tikzpicture}
+\end{center}
+
+\end{document}

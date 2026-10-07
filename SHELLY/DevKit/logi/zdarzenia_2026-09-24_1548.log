@@ -1,0 +1,91 @@
+15:48:12  Monitor DevKitu na COM5. Ustawienia na starcie:
+15:48:12      Ładowanie włączone (DP 18): nie
+15:48:12      Limit prądu (DP 4): 16 A
+15:48:12      Stan ładowarki (DP 3): Wolna
+15:48:12      odczyty: energia sesji 0 kWh | czas sesji 0 min
+15:48:12  Q11: mikrokontroler nie odpowiada (Heartbeat timed out); kolejne takie same pomijam
+15:51:52  [Bluetooth] polecenie Cloud.SetConfig
+15:51:55  [Bluetooth] polecenie WiFi.SetConfig
+15:52:01  [SHC] polecenie Cloud.SetConfig
+15:52:02  [SHC] polecenie XMOD.GetProductJWS
+15:52:02  [SHC] polecenie Cloud.SetConfig
+15:52:03  [strona WWW] strona DevKitu została otwarta
+15:52:03  [strona WWW] polecenie RPC.Ping
+15:52:04  [SHC] polecenie service.getinfo
+15:52:04  [strona WWW] polecenie sys.SetConfig
+15:52:04  [SHC] polecenie shc.channelready
+15:52:04  [strona WWW] polecenie BLE.ListPairedDevices
+15:52:04  [strona WWW] polecenie service.GetResources
+15:52:04  [strona WWW] polecenie service.GetInfo
+15:52:04  [strona WWW] polecenie Webhook.ListAllSupported
+15:52:08  [Bluetooth] polecenie WiFi.SetConfig
+15:52:08  [strona WWW] polecenie sys.SetConfig
+15:52:11  [Bluetooth] polecenie BLE.SetConfig
+15:52:18  [strona WWW] polecenie RPC.Ping
+15:52:29  [strona WWW] polecenie RPC.Ping
+15:52:39  [strona WWW] polecenie RPC.Ping
+15:52:49  [strona WWW] polecenie RPC.Ping
+15:52:50  [SHC] polecenie Cloud.SetConfig
+15:52:50  [SHC] polecenie Shelly.getDeviceInfo
+15:52:50  [SHC] polecenie Cloud.SetConfig
+15:52:52  [SHC] polecenie service.getinfo
+15:52:52  [SHC] polecenie shc.channelready
+15:53:02  [strona WWW] polecenie RPC.Ping
+15:53:12  [strona WWW] polecenie RPC.Ping
+15:53:21  Q11: mikrokontroler się odezwał
+15:53:21      TMCU: W shelly_tmcu.cpp:1027    Setting unknown datapoint 4
+15:53:21  Q11: mikrokontroler nie odpowiada (Heartbeat timed out); kolejne takie same pomijam
+15:53:23  Q11: mikrokontroler się odezwał
+15:53:23      TMCU: E shelly_tmcu.cpp:942     Initialization failed at init_state 0 Expecting heartbeat
+15:53:23  Q11: mikrokontroler nie odpowiada (Heartbeat timed out); kolejne takie same pomijam
+15:53:31  [strona WWW] polecenie RPC.Ping
+15:53:41  [strona WWW] polecenie RPC.Ping
+15:53:43  [strona WWW] polecenie boolean.set
+15:53:43  Q11: mikrokontroler się odezwał
+15:53:43      TMCU: W shelly_tmcu.cpp:1027    Setting unknown datapoint 18
+15:53:43  [strona WWW] Ładowanie włączone (DP 18): nie na tak
+15:53:44  Q11: mikrokontroler nie odpowiada (Heartbeat timed out); kolejne takie same pomijam
+15:53:45  Q11: mikrokontroler się odezwał
+15:53:45      TMCU: E shelly_tmcu.cpp:942     Initialization failed at init_state 0 Expecting heartbeat
+15:53:45  Q11: mikrokontroler nie odpowiada (Heartbeat timed out); kolejne takie same pomijam
+15:53:46  [strona WWW] polecenie boolean.set
+15:53:46  Q11: mikrokontroler się odezwał
+15:53:46      TMCU: W shelly_tmcu.cpp:1027    Setting unknown datapoint 18
+15:53:46  [strona WWW] Ładowanie włączone (DP 18): tak na nie
+15:53:46  Q11: mikrokontroler nie odpowiada (Heartbeat timed out); kolejne takie same pomijam
+15:53:48  Q11: mikrokontroler się odezwał
+15:53:48      TMCU: E shelly_tmcu.cpp:942     Initialization failed at init_state 0 Expecting heartbeat
+15:53:48  Q11: mikrokontroler nie odpowiada (Heartbeat timed out); kolejne takie same pomijam
+15:53:56  [strona WWW] polecenie RPC.Ping
+15:54:06  [strona WWW] polecenie RPC.Ping
+15:54:16  [strona WWW] polecenie RPC.Ping
+15:54:17  [strona WWW] polecenie schedule.list
+15:54:22  [strona WWW] polecenie webhook.list
+15:54:26  [strona WWW] polecenie RPC.Ping
+15:54:36  [strona WWW] polecenie RPC.Ping
+15:54:46  [strona WWW] polecenie RPC.Ping
+15:54:56  [strona WWW] polecenie RPC.Ping
+15:55:06  [strona WWW] polecenie RPC.Ping
+15:55:16  [strona WWW] polecenie RPC.Ping
+15:55:26  [strona WWW] polecenie RPC.Ping
+15:55:36  [strona WWW] polecenie RPC.Ping
+15:55:46  [strona WWW] polecenie RPC.Ping
+15:55:56  [strona WWW] polecenie RPC.Ping
+15:56:02  [SHC] polecenie service.getinfo
+15:56:02  [SHC] polecenie shc.channelready
+15:56:12  [strona WWW] polecenie RPC.Ping
+15:56:22  [strona WWW] polecenie RPC.Ping
+15:56:32  [strona WWW] polecenie RPC.Ping
+15:56:42  [strona WWW] polecenie RPC.Ping
+15:56:52  [strona WWW] polecenie RPC.Ping
+15:57:02  [strona WWW] polecenie RPC.Ping
+15:57:12  [strona WWW] polecenie RPC.Ping
+15:57:23  [strona WWW] polecenie RPC.Ping
+15:57:33  [strona WWW] polecenie RPC.Ping
+15:57:43  [strona WWW] polecenie RPC.Ping
+15:57:53  [strona WWW] polecenie RPC.Ping
+15:58:03  [strona WWW] polecenie RPC.Ping
+15:58:13  [strona WWW] polecenie RPC.Ping
+15:58:23  [strona WWW] polecenie RPC.Ping
+15:58:33  [strona WWW] polecenie RPC.Ping
+15:58:43  [strona WWW] polecenie RPC.Ping

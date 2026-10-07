@@ -1,0 +1,102 @@
+{
+  "protocol": {
+    "number": "AP/SER/2026/0002",
+    "issue_date": "2026-09-28",
+    "place": "Tuchom"
+  },
+  "service_provider": {
+    "name": "Maxima Trading sp. z o.o. sp. k. / Ampere Point",
+    "address": "Gdyńska 72, 80-209 Tuchom",
+    "contact": "hello@amperepoint.com"
+  },
+  "customer": {
+    "name": "Mariusz Pajor",
+    "contact": "mariuszpajor@icloud.com, +48 600 756 411",
+    "sales_reference": "Partner Allegro"
+  },
+  "equipment": {
+    "brand": "Ampere Point",
+    "model": "Q11",
+    "serial_number": "Brak — tabliczka na uchwycie, nie dostarczono",
+    "product_code": "Q11",
+    "purchase_date": "—"
+  },
+  "case": {
+    "case_reference": "Zwrot 5678181703",
+    "intake_date": "2026-09-24",
+    "repair_date": "2026-09-28",
+    "reported_issue": "Podczas ładowania samochodu zadziałało zabezpieczenie w instalacji domowej. Od tego momentu pojazd nie ładuje się również na innych stacjach. Klient prosi o sprawdzenie ładowarki i potwierdzenie, czy działa prawidłowo i nie została uszkodzona.",
+    "inspection_findings": [
+      "Po włączeniu komunikat „Overload Reminder” bez podłączonego pojazdu i bez przepływu prądu (fot. 1) — uszkodzony tor pomiaru prądu w układzie sterującym.",
+      "Brak komunikacji z pojazdem — rezystancja kodująca PP we wtyczce poza wartością znormalizowaną; uszkodzona elektronika komunikacji we wtyczce.",
+      "Pozostałe podzespoły bez uszkodzeń."
+    ],
+    "diagnosis": "Uszkodzenie układu sterującego (tor pomiaru prądu) oraz elektroniki komunikacji we wtyczce. Przyczyna pierwotna nie została ustalona z pewnością. Uszkodzenie obu elementów w jednym zdarzeniu, zadziałanie zabezpieczenia w instalacji domowej oraz brak możliwości ładowania pojazdu także na innych stacjach wskazują na zdarzenie elektryczne w obwodzie ładowania (zwarcie za ładowarką albo przepięcie w sieci zasilającej), którego ładowarka nie wytwarza samodzielnie. Nie stwierdzono w ładowarce wady, która mogłaby być źródłem zdarzenia.",
+    "warranty": {
+      "status": "Nie dotyczy — naprawa wykonana bezpłatnie",
+      "decision": "Naprawa bezpłatna",
+      "basis": "Naprawę wykonano bezpłatnie; kwalifikacji gwarancyjnej nie rozstrzygano, ponieważ przyczyna pierwotna zdarzenia nie została ustalona."
+    }
+  },
+  "work": {
+    "actions": [
+      "Wymiana układu sterującego.",
+      "Przywrócenie prawidłowej rezystancji kodującej PP we wtyczce."
+    ],
+    "parts": [
+      {
+        "name": "Układ sterujący",
+        "quantity": 1,
+        "reference": "Nowa część"
+      },
+      {
+        "name": "Rezystor kodujący PP",
+        "quantity": 1,
+        "reference": "680 Ω"
+      }
+    ],
+    "tests": [
+      {
+        "name": "Pomiar rezystancji kodującej PP we wtyczce",
+        "result": "Wartość prawidłowa, stabilna",
+        "status": "PASS"
+      },
+      {
+        "name": "Ładowanie pojazdu, 30 min przy 16 A",
+        "result": "Sesja zakończona bez błędów",
+        "status": "PASS"
+      }
+    ]
+  },
+  "settlement": {
+    "currency": "PLN",
+    "parts_gross": 0,
+    "labor_gross": 0,
+    "other_gross": 0
+  },
+  "result": {
+    "status": "Sprawne po naprawie",
+    "release_date": "2026-09-28",
+    "recommendations": "Przed ponownym ładowaniem w domu zalecamy, aby elektryk sprawdził obwód zasilający ładowarkę i przyczynę zadziałania zabezpieczenia.",
+    "attachments": [
+      "Zgłoszenie zwrotu 5678181703"
+    ]
+  },
+  "signatures": {
+    "technician": "Dawid Cekała",
+    "customer": "Mariusz Pajor"
+  },
+  "factory_state_statement": {
+    "issue": false,
+    "parts_origin": "",
+    "firmware": "",
+    "reference_document": "",
+    "notes": "Nie wystawiać: kodowanie PP zrealizowano inaczej niż fabrycznie."
+  },
+  "photos": [
+    {
+      "file": "zdjecia/01_stan_przy_przyjeciu_overload_reminder.jpg",
+      "caption": "Stan przy przyjęciu: komunikat „Overload Reminder” na wyświetlaczu bez podłączonego pojazdu."
+    }
+  ]
+}

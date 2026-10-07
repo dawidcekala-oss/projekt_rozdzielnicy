@@ -1,0 +1,417 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zakupy Gree + rejestrator — lista v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#F5F7F9;
+  --surface:#FFFFFF;
+  --surface-2:#EDF1F5;
+  --ink:#131820;
+  --ink-2:#525E6E;
+  --ink-3:#7C8797;
+  --line:#DCE2EA;
+  --line-2:#C6CEDA;
+  --accent:#B5470B;
+  --accent-soft:#FBEDE3;
+  --opt:#4A6A8A;
+  --opt-soft:#E7EEF5;
+  --ok:#2E7D46;
+  --ok-soft:#E4F2E9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1218;
+    --surface:#161C25;
+    --surface-2:#1D242F;
+    --ink:#E6EAF0;
+    --ink-2:#9AA5B4;
+    --ink-3:#77828F;
+    --line:#26303C;
+    --line-2:#33404F;
+    --accent:#F0925A;
+    --accent-soft:#2A1D14;
+    --opt:#8FB0CE;
+    --opt-soft:#182533;
+    --ok:#7BC594;
+    --ok-soft:#15281C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1218;
+  --surface:#161C25;
+  --surface-2:#1D242F;
+  --ink:#E6EAF0;
+  --ink-2:#9AA5B4;
+  --ink-3:#77828F;
+  --line:#26303C;
+  --line-2:#33404F;
+  --accent:#F0925A;
+  --accent-soft:#2A1D14;
+  --opt:#8FB0CE;
+  --opt-soft:#182533;
+  --ok:#7BC594;
+  --ok-soft:#15281C;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px;margin:0 auto;padding:40px 20px 72px;display:flex;flex-direction:column;gap:28px}
+
+header{display:flex;flex-direction:column;gap:14px}
+h1{
+  font-family:Archivo,system-ui,sans-serif;
+  font-weight:700;font-size:clamp(1.65rem,4vw,2.3rem);
+  letter-spacing:-.02em;margin:0;text-wrap:balance;
+}
+.sumy{display:flex;flex-wrap:wrap;gap:10px}
+.suma{
+  display:flex;align-items:baseline;gap:8px;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:10px;padding:9px 14px;
+}
+.suma b{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1rem;
+  font-variant-numeric:tabular-nums;
+}
+.suma span{font-size:.8rem;color:var(--ink-2)}
+.suma.mocna{border-color:var(--line-2);background:var(--surface-2)}
+.klucz{font-size:.85rem;color:var(--ink-2);margin:0}
+.znacznik{
+  display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  font-weight:600;padding:1px 6px;border-radius:5px;
+  background:var(--opt-soft);color:var(--opt);border:1px solid var(--line);
+}
+.znacznik.ok{background:var(--ok-soft);color:var(--ok)}
+.znacznik.dobrac{background:var(--accent-soft);color:var(--accent)}
+
+.sklep{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+.sklep-gora{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 18px;border-bottom:1px solid var(--line);
+  background:var(--surface-2);
+}
+.sklep-nazwa{
+  font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:1.06rem;
+  letter-spacing:-.01em;
+}
+.sklep-nazwa a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line-2)}
+.sklep-nazwa a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.sklep-nazwa small{display:block;font-family:"IBM Plex Sans",sans-serif;font-weight:400;font-size:.78rem;color:var(--ink-2);margin-top:2px}
+.sklep-suma{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;
+}
+.sklep-suma small{display:block;font-family:"IBM Plex Sans",sans-serif;font-weight:500;font-size:.74rem;color:var(--ok)}
+
+.poz{
+  display:grid;
+  grid-template-columns:52px 1fr auto auto;
+  align-items:center;gap:14px;
+  padding:13px 18px;
+  border-top:1px solid var(--line);
+  color:inherit;text-decoration:none;
+  transition:background .12s ease;
+}
+.sklep-gora + .poz{border-top:none}
+.poz:hover{background:var(--accent-soft)}
+.poz:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.kod{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.8rem;
+  color:var(--ink-3);letter-spacing:.02em;
+}
+.nazwa{font-weight:500;line-height:1.35}
+.nazwa .znacznik{margin-left:7px;vertical-align:1px}
+.nazwa small{display:block;font-weight:400;font-size:.78rem;color:var(--ink-3)}
+.ile{
+  font-family:"IBM Plex Mono",monospace;font-size:.85rem;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.cena{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.95rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap;min-width:66px;text-align:right;
+}
+.poz::after{
+  content:"↗";color:var(--ink-3);font-size:.9rem;grid-column:5;
+}
+.poz:hover::after{color:var(--accent)}
+
+.sklep.kupione{opacity:.72}
+.sklep.kupione .poz{pointer-events:auto}
+.sklep.kupione .sklep-suma small{color:var(--ok)}
+
+.uwaga{
+  background:var(--surface);border:1px dashed var(--line-2);border-radius:14px;
+  padding:16px 18px;font-size:.88rem;color:var(--ink-2);
+}
+.uwaga b{color:var(--ink)}
+.uwaga ul{margin:8px 0 0;padding-left:20px}
+.uwaga li{margin:3px 0}
+
+@media (max-width:620px){
+  .poz{grid-template-columns:44px 1fr auto;gap:10px;padding:12px 14px}
+  .ile{grid-column:2;grid-row:2;font-size:.8rem}
+  .cena{grid-column:3;grid-row:1}
+  .poz::after{grid-column:3;grid-row:2;text-align:right}
+  .sklep-gora{padding:12px 14px}
+}
+
+footer{
+  display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;
+  font-size:.82rem;color:var(--ink-3);
+  border-top:1px solid var(--line);padding-top:16px;
+}
+footer span{font-family:"IBM Plex Mono",monospace}
+</style>
+
+<div class="wrap">
+
+<header>
+  <h1>Zakupy Gree + rejestrator — lista v2</h1>
+  <div class="sumy">
+    <div class="suma mocna"><b>126,58 zł</b><span>DO KUPIENIA &middot; 2 sprzedawców &middot; obie dostawy 0 zł</span></div>
+    <div class="suma"><b>62,83 zł</b><span>MODULES (koszyk otwarty — dobrać 2 pozycje)</span></div>
+    <div class="suma"><b>63,75 zł</b><span>a_brod (nowy koszyk)</span></div>
+    <div class="suma"><b>≈51,90 zł + ESP32</b><span>już kupione</span></div>
+  </div>
+  <p class="klucz">Wersja 2 po optymalizacji dostaw: <b>6 drobnych sprzedawców wyleciało</b> (tomsyty, Conteo_pro, Elektronika_AF, eltypl, kondensatory_eu, Tom-elektron1) — ich pozycje przeniesione do <b>a_brod</b> (jeden koszyk nad progiem Smart&nbsp;49,90&nbsp;zł). Uwzględnia zmiany rejestratora (wariant&nbsp;B: jedna płytka z wejściem i wyjściem 20-pin). Kliknięcie wiersza otwiera ofertę.</p>
+</header>
+
+<!-- MODULES -->
+<section class="sklep">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa"><a href="https://allegro.pl/uzytkownik/MODULES">MODULES</a>
+      <small>koszyk otwarty: MAX3485 ×5 już w nim jest (47,15) — dobrać 2 pozycje niżej i będzie 62,83 ≥ 49,90</small>
+    </div>
+    <div class="sklep-suma">62,83 zł<small>dostawa 0 zł (Smart)</small></div>
+  </div>
+  <a class="poz" href="https://allegro.pl/produkt/konwerter-cn-max3485-3e9c83d5-2c52-4fc0-bb8e-e0b072473eb4">
+    <span class="kod">A2</span>
+    <span class="nazwa">Moduł konwertera MAX3485, 3,3&nbsp;V<span class="znacznik ok">w koszyku</span></span>
+    <span class="ile">5 × 9,43</span>
+    <span class="cena">47,15</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/odbiornik-ir-irda-38khz-vs1838b-4c75ad6a-71f3-4f90-b43e-1f8d40ba2849?offerId=17565919085">
+    <span class="kod">A5</span>
+    <span class="nazwa">Odbiornik podczerwieni VS1838B, 38&nbsp;kHz<span class="znacznik dobrac">DOBRAĆ</span></span>
+    <span class="ile">6 × 1,96</span>
+    <span class="cena">11,76</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/listwa-goldpin-40pin-raster-2-54-czerwona-b31ec1d9-f63e-42f2-84fc-0183099f40df?offerId=17565918677">
+    <span class="kod">A9</span>
+    <span class="nazwa">Listwa goldpin <b>męska</b> 40&nbsp;pin, raster 2,54<span class="znacznik dobrac">DOBRAĆ</span></span>
+    <span class="ile">2 × 1,96</span>
+    <span class="cena">3,92</span>
+  </a>
+</section>
+
+<!-- a_brod -->
+<section class="sklep">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa"><a href="https://allegro.pl/uzytkownik/a_brod">a_brod</a>
+      <small>nowy koszyk — przejmuje pozycje 6 skreślonych sprzedawców; Super Sprzedawca, oferty w Smart</small>
+    </div>
+    <div class="sklep-suma">63,75 zł<small>dostawa 0 zł (Smart, próg 49,90)</small></div>
+  </div>
+  <a class="poz" href="https://allegro.pl/produkt/multiplekser-texas-instruments-cd4051-b5e82402-9c71-49fa-9c34-cc4b8ab4cbd8">
+    <span class="kod">B1</span>
+    <span class="nazwa">CD4051 (TI), multiplekser analogowy 8:1, DIP-16<span class="znacznik">rejestrator</span>
+      <small>na stronie produktu wybrać ofertę a_brod (3,19) &middot; zamiast CD4051BE 5,50 u Elektronika_AF</small></span>
+    <span class="ile">3 × 3,19</span>
+    <span class="cena">9,57</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/lm393-podwojny-komparator-2szt-823-88b7e618-4f85-483e-9743-9d2f784d8e13">
+    <span class="kod">B2</span>
+    <span class="nazwa">LM393, komparator podwójny, opak. 2&nbsp;szt.<span class="znacznik">rejestrator</span>
+      <small>potrzebny 1 — drugi to zapas</small></span>
+    <span class="ile">1 × 3,27</span>
+    <span class="cena">3,27</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/dioda-prostownicza-prc-1n4148-1d83c1a2-482f-45f3-be70-b82d09665a17">
+    <span class="kod">B3</span>
+    <span class="nazwa">Dioda 1N4148 DO-35, opak. 50&nbsp;szt.<span class="znacznik">rejestrator</span>
+      <small>projekt potrzebuje ~39 + zapas &middot; zamiast 100 szt. za 9,00</small></span>
+    <span class="ile">1 × 3,28</span>
+    <span class="cena">3,28</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-ceramiczny-470pf-50-szt-1155-995e27dd-f611-4a68-ad54-a9485de133c3">
+    <span class="kod">B4a</span>
+    <span class="nazwa">Kondensator ceramiczny 470&nbsp;pF, opak. 50&nbsp;szt.<span class="znacznik">rejestrator</span></span>
+    <span class="ile">1 × 3,22</span>
+    <span class="cena">3,22</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-ceramiczny-1nf-3kv-5mm-20szt-27c7904e-2fb0-44f8-bf36-ecfa72cb5a6a">
+    <span class="kod">B4b</span>
+    <span class="nazwa">Kondensator ceramiczny 1&nbsp;nF / 3&nbsp;kV, opak. 20&nbsp;szt.<span class="znacznik">rejestrator</span></span>
+    <span class="ile">1 × 3,73</span>
+    <span class="cena">3,73</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-mkt-47nf-100v-r-5-5szt-f5d97b43-ca0f-469c-ad5b-d43c2563e50a">
+    <span class="kod">B4c</span>
+    <span class="nazwa">Kondensator MKT 47&nbsp;nF / 100&nbsp;V, opak. 5&nbsp;szt.<span class="znacznik">rejestrator</span>
+      <small>detektor szczytu — foliowy nawet lepszy niż ceramiczny</small></span>
+    <span class="ile">1 × 2,39</span>
+    <span class="cena">2,39</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-ceramiczny-100nf-50v-20-sztuk-94833a9c-519d-4653-8270-de1128eb83cf">
+    <span class="kod">B4d</span>
+    <span class="nazwa">Kondensator ceramiczny 100&nbsp;nF / 50&nbsp;V, opak. 20&nbsp;szt.<span class="znacznik">rejestrator</span>
+      <small>odsprzęganie CD4051 i LM393</small></span>
+    <span class="ile">1 × 4,19</span>
+    <span class="cena">4,19</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/podstawka-dip-prc-dip16-50ae2754-d787-4491-9f59-09bcd0c8a8e7">
+    <span class="kod">B6</span>
+    <span class="nazwa">Podstawka DIP-16, opak. 5&nbsp;szt.<span class="znacznik">rejestrator</span></span>
+    <span class="ile">1 × 3,10</span>
+    <span class="cena">3,10</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/podstawka-dip-prc-34-bdadf07e-af1f-460a-8522-974032e5e4af">
+    <span class="kod">B7</span>
+    <span class="nazwa">Podstawka DIP-8, opak. 10&nbsp;szt.<span class="znacznik">rejestrator</span></span>
+    <span class="ile">1 × 2,81</span>
+    <span class="cena">2,81</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/gniazdo-idc-20pin-meskie-191170d7-2465-421c-ba88-4b43e915ce9c">
+    <span class="kod">B8</span>
+    <span class="nazwa">Złącze IDC20 do druku, proste, obudowane, opak. 3&nbsp;szt.<span class="znacznik">rejestrator</span>
+      <small>WEJŚCIE + WYJŚCIE płytki rejestratora + zapas (wariant B: jedna płytka w linii taśmy)</small></span>
+    <span class="ile">1 × 3,05</span>
+    <span class="cena">3,05</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/wtyk-idc-20pin-zenski-na-tasme-1550c4cc-e774-4f07-b209-d39c5c9400af">
+    <span class="kod">B8b</span>
+    <span class="nazwa">Wtyk IDC20 żeński, zaciskany na taśmę, opak. 3&nbsp;szt.<span class="znacznik">rejestrator</span>
+      <small>zapas: własna taśma, gdyby taśma z ładowarki-dawcy nie pasowała</small></span>
+    <span class="ile">1 × 3,04</span>
+    <span class="cena">3,04</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/tasma-idc-aksotronik-awg28-20-zyl-szara-30-5-m-4c1daf68-3482-424f-bd5c-57e3bb1e7a22">
+    <span class="kod">B8c</span>
+    <span class="nazwa">Taśma 20-żyłowa AWG28, 1&nbsp;mb<span class="znacznik">rejestrator</span>
+      <small>do B8b — razem z nim można skreślić (koszyk zostanie 56,72 ≥ 49,90)</small></span>
+    <span class="ile">1 × 3,99</span>
+    <span class="cena">3,99</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/uzytkownik/a_brod?string=tsal6400">
+    <span class="kod">A4</span>
+    <span class="nazwa">Dioda IR nadawcza TSAL6400, 940&nbsp;nm, opak. 2&nbsp;szt.
+      <small>zamiast TSAL6100 z tomsyty — szerszy kąt = łatwiej wycelować przy odbiorniku jednostki &middot; link = wyszukiwarka sprzedawcy</small></span>
+    <span class="ile">3 × 3,09</span>
+    <span class="cena">9,27</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/uzytkownik/a_brod?string=bc337">
+    <span class="kod">A6</span>
+    <span class="nazwa">Tranzystor BC337 NPN, opak. 10&nbsp;szt.
+      <small>link = wyszukiwarka sprzedawcy (jedna oferta)</small></span>
+    <span class="ile">1 × 2,94</span>
+    <span class="cena">2,94</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/kondensator-470uf-25v-low-esr-5szt-9828b60c-98e0-41d3-bc6c-5aa5108808d0">
+    <span class="kod">A7</span>
+    <span class="nazwa">Kondensator 470&nbsp;µF / 25&nbsp;V LOW&nbsp;ESR, opak. 5&nbsp;szt.
+      <small>2 opak. = 10 szt. za 5,90 — zamiast 6 szt. za 17,94 u Conteo</small></span>
+    <span class="ile">2 × 2,95</span>
+    <span class="cena">5,90</span>
+  </a>
+</section>
+
+<!-- DO DECYZJI -->
+<section class="sklep">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa">Do decyzji: złącza JST-XH (A10)
+      <small>jedyna pozycja bez darmowej dostawy — nikt z powyższych jej nie ma</small>
+    </div>
+    <div class="sklep-suma">—</div>
+  </div>
+  <a class="poz" href="https://allegro.pl/produkt/przewod-zlacze-jst-xh-2-54-4pin-komplet-m-z-2x20cm-c117724c-eb1e-44d0-89f5-feea71dee9d6">
+    <span class="kod">A10</span>
+    <span class="nazwa">JST-XH 4&nbsp;pin, komplet wtyk+gniazdo z przewodami 2×20&nbsp;cm (fhulider)
+      <small>6 kpl. = 25,74 + dostawa ~11 zł — kupować TYLKO jeśli zatrzaskowe złącze jest konieczne</small></span>
+    <span class="ile">6 × 4,29</span>
+    <span class="cena">25,74</span>
+  </a>
+  <div class="poz" style="cursor:default">
+    <span class="kod">alt.</span>
+    <span class="nazwa">Zamiennik bez dokupowania: goldpin męski 1×4 (A9, MODULES) + listwa żeńska (A11, kupiona u arduland)
+      <small>daje rozłączne połączenie 4-pin; bez zatrzasku — zabezpieczyć opaską</small></span>
+    <span class="ile">0 zł</span>
+    <span class="cena">0,00</span>
+  </div>
+</section>
+
+<!-- KUPIONE -->
+<section class="sklep kupione">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa">KUPIONE ✓
+      <small>arduland_pl (koszyk zamknięty, dostawa 0 zł) + ESP32 z wcześniejszego zamówienia</small>
+    </div>
+    <div class="sklep-suma">≈51,90 zł<small>+ ESP32</small></div>
+  </div>
+  <a class="poz" href="https://allegro.pl/produkt/sterownik-esp32-esp-wroom-32-devkit-30pin-cp2102-8101ee9a-84b1-454a-88ec-741d0ecf2c58">
+    <span class="kod">A1</span>
+    <span class="nazwa">ESP32 ESP-WROOM-32 DevKit 30&nbsp;pin CP2102<span class="znacznik ok">kupione</span></span>
+    <span class="ile">—</span>
+    <span class="cena">—</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/przetwornica-abc-rc-mp1584en-b23d6663-5ffa-42af-873b-6068defc626e">
+    <span class="kod">A3</span>
+    <span class="nazwa">Przetwornica step-down MP1584EN<span class="znacznik ok">kupione</span></span>
+    <span class="ile">6 × 3,75</span>
+    <span class="cena">22,50</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/plytka-uniwersalna-pcb-5x7-cm-2424088c-d73b-43b0-a84d-4ccf287b0219">
+    <span class="kod">A8</span>
+    <span class="nazwa">Płytka uniwersalna PCB 5×7&nbsp;cm<span class="znacznik ok">kupione</span>
+      <small>z tej puli powstanie też płytka rejestratora (wariant B — wszystko na jednej płytce)</small></span>
+    <span class="ile">8 × 2,00</span>
+    <span class="cena">16,00</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/plytka-uniwersalna-pcb-4x6-cm-10a85a9e-8421-4449-95de-1cd423b9c735?offerId=9352192283">
+    <span class="kod">A12</span>
+    <span class="nazwa">Płytka uniwersalna PCB 4×6&nbsp;cm<span class="znacznik ok">kupione</span></span>
+    <span class="ile">4 × 1,85</span>
+    <span class="cena">7,40</span>
+  </a>
+  <a class="poz" href="https://allegro.pl/produkt/wtyczka-szpilkowa-listwa-goldpin-zenska-2-54mm-1x40-2-szt-czarny-9b522b86-ac79-4c55-b3c2-5a798fd989ab?offerId=17484862484">
+    <span class="kod">A11</span>
+    <span class="nazwa">Listwa goldpin <b>żeńska</b> 1×40, opak. 2&nbsp;szt.<span class="znacznik ok">kupione</span></span>
+    <span class="ile">3 × 2,00</span>
+    <span class="cena">6,00</span>
+  </a>
+</section>
+
+<div class="uwaga">
+  <b>Co się zmieniło względem listy v1 i dlaczego:</b>
+  <ul>
+    <li><b>Konsolidacja:</b> tomsyty (24,60), Conteo_pro (22,92), Elektronika_AF (16,50), eltypl (13,20), kondensatory_eu (12,90) i Tom-elektron1 (9,00) były KAŻDY pod progiem darmowej dostawy — ich pozycje przejął jeden koszyk a_brod (63,75 ≥ 49,90).</li>
+    <li><b>Zestaw kondensatorów 30 wartości → 4 konkretne wartości w opakowaniach</b> (470 pF, 1 nF, 47 nF, 100 nF) — więcej sztuk potrzebnych wartości i taniej.</li>
+    <li><b>Rejestrator, wariant B (jedna płytka wpinana w linię taśmy):</b> złącza IDC20 proste ×3 (B8 — wejście/wyjście/zapas); płytką bazową będzie kupiona 5×7; <b>druga taśma 20-żył — z uszkodzonej ładowarki Q11 (dawca), nie kupujemy</b>; B8b+B8c to zapas na własną taśmę, gdyby dawca nie pasował.</li>
+    <li><b>Podmiany:</b> TSAL6100→TSAL6400 (940 nm, szerszy kąt — dioda i tak montowana tuż przy odbiorniku), CD4051BE 5,50→CD4051 TI 3,19, 1N4148 100 szt→50 szt (potrzeba ~39), 470 µF LOW ESR: 10 szt za 5,90 zamiast 6 szt za 17,94.</li>
+    <li><b>Rezystory 100k/120k/220k/10k/470k/1M:</b> bez zakupu — z posiadanej gamy rezystorów (0,25 W).</li>
+    <li>Przy odbiorze B8 sprawdzić: obudowa z wycięciem-kluczem jak złącze fabryczne; przy B1 wybrać na stronie produktu ofertę sprzedawcy a_brod.</li>
+  </ul>
+</div>
+
+<footer>
+  <div>2 koszyki do kupienia &middot; 18 pozycji &middot; obie dostawy 0 zł (Smart)</div>
+  <div><span>2026-09-03</span> &middot; ceny i dostępność sprawdzone tego dnia &middot; v2</div>
+</footer>
+
+</div>

@@ -1,0 +1,264 @@
+\documentclass[10pt,a4paper,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1.0cm]{geometry}
+\usepackage[european]{circuitikz}
+\usetikzlibrary{calc,arrows.meta,fit}
+\usepackage{parskip}
+\usepackage{booktabs}
+\pagestyle{empty}
+\hyphenpenalty=3000 \emergencystretch=2em
+
+\tikzset{
+  lbl/.style={font=\tiny, fill=white, inner sep=1pt},
+  apar/.style={font=\scriptsize},
+  ram/.style={draw, dashed, rounded corners=2pt, inner sep=5pt},
+  blok/.style={draw, align=center, font=\scriptsize, inner sep=3pt, fill=white},
+  ods/.style={font=\scriptsize\itshape}
+}
+% cewka przekaznika/stycznika (prostokat IEC)
+\newcommand{\cewka}[3]{\draw #1 +(-0.4,-0.25) rectangle +(0.4,0.25); \node[apar, #3] at #1 {#2};}
+% przekladnik pradowy (okrag na linii)
+\newcommand{\ct}[2]{\draw #1 circle (0.28); \node[apar, right=2mm] at #1 {#2};}
+
+\begin{document}
+
+% ============ STRONA TYTULOWA ============
+\begin{center}
+\vspace*{1.6cm}
+{\LARGE\bfseries AMPERE POINT --- custom device}\\[6pt]
+{\Large Schemat elektryczny --- wersja 1 (robocza)}\\[10pt]
+{\normalsize 3 lipca 2026}\\[14pt]
+\begin{minipage}{0.8\textwidth}\small
+Wersja robocza na poziomie aparat\'ow --- do weryfikacji w etapie 0 (prototyp sto\l{}owy); wersja formalna
+powstanie w EPLAN (projekt \texttt{AP-CD-001 / AMPERE\_POINT\_custom\_device} --- za\l{}o\.zony, strona toru mocy
+rozpocz\k{e}ta). Podstawa: koncepcja v1 (Z1--Z6) i schematy ideowe v1. Warto\'sci zabezpiecze\'n i przekroje
+orientacyjne --- do potwierdzenia przy doborze finalnym.
+\end{minipage}\\[10pt]
+\begin{tabular}{llll}
+\toprule
+\textbf{Arkusz} & \textbf{Tre\'s\'c} & \textbf{Arkusz} & \textbf{Tre\'s\'c}\\
+\midrule
+E1 & Tor mocy 3F (X1 $\to$ X2) + odczep X3 & E3 & Sterowanie, magistrale, load bank\\
+E2 & \L{}a\'ncuch bezpiecze\'nstwa 24 V & & \\
+\bottomrule
+\end{tabular}\\[8pt]
+{\small\textbf{Wykaz g\l{}\'ownych aparat\'ow}}\\[2pt]
+{\scriptsize
+\begin{tabular}{llll}
+X1 & gniazdo pojazdowe Type 2 32 A 3F & S0 & E-STOP (NC, grzybek)\\
+X2 & gniazdo CEE 32 A 5p (modu\l{} B) & S1 & kra\'nc\'owka pokrywy (NC)\\
+X3 & odczep Type 2 $\to$ PM701E & S2 & przycisk START (NO)\\
+X4 & zasilanie logiki (Schuko) & F11.1--12 & termiki KSD301 sekcji grza\l{}ek (NC)\\
+Q0 & roz\l{}\k{a}cznik g\l{}\'owny 4P & RB & przeka\'znik bezpiecze\'nstwa (styki wymuszone)\\
+F1--F3 & bezpieczniki gG 32 A & K2 & przeka\'znik pr\k{a}dowy wentylator\'ow\\
+B1 & czujnik r\'o\.znicowy CDSR (RCM) & K10 & przeka\'znik zezwolenia MCU\\
+T1--T3 & przek\l{}adniki pr\k{a}dowe 40 A & A2 & cz\l{}on watchdog impulsowy\\
+K1 & stycznik g\l{}\'owny 4P AC-1 40 A & A1 & sterownik ESP32-S3 (p\l{}yta logiki)\\
+K11--K22 & styczniki stopni obci\k{a}\.zenia & G1 & zasilacz 24/5/3,3 V\\
+E1--E12 & grza\l{}ki \.zebrowane 1,0--3,0 kW & M1, M2 & serwa DS3218 (pokr\k{e}t\l{}a PM701E)\\
+K30--K33 & przeka\'zniki separuj\k{a}ce & M3, M4 & wentylatory modu\l{}u B\\
+\end{tabular}}
+\end{center}
+\newpage
+
+% ============ ARKUSZ E1 — TOR MOCY ============
+\noindent{\small\textbf{Arkusz E1/3 --- Tor mocy 3F: X1 $\to$ Q0 $\to$ F $\to$ B1 $\to$ T $\to$ K1 $\to$ X2, odczep X3} \hfill schemat elektryczny v1 --- 2026-07-03}\par\vspace{1mm}
+\begin{center}
+\begin{circuitikz}[scale=0.93, transform shape]
+% --- zaciski X1 (gniazdo pojazdowe) ---
+\node[ram, fit={(5.6,17.1) (16.4,18.3)}, label={[font=\scriptsize\bfseries]above left:{-X1 --- gniazdo pojazdowe Type 2 32 A 3F (wtyk kabla DUT), blokada Y1}}] {}; 
+\foreach \x/\n in {6/L1, 8/L2, 10/L3, 12/N, 14/PE, 15.6/CP, 16.2/PP}{
+  \node[ocirc, label={[font=\tiny]above:\n}] (X1\n) at (\x,17.4) {};
+}
+% --- piony magistrali ---
+\draw (X1L1) -- (6,14.4);  \draw (X1L2) -- (8,14.4); \draw (X1L3) -- (10,14.4); \draw (X1N) -- (12,14.4);
+\draw (X1PE) -- (14,3.9);  % PE ciagly az do X2
+% --- odczep X3 (schodkowo do kolumny zaciskow po prawej) ---
+\draw (6,16.6) node[circ]{} -- (17.4,16.6);
+\draw (12,16.3) node[circ]{} -- (17.4,16.3);
+\draw (14,16.0) node[circ]{} -- (17.4,16.0);
+\draw (X1CP) -- (15.6,15.7) -- (17.4,15.7);
+\draw (X1PP) -- (16.2,15.4) -- (17.4,15.4);
+\foreach \y/\n in {16.6/L1, 16.3/N, 16.0/PE, 15.7/CP, 15.4/PP}{
+  \node[ocirc, label={[font=\tiny]right:\n}] at (17.4,\y) {};
+}
+\node[ram, fit={(17.2,15.1) (18.4,16.9)}, label={[font=\scriptsize\bfseries, align=left]right:{-X3 --- odczep Type 2\\ $\to$ PM701E ($\le$1 m)\\ \scriptsize SIGNAL OUTPUT CP $\to$ /E3}}] {};
+% --- Q0 rozlacznik 4P ---
+\draw (6,14.4) to[cosw] (6,13.2) (8,14.4) to[cosw] (8,13.2) (10,14.4) to[cosw] (10,13.2) (12,14.4) to[cosw] (12,13.2);
+\draw[dashed] (5.6,13.85) -- (12.4,13.85);
+\node[apar, left] at (5.4,13.8) {-Q0};
+\node[lbl] at (4.9,13.5) {roz\l{}\k{a}cznik 40 A};
+% --- bezpieczniki F1-F3 (fazy), N bez ---
+\draw (6,13.2) to[fuse, l_=\scriptsize -F1] (6,11.8) (8,13.2) to[fuse, l_=\scriptsize -F2] (8,11.8) (10,13.2) to[fuse, l_=\scriptsize -F3] (10,11.8);
+\draw (12,13.2) -- (12,11.8);
+\node[lbl] at (4.5,12.9) {gG 32 A};
+% --- okno CDSR (B1) na L1L2L3N ---
+\draw (6,11.8) -- (6,10.2) (8,11.8) -- (8,10.2) (10,11.8) -- (10,10.2) (12,11.8) -- (12,10.2);
+\draw[thick] (5.3,10.6) rectangle (12.7,11.4);
+\node[apar, left] at (5.1,11.0) {-B1};
+\node[lbl] at (4.35,10.65) {CDSR (RCM), SPI $\to$ /E3};
+% --- przekladniki T1-T3 ---
+\draw (6,10.2) -- (6,8.6) (8,10.2) -- (8,8.6) (10,10.2) -- (10,8.6) (12,10.2) -- (12,8.6);
+\ct{(6,9.4)}{-T1} \ct{(8,9.4)}{-T2} \ct{(10,9.4)}{-T3}
+\node[lbl] at (4.6,9.4) {CT 40 A/1 V $\to$ /E3};
+% --- K1 stycznik glowny 4P ---
+\draw (6,8.6) to[nos] (6,7.4) (8,8.6) to[nos] (8,7.4) (10,8.6) to[nos] (10,7.4) (12,8.6) to[nos] (12,7.4);
+\draw[dashed] (5.6,8.05) -- (12.4,8.05);
+\node[apar, left] at (5.4,8.0) {-K1};
+\node[lbl, align=left] at (4.5,7.55) {AC-1 40 A\\ cewka $\to$ /E2};
+% --- zejscie do X2 ---
+\draw (6,7.4) -- (6,3.9) (8,7.4) -- (8,3.9) (10,7.4) -- (10,3.9) (12,7.4) -- (12,3.9);
+\foreach \x/\n in {6/L1, 8/L2, 10/L3, 12/N, 14/PE}{
+  \node[ocirc, label={[font=\tiny]below:\n}] at (\x,3.9) {};
+}
+\node[ram, fit={(5.6,3.0) (14.4,4.2)}, label={[font=\scriptsize\bfseries]below:{-X2 --- gniazdo CEE 32 A 5p $\to$ modu\l{} B (5$\times$6 mm$^2$ H07RN-F), obci\k{a}\.zenie /E3}}] {};
+\node[lbl] at (5.0,5.5) {5$\times$6 mm$^2$};
+% --- odsylacze pomiarowe ---
+\node[blok, align=left, anchor=west] at (19.5,11.0) {\textbf{Odsy\l{}acze:}\\ B1: prad r\'o\.znicowy $\to$ A1 (/E3)\\ T1--T3: pr\k{a}dy fazowe $\to$ U2 (/E3)\\ K1: cewka A1--A2 $\to$ /E2 szczebel 2\\ X3: PM701E; gniazda bananowe\\ \quad = punkt przy\l{}\k{a}czenia UT595\\ generator up\l{}ywu (K30) $\to$ /E3\\ przek. separuj\k{a}ce K30--K33 $\to$ /E3};
+\node[blok, align=left, anchor=west, densely dashed] at (19.5,7.2) {\textbf{Uwagi:}\\ N bez zabezpieczenia (roz\l{}.\ przez Q0/K1 4P)\\ PE nieprzerwane od X1 do X2\\ przekroje toru: 6 mm$^2$\\ Y1 --- blokada elektromagn.\ wtyku (/E3)};
+\end{circuitikz}
+\end{center}
+\newpage
+% ============ ARKUSZ E2 — LANCUCH BEZPIECZENSTWA ============
+\noindent{\small\textbf{Arkusz E2/3 --- \L{}a\'ncuch bezpiecze\'nstwa 24 V (sprz\k{e}towy, niezale\.zny od A1)} \hfill schemat elektryczny v1 --- 2026-07-03}\par\vspace{1mm}
+\begin{center}
+\begin{circuitikz}[scale=0.93, transform shape]
+% --- szyny ---
+\node[apar, left] at (1.0,16.5) {\textbf{+24 V (G1)}};
+\node[apar, left] at (1.0,11.5) {\textbf{+24 V (G1)}};
+% ===== szczebel 1: lancuch -> cewka RB =====
+\draw (1.0,16.5) to[normally closed push button, l_=\scriptsize -S0] (3.4,16.5);
+\node[lbl] at (2.2,17.25) {E-STOP grzybek (panel A)};
+\draw (3.4,16.5) to[ncs, l_=\scriptsize -F11.1] (5.6,16.5);
+\draw (5.6,16.5) to[ncs, l_=\scriptsize -F11.2] (7.8,16.5);
+\node[apar] at (8.35,16.5) {$\cdots$};
+\draw (8.9,16.5) to[ncs, l_=\scriptsize -F11.12] (11.1,16.5);
+\draw[ram] (3.5,15.6) rectangle (11.2,17.3);
+\node[lbl] at (7.3,15.4) {termiki KSD301 sekcji grza\l{}ek (NC szeregowo, modu\l{} B, z\l{}\k{a}cze -X5)};
+\draw (11.1,16.5) to[ncs, l_=\scriptsize -S1] (13.3,16.5);
+\node[lbl] at (12.2,17.15) {kra\'nc\'owka pokrywy};
+\draw (13.3,16.5) to[nos, l_=\scriptsize -K2] (15.5,16.5);
+\node[lbl] at (14.5,15.85) {potw.\ wentylator\'ow};
+\draw (15.5,16.5) to[nos, l_=\scriptsize -K10] (17.7,16.5);
+\node[lbl] at (16.7,17.15) {zezwolenie MCU (/E3)};
+\draw (17.7,16.5) to[nos, l_=\scriptsize -A2] (19.9,16.5);
+\node[lbl] at (18.9,15.85) {watchdog (/E3)};
+% galaz rownolegla START / samopodtrzymanie
+\draw (19.9,16.5) -- (20.5,16.5);
+\draw (20.5,16.5) node[circ]{} -- (20.5,17.3) to[push button, l^=\scriptsize -S2] (23.1,17.3) -- (23.1,16.5);
+\draw (20.5,16.5) -- (20.5,15.7) to[nos, l_=\scriptsize -RB:13-14] (23.1,15.7) -- (23.1,16.5);
+\node[circ] at (23.1,16.5) {};
+\node[lbl] at (21.8,17.75) {START (NO)};
+\node[lbl] at (21.8,15.05) {samopodtrzymanie};
+% cewka RB
+\draw (23.1,16.5) -- (24.1,16.5);
+\cewka{(24.5,16.5)}{}{above=3mm}
+\node[apar, above] at (24.5,16.8) {-RB};
+\draw (24.9,16.5) -- (25.7,16.5);
+\node[apar, right] at (25.7,16.5) {\textbf{0 V}};
+\node[lbl] at (24.5,15.95) {przeka\'znik bezpiecze\'nstwa};
+% ===== szczebel 2: styk glowny RB -> cewka K1 =====
+\draw (1.0,11.5) -- (9.0,11.5);
+\draw (9.0,11.5) to[nos, l_=\scriptsize -RB:1-2] (11.4,11.5);
+\node[lbl] at (10.2,10.8) {styk g\l{}\'owny, wymuszony mech.};
+\draw (11.4,11.5) -- (13.0,11.5);
+\cewka{(13.4,11.5)}{}{above=3mm}
+\node[apar, above] at (13.4,11.8) {-K1};
+\draw (13.8,11.5) -- (14.8,11.5);
+\node[apar, right] at (14.8,11.5) {\textbf{0 V}};
+\node[lbl] at (13.4,10.95) {stycznik g\l{}\'owny toru mocy (/E1)};
+\draw[densely dashed] (24.5,16.1) -- (24.5,12.6) -- (13.4,12.6) -- (13.4,11.9);
+\node[lbl] at (19.0,12.75) {sprz\k{e}\.zenie mechaniczne styk\'ow RB (wymuszone)};
+% ===== odczyty / interfejs A1 =====
+\node[blok, align=left] (mcu) at (5.6,9.2) {\textbf{A1 / ESP32-S3 (/E3) --- tylko odczyt i zezwolenie:}\\
+odczyt stanu S0, F11.x, S1, K2 przez optoizolacj\k{e} (diagnostyka HMI);\\
+wyj\'scie DO $\to$ cewka K10; impulsy $\to$ A2 (zanik $=$ rozpad);\\
+\emph{firmware nie mo\.ze zmostkowa\'c \.zadnego cz\l{}onu \l{}a\'ncucha}};
+\draw[densely dashed, -{Stealth}] (mcu.north) ++(-2.0,0) -- ++(0, 6.4);
+\draw[densely dashed, -{Stealth}] (mcu.east) -| (16.6,15.9);
+\draw[densely dashed, -{Stealth}] (mcu.east) ++(0,-0.35) -| (18.8,15.85);
+% ===== uwagi =====
+\node[blok, align=left, densely dashed] at (18.0,9.0) {\textbf{Zasada:} tor 24 V cewki K1 przechodzi wy\l{}\k{a}cznie przez styki sprz\k{e}towe.\\
+Awaria cz\l{}onu / zanik 24 V / zawieszenie firmware / E-STOP $\Rightarrow$ RB odpada $\Rightarrow$\\
+K1 otwiera tor mocy (/E1). Ponowne za\l{}\k{a}czenie wy\l{}\k{a}cznie przyciskiem -S2.\\[2pt]
+Uzupe\l{}niaj\k{a}co (poza \l{}a\'ncuchem): B1 jako RCM $\to$ zdj\k{e}cie K10 (/E3);\\
+bezpieczniki gG (/E1); Q0 (/E1); blokada Y1 wtyku Type 2 w stanie C.};
+\end{circuitikz}
+\end{center}
+\newpage
+% ============ ARKUSZ E3 — STEROWANIE + LOAD BANK ============
+\noindent{\small\textbf{Arkusz E3/3 --- Sterowanie, magistrale, modu\l{} obci\k{a}\.zenia} \hfill schemat elektryczny v1 --- 2026-07-03}\par\vspace{1mm}
+\begin{center}
+\begin{circuitikz}[scale=0.9, transform shape]
+% ===== zasilacz G1 =====
+\node[ocirc, label={[font=\tiny]above:L}] (X4L) at (1.2,17.6) {};
+\node[ocirc, label={[font=\tiny]above:N}] (X4N) at (1.8,17.6) {};
+\node[ocirc, label={[font=\tiny]above:PE}] (X4PE) at (2.4,17.6) {};
+\node[ram, fit={(0.9,17.3) (2.7,18.2)}, label={[font=\scriptsize\bfseries]above:{-X4 (Schuko)}}] {};
+\node[blok, minimum width=2.6cm, minimum height=1.0cm] (G1) at (1.9,16.0) {-G1\\ 24 / 5 / 3,3 V};
+\draw (X4L) -- ++(0,-0.7) -| (G1.north); \draw (X4N) -- ++(0,-0.55) -- ++(0.4,0);
+\draw[-{Stealth}] (G1.east) -- ++(0.7,0) node[apar, right]{24 V $\to$ /E2, cewki};
+\draw[-{Stealth}] (G1.south) -- ++(0,-0.5) node[apar, below]{5 / 3,3 V $\to$ A1, czujniki};
+% ===== A1 ESP32 =====
+\node[blok, minimum width=4.6cm, minimum height=5.6cm, align=center] (A1) at (4.2,10.4) {\textbf{-A1}\\ ESP32-S3\\ p\l{}yta logiki\\[2pt] \scriptsize SPI $\cdot$ I2C $\cdot$ UART\\ \scriptsize 1-Wire $\cdot$ PWM $\cdot$ ADC\\ \scriptsize DI/DO (opto)};
+% magistrale w prawo
+\draw[-{Stealth}] (A1.east) ++(0,2.3) -- ++(1.2,0) node[apar, right]{SPI: -B1 CDSR (/E1), -U2 ATM90E36A};
+\draw[-{Stealth}] (A1.east) ++(0,1.5) -- ++(1.2,0) node[apar, right]{I2C: -B2 MLX90640, -B3/-B4 MLX90614, -U3/-U4 MCP23017};
+\draw[-{Stealth}] (A1.east) ++(0,0.7) -- ++(1.2,0) node[apar, right]{1-Wire: -B5.1..8 DS18B20 (szyny, K1, komora, otoczenie)};
+\draw[-{Stealth}] (A1.east) ++(0,-0.1) -- ++(1.2,0) node[apar, right]{UART: -P1 HMI DWIN 7'' (START, LED, buzzer)};
+\draw[-{Stealth}] (A1.east) ++(0,-0.9) -- ++(1.2,0) node[apar, right]{ADC: CP/PP z -X3 (/E1) przez dzielnik + ograniczniki};
+\draw[-{Stealth}] (A1.east) ++(0,-1.7) -- ++(1.2,0) node[apar, right]{DO: cewki -K10 (zezwolenie), -A2 (impulsy watchdog) $\to$ /E2};
+\draw[-{Stealth}] (A1.east) ++(0,-2.5) -- ++(1.2,0) node[apar, right]{DAC+DI: generator up\l{}ywu -A3, pomiar bocznika (AMC1301)};
+% PWM serwa w dol
+\node[blok] (M1) at (1.7,5.9) {-M1 serwo\\ pokr\k{e}t\l{}o stanu};
+\node[blok] (M2) at (1.7,4.5) {-M2 serwo\\ pokr\k{e}t\l{}o pr\k{a}du};
+\draw[-{Stealth}] (A1.south) ++(-1.2,0) -- ++(0,-0.5) node[lbl, right]{PWM} -| (M1.north);
+\draw[-{Stealth}] (A1.south) ++(-1.6,0) -- ++(0,-0.5) -| ($(M2.north)+(-0.3,0)$);
+\node[lbl, align=left] at (4.5,5.2) {DS3218, zasilanie 5 V\\ kalibracja k\k{a}t\'ow $\times$5 pozycji\\ weryfikacja: CP (/E1)};
+% ===== ekspandery -> cewki stopni =====
+\node[blok, minimum width=2.4cm] (U34) at (10.4,6.7) {-U3/-U4\\ MCP23017};
+\node[blok, minimum width=2.4cm] (U56) at (13.4,6.7) {-U5/-U6\\ ULN2803};
+\draw[-{Stealth}] (A1.south) ++(1.2,0) |- (U34.west);
+\draw[-{Stealth}] (U34.east) -- (U56.west);
+\node[lbl] at (11.9,7.35) {I2C / opto};
+% grid cewek K11-K22 + K30-33
+\foreach \i/\x in {11/16.4, 12/17.6, 13/18.8, 14/20.0}{ \cewka{(\x,7.6)}{\scriptsize -K\i}{above=2.5mm} }
+\foreach \i/\x in {15/16.4, 16/17.6, 17/18.8, 18/20.0}{ \cewka{(\x,6.6)}{\scriptsize -K\i}{above=2.5mm} }
+\foreach \i/\x in {19/16.4, 20/17.6, 21/18.8, 22/20.0}{ \cewka{(\x,5.6)}{\scriptsize -K\i}{above=2.5mm} }
+\draw[-{Stealth}] (U56.east) -- (15.7,6.6);
+\node[ram, fit={(15.8,5.1) (20.6,8.2)}, label={[font=\tiny]below:{cewki stopni obci\k{a}\.zenia (24 V): L1: K11--K14, L2: K15--K18, L3: K19--K22; styki $\to$ sekcja load bank}}] {};
+\foreach \i/\x in {30/22.0, 31/23.2, 32/24.4, 33/25.6}{ \cewka{(\x,7.6)}{\scriptsize -K\i}{above=2.5mm} }
+\node[ram, fit={(21.4,7.1) (26.2,8.2)}, label={[font=\tiny]below:{przeka\'zniki separuj\k{a}ce (tryb izolacji): od\l{}\k{a}czaj\k{a} -A3, -U2, dzielniki od L/N/PE (/E1)}}] {};
+% ===== generator uplywu =====
+\node[blok, align=left] (A3) at (9.2,3.6) {\textbf{-A3} generator up\l{}ywu\\ \scriptsize DC 0--20 mA / AC (rampa)\\ \scriptsize DAC $\to$ \'zr\'od\l{}o pr\k{a}dowe $\to$ bocznik\\ \scriptsize przy\l{}\k{a}cza: L1 (przez -K30), PE};
+\node[lbl] at (9.2,2.55) {test RDC-DD 6 mA DC / RCD ładowarki --- pomiar pr\k{a}du i czasu zadzia\l{}ania};
+% ===== LOAD BANK (modul B) =====
+\node[apar] at (19.2,17.9) {\textbf{MODU\L{} B --- sekcja obci\k{a}\.zenia (zasilanie z -X2, /E1)}};
+% szyna L1 i N
+\draw (14.4,17.4) node[ocirc, label={[font=\tiny]left:L1}]{} -- (25.4,17.4);
+\draw (14.4,12.4) node[ocirc, label={[font=\tiny]left:N}]{} -- (25.4,12.4);
+% 4 galezie fazy L1
+\foreach \x/\k/\e/\p in {16.0/-K11/-E1/{1,0 kW}, 18.4/-K12/-E2/{1,5 kW}, 20.8/-K13/-E3/{2,0 kW}, 23.2/-K14/-E4/{3,0 kW}}{
+  \draw (\x,17.4) node[circ]{} to[nos, l_=\scriptsize \k] (\x,15.4) to[R, l_=\scriptsize \e, a^=\scriptsize \p] (\x,13.2) -- (\x,12.4) node[circ]{};
+}
+\node[lbl] at (19.4,12.95) {grza\l{}ki \.zebrowane 230 V};
+\node[lbl, align=left] at (17.4,11.7) {L2 (K15--K18 / E5--E8) i L3 (K19--K22 / E9--E12) --- identycznie; termiki -F11.x na sekcjach $\to$ /E2};
+% wentylatory
+\draw (20.8,4.5) node[ocirc, label={[font=\tiny]left:L (z -X4)}]{} -- (22.0,4.5);
+\draw (22.0,4.5) to[nos] (23.4,4.5);
+\node[elmech] (M3) at (24.2,3.6) {M};
+\node[elmech] (M4) at (25.6,3.6) {M};
+\draw (23.4,4.5) -- (24.2,4.5) -- (M3.north);
+\draw (24.2,4.5) -- (25.6,4.5) -- (M4.north);
+\draw (M3.south) -- ++(0,-0.35) -- ++(1.4,0) -- (M4.south);
+\draw (24.9,3.25) ++(0,-0.35) node[ocirc, label={[font=\tiny]right:N}]{};
+\node[lbl, align=left] at (23.4,2.15) {-M3/-M4 wentylatory kana\l{}owe;\\ -K2 przeka\'znik pr\k{a}dowy $\to$ /E2};
+\node[ram, fit={(14.0,11.4) (25.8,17.7)}] {};
+% blokada wtyku
+\node[blok, align=left] (Y1) at (4.4,3.2) {-Y1 blokada wtyku Type 2\\ \scriptsize elektromagnes 12/24 V, DO z -A1\\ \scriptsize aktywna w stanie C (/E1)};
+\end{circuitikz}
+\end{center}
+
+\end{document}

@@ -1,0 +1,134 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!50!black]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+
+\title{\textbf{AMPERE POINT --- custom device}\\[4pt]
+\large PROPOZYCJA: rozszerzone pomiary modułu A\\[2pt]
+\normalsize wersja 1 --- do zatwierdzenia (nie zmienia zatwierdzonych decyzji Z1--Z19)}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{9 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\section{Cel i metoda}
+Pytanie: \emph{jakie jeszcze pomiary, poza pięcioma obowiązkowymi z przewodnika i testem
+obciążeniowym, mógłby wykonywać moduł A?} Odpowiedź zbudowano na szczegółowej analizie całego
+folderu projektowego (rozdz.~\ref{sec:analiza}): najcenniejsze okazują się pomiary, których
+\textbf{nie robi żaden przyrząd z półki} (UT595 nie mierzy konformancji CP ani licznika), a które
+odpowiadają wprost na sytuację firmy: \textbf{zamknięty firmware ładowarek (czarna skrzynka),
+własny licznik do rozliczeń flot, funkcje bezpieczeństwa deklarowane w instrukcji, regresje po
+aktualizacjach OTA, raporty jakościowe do producenta}.
+
+\section{Co wynika z analizy folderu (źródło $\to$ wniosek pomiarowy)}
+\label{sec:analiza}
+\begin{longtable}{@{}p{0.30\textwidth}p{0.64\textwidth}@{}}
+\toprule
+\textbf{Źródło w folderze} & \textbf{Fakt i implikacja pomiarowa}\\
+\midrule
+\texttt{P00/P72\_architektura} (listy komponentów, zdjęcia) & wewnątrz ładowarek tanie przetworniki:
+ZMPT107 (napięcie), ZHT501A 5~A/2,5~mA i ZMCT236C (prąd/licznik), ZMCT430 (różnicowy), przekaźniki
+HF165F-50 --- \textbf{dokładność licznika i telemetrii DUT jest niepewna klasowo $\Rightarrow$ warto ją
+mierzyć}; stycznik 50~A $\Rightarrow$ czasy łączeń mierzalne\\
+\texttt{Instrukcja\_seria\_P} & deklarowane funkcje: \textbf{blokada przy zamianie L--N}, \textbf{blokada
+przy braku/złym PE} (ikona), \textbf{termiczne wstrzymanie i wznowienie}, \textbf{auto-recovery błędów},
+ekran: U/I/P/kWh/temp.\ wtyku, \textbf{licznik niezerowalny}; zakres 80--275~V $\Rightarrow$ każda z tych
+deklaracji to konkretny przypadek testowy\\
+\texttt{tuyaextend\_amperepoint} (integracja HA) & ładowarki raportują po Tuya DP: U i I per faza,
+moc, energia sesji/total, limit prądu, status/błąd $\Rightarrow$ \textbf{automatyczne porównanie
+telemetrii DUT z referencją modułu A} (HA/MQTT już w architekturze)\\
+\texttt{KONTEKST}, \texttt{USTALENIA\_*} (koncepcja bliźniaka) & strategia: katalog par
+,,\textbf{bodziec $\to$ oczekiwana odpowiedź}'' wg IEC~61851, weryfikacja licznika (scenariusz A),
+DLB (scenariusz B), regresje firmware $\Rightarrow$ moduł A jest naturalnym wykonawcą HIL tego katalogu\\
+\texttt{iec-61851-1\_compress.pdf} (pełna norma) & tabele napięć stanów, tolerancje, wymagane czasy
+reakcji $\Rightarrow$ podstawa kryteriów pass/fail dla konformancji CP\\
+katalog usterek (U-001: hot-spot wtyku) & degradacja styków $\Rightarrow$ pomiar \textbf{impedancji
+toru pod obciążeniem} ($\Delta$U/$\Delta$I) koreluje z termowizją\\
+\texttt{aparatura\_pomiarowa\_inf} & UT595/UT522 pokrywają pomiary instalacyjne; \textbf{żaden
+przyrząd z półki nie robi}: konformancji CP/PP, weryfikacji licznika, testów funkcji z instrukcji\\
+\texttt{cp\_circuit*} (symulacje CP) & gotowy model poziomów/rezystancji obwodu CP $\Rightarrow$
+prosto zbudować własny front-end stanów (fallback R2 z koncepcji --- tu staje się funkcją)\\
+\bottomrule
+\end{longtable}
+
+\section{Proponowane pakiety pomiarowe (P1--P6)}
+\subsection{P1 --- konformancja interfejsu CP/PP wg IEC 61851-1 (,,EmuEV'')}
+Elektroniczny emulator pojazdu (obok PM701E, przełączany): klucze przekaźnikowe + rezystory stanów
+(2,74~k\ohm{}/1,3~k\ohm) + dioda + drabinka PP. Pomiary: poziomy napięć stanów A/B/C/D z tolerancjami;
+mapa duty$\to$prąd \textbf{dla wszystkich nastaw 6--32~A co 1~A} (funkcja firmowa!); czasy reakcji:
+B$\to$C (zamknięcie stycznika), C$\to$A/B (otwarcie), utrata CP, test diody (DUT musi odmówić),
+stany E/F; histereza progów (sweep rezystancji); reakcja na kod kabla PP (13/20/32/63~A --- czy DUT
+tnie deklarację). Wynik: \textbf{katalog bodziec$\to$odpowiedź} z pass/fail --- regresje po każdym
+OTA jednym przebiegiem; raporty do producenta.
+\subsection{P2 --- metrologia licznika i telemetrii (billing)}
+Porównanie: licznik kWh DUT (sesja/total, ekran + Tuya) i telemetria U/I/P per faza \textbf{vs
+referencja}: licznik MID klasy B/1 na szynie DIN modułu A (wyjście impulsowe S0 do -A1) +
+skalibrowany -U2. Test ,,niezerowalności'' licznika. Odchyłki w raporcie automatycznym (HA zestawia
+DP Tuya z MQTT modułu A). To wprost scenariusz A koncepcji bliźniaka --- krytyczny dla rozliczeń flot.
+\subsection{P3 --- testy funkcji bezpieczeństwa zasilania (deklaracje z instrukcji)}
+Na stanowisku bench-test (DUT zasilany z panelu modułu A --- opcja Z3): \textbf{zamiana L--N}
+(przekaźnik krzyżujący) $\to$ DUT ma blokować; \textbf{przerwa PE} (przekaźnik) $\to$ ikona/blokada;
+\textbf{zanik/powrót zasilania w trakcie ładowania} $\to$ pomiar czasu wznowienia (auto-recovery).
+Reakcje mierzone istniejącym torem (opto faz + CP). Opcja przyszła: zapady 80--275~V (wymaga
+autotransformatora sterowanego --- poza obecnym budżetem).
+\subsection{P4 --- walidacja czujników i zachowań termicznych DUT}
+Podczas soak: porównanie temperatury wtyku/ładowarki raportowanej przez DUT (ekran/Tuya) z pomiarem
+MLX90640/DS18B20; wyznaczenie progu termicznego wstrzymania i histerezy wznowienia. Zero nowego
+sprzętu --- procedura + firmware.
+\subsection{P5 --- jakość toru DUT pod obciążeniem}
+Impedancja wyjściowa $\Delta$U/$\Delta$I (skoki 25\%$\leftrightarrow$100\%), spadek napięcia pod
+obciążeniem, asymetria, upływ tła (RCM -B1), czasy łączeń stycznika DUT. Zero nowego sprzętu ---
+liczone z -U2/-B1/opto.
+\subsection{P6 --- DLB (do rozpoznania)}
+Firma reklamuje DLB do 4 stacji; mechanizm komunikacji między stacjami nie wynika z materiałów
+w folderze. Krok 1 (bez zmian sprzętu): nasłuch dwóch DUT na stanowisku (rejestracja CP obu + telemetrii
+Tuya) i identyfikacja zachowania; decyzja o emulacji --- po rozpoznaniu.
+
+\section{Wpływ na konstrukcję modułu A (krótko)}
+\begin{longtable}{@{}p{0.08\textwidth}p{0.52\textwidth}p{0.16\textwidth}p{0.16\textwidth}@{}}
+\toprule
+\textbf{Pakiet} & \textbf{Zmiana konstrukcyjna} & \textbf{Koszt} & \textbf{Praca}\\
+\midrule
+P1 & nowa płytka ,,VEF'' w strefie analogowej: $\sim$8 przekaźników sygnałowych, rezystory stanów,
+dioda, drabinka PP; przełącznik źródła symulacji \textbf{PM701E $\leftrightarrow$ EmuEV} na panelu;
+sterowanie z wolnych wyjść ekspandera; szybsze próbkowanie CP (ADC DMA $\sim$50~kS/s --- zmiana
+w firmware, nie w sprzęcie) & 200--350 zł & 1--1,5 dnia\\
+P2 & licznik MID 3F na szynie DIN (+7~cm szyny), wyjście S0 $\to$ wolne wejście opto; procedura
+kalibracji -U2 względem MID & 250--450 zł & 0,5 dnia\\
+P3 & w sekcji bench-test: 2 przekaźniki (krzyżowanie L--N, przerwa PE) + stycznik zanik/powrót;
+\emph{wymaga zatwierdzenia opcji Z3 (sekcja bench-test)} & 150--250 zł & 0,5--1 dzień\\
+P4/P5 & bez zmian sprzętowych (firmware + procedury) & 0 & 0,5--1 dzień\\
+P6 & bez zmian (nasłuch); dalsze kroki po rozpoznaniu & 0 & 0,5 dnia\\
+\midrule
+ & \textbf{Razem (P1--P6)} & \textbf{600--1050 zł} & \textbf{3--4,5 dnia}\\
+\bottomrule
+\end{longtable}
+Bez wpływu na: tor mocy E1, łańcuch bezpieczeństwa E2, szafę B, sekwencję pomiarów obowiązkowych.
+PM701E pozostaje (tryb protokołowy/ręczny); EmuEV go uzupełnia tam, gdzie liczą się timingi
+i automatyzacja. Schemat: przyszły arkusz E4 (VEF + MID + bench-test) --- po zatwierdzeniu.
+
+\section{Rekomendacja i decyzja}
+Kolejność wdrażania wg wartości/kosztu: \textbf{P2 $\to$ P5 $\to$ P1 $\to$ P4 $\to$ P3 $\to$ P6}
+(P2 i P5 niemal darmowe, a odpowiadają na rozliczenia i U-001; P1 daje regresje firmware ---
+największa wartość strategiczna). \textbf{Punkt do zatwierdzenia Z20:} zakres pakietów P1--P6
+i budżet dodatkowy $\sim$0,6--1,05~tys.~zł (+3--4,5 dnia pracy); P3 warunkowany decyzją Z3
+(sekcja bench-test).
+
+\end{document}

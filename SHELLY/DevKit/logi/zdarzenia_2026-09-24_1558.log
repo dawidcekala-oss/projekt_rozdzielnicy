@@ -1,0 +1,79 @@
+15:58:56  Monitor DevKitu na COM5. Ustawienia na starcie:
+15:58:56      Ładowanie włączone (DP 18): nie
+15:58:56      Limit prądu (DP 4): 16 A
+15:58:56      Stan ładowarki (DP 3): Wolna
+15:58:56      odczyty: energia sesji 0 kWh | czas sesji 0 min
+15:58:57  Q11: mikrokontroler nie odpowiada (Heartbeat timed out); kolejne takie same pomijam
+15:59:03  [strona WWW] polecenie RPC.Ping
+15:59:13  [strona WWW] polecenie RPC.Ping
+15:59:23  [strona WWW] polecenie RPC.Ping
+15:59:33  [strona WWW] polecenie RPC.Ping
+15:59:43  [strona WWW] polecenie RPC.Ping
+15:59:53  [strona WWW] polecenie RPC.Ping
+16:00:03  [strona WWW] polecenie RPC.Ping
+16:00:13  [strona WWW] polecenie RPC.Ping
+16:00:23  [strona WWW] polecenie RPC.Ping
+16:00:33  [strona WWW] polecenie RPC.Ping
+16:00:43  [strona WWW] polecenie RPC.Ping
+16:00:53  [strona WWW] polecenie RPC.Ping
+16:01:03  [strona WWW] polecenie RPC.Ping
+16:01:13  [strona WWW] polecenie RPC.Ping
+16:01:23  [strona WWW] polecenie RPC.Ping
+16:01:33  [strona WWW] polecenie RPC.Ping
+16:01:44  [strona WWW] polecenie RPC.Ping
+16:01:53  [strona WWW] polecenie RPC.Ping
+16:02:04  [strona WWW] polecenie RPC.Ping
+16:02:14  [strona WWW] polecenie RPC.Ping
+16:02:24  [strona WWW] polecenie RPC.Ping
+16:02:34  [strona WWW] polecenie RPC.Ping
+16:02:44  [strona WWW] polecenie RPC.Ping
+16:02:54  [strona WWW] polecenie RPC.Ping
+16:03:04  [strona WWW] polecenie RPC.Ping
+16:03:14  [strona WWW] polecenie RPC.Ping
+16:03:24  [strona WWW] polecenie RPC.Ping
+16:03:34  [strona WWW] polecenie RPC.Ping
+16:03:44  [strona WWW] polecenie RPC.Ping
+16:03:54  [strona WWW] polecenie RPC.Ping
+16:04:04  [strona WWW] polecenie RPC.Ping
+16:04:14  [strona WWW] polecenie RPC.Ping
+16:04:24  [strona WWW] polecenie RPC.Ping
+16:04:34  [strona WWW] polecenie RPC.Ping
+16:04:44  [strona WWW] polecenie RPC.Ping
+16:04:54  [strona WWW] polecenie RPC.Ping
+16:05:04  [strona WWW] polecenie RPC.Ping
+16:05:14  [strona WWW] polecenie RPC.Ping
+16:05:24  [strona WWW] polecenie RPC.Ping
+16:05:34  [strona WWW] polecenie RPC.Ping
+16:05:44  [strona WWW] polecenie RPC.Ping
+16:05:54  [strona WWW] polecenie RPC.Ping
+16:06:04  [strona WWW] polecenie RPC.Ping
+16:06:14  [strona WWW] polecenie RPC.Ping
+16:06:25  [strona WWW] polecenie RPC.Ping
+16:06:34  [strona WWW] polecenie RPC.Ping
+16:06:45  [strona WWW] polecenie RPC.Ping
+16:06:55  [strona WWW] polecenie RPC.Ping
+16:07:04  [strona WWW] polecenie RPC.Ping
+16:07:15  [strona WWW] polecenie RPC.Ping
+16:07:25  [strona WWW] polecenie RPC.Ping
+16:07:35  [strona WWW] polecenie RPC.Ping
+16:07:45  [strona WWW] polecenie RPC.Ping
+16:07:55  [strona WWW] polecenie RPC.Ping
+16:08:05  [strona WWW] polecenie RPC.Ping
+16:08:15  [strona WWW] polecenie RPC.Ping
+16:08:25  [strona WWW] polecenie RPC.Ping
+16:08:35  [strona WWW] polecenie RPC.Ping
+16:08:45  [strona WWW] polecenie RPC.Ping
+16:08:46  [strona WWW] strona DevKitu została otwarta
+16:08:55  [strona WWW] polecenie RPC.Ping
+16:09:00  [strona WWW] polecenie Sys.SetConfig
+16:09:10  [strona WWW] polecenie RPC.Ping
+16:09:20  [strona WWW] polecenie RPC.Ping
+16:09:30  [strona WWW] polecenie RPC.Ping
+16:09:40  [strona WWW] polecenie RPC.Ping
+16:09:50  [strona WWW] polecenie RPC.Ping
+16:10:00  [strona WWW] polecenie RPC.Ping
+16:10:10  [strona WWW] polecenie RPC.Ping
+16:10:20  [strona WWW] polecenie RPC.Ping
+16:10:30  [strona WWW] polecenie RPC.Ping
+16:10:40  [strona WWW] polecenie RPC.Ping
+16:10:50  [strona WWW] polecenie RPC.Ping

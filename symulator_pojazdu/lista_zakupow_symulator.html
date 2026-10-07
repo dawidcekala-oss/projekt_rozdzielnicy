@@ -1,0 +1,308 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zakupy — symulator pojazdu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#F5F7F9; --surface:#FFFFFF; --surface-2:#EDF1F5;
+  --ink:#131820; --ink-2:#525E6E; --ink-3:#7C8797;
+  --line:#DCE2EA; --line-2:#C6CEDA;
+  --accent:#B5470B; --accent-soft:#FBEDE3;
+  --opt:#4A6A8A; --opt-soft:#E7EEF5;
+  --ok:#2E7D46; --ok-soft:#E4F2E9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1218; --surface:#161C25; --surface-2:#1D242F;
+    --ink:#E6EAF0; --ink-2:#9AA5B4; --ink-3:#77828F;
+    --line:#26303C; --line-2:#33404F;
+    --accent:#F0925A; --accent-soft:#2A1D14;
+    --opt:#8FB0CE; --opt-soft:#182533;
+    --ok:#7BC594; --ok-soft:#15281C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1218; --surface:#161C25; --surface-2:#1D242F;
+  --ink:#E6EAF0; --ink-2:#9AA5B4; --ink-3:#77828F;
+  --line:#26303C; --line-2:#33404F;
+  --accent:#F0925A; --accent-soft:#2A1D14;
+  --opt:#8FB0CE; --opt-soft:#182533;
+  --ok:#7BC594; --ok-soft:#15281C;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:40px 20px 72px;display:flex;flex-direction:column;gap:26px}
+header{display:flex;flex-direction:column;gap:14px}
+h1{font-family:Archivo,system-ui,sans-serif;font-weight:700;
+  font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:-.02em;margin:0}
+.sumy{display:flex;flex-wrap:wrap;gap:10px}
+.suma{display:flex;align-items:baseline;gap:8px;background:var(--surface);
+  border:1px solid var(--line);border-radius:10px;padding:9px 14px}
+.suma b{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1rem;
+  font-variant-numeric:tabular-nums}
+.suma span{font-size:.8rem;color:var(--ink-2)}
+.suma.mocna{border-color:var(--line-2);background:var(--surface-2)}
+.klucz{font-size:.85rem;color:var(--ink-2);margin:0}
+.znacznik{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  font-weight:600;padding:1px 6px;border-radius:5px;background:var(--opt-soft);
+  color:var(--opt);border:1px solid var(--line)}
+.znacznik.ok{background:var(--ok-soft);color:var(--ok)}
+.znacznik.opcja{background:var(--accent-soft);color:var(--accent)}
+.sklep{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.sklep-gora{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 18px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.sklep-nazwa{font-family:Archivo,system-ui,sans-serif;font-weight:600;font-size:1.05rem}
+.sklep-nazwa a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line-2)}
+.sklep-nazwa a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.sklep-nazwa small{display:block;font-family:"IBM Plex Sans",sans-serif;font-weight:400;
+  font-size:.78rem;color:var(--ink-2);margin-top:3px}
+.sklep-suma{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.sklep-suma small{display:block;font-family:"IBM Plex Sans",sans-serif;font-weight:500;
+  font-size:.74rem;color:var(--ok)}
+.poz{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:14px;
+  padding:13px 18px;border-top:1px solid var(--line);color:inherit;text-decoration:none;
+  transition:background .12s ease}
+.sklep-gora + .poz{border-top:none}
+a.poz:hover{background:var(--accent-soft)}
+a.poz:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.nazwa{font-weight:500;line-height:1.35}
+.nazwa small{display:block;font-weight:400;font-size:.78rem;color:var(--ink-3);margin-top:2px}
+.ile{font-family:"IBM Plex Mono",monospace;font-size:.85rem;color:var(--ink-2);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.cena{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.95rem;
+  font-variant-numeric:tabular-nums;white-space:nowrap;min-width:64px;text-align:right}
+a.poz::after{content:"↗";color:var(--ink-3);font-size:.9rem;grid-column:4}
+a.poz:hover::after{color:var(--accent)}
+.uwaga{background:var(--surface);border:1px dashed var(--line-2);border-radius:14px;
+  padding:16px 18px;font-size:.88rem;color:var(--ink-2)}
+.uwaga b{color:var(--ink)}
+.uwaga ul{margin:8px 0 0;padding-left:20px}
+.uwaga li{margin:4px 0}
+.sklep.szare{opacity:.75}
+@media (max-width:620px){
+  .poz{grid-template-columns:1fr auto;gap:10px;padding:12px 14px}
+  .ile{grid-column:1;grid-row:2;font-size:.8rem}
+  .cena{grid-column:2;grid-row:1}
+  a.poz::after{grid-column:2;grid-row:2;text-align:right}
+  .sklep-gora{padding:12px 14px}
+}
+footer{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;
+  font-size:.82rem;color:var(--ink-3);border-top:1px solid var(--line);padding-top:16px}
+footer span{font-family:"IBM Plex Mono",monospace}
+</style>
+
+<div class="wrap">
+
+<header>
+  <h1>Zakupy — symulator pojazdu</h1>
+  <div class="sumy">
+    <div class="suma mocna"><b>119,27 zł</b><span>rdzeń &middot; 2 sprzedawców &middot; dostawa jutro</span></div>
+    <div class="suma"><b>+ 78,70 zł</b><span>dwie płytki ESP32 z kablem (zapas)</span></div>
+    <div class="suma"><b>+ 80,70 zł</b><span>pomiar prądu (można dołożyć później)</span></div>
+    <div class="suma"><b>≈ 125 zł</b><span>tor mocy &middot; osobno, poza Allegro</span></div>
+  </div>
+  <p class="klucz">Nowa lista — poprzednie dwie (moduły Gree i rejestrator złącza) są zamknięte, tamte części już masz.
+  Całą elektronikę pokrywa <b>dwóch sprzedawców z dostawą na jutro</b>. Grube przewody i gniazdo siłowe celowo zostawiam
+  poza Allegro — w hurtowni elektrycznej masz to od ręki i taniej niż z wysyłką.</p>
+</header>
+
+<!-- ================== ELEKTROWEB ================== -->
+<section class="sklep">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa"><a href="https://allegro.pl/uzytkownik/elektroweb">elektroweb</a>
+      <small>Super Sprzedawca &middot; dostawa jutro &middot; darmowa dostawa powyżej 49,90 zł (Smart)</small>
+    </div>
+    <div class="sklep-suma">137,80 zł<small>z płytkami ESP32 — powyżej progu</small></div>
+  </div>
+
+  <a class="poz" href="https://allegro.pl/produkt/nano-v3-elektroweb-zlutowane-zgodne-z-arduino-atmega328-ch340-5v-usb-c-34049868-da92-4d04-8bb2-eb29c2d7c00c">
+    <span class="nazwa">Płytka Nano (zgodna z Arduino), złącze USB-C, z wlutowanymi kołkami
+      <small>mózg symulatora: podejmuje decyzje pojazdu i mierzy czasy reakcji ładowarki</small></span>
+    <span class="ile">1 × 17,50</span>
+    <span class="cena">17,50</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/uzytkownik/elektroweb?string=LCD%201602%20I2C">
+    <span class="nazwa">Wyświetlacz tekstowy 16 znaków × 2 wiersze z przystawką I2C
+      <small>pokazuje stan, oferowany prąd i powód odmowy; wchodzi w okno po mierniku rezystancji kabla — wymiar do potwierdzenia</small></span>
+    <span class="ile">1 × 12,90</span>
+    <span class="cena">12,90</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/uzytkownik/elektroweb?string=wy%C5%82%C4%85cznik%20bezpiecze%C5%84stwa%20grzybek">
+    <span class="nazwa">Wyłącznik awaryjny (grzybek) 22 mm ze stykiem rozwiernym
+      <small>rozłącza zasilanie przekaźników sprzętowo — symulator natychmiast zgłasza ładowarce koniec ładowania</small></span>
+    <span class="ile">1 × 19,90</span>
+    <span class="cena">19,90</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/uzytkownik/elektroweb?string=przycisk%20panelowy">
+    <span class="nazwa">Przycisk chwilowy panelowy 12 mm
+      <small>start i stop sesji; wchodzi w otwór po istniejącym przełączniku dźwigniowym</small></span>
+    <span class="ile">1 × 3,90</span>
+    <span class="cena">3,90</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/uzytkownik/elektroweb?string=brz%C4%99czyk">
+    <span class="nazwa">Brzęczyk z własnym generatorem dźwięku
+      <small>alarm, gdy badana ładowarka nie odcięła napięcia mimo zgłoszenia końca ładowania</small></span>
+    <span class="ile">1 × 4,90</span>
+    <span class="cena">4,90</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/produkt/mikrokomputer-elektroweb-esp32s-esp-wroom-32-nodemcu-6ba44a4d-280a-44f6-acdb-bcab05d4a7af">
+    <span class="nazwa">Płytka ESP32 NodeMCU (ESP-WROOM-32), WiFi i Bluetooth<span class="znacznik opcja">zapas warsztatowy</span>
+      <small>nie do tego urządzenia — mózgiem symulatora zostaje płytka Nano, bo cały tor pomiarowy jest policzony pod pięć woltów, a ESP32 pracuje na trzech i trzech dziesiątych. Bierzemy dwie do szuflady: na rzeczy z łącznością bezprzewodową i na następne przyrządy</small></span>
+    <span class="ile">2 × 33,90</span>
+    <span class="cena">67,80</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/produkt/kabel-ldnio-usb-microusb-typ-b-1-m-czarny-cf6ea631-1437-48c0-a016-24546ac6c01d">
+    <span class="nazwa">Kabel USB – micro USB, 1 m
+      <small>do wgrywania programu i rozmowy z komputerem przez płytki ESP32. <b>Sprawdź w opisie, że kabel przesyła dane</b> — część kabli sprzedawanych jako „do szybkiego ładowania” ma tylko żyły zasilające i płytka nie zgłosi się w komputerze</small></span>
+    <span class="ile">1 × 10,90</span>
+    <span class="cena">10,90</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/uzytkownik/elektroweb?string=SCT-013">
+    <span class="nazwa">Przekładnik prądowy rozpinany SCT013-030 (30 A / 1 V)<span class="znacznik opcja">rozszerzenie</span>
+      <small>po jednym na fazę — dzięki nim symulator sam sprawdza, czy pobór mieści się w prądzie oferowanym przez ładowarkę; bez nich prąd widać tylko na istniejących miernikach</small></span>
+    <span class="ile">3 × 26,90</span>
+    <span class="cena">80,70</span>
+  </a>
+</section>
+
+<!-- ================== A_BROD ================== -->
+<section class="sklep">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa"><a href="https://allegro.pl/uzytkownik/a_brod">a_brod</a>
+      <small>Super Sprzedawca &middot; dostawa jutro (zamówienie do 14:00) &middot; darmowa dostawa powyżej 49,90 zł (Smart)</small>
+    </div>
+    <div class="sklep-suma">60,17 zł<small>powyżej progu</small></div>
+  </div>
+
+  <a class="poz" href="https://allegro.pl/produkt/jrc23f-hfd23-5v-przekaznik-fbb6b557-8bb0-47dd-9570-9a45a3d285e8">
+    <span class="nazwa">Przekaźnik sygnałowy 5 V, styk przełączny (JRC23F / HFD23)
+      <small>pięć sztuk pracuje, dwie na zapas. To musi być przekaźnik <b>sygnałowy</b> — nie gotowy moduł przekaźnikowy 10 A z niebieską kostką: tamten ma styki srebrne, które przy prądzie kilku miliamperów przestają przewodzić. W opisie oferty sprawdź, czy styki są pozłacane; jeśli nie ma takiej informacji, pewnym zamiennikiem jest Omron G5V-2-5VDC (drożej, ok. 15 zł/szt.)</small></span>
+    <span class="ile">7 × 5,87</span>
+    <span class="cena">41,09</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/uzytkownik/a_brod?string=PC814">
+    <span class="nazwa">Transoptor PC814 (opakowanie 2 szt.)
+      <small>oddziela elektronikę od sieci i wykrywa obecność napięcia na każdej fazie; ma wejście na prąd przemienny, więc nie trzeba prostownika — potrzebne 3 sztuki, bierzemy 2 opakowania</small></span>
+    <span class="ile">2 × 3,37</span>
+    <span class="cena">6,74</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/uzytkownik/a_brod?string=rezystor%20270">
+    <span class="nazwa">Rezystor 270 Ω, tolerancja 1%, 0,5 W (opakowanie 20 szt.)
+      <small>gałąź stanu z żądaniem wentylacji; przy 1% mieścimy się w oknie normy bez dobierania</small></span>
+    <span class="ile">1 × 3,00</span>
+    <span class="cena">3,00</span>
+  </a>
+
+  <a class="poz" href="https://allegro.pl/uzytkownik/a_brod?string=rezystor%20120k">
+    <span class="nazwa">Rezystor 120 kΩ, 0,25 W (opakowanie 100 szt.)
+      <small>do dzielnika pomiarowego linii pilota i do ograniczenia prądu transoptorów wykrywających fazy</small></span>
+    <span class="ile">1 × 3,02</span>
+    <span class="cena">3,02</span>
+  </a>
+</section>
+
+<!-- ================== TOR MOCY ================== -->
+<section class="sklep">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa">Tor mocy — hurtownia elektryczna
+      <small>na Allegro to trzeci sprzedawca i osobna wysyłka; w hurtowni masz od ręki, docięte i taniej</small>
+    </div>
+    <div class="sklep-suma">≈ 125 zł<small>szacunek</small></div>
+  </div>
+  <div class="poz">
+    <span class="nazwa">Gniazdo siłowe tablicowe 32 A, 5-stykowe (400 V)
+      <small>wyjście mocy symulatora — tu wepniesz magazyn energii albo obciążenie próbne</small></span>
+    <span class="ile">1 szt.</span>
+    <span class="cena">≈ 27</span>
+  </div>
+  <div class="poz">
+    <span class="nazwa">Przewód jednożyłowy giętki 6 mm², pięć kolorów po 1,5 m
+      <small>trzy fazy, przewód neutralny i ochronny; przekrój wynika z zabezpieczenia 32 A w rozdzielnicy</small></span>
+    <span class="ile">7,5 m</span>
+    <span class="cena">≈ 60</span>
+  </div>
+  <div class="poz">
+    <span class="nazwa">Końcówki tulejkowe 6 mm² + złączki przelotowe 6 mm²
+      <small>przy 32 A to styki się przypalają, nie przewody — każda żyła zarobiona tulejką i dokręcona</small></span>
+    <span class="ile">kpl.</span>
+    <span class="cena">≈ 30</span>
+  </div>
+  <div class="poz">
+    <span class="nazwa">Dławnica kablowa do wyprowadzenia przewodu z puszki
+      <small>rozmiar po zmierzeniu istniejącego otworu</small></span>
+    <span class="ile">1 szt.</span>
+    <span class="cena">≈ 8</span>
+  </div>
+</section>
+
+<!-- ================== MASZ JUŻ ================== -->
+<section class="sklep szare">
+  <div class="sklep-gora">
+    <div class="sklep-nazwa">Masz już — nie kupujemy drugi raz ✓
+      <small>z poprzednich zamówień i z zapasów warsztatowych</small>
+    </div>
+    <div class="sklep-suma">0 zł</div>
+  </div>
+  <div class="poz">
+    <span class="nazwa">Komparator LM393, diody 1N4148, kondensatory 470 pF / 1 nF / 100 nF, podstawki, płytki uniwersalne, kołki, przewody połączeniowe<span class="znacznik ok">kupione</span></span>
+    <span class="ile">—</span><span class="cena">—</span>
+  </div>
+  <div class="poz">
+    <span class="nazwa">Układ ULN2003 do sterowania cewkami przekaźników<span class="znacznik ok">w zapasie</span>
+      <small>jeden układ obsługuje wszystkie pięć przekaźników i ma wbudowane diody gaszące</small></span>
+    <span class="ile">—</span><span class="cena">—</span>
+  </div>
+  <div class="poz">
+    <span class="nazwa">Rezystory 2,7 kΩ i 1,3 kΩ — <b>dobrane z posiadanych miernikiem</b><span class="znacznik ok">z zapasu</span>
+      <small>norma wymaga 2,74 kΩ i 1,3 kΩ z dokładnością 3%. Zamiast kupować, przemierz kilka sztuk z szuflady i wybierz najbliższe — miernikiem trafisz lepiej niż w ciemno kupionym rezystorem 1%. Dopuszczalne zakresy: 2660–2820 Ω oraz 1261–1339 Ω</small></span>
+    <span class="ile">—</span><span class="cena">—</span>
+  </div>
+  <div class="poz">
+    <span class="nazwa">Zasilacz USB 5 V z przewodem<span class="znacznik ok">z zapasu</span>
+      <small>zasila elektronikę z rozdzielnicy, niezależnie od badanej ładowarki — odpowiednik instalacji 12 V w samochodzie</small></span>
+    <span class="ile">—</span><span class="cena">—</span>
+  </div>
+  <div class="poz">
+    <span class="nazwa">Gniazdo wlotowe Type 2, trzy mierniki napięcia i prądu, miernik napięcia pilota, gniazdo 230 V, łącznik 16 A, obudowa<span class="znacznik ok">w puszce</span></span>
+    <span class="ile">—</span><span class="cena">—</span>
+  </div>
+</section>
+
+<div class="uwaga">
+  <b>Cztery rzeczy do sprawdzenia przed kliknięciem „kup" — mogą zmienić listę:</b>
+  <ul>
+    <li><b>Prąd gniazda wlotowego</b> (napis na kołnierzu albo od tyłu). Jeśli 16 A, a chcemy badać ładowarki 22 kW przy pełnym prądzie, trzeba kupić gniazdo na 32 A — to wydatek rzędu 200–300 zł i jedyna naprawdę droga pozycja w całym projekcie.</li>
+    <li><b>Wymiar okna po mierniku rezystancji kabla.</b> Wyświetlacz z listy potrzebuje wycięcia około 71 × 24 mm. Jeśli istniejące okno jest mniejsze, zamiast niego bierzemy wyświetlacz graficzny o innym wymiarze — wtedy podmieniam pozycję.</li>
+    <li><b>Ile jest w puszce przekładników prądowych.</b> Widzę jeden czarny pierścień, a mierniki prądu są trzy. Jeśli któryś jest wolny, kupujemy mniej niż trzy nowe.</li>
+    <li><b>Ile faz wychodzi z rozdzielnicy biurkowej.</b> Przy jednej fazie pełne 22 kW nie przejdzie i cały tor mocy schodzi na rozmiar jednofazowy — wtedy gniazdo siłowe i grube przewody odpadają.</li>
+  </ul>
+</div>
+
+<div class="uwaga">
+  <b>Dlaczego dwóch sprzedawców, a nie jeden:</b> sklepy z modułami (płytka Nano, wyświetlacz, przekładniki) nie prowadzą
+  przekaźników sygnałowych ani transoptorów, a sklepy z częściami elektronicznymi nie prowadzą modułów. Sprawdziłem pod tym kątem
+  kilku dużych sprzedawców — u żadnego nie ma obu grup naraz. Oba koszyki przekraczają próg darmowej dostawy i oba wysyłają jutro,
+  więc rozdzielenie nic nie kosztuje poza dwiema paczkami zamiast jednej.
+</div>
+
+<footer>
+  <div>2 sprzedawców na Allegro &middot; 12 pozycji &middot; obie dostawy jutro</div>
+  <div><span>2026-09-17</span> &middot; ceny i dostępność sprawdzone tego dnia</div>
+</footer>
+
+</div>

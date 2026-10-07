@@ -1,0 +1,163 @@
+# ============================================================================
+#  Klimatyzacja Gree (biuro) -> Home Assistant   |   sonda 192.168.0.172
+#  Wklej CALOSC do configuration.yaml (na koncu pliku).
+#  Jesli masz juz sekcje 'rest:' albo 'template:' - scal listy, nie duplikuj kluczy.
+#  Potem: Narzedzia deweloperskie -> YAML -> Przeladuj encje REST, potem szablonowe.
+#  Opis dzialania: HA_INTEGRACJA.pdf
+# ============================================================================
+
+# ---- 1. ODCZYT (magistrala RS-485 + pamiec sondy) ----
+rest:
+  - resource: http://192.168.0.172/stan
+    scan_interval: 15
+    sensor:
+      - name: "Klimatyzacja biuro temperatura"
+        value_template: "{{ value_json.temp_pokoj }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+      - name: "Klimatyzacja biuro wymiennik"
+        value_template: "{{ value_json.temp_wymiennik }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+      - name: "Klimatyzacja biuro wentylator"
+        value_template: "{{ value_json.wentylator }}"
+        icon: mdi:fan
+      # --- nastawy: pamięć sondy, nie odczyt z jednostki ---
+      - name: "Klimatyzacja biuro nastawa sonda"
+        value_template: "{{ value_json.zad_temp }}"
+        unit_of_measurement: "°C"
+      - name: "Klimatyzacja biuro tryb sonda"
+        value_template: "{{ value_json.zad_tryb }}"
+      - name: "Klimatyzacja biuro bieg sonda"
+        value_template: "{{ value_json.zad_went }}"
+      - name: "Klimatyzacja biuro potwierdzenie"
+        value_template: "{{ value_json.potwierdzenie }}"
+        icon: mdi:check-network
+    binary_sensor:
+      - name: "Klimatyzacja biuro pracuje"
+        value_template: "{{ value_json.pracuje }}"
+        device_class: running
+      - name: "Klimatyzacja biuro klapy"
+        value_template: "{{ value_json.klapy_otwarte }}"
+        device_class: opening
+      - name: "Klimatyzacja biuro sonda online"
+        value_template: "{{ value_json.dostepne }}"
+        device_class: connectivity
+      - name: "Klimatyzacja biuro zadane wlaczenie"
+        value_template: "{{ value_json.zad_wl }}"
+
+# ---- 2. KOMENDY (podczerwien) ----
+rest_command:
+  klima_wl:
+    url: "http://192.168.0.172/ustaw?wl=1"
+    timeout: 15
+  klima_wyl:
+    url: "http://192.168.0.172/ustaw?wl=0"
+    timeout: 15
+  klima_temp:
+    url: "http://192.168.0.172/ustaw?temp={{ temp }}"
+    timeout: 15
+  klima_tryb:
+    url: "http://192.168.0.172/ustaw?tryb={{ tryb }}"
+    timeout: 15
+  klima_went:
+    url: "http://192.168.0.172/ustaw?went={{ went }}"
+    timeout: 15
+
+# ---- 3. STEROWANIE: przelacznik, nastawa, tryb, bieg + alarm ----
+template:
+  - switch:
+      - name: "Klimatyzacja biuro"
+        unique_id: gree_biuro_wl
+        icon: mdi:air-conditioner
+        state: "{{ is_state('binary_sensor.klimatyzacja_biuro_zadane_wlaczenie','on') }}"
+        availability: "{{ is_state('binary_sensor.klimatyzacja_biuro_sonda_online','on') }}"
+        turn_on:
+          - action: rest_command.klima_wl
+          - delay: { seconds: 2 }
+          - action: homeassistant.update_entity
+            target:
+              entity_id: binary_sensor.klimatyzacja_biuro_zadane_wlaczenie
+        turn_off:
+          - action: rest_command.klima_wyl
+          - delay: { seconds: 2 }
+          - action: homeassistant.update_entity
+            target:
+              entity_id: binary_sensor.klimatyzacja_biuro_zadane_wlaczenie
+
+  - number:
+      - name: "Klimatyzacja biuro nastawa"
+        unique_id: gree_biuro_temp
+        icon: mdi:thermometer
+        unit_of_measurement: "°C"
+        min: 16
+        max: 30
+        step: 1
+        state: "{{ states('sensor.klimatyzacja_biuro_nastawa_sonda') | int(22) }}"
+        availability: "{{ is_state('binary_sensor.klimatyzacja_biuro_sonda_online','on') }}"
+        set_value:
+          - action: rest_command.klima_temp
+            data:
+              temp: "{{ value | int }}"
+          - delay: { seconds: 2 }
+          - action: homeassistant.update_entity
+            target:
+              entity_id: sensor.klimatyzacja_biuro_nastawa_sonda
+
+  - select:
+      - name: "Klimatyzacja biuro tryb"
+        unique_id: gree_biuro_tryb
+        icon: mdi:tune
+        options: "{{ ['chlodzenie','grzanie','osuszanie','wentylacja','auto'] }}"
+        state: "{{ states('sensor.klimatyzacja_biuro_tryb_sonda') }}"
+        availability: "{{ is_state('binary_sensor.klimatyzacja_biuro_sonda_online','on') }}"
+        select_option:
+          - action: rest_command.klima_tryb
+            data:
+              tryb: >-
+                {{ {'chlodzenie':'cool','grzanie':'heat','osuszanie':'dry',
+                    'wentylacja':'fan','auto':'auto'}[option] }}
+          - delay: { seconds: 2 }
+          - action: homeassistant.update_entity
+            target:
+              entity_id: sensor.klimatyzacja_biuro_tryb_sonda
+
+      - name: "Klimatyzacja biuro bieg"
+        unique_id: gree_biuro_went
+        icon: mdi:fan
+        options: "{{ ['auto','niski','sredni','wysoki'] }}"
+        state: "{{ states('sensor.klimatyzacja_biuro_bieg_sonda') }}"
+        availability: "{{ is_state('binary_sensor.klimatyzacja_biuro_sonda_online','on') }}"
+        select_option:
+          - action: rest_command.klima_went
+            data:
+              went: >-
+                {{ {'auto':'auto','niski':'1','sredni':'2','wysoki':'3'}[option] }}
+          - delay: { seconds: 2 }
+          - action: homeassistant.update_entity
+            target:
+              entity_id: sensor.klimatyzacja_biuro_bieg_sonda
+
+  - binary_sensor:
+      - name: "Klimatyzacja biuro sterowanie nieskuteczne"
+        unique_id: gree_biuro_alarm
+        device_class: problem
+        state: "{{ is_state('sensor.klimatyzacja_biuro_potwierdzenie','nie') }}"
+        delay_on: { seconds: 5 }
+
+# ---- 4. POWIADOMIENIE, gdy komenda nie doszla (opcjonalne) ----
+automation:
+  - alias: "Klimatyzacja — komenda nie doszła"
+    trigger:
+      - trigger: state
+        entity_id: binary_sensor.klimatyzacja_biuro_sterowanie_nieskuteczne
+        to: "on"
+    action:
+      - action: persistent_notification.create
+        data:
+          title: "Klimatyzacja nie odpowiada"
+          message: >-
+            Sonda wysłała komendę trzykrotnie i powtórzyła ją dwa razy,
+            a magistrala nie potwierdziła zmiany. Sprawdź diodę przy odbiorniku.

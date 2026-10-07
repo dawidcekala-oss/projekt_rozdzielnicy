@@ -1,0 +1,252 @@
+--- /usr/src/homeassistant/homeassistant/components/shelly/const.py
++++ const.py
+@@ -337,4 +337,6 @@
+ MODEL_LINKEDGO_ST1820_THERMOSTAT = "ST1820"
+ MODEL_TOP_EV_CHARGER_EVE01 = "EVE01"
++# Ampere Point: ladowarki Q11 na Shelly X (kod produktu z portalu x.shelly.cloud)
++AMPERE_POINT_EV_MODELS = {"apq11dev"}
+ MODEL_FRANKEVER_IRRIGATION_CONTROLLER = "Irrigation"
+ 
+--- /usr/src/homeassistant/homeassistant/components/shelly/entity.py
++++ entity.py
+@@ -559,5 +559,5 @@
+         self.reversed_option_map: dict[str, str] = {}
+         if "enum" in key:
+-            titles = self.coordinator.device.config[key]["meta"]["ui"]["titles"]
++            titles = self.coordinator.device.config[key]["meta"]["ui"].get("titles") or {}
+             options = self.coordinator.device.config[key]["options"]
+             self.option_map = {
+--- /usr/src/homeassistant/homeassistant/components/shelly/number.py
++++ number.py
+@@ -31,4 +31,5 @@
+     MODEL_LINKEDGO_ST802_THERMOSTAT,
+     MODEL_LINKEDGO_ST1820_THERMOSTAT,
++    AMPERE_POINT_EV_MODELS,
+     MODEL_TOP_EV_CHARGER_EVE01,
+     ROLE_GENERIC,
+@@ -233,5 +234,44 @@
+         method="number_set",
+         role="current_limit",
+-        models={MODEL_TOP_EV_CHARGER_EVE01},
++        models={MODEL_TOP_EV_CHARGER_EVE01, *AMPERE_POINT_EV_MODELS},
++    ),
++    "number_ap_energy_limit": RpcNumberDescription(
++        key="number",
++        sub_key="value",
++        translation_key="energy_limit",
++        max_fn=lambda config: config["max"],
++        min_fn=lambda config: config["min"],
++        mode_fn=lambda _: NumberMode.BOX,
++        step_fn=lambda config: config["meta"]["ui"].get("step"),
++        unit=get_virtual_component_unit,
++        method="number_set",
++        role="energy_limit",
++        models=AMPERE_POINT_EV_MODELS,
++    ),
++    "number_ap_window_start": RpcNumberDescription(
++        key="number",
++        sub_key="value",
++        translation_key="charging_window_start",
++        max_fn=lambda config: config["max"],
++        min_fn=lambda config: config["min"],
++        mode_fn=lambda _: NumberMode.BOX,
++        step_fn=lambda config: config["meta"]["ui"].get("step"),
++        unit=get_virtual_component_unit,
++        method="number_set",
++        role="window_start",
++        models=AMPERE_POINT_EV_MODELS,
++    ),
++    "number_ap_window_end": RpcNumberDescription(
++        key="number",
++        sub_key="value",
++        translation_key="charging_window_end",
++        max_fn=lambda config: config["max"],
++        min_fn=lambda config: config["min"],
++        mode_fn=lambda _: NumberMode.BOX,
++        step_fn=lambda config: config["meta"]["ui"].get("step"),
++        unit=get_virtual_component_unit,
++        method="number_set",
++        role="window_end",
++        models=AMPERE_POINT_EV_MODELS,
+     ),
+     "number_position": RpcNumberDescription(
+--- /usr/src/homeassistant/homeassistant/components/shelly/switch.py
++++ switch.py
+@@ -25,4 +25,5 @@
+     MODEL_LINKEDGO_ST1820_THERMOSTAT,
+     MODEL_NEO_WATER_VALVE,
++    AMPERE_POINT_EV_MODELS,
+     MODEL_TOP_EV_CHARGER_EVE01,
+     ROLE_GENERIC,
+@@ -153,4 +154,15 @@
+         role="start_charging",
+         models={MODEL_TOP_EV_CHARGER_EVE01},
++    ),
++    "boolean_ap_state": RpcSwitchDescription(
++        key="boolean",
++        sub_key="value",
++        translation_key="charging",
++        is_on=lambda status: bool(status["value"]),
++        method_on="boolean_set",
++        method_off="boolean_set",
++        method_params_fn=lambda id, value: (id, value),
++        role="state",
++        models=AMPERE_POINT_EV_MODELS,
+     ),
+     "boolean_state": RpcSwitchDescription(
+--- /usr/src/homeassistant/homeassistant/components/shelly/select.py
++++ select.py
+@@ -14,5 +14,5 @@
+ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+ 
+-from .const import ROLE_GENERIC
++from .const import AMPERE_POINT_EV_MODELS, ROLE_GENERIC
+ from .coordinator import ShellyConfigEntry, ShellyRpcCoordinator
+ from .entity import (
+@@ -111,4 +111,12 @@
+         method="cury_set_mode",
+         entity_class=RpcCuryModeSelect,
++    ),
++    "enum_ap_work_mode": RpcSelectDescription(
++        key="enum",
++        sub_key="value",
++        translation_key="work_mode",
++        method="enum_set",
++        role="work_mode",
++        models=AMPERE_POINT_EV_MODELS,
+     ),
+     "enum_generic": RpcSelectDescription(
+--- /usr/src/homeassistant/homeassistant/components/shelly/sensor.py
++++ sensor.py
+@@ -43,5 +43,10 @@
+ from homeassistant.util.dt import utcnow
+ 
+-from .const import CONF_SLEEP_PERIOD, DRIVER_MISSING_ERROR, ROLE_GENERIC
++from .const import (
++    AMPERE_POINT_EV_MODELS,
++    CONF_SLEEP_PERIOD,
++    DRIVER_MISSING_ERROR,
++    ROLE_GENERIC,
++)
+ from .coordinator import ShellyBlockCoordinator, ShellyConfigEntry, ShellyRpcCoordinator
+ from .entity import (
+@@ -1514,4 +1519,77 @@
+         device_class=SensorDeviceClass.DURATION,
+         role="time_charge",
++    ),
++    "enum_ap_mode": RpcSensorDescription(
++        key="enum",
++        sub_key="value",
++        translation_key="charger_state",
++        device_class=SensorDeviceClass.ENUM,
++        role="mode",
++        models=AMPERE_POINT_EV_MODELS,
++    ),
++    "enum_ap_cp_state": RpcSensorDescription(
++        key="enum",
++        sub_key="value",
++        translation_key="cp_state",
++        device_class=SensorDeviceClass.ENUM,
++        role="cp_state",
++        models=AMPERE_POINT_EV_MODELS,
++    ),
++    "number_ap_session_energy": RpcSensorDescription(
++        key="number",
++        sub_key="value",
++        translation_key="session_energy",
++        native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
++        suggested_display_precision=2,
++        device_class=SensorDeviceClass.ENERGY,
++        state_class=SensorStateClass.TOTAL_INCREASING,
++        role="session_energy",
++        models=AMPERE_POINT_EV_MODELS,
++    ),
++    "number_ap_session_duration": RpcSensorDescription(
++        key="number",
++        sub_key="value",
++        translation_key="session_duration",
++        native_unit_of_measurement=UnitOfTime.MINUTES,
++        suggested_display_precision=0,
++        device_class=SensorDeviceClass.DURATION,
++        role="session_duration",
++        models=AMPERE_POINT_EV_MODELS,
++    ),
++    "number_ap_last_session_energy": RpcSensorDescription(
++        key="number",
++        sub_key="value",
++        translation_key="last_session_energy",
++        native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
++        suggested_display_precision=2,
++        device_class=SensorDeviceClass.ENERGY,
++        role="last_session_energy",
++        models=AMPERE_POINT_EV_MODELS,
++    ),
++    "number_ap_temperature": RpcSensorDescription(
++        key="number",
++        sub_key="value",
++        translation_key="controller_temperature",
++        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
++        suggested_display_precision=0,
++        device_class=SensorDeviceClass.TEMPERATURE,
++        state_class=SensorStateClass.MEASUREMENT,
++        role="temperature",
++        models=AMPERE_POINT_EV_MODELS,
++    ),
++    "text_ap_faults": RpcSensorDescription(
++        key="text",
++        sub_key="value",
++        translation_key="faults",
++        role="faults",
++        models=AMPERE_POINT_EV_MODELS,
++    ),
++    "text_ap_controller_version": RpcSensorDescription(
++        key="text",
++        sub_key="value",
++        translation_key="controller_version",
++        entity_category=EntityCategory.DIAGNOSTIC,
++        role="controller_version",
++        models=AMPERE_POINT_EV_MODELS,
+     ),
+     "presence_num_objects": RpcSensorDescription(
+--- /usr/src/homeassistant/homeassistant/components/shelly/manifest.json
++++ manifest.json
+@@ -10,13 +10,26 @@
+     }
+   ],
+-  "codeowners": ["@bieniu", "@thecode", "@chemelli74", "@bdraco"],
++  "codeowners": [
++    "@bieniu",
++    "@thecode",
++    "@chemelli74",
++    "@bdraco"
++  ],
+   "config_flow": true,
+-  "dependencies": ["bluetooth", "http", "network"],
++  "dependencies": [
++    "bluetooth",
++    "http",
++    "network"
++  ],
+   "documentation": "https://www.home-assistant.io/integrations/shelly",
+   "integration_type": "device",
+   "iot_class": "local_push",
+-  "loggers": ["aioshelly"],
++  "loggers": [
++    "aioshelly"
++  ],
+   "quality_scale": "platinum",
+-  "requirements": ["aioshelly==13.26.1"],
++  "requirements": [
++    "aioshelly==13.26.1"
++  ],
+   "zeroconf": [
+     {
+@@ -27,4 +40,5 @@
+       "type": "_shelly._tcp.local."
+     }
+-  ]
+-}
++  ],
++  "version": "2026.6.4-ampere1"
++}
+\ No newline at end of file

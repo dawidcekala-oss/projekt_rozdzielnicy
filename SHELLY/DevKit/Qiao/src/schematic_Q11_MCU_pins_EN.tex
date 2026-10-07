@@ -1,0 +1,212 @@
+% !TEX program = xelatex
+\documentclass[10pt]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\newfontfamily\sym{Segoe UI Symbol}
+\usepackage[table]{xcolor}
+\usepackage{geometry}
+\geometry{a4paper,landscape,margin=0.8cm}
+\usepackage{tikz}
+\usepackage{booktabs,array}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\definecolor{txblue}{HTML}{1D4ED8}
+\definecolor{rxgreen}{HTML}{15803D}
+\definecolor{pwrred}{HTML}{B91C1C}
+\definecolor{ncgrey}{HTML}{6B7280}
+\definecolor{padfill}{HTML}{F59E0B}
+\definecolor{copper}{HTML}{C2410C}
+\definecolor{modblue}{HTML}{DBEAFE}
+\newcommand{\ra}{{\sym →}}
+\newcommand{\la}{{\sym ←}}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[anchor=north west, text width=27.5cm] at (0,19.4) {%
+{\Large\bfseries Q11 controller: package pins and the U10 pads that reach them}\\[2pt]
+{\small Control board X2Q322\_K\_V4 (260703), controller with sticker ``X2Q311OW OTA V22'', LQFP64. View as in the photo: sticker readable, module site U10 on the right.
+Pin keys: u = top edge, d = bottom edge (numbered from the left), l = left edge, p = right edge (numbered from the bottom). Grey: standard pin number and function in the STM32F103 / GD32F103 / GD32F303 family.
+\mbox{AMPERE POINT}, 28 September 2026, EN v1 (from PL v2 of 25 September 2026): ground measured.}};
+\draw[fill=black!85, rounded corners=2pt] (9.0,4.2) rectangle (18.0,13.2);
+\fill[white] (9.45,4.65) circle (0.13);
+\node[white, font=\scriptsize, anchor=west] at (9.65,4.65) {pin 1 = d1};
+\node[fill=white, text width=3.4cm, align=center, font=\small] at (13.5,9.299999999999999) {X2Q311OW\\OTA\\V22};
+\node[white, align=center, font=\scriptsize] at (13.5,7.299999999999999) {U2 · LQFP64\\STM32F103 / GD32F303 family\\identified by the power-pin pattern};
+\draw[fill=pwrred, draw=black] (9.63,3.92) rectangle (9.87,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (9.75,3.87) {\textbf{d1}\ \ {\color{black!55}1 VBAT}\ \ {\color{pwrred}\textbf{\la\ 8 VCC}}};
+\draw[fill=black!55, draw=black] (10.13,3.92) rectangle (10.37,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (10.25,3.87) {\textbf{d2}\ \ {\color{black!55}2 PC13}};
+\draw[fill=black!55, draw=black] (10.63,3.92) rectangle (10.87,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (10.75,3.87) {\textbf{d3}\ \ {\color{black!55}3 PC14}};
+\draw[fill=black!55, draw=black] (11.13,3.92) rectangle (11.37,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (11.25,3.87) {\textbf{d4}\ \ {\color{black!55}4 PC15}};
+\draw[fill=black!55, draw=black] (11.63,3.92) rectangle (11.87,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (11.75,3.87) {\textbf{d5}\ \ {\color{black!55}5 PD0 OSC\_IN}};
+\draw[fill=black!55, draw=black] (12.13,3.92) rectangle (12.37,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (12.25,3.87) {\textbf{d6}\ \ {\color{black!55}6 PD1 OSC\_OUT}};
+\draw[fill=black!55, draw=black] (12.63,3.92) rectangle (12.87,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (12.75,3.87) {\textbf{d7}\ \ {\color{black!55}7 NRST}};
+\draw[fill=black!55, draw=black] (13.13,3.92) rectangle (13.37,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (13.25,3.87) {\textbf{d8}\ \ {\color{black!55}8 PC0}};
+\draw[fill=black!55, draw=black] (13.63,3.92) rectangle (13.87,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (13.75,3.87) {\textbf{d9}\ \ {\color{black!55}9 PC1}};
+\draw[fill=black!55, draw=black] (14.13,3.92) rectangle (14.37,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (14.25,3.87) {\textbf{d10}\ \ {\color{black!55}10 PC2}};
+\draw[fill=black!55, draw=black] (14.63,3.92) rectangle (14.87,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (14.75,3.87) {\textbf{d11}\ \ {\color{black!55}11 PC3}};
+\draw[fill=black, draw=black] (15.13,3.92) rectangle (15.37,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (15.25,3.87) {\textbf{d12}\ \ {\color{black!55}12 VSSA}\ \ {\color{black}\textbf{\la\ 9 GND}}};
+\draw[fill=pwrred, draw=black] (15.63,3.92) rectangle (15.87,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (15.75,3.87) {\textbf{d13}\ \ {\color{black!55}13 VDDA}\ \ {\color{pwrred}\textbf{\la\ 8 VCC}}};
+\draw[fill=black!55, draw=black] (16.13,3.92) rectangle (16.37,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (16.25,3.87) {\textbf{d14}\ \ {\color{black!55}14 PA0}};
+\draw[fill=black!55, draw=black] (16.63,3.92) rectangle (16.87,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (16.75,3.87) {\textbf{d15}\ \ {\color{black!55}15 PA1}};
+\draw[fill=rxgreen, draw=black] (17.13,3.92) rectangle (17.37,4.20);
+\node[rotate=90, anchor=east, font=\scriptsize] at (17.25,3.87) {\textbf{d16}\ \ {\color{black!55}16 PA2 USART TX}\ \ {\color{rxgreen}\textbf{\la\ 15 RXD}}};
+\draw[fill=pwrred, draw=black] (9.63,13.20) rectangle (9.87,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (9.75,13.53) {\textbf{u1}\ \ {\color{black!55}48 VDD}\ \ {\color{pwrred}\textbf{\la\ 8 VCC}}};
+\draw[fill=black, draw=black] (10.13,13.20) rectangle (10.37,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (10.25,13.53) {\textbf{u2}\ \ {\color{black!55}47 VSS}\ \ {\color{black}\textbf{\la\ 9 GND}}};
+\draw[fill=black!55, draw=black] (10.63,13.20) rectangle (10.87,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (10.75,13.53) {\textbf{u3}\ \ {\color{black!55}46 PA13 SWDIO}};
+\draw[fill=black!55, draw=black] (11.13,13.20) rectangle (11.37,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (11.25,13.53) {\textbf{u4}\ \ {\color{black!55}45 PA12}};
+\draw[fill=black!55, draw=black] (11.63,13.20) rectangle (11.87,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (11.75,13.53) {\textbf{u5}\ \ {\color{black!55}44 PA11}};
+\draw[fill=black!55, draw=black] (12.13,13.20) rectangle (12.37,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (12.25,13.53) {\textbf{u6}\ \ {\color{black!55}43 PA10}};
+\draw[fill=black!55, draw=black] (12.63,13.20) rectangle (12.87,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (12.75,13.53) {\textbf{u7}\ \ {\color{black!55}42 PA9}};
+\draw[fill=black!55, draw=black] (13.13,13.20) rectangle (13.37,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (13.25,13.53) {\textbf{u8}\ \ {\color{black!55}41 PA8}};
+\draw[fill=black!55, draw=black] (13.63,13.20) rectangle (13.87,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (13.75,13.53) {\textbf{u9}\ \ {\color{black!55}40 PC9}};
+\draw[fill=black!55, draw=black] (14.13,13.20) rectangle (14.37,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (14.25,13.53) {\textbf{u10}\ \ {\color{black!55}39 PC8}};
+\draw[fill=black!55, draw=black] (14.63,13.20) rectangle (14.87,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (14.75,13.53) {\textbf{u11}\ \ {\color{black!55}38 PC7}};
+\draw[fill=black!55, draw=black] (15.13,13.20) rectangle (15.37,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (15.25,13.53) {\textbf{u12}\ \ {\color{black!55}37 PC6}};
+\draw[fill=black!55, draw=black] (15.63,13.20) rectangle (15.87,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (15.75,13.53) {\textbf{u13}\ \ {\color{black!55}36 PB15}};
+\draw[fill=black!55, draw=black] (16.13,13.20) rectangle (16.37,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (16.25,13.53) {\textbf{u14}\ \ {\color{black!55}35 PB14}};
+\draw[fill=black!55, draw=black] (16.63,13.20) rectangle (16.87,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (16.75,13.53) {\textbf{u15}\ \ {\color{black!55}34 PB13}};
+\draw[fill=black!55, draw=black] (17.13,13.20) rectangle (17.37,13.48);
+\node[rotate=90, anchor=west, font=\scriptsize] at (17.25,13.53) {\textbf{u16}\ \ {\color{black!55}33 PB12}};
+\draw[fill=txblue, draw=black] (18.00,4.83) rectangle (18.28,5.07);
+\node[anchor=west, font=\scriptsize] at (18.33,4.95) {\textbf{p1}\ \ {\color{black!55}17 PA3 USART RX}\ \ {\color{txblue}\textbf{\la\ 16 TXD}}};
+\draw[fill=black, draw=black] (18.00,5.33) rectangle (18.28,5.57);
+\node[anchor=west, font=\scriptsize] at (18.33,5.45) {\textbf{p2}\ \ {\color{black!55}18 VSS}\ \ {\color{black}\textbf{\la\ 9 GND}}};
+\draw[fill=pwrred, draw=black] (18.00,5.83) rectangle (18.28,6.07);
+\node[anchor=west, font=\scriptsize] at (18.33,5.95) {\textbf{p3}\ \ {\color{black!55}19 VDD}\ \ {\color{pwrred}\textbf{\la\ 8 VCC}}};
+\draw[fill=black!55, draw=black] (18.00,6.33) rectangle (18.28,6.57);
+\node[anchor=west, font=\scriptsize] at (18.33,6.45) {\textbf{p4}\ \ {\color{black!55}20 PA4}};
+\draw[fill=black!55, draw=black] (18.00,6.83) rectangle (18.28,7.07);
+\node[anchor=west, font=\scriptsize] at (18.33,6.95) {\textbf{p5}\ \ {\color{black!55}21 PA5}};
+\draw[fill=black!55, draw=black] (18.00,7.33) rectangle (18.28,7.57);
+\node[anchor=west, font=\scriptsize] at (18.33,7.45) {\textbf{p6}\ \ {\color{black!55}22 PA6}};
+\draw[fill=black!55, draw=black] (18.00,7.83) rectangle (18.28,8.07);
+\node[anchor=west, font=\scriptsize] at (18.33,7.95) {\textbf{p7}\ \ {\color{black!55}23 PA7}};
+\draw[fill=black!55, draw=black] (18.00,8.33) rectangle (18.28,8.57);
+\node[anchor=west, font=\scriptsize] at (18.33,8.45) {\textbf{p8}\ \ {\color{black!55}24 PC4}};
+\draw[fill=black!55, draw=black] (18.00,8.83) rectangle (18.28,9.07);
+\node[anchor=west, font=\scriptsize] at (18.33,8.95) {\textbf{p9}\ \ {\color{black!55}25 PC5}};
+\draw[fill=black!55, draw=black] (18.00,9.33) rectangle (18.28,9.57);
+\node[anchor=west, font=\scriptsize] at (18.33,9.45) {\textbf{p10}\ \ {\color{black!55}26 PB0}};
+\draw[fill=black!55, draw=black] (18.00,9.83) rectangle (18.28,10.07);
+\node[anchor=west, font=\scriptsize] at (18.33,9.95) {\textbf{p11}\ \ {\color{black!55}27 PB1}};
+\draw[fill=black!55, draw=black] (18.00,10.33) rectangle (18.28,10.57);
+\node[anchor=west, font=\scriptsize] at (18.33,10.45) {\textbf{p12}\ \ {\color{black!55}28 PB2 BOOT1}};
+\draw[fill=black!55, draw=black] (18.00,10.83) rectangle (18.28,11.07);
+\node[anchor=west, font=\scriptsize] at (18.33,10.95) {\textbf{p13}\ \ {\color{black!55}29 PB10}};
+\draw[fill=black!55, draw=black] (18.00,11.33) rectangle (18.28,11.57);
+\node[anchor=west, font=\scriptsize] at (18.33,11.45) {\textbf{p14}\ \ {\color{black!55}30 PB11}};
+\draw[fill=black, draw=black] (18.00,11.83) rectangle (18.28,12.07);
+\node[anchor=west, font=\scriptsize] at (18.33,11.95) {\textbf{p15}\ \ {\color{black!55}31 VSS}\ \ {\color{black}\textbf{\la\ 9 GND}}};
+\draw[fill=pwrred, draw=black] (18.00,12.33) rectangle (18.28,12.57);
+\node[anchor=west, font=\scriptsize] at (18.33,12.45) {\textbf{p16}\ \ {\color{black!55}32 VDD}\ \ {\color{pwrred}\textbf{\la\ 8 VCC}}};
+\draw[fill=pwrred, draw=black] (8.72,4.83) rectangle (9.00,5.07);
+\node[anchor=east, font=\scriptsize] at (8.67,4.95) {{\color{pwrred}\textbf{8 VCC \ra}}\ \ {\color{black!55}64 VDD}\ \ \textbf{l1}};
+\draw[fill=black, draw=black] (8.72,5.33) rectangle (9.00,5.57);
+\node[anchor=east, font=\scriptsize] at (8.67,5.45) {{\color{black}\textbf{9 GND \ra}}\ \ {\color{black!55}63 VSS}\ \ \textbf{l2}};
+\draw[fill=black!55, draw=black] (8.72,5.83) rectangle (9.00,6.07);
+\node[anchor=east, font=\scriptsize] at (8.67,5.95) {{\color{black!55}62 PB9}\ \ \textbf{l3}};
+\draw[fill=black!55, draw=black] (8.72,6.33) rectangle (9.00,6.57);
+\node[anchor=east, font=\scriptsize] at (8.67,6.45) {{\color{black!55}61 PB8}\ \ \textbf{l4}};
+\draw[fill=black!55, draw=black] (8.72,6.83) rectangle (9.00,7.07);
+\node[anchor=east, font=\scriptsize] at (8.67,6.95) {{\color{black!55}60 BOOT0}\ \ \textbf{l5}};
+\draw[fill=black!55, draw=black] (8.72,7.33) rectangle (9.00,7.57);
+\node[anchor=east, font=\scriptsize] at (8.67,7.45) {{\color{black!55}59 PB7}\ \ \textbf{l6}};
+\draw[fill=black!55, draw=black] (8.72,7.83) rectangle (9.00,8.07);
+\node[anchor=east, font=\scriptsize] at (8.67,7.95) {{\color{black!55}58 PB6}\ \ \textbf{l7}};
+\draw[fill=black!55, draw=black] (8.72,8.33) rectangle (9.00,8.57);
+\node[anchor=east, font=\scriptsize] at (8.67,8.45) {{\color{black!55}57 PB5}\ \ \textbf{l8}};
+\draw[fill=black!55, draw=black] (8.72,8.83) rectangle (9.00,9.07);
+\node[anchor=east, font=\scriptsize] at (8.67,8.95) {{\color{black!55}56 PB4}\ \ \textbf{l9}};
+\draw[fill=black!55, draw=black] (8.72,9.33) rectangle (9.00,9.57);
+\node[anchor=east, font=\scriptsize] at (8.67,9.45) {{\color{black!55}55 PB3}\ \ \textbf{l10}};
+\draw[fill=black!55, draw=black] (8.72,9.83) rectangle (9.00,10.07);
+\node[anchor=east, font=\scriptsize] at (8.67,9.95) {{\color{black!55}54 PD2}\ \ \textbf{l11}};
+\draw[fill=black!55, draw=black] (8.72,10.33) rectangle (9.00,10.57);
+\node[anchor=east, font=\scriptsize] at (8.67,10.45) {{\color{black!55}53 PC12}\ \ \textbf{l12}};
+\draw[fill=black!55, draw=black] (8.72,10.83) rectangle (9.00,11.07);
+\node[anchor=east, font=\scriptsize] at (8.67,10.95) {{\color{black!55}52 PC11}\ \ \textbf{l13}};
+\draw[fill=black!55, draw=black] (8.72,11.33) rectangle (9.00,11.57);
+\node[anchor=east, font=\scriptsize] at (8.67,11.45) {{\color{black!55}51 PC10}\ \ \textbf{l14}};
+\draw[fill=black!55, draw=black] (8.72,11.83) rectangle (9.00,12.07);
+\node[anchor=east, font=\scriptsize] at (8.67,11.95) {{\color{black!55}50 PA15}\ \ \textbf{l15}};
+\draw[fill=black!55, draw=black] (8.72,12.33) rectangle (9.00,12.57);
+\node[anchor=east, font=\scriptsize] at (8.67,12.45) {{\color{black!55}49 PA14 SWCLK}\ \ \textbf{l16}};
+\node[anchor=north west, draw=black!50, rounded corners=3pt, fill=white, text width=4.6cm, font=\scriptsize, inner sep=5pt] at (23.0,13.4) {%
+\textbf{Module site U10, pads}\\[3pt]
+{\color{txblue}\textbf{16 TXD}} \ra\ p1 = PA3, controller receives\\
+{\color{rxgreen}\textbf{15 RXD}} \la\ d16 = PA2, controller transmits\\
+{\color{pwrred}\textbf{8 VCC}} \ra\ d1, d13, p3, p16, u1, l1\\
+\textbf{9 GND} \ra\ d12, p2, p15, u2, l2\\[3pt]
+No continuity to the controller:\\ 1 NC, 2 A\_7, 3 EN, 4 A\_11, 5 A\_2, 6 A\_3, 7 A\_4,\\ 10 A\_12, 11 A\_16, 12 A\_17, 13 A\_18, 14 A\_19};
+\node[anchor=north west, draw=black!40, rounded corners=3pt, fill=white, text width=4.6cm, font=\scriptsize, inner sep=5pt] at (23.0,7.6) {%
+\textbf{Conversion to the standard pin number}\\[2pt]
+dN \ra\ N\qquad pN \ra\ 16+N\\
+uN \ra\ 49$-$N\qquad lN \ra\ 65$-$N\\[4pt]
+\textbf{Legend}\\[2pt]
+{\color{pwrred}\rule{1.4ex}{1.4ex}} 3.3 V supply from pad VCC\\
+{\color{txblue}\rule{1.4ex}{1.4ex}} controller receive, from pad TXD\\
+{\color{rxgreen}\rule{1.4ex}{1.4ex}} controller transmit, to pad RXD\\
+{\color{black}\rule{1.4ex}{1.4ex}} ground from pad GND\\
+{\color{black!55}\rule{1.4ex}{1.4ex}} pin with no connection to the module site};
+\end{tikzpicture}
+
+\newpage
+{\Large\bfseries Connections between the module site and the controller}\\[4pt]
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l l r l l@{}}
+\toprule
+\rowcolor{black!8}\textbf{Module pad} & \textbf{Pin (u/d/l/p)} & \textbf{Standard no.} & \textbf{Function in the controller} & \textbf{Status} \\
+\midrule
+16 TXD & p1 & 17 & PA3 USART RX & measured \\
+15 RXD & d16 & 16 & PA2 USART TX & measured \\
+8 VCC & d1 & 1 & VBAT & measured \\
+8 VCC & d13 & 13 & VDDA & measured \\
+8 VCC & p3 & 19 & VDD & measured \\
+8 VCC & p16 & 32 & VDD & measured \\
+8 VCC & u1 & 48 & VDD & measured \\
+8 VCC & l1 & 64 & VDD & measured \\
+9 GND & d12 & 12 & VSSA & measured \\
+9 GND & p2 & 18 & VSS & measured \\
+9 GND & p15 & 31 & VSS & measured \\
+9 GND & u2 & 47 & VSS & measured \\
+9 GND & l2 & 63 & VSS & measured \\
+\bottomrule
+\end{tabular}
+
+\vspace{10pt}
+\textbf{Findings}\\[3pt]
+1. \textbf{Controller family.} The six supply pins fall exactly on positions 1, 13, 19, 32, 48 and 64, which is the supply pattern of the STM32F103 and its GD32F103 / GD32F303 equivalents in LQFP64. The module port lands on PA2 and PA3, the USART pins of that family. All five ground pins fall on the positions given by the datasheet: 12, 18, 31, 47 and 63. These three independent matches confirm both the family and the location of pin 1 in the bottom-left corner. The exact part number is under the sticker.\\[2pt]
+2. \textbf{Directions.} Pad TXD (module transmit) reaches the controller receive pin PA3. Pad RXD reaches the controller transmit pin PA2. The DevKit is wired accordingly: pin 4 (TX) to pad TXD, pin 5 (RX) to pad RXD.\\[2pt]
+3. \textbf{Nothing but the port.} Pads A\_x, EN and NC have no continuity to the controller. The module has no reset line and no auxiliary signals from the controller.\\[2pt]
+4. \textbf{Ground} from pad GND reaches d12, p2, p15, u2 and l2, as in the datasheet. By the datasheet the 8 MHz crystal should be on d5 and d6 and the controller reset on d7.\\[2pt]
+5. \textbf{Programming connector of the controller,} if ever needed: SWDIO on u3, SWCLK on l16, BOOT0 on l5, reset on d7.
+\end{document}

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMPERE POINT — słupek uniwersalny AP-S1 — wizualizacja 3D (projekt v1)</title>
+<style>
+:root{--surface-1:#f1f3f5;--surface-2:#fff;--text-primary:#16191d;--text-secondary:#555b63;--border:#d9dee3;--border-strong:#c2c9d0;--radius:8px;--bg-accent:#e6f1fb;--text-accent:#185fa5}
+body{margin:0;font-family:system-ui,sans-serif;background:var(--surface-1);color:var(--text-primary)}
+.page{max-width:1240px;margin:0 auto;padding:14px}
+h1{font-size:17px;font-weight:500;margin:4px 0 10px}
+button{padding:6px 12px;border:1px solid var(--border-strong);border-radius:var(--radius);background:var(--surface-2);color:var(--text-primary);cursor:pointer;font-size:13px}
+button.on{background:var(--bg-accent);color:var(--text-accent);border-color:var(--text-accent)}
+button.cfg{border-color:#c81e28;color:#8f1218}
+button.cfg.on{background:#fdecec;color:#8f1218;border-color:#c81e28}
+.note{font-size:12.5px;color:var(--text-secondary);margin-top:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>AMPERE POINT — uniwersalny słupek ładowania <b>AP-S1</b> (projekt v1). Korpus 200×120 mm, wys. 1455 mm z daszkiem 400×350 mm; kabel z ziemi wewnątrz; gniazda na płytach adapterowych wpinanych w raster (bez wiercenia).</h1>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px">
+ <button id="btnA" class="cfg on">Konfiguracja A: wallbox Prime + CEE</button>
+ <button id="btnB" class="cfg">Konfiguracja B: Q11 + CEE + Dr. Storm</button>
+ <button id="btnDuo">Wersja DUO (2 stanowiska)</button>
+ <button id="btnRoof" class="on">Daszek</button>
+ <button id="btnXray">Prześwietl korpus (wnętrze)</button>
+ <button id="btnLbl" class="on">Etykiety</button>
+ <button id="btnReset">Reset widoku</button>
+</div>
+<div style="position:relative;border:1px solid var(--border);border-radius:12px;overflow:hidden">
+ <canvas id="cv" style="width:100%;height:640px;display:block;touch-action:none"></canvas>
+</div>
+<div class="note">
+Obrót: przeciągnięcie myszą &nbsp;•&nbsp; przybliżenie: kółko &nbsp;•&nbsp; przesunięcie w pionie: przeciągnięcie z prawym przyciskiem.
+W trybie „Prześwietl korpus" widać trasę kabla z ziemi (czerwona), strefę zabezpieczeń na szynie TH35 (wyłącznik różnicowoprądowy + nadprądowy) i kanał kablowy.
+Raster na froncie i na tylnej ścianie: otwory kwadratowe 9,5 mm co 25 mm pod nakrętki koszykowe M6 — każdy element przykręca się bez wiercenia.
+Wymiary i szczegóły: <b>AMPERE_POINT_slupki_projekt_v1.pdf</b>.
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+// ------- podstawy sceny -------
+var cv=document.getElementById('cv');
+var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+var scene=new THREE.Scene(); scene.background=new THREE.Color(0xeef1f4);
+var camera=new THREE.PerspectiveCamera(42,2,10,30000);
+var target=new THREE.Vector3(0,720,0);
+var sph={r:2900,th:0.62,ph:1.18}; // promien, azymut, elewacja
+function applyCam(){
+ camera.position.set(target.x+sph.r*Math.sin(sph.ph)*Math.sin(sph.th),
+                     target.y+sph.r*Math.cos(sph.ph),
+                     target.z+sph.r*Math.sin(sph.ph)*Math.cos(sph.th));
+ camera.lookAt(target);}
+applyCam();
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a8f95,0.75));
+var sun=new THREE.DirectionalLight(0xffffff,0.75);
+sun.position.set(1600,2600,1200); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left=-1500;sun.shadow.camera.right=1500;sun.shadow.camera.top=2200;sun.shadow.camera.bottom=-400;
+sun.shadow.camera.far=8000;
+scene.add(sun);
+
+// ------- materialy -------
+var mBlack=new THREE.MeshStandardMaterial({color:0x17181a,roughness:0.62,metalness:0.35});
+var mBlack2=new THREE.MeshStandardMaterial({color:0x0e0f10,roughness:0.5,metalness:0.3});
+var mSilver=new THREE.MeshStandardMaterial({color:0xb9bec4,roughness:0.35,metalness:0.75});
+var mGrayPl=new THREE.MeshStandardMaterial({color:0x3a3d40,roughness:0.7,metalness:0.2});
+var mRed=new THREE.MeshStandardMaterial({color:0xc81e28,roughness:0.55,metalness:0.1});
+var mRedDark=new THREE.MeshStandardMaterial({color:0x8f1218,roughness:0.6,metalness:0.1});
+var mWhite=new THREE.MeshStandardMaterial({color:0xe8e6e0,roughness:0.6});
+var mStorm1=new THREE.MeshStandardMaterial({color:0x4a4e52,roughness:0.7});
+var mStorm2=new THREE.MeshStandardMaterial({color:0x9aa0a6,roughness:0.6});
+var mCable=new THREE.MeshStandardMaterial({color:0x111214,roughness:0.9});
+var mCableRed=new THREE.MeshStandardMaterial({color:0xc81e28,roughness:0.8});
+var mDin=new THREE.MeshStandardMaterial({color:0xd7dade,roughness:0.5,metalness:0.6});
+
+// tekstura frontu korpusu z rastrem (canvas)
+function frontTexture(){
+ var c=document.createElement('canvas');c.width=256;c.height=1728;
+ var g=c.getContext('2d');
+ g.fillStyle='#17181a';g.fillRect(0,0,256,1728);
+ // subtelna faktura
+ g.fillStyle='rgba(255,255,255,0.018)';
+ for(var i=0;i<70;i++){g.fillRect(0,Math.random()*1728,256,1);}
+ // otwory rastra: korpus 200mm szer -> 256px ; 1350mm wys -> 1728px (1.28 px/mm)
+ var pxm=1728/1350, cx1=(100-70)*256/200, cx2=(100+70)*256/200;
+ g.fillStyle='#000';
+ for(var y=500;y<=1300;y+=25){
+   var py=1728-y*pxm;
+   g.fillRect(cx1-6,py-6,12,12); g.fillRect(cx2-6,py-6,12,12);
+ }
+ var t=new THREE.CanvasTexture(c); t.anisotropy=4; return t;
+}
+var texF=frontTexture();
+var mColFront=new THREE.MeshStandardMaterial({map:texF,roughness:0.62,metalness:0.35});
+var mColBack=new THREE.MeshStandardMaterial({map:texF,roughness:0.62,metalness:0.35});
+
+// tekstura logo
+function textSprite(txt,color,bg,scalePx){
+ var c=document.createElement('canvas');c.width=512;c.height=128;
+ var g=c.getContext('2d');
+ if(bg){g.fillStyle=bg;g.fillRect(0,0,512,128);}
+ g.font='bold 64px system-ui,sans-serif';g.textAlign='center';g.textBaseline='middle';
+ g.fillStyle=color;g.fillText(txt,256,66);
+ var t=new THREE.CanvasTexture(c);
+ return t;
+}
+
+// ------- grunt -------
+var ground=new THREE.Mesh(new THREE.CircleGeometry(1600,64),
+  new THREE.MeshStandardMaterial({color:0xb9b4ac,roughness:0.95}));
+ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+// pas "kostki" pod slupkiem
+var pad=new THREE.Mesh(new THREE.BoxGeometry(900,12,700),
+  new THREE.MeshStandardMaterial({color:0x9d9891,roughness:0.95}));
+pad.position.y=6; pad.receiveShadow=true; scene.add(pad);
+
+// ------- slupek -------
+var post=new THREE.Group(); scene.add(post);
+// plyta podstawy 300x250x8
+var base=new THREE.Mesh(new THREE.BoxGeometry(300,8,250),mBlack2);
+base.position.y=12+4; base.castShadow=true; base.receiveShadow=true; post.add(base);
+// kotwy (4 nakretki)
+for(var i=0;i<4;i++){
+ var nut=new THREE.Mesh(new THREE.CylinderGeometry(9,9,14,6),mSilver);
+ nut.position.set(i<2?-120:120,12+8+5,(i%2? -95:95)); nut.castShadow=true; post.add(nut);
+}
+// korpus 200x120, wys 1350 (od 20 do 1370 nad gruntem — plyta 8 na podkladzie 12)
+var colH=1342, colY0=20+8;
+var colGeom=new THREE.BoxGeometry(200,colH,120);
+var colMats=[mBlack,mBlack,mBlack,mBlack,mColFront,mColBack]; // +x,-x,+y,-y,+z(front),-z(tyl)
+var column=new THREE.Mesh(colGeom,colMats);
+column.position.y=colY0+colH/2; column.castShadow=true; column.receiveShadow=true; post.add(column);
+// pas otworow bocznych (dekoracyjnie): male ciemne kwadraty
+for(var y=700;y<=1200;y+=50){
+ var h1=new THREE.Mesh(new THREE.BoxGeometry(2,10,10),mBlack2); h1.position.set(101,y,0); post.add(h1);
+ var h2=h1.clone(); h2.position.x=-101; post.add(h2);
+}
+// srubka PE przy podstawie
+var pe=new THREE.Mesh(new THREE.CylinderGeometry(6,6,10,6),mSilver);
+pe.rotation.x=Math.PI/2; pe.position.set(-80,60,61); post.add(pe);
+
+// logo czerwone pod daszkiem
+var logo=new THREE.Mesh(new THREE.PlaneGeometry(150,37),
+ new THREE.MeshBasicMaterial({map:textSprite('AmperePoint','#c81e28',null),transparent:true}));
+logo.position.set(0,1385,61.5); post.add(logo);
+
+// ------- daszek -------
+var roofG=new THREE.Group(); post.add(roofG);
+var tilt=-12*Math.PI/180;
+var roofPlate=new THREE.Mesh(new THREE.BoxGeometry(400,6,350),mSilver);
+var roofPivot=new THREE.Group();
+roofPivot.position.set(0,1381,-60);           // tylna krawedz na 1381, przod ~1455
+roofPlate.position.set(0,0,175);              // plyta do przodu od osi
+roofPlate.rotation.x=0;
+roofPivot.rotation.x=tilt;                    // pochylenie: przod wyzej
+roofPivot.add(roofPlate);
+// obrzeza daszka (skirt)
+function skirt(w,l,x,z){var s=new THREE.Mesh(new THREE.BoxGeometry(w,15,l),mSilver);s.position.set(x,-9,z);roofPlate.add(s);return s;}
+skirt(400,3,0,348/2+0); // przod? plyta centrum z=175 => lokalnie
+roofPlate.children.length=0; // wyczysc, zrobimy w ukl. plyty:
+(function(){
+ var sF=new THREE.Mesh(new THREE.BoxGeometry(400,16,3),mSilver);sF.position.set(0,-8,175-1.5);roofPlate.add(sF);
+ var sB=new THREE.Mesh(new THREE.BoxGeometry(400,16,3),mSilver);sB.position.set(0,-8,-175+1.5);roofPlate.add(sB);
+ var sL=new THREE.Mesh(new THREE.BoxGeometry(3,16,350),mSilver);sL.position.set(-198.5,-8,0);roofPlate.add(sL);
+ var sR=sL.clone();sR.position.x=198.5;roofPlate.add(sR);
+})();
+roofPlate.castShadow=true; roofPlate.traverse(function(o){o.castShadow=true;});
+roofG.add(roofPivot);
+// wsporniki
+var br1=new THREE.Mesh(new THREE.BoxGeometry(8,44,100),mBlack); br1.position.set(-40,1368,0); br1.castShadow=true; roofG.add(br1);
+var br2=br1.clone(); br2.position.x=40; roofG.add(br2);
+// listwa LED pod daszkiem (opcja) — subtelny pasek
+var led=new THREE.Mesh(new THREE.BoxGeometry(300,3,10),
+ new THREE.MeshBasicMaterial({color:0xfff2cc}));
+led.position.set(0,1404,90); roofG.add(led);
+
+// ------- gniazdo CEE (wspolne A/B) na plycie P2, os 950 -------
+function ceeSocket(){
+ var g=new THREE.Group();
+ var plate=new THREE.Mesh(new THREE.BoxGeometry(160,200,6),mGrayPl); plate.position.z=63; plate.castShadow=true; g.add(plate);
+ var body=new THREE.Mesh(new THREE.BoxGeometry(80,95,55),mWhite); body.position.set(0,15,63+30); body.castShadow=true; g.add(body);
+ // glowica skosna czerwona
+ var head=new THREE.Mesh(new THREE.CylinderGeometry(34,34,42,24),mRed);
+ head.rotation.x=Math.PI/2-0.5; head.position.set(0,-38,63+52); head.castShadow=true; g.add(head);
+ var lid=new THREE.Mesh(new THREE.CylinderGeometry(35,35,6,24),mRedDark);
+ lid.rotation.x=Math.PI/2-0.5; lid.position.set(0,-56,63+66); g.add(lid);
+ return g;
+}
+// ------- Dr. Storm (konfiguracja B) -------
+function stormSocket(){
+ var g=new THREE.Group();
+ var plate=new THREE.Mesh(new THREE.BoxGeometry(120,160,6),mGrayPl); plate.position.z=63; g.add(plate);
+ var body=new THREE.Mesh(new THREE.BoxGeometry(72,110,50),mStorm1); body.position.z=63+28; body.castShadow=true; g.add(body);
+ var head=new THREE.Mesh(new THREE.BoxGeometry(62,58,18),mStorm2); head.position.set(0,-14,63+58); g.add(head);
+ var flap=new THREE.Mesh(new THREE.BoxGeometry(54,50,6),mStorm1); flap.position.set(0,-14,63+70); g.add(flap);
+ return g;
+}
+// ------- wallbox Prime (A) -------
+function wallboxPrime(){
+ var g=new THREE.Group();
+ var plate=new THREE.Mesh(new THREE.BoxGeometry(300,280,6),mGrayPl); plate.position.z=63; g.add(plate);
+ var body=new THREE.Mesh(new THREE.BoxGeometry(250,230,130),mBlack2); body.position.z=63+68; body.castShadow=true; g.add(body);
+ var band=new THREE.Mesh(new THREE.BoxGeometry(251,36,131),mSilver); band.position.z=63+68; band.position.y=-20; g.add(band);
+ var lg=new THREE.Mesh(new THREE.PlaneGeometry(120,30),
+   new THREE.MeshBasicMaterial({map:textSprite('AmperePoint','#c81e28',null),transparent:true}));
+ lg.position.set(0,40,63+134); g.add(lg);
+ // przewod zasilajacy do CEE (na zewnatrz, krotki luk)
+ var curve=new THREE.CatmullRomCurve3([
+   new THREE.Vector3(60,-115,63+70), new THREE.Vector3(95,-190,110),
+   new THREE.Vector3(40,-260,95), new THREE.Vector3(0,-292,118)]);
+ var tube=new THREE.Mesh(new THREE.TubeGeometry(curve,24,7,10),mCable); tube.castShadow=true; g.add(tube);
+ // wtyczka CEE czerwona przy gniezdzie
+ var plug=new THREE.Mesh(new THREE.CylinderGeometry(20,24,55,16),mRed);
+ plug.rotation.x=Math.PI/2-0.5; plug.position.set(0,-300,63+62); plug.castShadow=true; g.add(plug);
+ return g;
+}
+// ------- Q11 w uchwycie (B) -------
+function q11unit(){
+ var g=new THREE.Group();
+ var plate=new THREE.Mesh(new THREE.BoxGeometry(140,300,6),mGrayPl); plate.position.z=63; g.add(plate);
+ // uchwyt (kieszen)
+ var hold=new THREE.Mesh(new THREE.BoxGeometry(110,110,80),mGrayPl); hold.position.set(0,-90,63+38); hold.castShadow=true; g.add(hold);
+ // korpus Q11
+ var body=new THREE.Mesh(new THREE.BoxGeometry(92,270,66),mBlack2); body.position.set(0,10,63+44); body.castShadow=true; g.add(body);
+ var band=new THREE.Mesh(new THREE.BoxGeometry(93,64,67),mSilver); band.position.set(0,78,63+44); g.add(band);
+ var scr=new THREE.Mesh(new THREE.CircleGeometry(24,24),new THREE.MeshBasicMaterial({color:0xdad4c8}));
+ scr.position.set(0,78,63+78); g.add(scr);
+ var lg=new THREE.Mesh(new THREE.PlaneGeometry(80,20),
+   new THREE.MeshBasicMaterial({map:textSprite('AmperePoint','#c81e28',null),transparent:true}));
+ lg.position.set(0,-40,63+78); g.add(lg);
+ // kabel z dolu Q11 do gniazda CEE (petla)
+ var curve=new THREE.CatmullRomCurve3([
+   new THREE.Vector3(0,-125,63+44), new THREE.Vector3(60,-215,120),
+   new THREE.Vector3(20,-280,100), new THREE.Vector3(0,-300,118)]);
+ var tube=new THREE.Mesh(new THREE.TubeGeometry(curve,24,6,10),mCable); tube.castShadow=true; g.add(tube);
+ var plug=new THREE.Mesh(new THREE.CylinderGeometry(18,22,50,16),mRed);
+ plug.rotation.x=Math.PI/2-0.5; plug.position.set(0,-308,63+58); g.add(plug);
+ return g;
+}
+// ------- uchwyt Typ 2 na boku -------
+function type2holder(){
+ var g=new THREE.Group();
+ var pl=new THREE.Mesh(new THREE.BoxGeometry(6,120,90),mGrayPl); pl.position.x=103; g.add(pl);
+ var sock=new THREE.Mesh(new THREE.CylinderGeometry(26,26,40,16),mBlack2);
+ sock.rotation.z=Math.PI/2; sock.position.set(103+23,10,0); g.add(sock);
+ var handle=new THREE.Mesh(new THREE.CylinderGeometry(14,16,90,12),mBlack2);
+ handle.rotation.z=0.5; handle.position.set(103+58,50,0); handle.castShadow=true; g.add(handle);
+ return g;
+}
+
+// ------- wnetrze (tryb przeswietlenia) -------
+var interior=new THREE.Group(); post.add(interior);
+// kabel z ziemi
+var cin=new THREE.CatmullRomCurve3([
+ new THREE.Vector3(0,-140,0), new THREE.Vector3(0,200,0),
+ new THREE.Vector3(0,540,10), new THREE.Vector3(0,600,18)]);
+interior.add(new THREE.Mesh(new THREE.TubeGeometry(cin,20,8,10),mCableRed));
+var cup=new THREE.CatmullRomCurve3([
+ new THREE.Vector3(0,600,18), new THREE.Vector3(10,700,20),
+ new THREE.Vector3(15,930,30), new THREE.Vector3(15,955,52)]);
+interior.add(new THREE.Mesh(new THREE.TubeGeometry(cup,20,6,10),mCableRed));
+var cup2=new THREE.CatmullRomCurve3([
+ new THREE.Vector3(-8,640,18), new THREE.Vector3(-14,900,0),
+ new THREE.Vector3(-14,1180,25), new THREE.Vector3(-10,1215,52)]);
+interior.add(new THREE.Mesh(new THREE.TubeGeometry(cup2,20,5,10),mCableRed));
+// szyna TH35 + aparaty
+var din=new THREE.Mesh(new THREE.BoxGeometry(150,8,20),mDin);
+din.position.set(0,600,-30); interior.add(din);
+function modul(w,x,col){
+ var m=new THREE.Mesh(new THREE.BoxGeometry(w,85,55),new THREE.MeshStandardMaterial({color:col,roughness:0.6}));
+ m.position.set(x,600,-15); interior.add(m);
+ var lever=new THREE.Mesh(new THREE.BoxGeometry(w*0.5,18,8),mBlack2);
+ lever.position.set(x,608,14); interior.add(lever);
+}
+modul(36,-40,0xdedbd4); modul(36,-2,0xdedbd4); // RCD 2 mod
+modul(18,28,0xdedbd4);                          // MCB
+// zlaczki
+var zl=new THREE.Mesh(new THREE.BoxGeometry(60,30,25),new THREE.MeshStandardMaterial({color:0x2f6db3,roughness:0.6}));
+zl.position.set(0,505,-25); interior.add(zl);
+interior.visible=false;
+
+// ------- etykiety (sprite) -------
+var labels=new THREE.Group(); scene.add(labels);
+function makeLabel(txt,pos){
+ var c=document.createElement('canvas');c.width=512;c.height=96;
+ var g=c.getContext('2d');
+ g.fillStyle='rgba(255,255,255,0.92)';
+ g.strokeStyle='#c2c9d0';
+ g.lineWidth=3; g.beginPath();
+ var r=18; g.moveTo(r,2);g.lineTo(510-r,2);g.quadraticCurveTo(510,2,510,2+r);g.lineTo(510,94-r);g.quadraticCurveTo(510,94,510-r,94);g.lineTo(r,94);g.quadraticCurveTo(2,94,2,94-r);g.lineTo(2,2+r);g.quadraticCurveTo(2,2,r,2);g.closePath();g.fill();g.stroke();
+ g.font='500 40px system-ui,sans-serif';g.fillStyle='#16191d';g.textAlign='center';g.textBaseline='middle';
+ g.fillText(txt,256,50);
+ var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false}));
+ sp.scale.set(430,81,1); sp.position.copy(pos); labels.add(sp); return sp;
+}
+var lblRoof=makeLabel('daszek 400×350, spadek 12°',new THREE.Vector3(420,1560,120));
+var lblRaster=makeLabel('raster: otwory 9,5 co 25 mm',new THREE.Vector3(-430,1080,90));
+var lblCee=makeLabel('gniazdo siłowe na płycie P2',new THREE.Vector3(430,860,150));
+var lblBase=makeLabel('kabel z ziemi przez przepust',new THREE.Vector3(-430,120,140));
+var lblDin=makeLabel('strefa zabezpieczeń (TH35)',new THREE.Vector3(-430,600,60));
+var lblT2=makeLabel('uchwyt wtyczki Typ 2',new THREE.Vector3(460,760,-60));
+var lblDev=makeLabel('wallbox Prime',new THREE.Vector3(430,1330,180));
+lblDin.visible=false;
+
+// ------- konfiguracje -------
+var grpA=new THREE.Group(), grpB=new THREE.Group();
+var wb=wallboxPrime(); wb.position.y=1215; grpA.add(wb);
+var ceeA=ceeSocket(); ceeA.position.y=950; grpA.add(ceeA);
+var q=q11unit(); q.position.y=1230; grpB.add(q);
+var ceeB=ceeSocket(); ceeB.position.y=950; grpB.add(ceeB);
+// Dr Storm na prawym boku (plyta lokalnie z=63 -> po obrocie x=+63, bok korpusu x=100)
+var storm=stormSocket(); storm.rotation.y=Math.PI/2; storm.position.set(37,1000,0); grpB.add(storm);
+var t2a=type2holder(); t2a.position.y=850; grpA.add(t2a);
+var t2b=type2holder(); t2b.position.y=850; grpB.add(t2b);
+post.add(grpA); post.add(grpB); grpB.visible=false;
+// DUO: lustrzany zestaw z tylu (zgodny z aktywna konfiguracja)
+var duo=new THREE.Group(); duo.rotation.y=Math.PI; post.add(duo);
+var duoGA=new THREE.Group(), duoGB=new THREE.Group();
+var dwb=wallboxPrime(); dwb.position.y=1215; duoGA.add(dwb);
+var dceeA=ceeSocket(); dceeA.position.y=950; duoGA.add(dceeA);
+var dq=q11unit(); dq.position.y=1230; duoGB.add(dq);
+var dceeB=ceeSocket(); dceeB.position.y=950; duoGB.add(dceeB);
+var dstorm=stormSocket(); dstorm.rotation.y=Math.PI/2; dstorm.position.set(37,1000,0); duoGB.add(dstorm);
+duo.add(duoGA); duo.add(duoGB);
+duo.visible=false;
+
+// ------- stan/przelaczniki -------
+var st={cfg:'A',duo:false,roof:true,xray:false,lbl:true};
+function refresh(){
+ grpA.visible=(st.cfg==='A'); grpB.visible=(st.cfg==='B');
+ lblDev.material.map=new THREE.CanvasTexture((function(){var c=document.createElement('canvas');c.width=512;c.height=96;var g=c.getContext('2d');g.fillStyle='rgba(255,255,255,0.92)';g.strokeStyle='#c2c9d0';g.lineWidth=3;g.strokeRect(2,2,508,92);g.fillRect(2,2,508,92);g.font='500 40px system-ui,sans-serif';g.fillStyle='#16191d';g.textAlign='center';g.textBaseline='middle';g.fillText(st.cfg==='A'?'wallbox Prime':'ładowarka Q11 w uchwycie',256,50);return c;})());
+ lblDev.material.needsUpdate=true;
+ duo.visible=st.duo;
+ duoGA.visible=(st.cfg==='A'); duoGB.visible=(st.cfg==='B');
+ roofG.visible=st.roof;
+ interior.visible=st.xray;
+ lblDin.visible=st.xray&&st.lbl;
+ var op=st.xray?0.22:1.0;
+ [mColFront,mColBack,mBlack].forEach(function(m){m.transparent=st.xray;m.opacity=op;m.needsUpdate=true;});
+ labels.visible=st.lbl;
+ document.getElementById('btnA').classList.toggle('on',st.cfg==='A');
+ document.getElementById('btnB').classList.toggle('on',st.cfg==='B');
+ document.getElementById('btnDuo').classList.toggle('on',st.duo);
+ document.getElementById('btnRoof').classList.toggle('on',st.roof);
+ document.getElementById('btnXray').classList.toggle('on',st.xray);
+ document.getElementById('btnLbl').classList.toggle('on',st.lbl);
+}
+document.getElementById('btnA').onclick=function(){st.cfg='A';refresh();};
+document.getElementById('btnB').onclick=function(){st.cfg='B';refresh();};
+document.getElementById('btnDuo').onclick=function(){st.duo=!st.duo;refresh();};
+document.getElementById('btnRoof').onclick=function(){st.roof=!st.roof;refresh();};
+document.getElementById('btnXray').onclick=function(){st.xray=!st.xray;refresh();};
+document.getElementById('btnLbl').onclick=function(){st.lbl=!st.lbl;refresh();};
+document.getElementById('btnReset').onclick=function(){sph={r:2900,th:0.62,ph:1.18};target.set(0,720,0);applyCam();};
+refresh();
+
+// ------- sterowanie kamera -------
+var drag=false,btn=0,px=0,py=0;
+cv.addEventListener('pointerdown',function(e){drag=true;btn=e.button;px=e.clientX;py=e.clientY;cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',function(e){
+ if(!drag)return;
+ var dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;
+ if(btn===2){target.y=Math.max(100,Math.min(1400,target.y+dy*2));}
+ else{sph.th-=dx*0.006; sph.ph=Math.max(0.25,Math.min(1.52,sph.ph-dy*0.005));}
+ applyCam();});
+cv.addEventListener('pointerup',function(){drag=false;});
+cv.addEventListener('contextmenu',function(e){e.preventDefault();});
+cv.addEventListener('wheel',function(e){e.preventDefault();
+ sph.r=Math.max(900,Math.min(9000,sph.r*(1+(e.deltaY>0?0.09:-0.09))));applyCam();},{passive:false});
+
+// ------- petla -------
+function resize(){
+ var w=cv.clientWidth,h=cv.clientHeight;
+ if(cv.width!==w*devicePixelRatio||cv.height!==h*devicePixelRatio){
+   renderer.setSize(w,h,false);renderer.setPixelRatio(devicePixelRatio);
+   camera.aspect=w/h;camera.updateProjectionMatrix();}
+}
+(function loop(){resize();renderer.render(scene,camera);requestAnimationFrame(loop);})();
+})();
+</script>
+</body>
+</html>

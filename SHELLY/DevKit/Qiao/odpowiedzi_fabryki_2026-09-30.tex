@@ -1,0 +1,119 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\newfontfamily\cjkfont{Microsoft YaHei}[Scale=0.9]
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small AMPERE POINT — odpowiedzi fabryki Q11 · 2026-09-30}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Odpowiedzi fabryki na pytania z dokumentacji\par}
+{\large Corey (fabryka Q11), WeChat, 30 września 2026 · pytania z dokumentacji „Q11 charger with a Shelly X module” v1 · AMPERE POINT · oprac. Dawid Cekała\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+
+\section*{W skrócie}
+
+\begin{itemize}
+\item Fabryka odpowiedziała na wszystkie 11 pytań, jedną listą, po chińsku z automatycznym tłumaczeniem. \textbf{7 odpowiedzi jest jasnych i zgodnych z naszymi pomiarami}, 4 wymagają dopytania (pytania 2, 7, 8, 9), jedna kłóci się z logiem (punkt 23 „co 1,5 minuty”), jedna wymaga uwagi (punkt 25 „nieużywany”, choć raz przyszedł).
+\item \textbf{Najważniejsze fakty:} procesor to \textbf{STM32F030RCT6 z 256 kB pamięci programu}; płytka używa tylko czterech pól modułu; punkt 8 to zawsze faza C; licznik całkowity przychodzi po zakończeniu ładowania; program rozruchowy sterownika toleruje przerwaną aktualizację; milczenie modułu nie zmienia zachowania sterownika.
+\item Tłumaczenia poniżej są moje, z oryginału chińskiego; automatyczne tłumaczenie WeChat w dwóch miejscach zaciera sens (pytania 7 i 8).
+\end{itemize}
+
+\section{Odpowiedzi punkt po punkcie}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.26cm}>{\raggedright\arraybackslash}p{5.20cm}>{\raggedright\arraybackslash}p{5.43cm}>{\raggedright\arraybackslash}p{0.95cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Nr, pytanie} & \textbf{Odpowiedź: oryginał i tłumaczenie} & \textbf{Nasze obserwacje} & \textbf{Stan} \\
+\midrule\endhead
+\bottomrule\endfoot
+\textbf{1} jaki procesor i ile pamięci & {\cjkfont 单片机}STM32F030RCT6{\cjkfont ，}flash-256KB — mikrokontroler STM32F030RCT6, flash 256 kB & zgodne z pomiarem: zasilanie na nóżkach 1, 13, 19, 32, 48, 64, masa na 12, 18, 31, 47, 63, port na PA2/PA3 (nóżki 16/17). To rdzeń Cortex-M0 z rodziny F0, nie F103; ten sam układ wyprowadzeń. Program może mieć do 256 kB, więc aktualizacja po łączu 9600 b/s potrwa do około 5 minut & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+\textbf{2} co niesie ramka informacji o produkcie & {\cjkfont 主要传}PID {\cjkfont 和软件版本} {\cjkfont 具体见协议说明} — głównie identyfikator produktu (PID) i wersję oprogramowania; szczegóły w opisie protokołu & wartości nie podali; wersja z punktu 23 przyszła 30.09 po włączeniu zasilania jako „V1” \textbf{[dopytać o wartości]} & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} \\
+\textbf{3} które pola miejsca na moduł są używane & {\cjkfont 模组的只用} VCC{\cjkfont 、}GND{\cjkfont 、}RXD {\cjkfont 和} TXD — moduł używa tylko VCC, GND, RXD i TXD & zgodne z pomiarem 12 wolnych pól & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+\textbf{4a} kiedy przychodzi punkt 1, licznik całkowity & DP1 {\cjkfont 在充电完成时会上报} — punkt 1 jest zgłaszany po zakończeniu ładowania & log 29.09: co 90 s w stanie „ładuje”, wartość 0. Zakończenia ładowania jeszcze nie obserwowaliśmy, więc oba mogą być prawdą & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} \\
+\textbf{4b} kiedy przychodzi punkt 17, limit energii & DP17{\cjkfont 设置功率充电时会有上报下发} — punkt 17 jest zgłaszany i przyjmowany, gdy ustawiony jest tryb ładowania do limitu energii & zgodne z 29.09: wartości 1, 2, 8 po zapisach w tym trybie & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+\textbf{4c} kiedy przychodzi punkt 23, wersja & DP23 1.5{\cjkfont 分钟会更新一次} — punkt 23 odświeża się co 1,5 minuty & \textbf{sprzeczne z logiem:} w około 15 godzinach ani razu; przyszedł raz, po włączeniu zasilania 30.09. Co 90 s, czyli co 1,5 minuty, przychodzi punkt 1. Najpewniej pomylili numery w odpowiedzi \textbf{[dopytać]} & \leavevmode{\symbolfont\color{apred}\textbf{✘}} \\
+\textbf{4d} punkt 33 & D33 {\cjkfont 没有使用} — punkt 33 nieużywany & zgodne: nigdy nie przyszedł & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+\textbf{4e} punkt 25, energia sesji & DP25 {\cjkfont 没有使用} — punkt 25 nieużywany & przyszedł raz, 25.09 o 11:23, z wartością 0, w jednej ramce z wyłączeniem ładowania. „Nieużywany” znaczy: bez znaczenia użytkowego. Energii sesji z niego nie będzie \textbf{[z zastrzeżeniem]} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+\textbf{5} znaczenie punktu 33 & D33 {\cjkfont 没有使用} — jak wyżej &  & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+\textbf{6} punkt 8: faza C czy zdarzenia & DP8 {\cjkfont 都是} phase\_c — punkt 8 to zawsze faza C & zgodne; definicja Q21 z eksportu, gdzie punkt 8 to „zdarzenia ładowarki”, nie dotyczy Q11 & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+\textbf{7} przypisanie numerów do nazw w wyliczeniach & {\cjkfont 没有顺序要求} — nie ma wymagań co do kolejności & odpowiedź nie na temat: zrozumieli „kolejność wysyłania”, a pytaliśmy, czy 0 = wolna, 1 = podłączone itd. \textbf{[dopytać z tabelą]} & \leavevmode{\symbolfont\color{apred}\textbf{✘}} \\
+\textbf{8} stan Wi-Fi i reset sieci z menu & {\cjkfont 暂时没有用} — na razie nieużywane & niejasne. Może znaczyć, że sterownik nie używa wartości stanu sieci. Nie wiemy, czy ikona na wyświetlaczu zależy od tej ramki ani co wysyła reset sieci z menu \textbf{[dopytać]} & \leavevmode{\symbolfont\color{apred}\textbf{✘}} \\
+\textbf{9} aktualizacja sterownika przez moduł & Bootloader {\cjkfont 可以中断} {\cjkfont 中断后需要重新升级} — program rozruchowy można przerwać; po przerwaniu trzeba powtórzyć aktualizację & potwierdza dwie rzeczy: sterownik ma program rozruchowy do aktualizacji po łączu i przerwanie nie psuje płyty. Bez odpowiedzi: format pliku i czy go dostaniemy \textbf{[dopytać]} & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} \\
+\textbf{10} do czego sterownik używa czasu & {\cjkfont 用于预约充电} — do ładowania planowanego & czyli do okna godzin. Bez odpowiedzi: co się dzieje bez ważnego czasu \textbf{[dopytać]} & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} \\
+\textbf{11} czy milczenie modułu coś zmienia & {\cjkfont 不会改变控制器行为} — nie zmienia zachowania sterownika & zgodne z obserwacją & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} \\
+\end{longtable}
+
+\section{Co z tego wynika dla nas}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{5.58cm}>{\raggedright\arraybackslash}p{6.70cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Temat} & \textbf{Wniosek} & \textbf{Co zrobić} \\
+\midrule\endhead
+\bottomrule\endfoot
+Procesor & STM32F030RCT6, rodzina F0. Nasze dokumenty mówią „rodzina STM32F103 / GD32”, bo tak wynikało z układu zasilania, wspólnego dla obu rodzin & poprawić w dokumentacji dla fabryki v2, w schemacie procesora (nóżka 1 = VDD, nóżki 5 i 6 = PF0/PF1, nóżka 28 bez BOOT1) i w mapowaniu pól. Programator MiniPro obsługuje STM32F0 \\
+Licznik całkowity & przychodzi co 90 s w trakcie ładowania i według fabryki po zakończeniu & energia sesji z przyrostu punktu 1 jest dobrą drogą; sprawdzić pod obciążeniem \\
+Energia ostatniej sesji, punkt 25 & bez znaczenia & nie budować na nim pola; w produkcie v4 pole \texttt{last\_\allowbreak{}session\_\allowbreak{}energy} będzie zawsze 0 \\
+Wersja, punkt 23 & przychodzi po włączeniu zasilania, nie cyklicznie & pole \texttt{controller\_\allowbreak{}version} zapamiętywać w module albo odczytywać przy starcie \\
+Punkt 8 & faza C & tłumacz pisany według definicji Q11 PRO jest właściwy; definicja Q21 z repozytorium do odłożenia \\
+Aktualizacja przez moduł & technicznie możliwa, program rozruchowy jest odporny na przerwanie & otwarta zostaje sprawa pliku: format i zgoda fabryki \\
+Ikona sieci & fabryka sugeruje, że sterownik nie używa stanu sieci & sprawdzić w teście C5, czy ikona na wyświetlaczu reaguje na ramkę stanu sieci; jeśli nie, usterka S-39 traci znaczenie \\
+\end{longtable}
+
+\section{Pytania uzupełniające, projekt wiadomości po angielsku}
+
+Hi Corey, thank you for the answers, they are very helpful. A few short follow-ups:
+
+
+\begin{enumerate}
+\item \textbf{(Q7)} We meant the meaning of each index value on the serial link, not the order of reports. Please confirm: DP3 work\_state 0 = charger\_free, 1 = charger\_insert, 2 = charger\_free\_fault, 3 = charger\_wait, 4 = charger\_charging, 5 = charger\_pause, 6 = charger\_end, 7 = charger\_fault. DP13 connection\_state 0 = 12V, 1 = 12V\_pwm, 2 = 9V, 3 = 9V\_pwm, 4 = 6V, 5 = 6V\_pwm, 6 = error. DP14 work\_mode 0 = charge\_now, 1 = charge\_energy, 2 = charge\_schedule.
+\item \textbf{(Q4)} In our logs DP23 (system\_version, "V1") arrived only once, right after power-on, while DP1 arrives every 90 s during charging. Could "every 1.5 minutes" refer to DP1? And is DP1 additionally reported at the end of charging?
+\item \textbf{(Q8)} Does the network icon on the charger display depend on the Wi-Fi status frame (0x03) from the module? What does the "network reset / pairing" item in the charger menu send to the module: 0x04, 0x05 or nothing?
+\item \textbf{(Q9)} Good to know that the bootloader tolerates an interruption. Which file format do you upload to the Tuya platform for the MCU OTA (plain .bin?), and could you provide that file to us, so that the Shelly module, which implements the same Tuya update commands (0x0A / 0x0B), can update the controller? If you prefer the programmer route only, we understand; we are still waiting for the MiniPro client software to read the two codes.
+\item \textbf{(Q10)} What does the controller do with schedule charging when the module never delivers a valid time, for example without Internet?
+\item \textbf{(Q2)} Could you send us the exact product-information reply (PID and version string), so that we can verify our capture?
+\item \textbf{From our tests:} the fault bitmap DP10 arrives as 2 bytes (16 bits), but the definition has 17 codes; which bit is ov\_Temp\_fault? And after a write to DP17 the controller repeats DP17 and DP14 reports about 10 times per second for a few seconds and misses heartbeats; is that expected?
+\end{enumerate}
+
+Thanks, Dawid
+
+
+\section*{Źródła}
+
+\begin{itemize}
+\item Zrzuty rozmowy: \texttt{Qiao\textbackslash{}konwersacja\textbackslash{}odp\_\allowbreak{}pyt\_\allowbreak{}dokumentacja\textbackslash{}} (2 pliki, 30.09.2026).
+\item Logi modułu: \texttt{logi\textbackslash{}surowy\_\allowbreak{}2026-\allowbreak{}09-\allowbreak{}25\_\allowbreak{}1355.\allowbreak{}log}, \texttt{logi\textbackslash{}surowy\_\allowbreak{}2026-\allowbreak{}09-\allowbreak{}29\_\allowbreak{}0705.\allowbreak{}log}.
+\item Ustalenia testów B: \texttt{testy\_\allowbreak{}offline\textbackslash{}USTALENIA\_\allowbreak{}v1.\allowbreak{}md}, \texttt{REJESTR\_\allowbreak{}USTEREK.\allowbreak{}md} (S-20, S-25, S-27), \texttt{dokumenty\textbackslash{}Q11\_\allowbreak{}zestawienie\_\allowbreak{}DP\_\allowbreak{}Tuya\_\allowbreak{}Shelly\_\allowbreak{}v1.\allowbreak{}md}.
+\end{itemize}
+
+\end{document}

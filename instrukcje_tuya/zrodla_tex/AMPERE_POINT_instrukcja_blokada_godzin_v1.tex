@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+\newcommand{\DOCFOOT}{AMPERE POINT — blokada ładowania w wybranych godzinach}
+\input{preambula.tex}
+\graphicspath{{screeny/norm/}}
+
+\begin{document}
+
+\apheader{Jak ustawić blokadę ładowania\\[2pt]w wybranych godzinach}{Instrukcja krok po kroku\\ aplikacja Tuya Smart / Smart Life\\ ładowarki AMPERE POINT z Wi-Fi}
+
+\vspace{0.1cm}
+{\large\color{apink} Ta instrukcja pokazuje, jak ustawić ładowarkę tak, aby od poniedziałku do piątku nie ładowała samochodu w godzinach 7:00--13:00 oraz 19:00--22:00. Po ustawieniu wystarczy wpiąć wtyczkę o dowolnej porze — resztą zajmie się ładowarka.}
+
+\apokbox{Co osiągniesz}{Samochód można podłączyć o dowolnej porze, bez sprawdzania godzin i bez zmieniania czegokolwiek w aplikacji. Jeżeli podłączenie wypadnie w godzinach blokady, ładowarka sama przerwie ładowanie i wznowi je po zakończeniu tych godzin.}
+
+\vspace{0.2cm}
+{\fontspec{DejaVu Sans}\bfseries\color{apnavy}\large Konfiguracja składa się z trzech części}
+
+\vspace{0.15cm}
+\begin{tabularx}{\textwidth}{@{}p{0.5cm}p{4.6cm}X@{}}
+\toprule
+& \textbf{\color{apnavy}Część} & \textbf{\color{apnavy}Do czego służy}\\
+\midrule
+A & Harmonogram \par {\footnotesize (4 wpisy godzinowe)} & Wyłącza ładowanie o 7:00 i o 19:00, a włącza je o 13:00 i o 22:00. Działa wtedy, gdy samochód jest już podłączony i ładuje się.\\
+B & Automatyzacje blokujące \par {\footnotesize (2 reguły)} & Pilnują ładowarki na bieżąco. Jeśli ktoś wepnie wtyczkę w środku godzin blokady, ładowanie zostanie od razu przerwane.\\
+C & Automatyzacje włączające \par {\footnotesize (2 reguły, w razie potrzeby)} & Uruchamiają ładowanie po zakończeniu blokady. Potrzebne tylko wtedy, gdy po 13:00 albo 22:00 ładowanie samo nie rusza.\\
+\bottomrule
+\end{tabularx}
+
+\apinfo{Dlaczego potrzebne są obie części}{Harmonogram wysyła polecenie tylko o wyznaczonej godzinie — nie reaguje na to, co dzieje się pomiędzy. Automatyzacja odwrotnie: reaguje na podłączenie samochodu, ale nie potrafi włączyć ładowania po zakończeniu blokady. Dopiero razem dają pełny efekt.}
+
+\vspace{0.4cm}
+{\footnotesize\color{apmuted} Zrzuty ekranu pochodzą z aplikacji w wersji polskiej. Nazwy niektórych pozycji aplikacja wyświetla po angielsku — w instrukcji podajemy je dokładnie tak, jak widać je na ekranie.}
+
+\clearpage
+
+% ============ CZESC A ============
+\apheader{Część A — harmonogram}{Cztery wpisy godzinowe\\ poniedziałek--piątek}
+
+Harmonogram ustawiasz w ustawieniach samej ładowarki. Otwórz aplikację, wejdź w swoją ładowarkę, a następnie w Harmonogram (Timer). Dodaj cztery wpisy:
+
+\vspace{0.2cm}
+\begin{tabularx}{\textwidth}{@{}p{2.2cm}p{3.2cm}p{3.6cm}X@{}}
+\toprule
+\textbf{\color{apnavy}Godzina} & \textbf{\color{apnavy}Działanie} & \textbf{\color{apnavy}Powtarzanie} & \textbf{\color{apnavy}Po co}\\
+\midrule
+07:00 & Wyłącz (OFF) & pon., wt., śr., czw., pt. & Początek droższych godzin rannych\\
+13:00 & Włącz (ON) & pon., wt., śr., czw., pt. & Koniec blokady rannej\\
+19:00 & Wyłącz (OFF) & pon., wt., śr., czw., pt. & Początek droższych godzin wieczornych\\
+22:00 & Włącz (ON) & pon., wt., śr., czw., pt. & Koniec blokady wieczornej\\
+\bottomrule
+\end{tabularx}
+
+\apwarnbox{Zaznacz powtarzanie w każdym z czterech wpisów}{Wpis bez zaznaczonych dni tygodnia wykona się tylko raz i potem przestanie działać. To najczęstsza przyczyna tego, że harmonogram „działa pierwszego dnia, a potem przestaje”.}
+
+\apinfo{Co z weekendem}{Nie trzeba nic dodawać. W piątek o 22:00 ładowarka zostaje włączona i pozostaje w tym stanie przez sobotę i niedzielę, aż do poniedziałku do godziny 7:00. W weekend ładowanie jest więc możliwe przez całą dobę.}
+
+\vspace{0.4cm}
+{\fontspec{DejaVu Sans}\bfseries\color{apnavy}\large Sprawdź jeszcze strefę czasową}
+
+W ustawieniach urządzenia upewnij się, że ustawiona strefa czasowa odpowiada czasowi lokalnemu. Jeśli się nie zgadza, wszystkie godziny w harmonogramie przesuną się o kilka godzin.
+
+\clearpage
+
+% ============ CZESC B ============
+\apheader{Część B — automatyzacja pierwsza}{Blokada 7:00--13:00, poniedziałek--piątek\\ kroki 1--4 z 20}
+
+Teraz utworzymy regułę, która pilnuje ładowarki na bieżąco. Jeżeli w godzinach blokady ładowanie z jakiegokolwiek powodu ruszy — na przykład ktoś właśnie wpiął wtyczkę — reguła natychmiast je przerwie.
+
+\vspace{0.35cm}
+
+\krok{1}{Wejdź w zakładkę Smart}{Na dole ekranu wybierz Smart, a następnie u góry zakładkę Automatyzacja. Naciśnij Create (jeśli masz już inne automatyzacje, naciśnij + w prawym górnym rogu).}{s01_automatyzacja_pusta.jpg}
+\hfill
+\krok{2}{Wybierz rodzaj wyzwalacza}{Z listy wybierz When device status changes — czyli „gdy zmieni się stan urządzenia”.}{s02_wybor_wyzwalacza.jpg}
+
+\vspace{0.42cm}
+
+\krok{3}{Wskaż pojedyncze urządzenie}{Na dole pojawi się okno Device. Naciśnij Select a single device.}{s03_device_single_warunek.jpg}
+\hfill
+\krok{4}{Wybierz swoją ładowarkę}{Z listy urządzeń wybierz swoją ładowarkę. Na zdjęciu jest to urządzenie o nazwie \emph{timer\_test} — Ty wybierz nazwę własnej ładowarki.}{s04_lista_urzadzen_warunek.jpg}
+
+\clearpage
+\apheader{Część B — automatyzacja pierwsza}{ciąg dalszy — kroki 5--8 z 20}
+
+\krok{5}{Wybierz warunek}{Z listy parametrów wybierz Work State, a następnie Charger Charging (stan „ładowarka ładuje”). Zatwierdź przyciskiem Potwierdź w prawym górnym rogu.}{s05_workstate_charging.jpg}
+\hfill
+\krok{6}{Warunek jest gotowy}{Wracasz do ekranu tworzenia sceny. W sekcji If widnieje teraz wpis Work State : Charger Charging. Teraz trzeba dodać działanie — naciśnij + przy sekcji Then.}{s06_scena_if_gotowy.jpg}
+
+\vspace{0.42cm}
+
+\krok{7}{Wybierz rodzaj działania}{W oknie Dodaj akcję do wykonania wybierz pierwszą pozycję — Device.}{s07_dodaj_akcje.jpg}
+\hfill
+\krok{8}{Ponownie pojedyncze urządzenie}{Tak samo jak wcześniej: naciśnij Select a single device.}{s08_device_single_akcja.jpg}
+
+\clearpage
+\apheader{Część B — automatyzacja pierwsza}{ciąg dalszy — kroki 9--12 z 20}
+
+\krok{9}{Wybierz tę samą ładowarkę}{Z listy wskaż ponownie swoją ładowarkę — tę samą, którą wybrałeś w kroku 4.}{s09_lista_urzadzen_akcja.jpg}
+\hfill
+\krok{10}{Ustaw działanie: wyłącz}{Wybierz Switch, a pod nim OFF. Zatwierdź przyciskiem Potwierdź.}{s10_switch_off.jpg}
+
+\vspace{0.42cm}
+
+\krok{11}{Sprawdź, co ustawiłeś}{Ekran pokazuje teraz komplet: If — Work State : Charger Charging, Then — Switch : OFF. Zanim zapiszesz, trzeba jeszcze ograniczyć godziny działania reguły. Naciśnij Precondition.}{s11_scena_if_then.jpg}
+\hfill
+\krok{12}{Otwórz ustawienie godzin}{Naciśnij pozycję Obowiązywanie odcinka czasu — obecnie ustawioną na \emph{Cały dzień}.}{s12_precondition_calydzien.jpg}
+
+\clearpage
+\apheader{Część B — automatyzacja pierwsza}{ciąg dalszy — kroki 13--16 z 20}
+
+\krok{13}{Wybierz ustawienie ręczne}{Domyślnie zaznaczone jest Cały dzień. Wybierz ostatnią pozycję — Dostosowane (ręczne ustawienie czasu).}{s13_czas_calydzien.jpg}
+\hfill
+\krok{14}{Otwórz wybór godzin}{Po zaznaczeniu Dostosowane pojawia się pozycja Okres czasu. Naciśnij ją.}{s14_czas_dostosowane.jpg}
+
+\vspace{0.42cm}
+
+\krok{15}{Ustaw godziny blokady}{Ustaw początek na 06:55 i koniec na 13:00, po czym naciśnij Potwierdź. Pięć minut zapasu przed godziną 7:00 jest celowe — reguła zaczyna czuwać, zanim harmonogram wyłączy ładowanie.}{s15_okres_kola.jpg}
+\hfill
+\krok{16}{Ustaw dni tygodnia i miasto}{Naciśnij Powtórz i zaznacz od poniedziałku do piątku (odznacz sobotę i niedzielę). Następnie naciśnij Miasto i wskaż swoją miejscowość. Zatwierdź przyciskiem Potwierdź.}{s16_czas_gotowy.jpg}
+
+\clearpage
+\apheader{Część B — automatyzacja pierwsza}{zakończenie — kroki 17--20 z 20}
+
+\krok{17}{Wskazanie miasta}{Miasto wybiera się na mapie — wystarczy przybliżyć okolicę swojego adresu i nacisnąć OK. Aplikacja potrzebuje tej informacji, aby prawidłowo liczyć czas lokalny.}{s17_miasto_mapa.jpg}
+\hfill
+\krok{18}{Zamknij ustawienia godzin}{Przy pozycji Obowiązywanie odcinka czasu widać teraz ustawiony przedział. Naciśnij Zakończ w prawym górnym rogu.}{s18_precondition_gotowy.jpg}
+
+\vspace{0.42cm}
+
+\krok{19}{Nadaj nazwę i zapisz}{Naciśnij Zapisz. Aplikacja poprosi o nazwę reguły — wpisz taką, która od razu mówi, czego dotyczy, na przykład 6:55-13:00 ladowanie\_off. Zatwierdź.}{s19_nazwa_sceny.jpg}
+\hfill
+\krok{20}{Gotowe}{Reguła pojawia się na liście automatyzacji. Upewnij się, że przełącznik obok niej jest zielony — oznacza to, że reguła jest aktywna.}{s20_lista_gotowa.jpg}
+
+\clearpage
+
+% ============ DRUGA AUTOMATYZACJA ============
+\apheader{Część B — automatyzacja druga}{Blokada w godzinach 19:00--22:00\\ poniedziałek--piątek}
+
+Druga reguła jest identyczna jak pierwsza. Różni się wyłącznie godzinami i nazwą.
+
+\vspace{0.2cm}
+Wykonaj jeszcze raz wszystkie kroki od 1 do 20, zmieniając tylko dwie rzeczy:
+
+\vspace{0.3cm}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}X@{}}
+\toprule
+\textbf{\color{apnavy}Krok} & \textbf{\color{apnavy}Co wpisać}\\
+\midrule
+Krok 15 \par {\footnotesize godziny} & Początek 18:55, koniec 22:00\\
+Krok 19 \par {\footnotesize nazwa} & Na przykład 18:55-22:00 ladowanie\_off\\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.2cm}
+Wszystkie pozostałe ustawienia — urządzenie, warunek \emph{Work State : Charger Charging}, działanie \emph{Switch : OFF}, dni od poniedziałku do piątku oraz miasto — pozostają bez zmian.
+
+\apokbox{Po zakończeniu}{Na liście automatyzacji powinny być dwie reguły, obie z zielonym przełącznikiem. W harmonogramie ładowarki powinny być cztery wpisy z zaznaczonymi dniami od poniedziałku do piątku.}
+
+\clearpage
+
+% ============ CZESC C ============
+\apheader{Część C — automatyzacje włączające}{Gdy po zakończeniu blokady\\ ładowanie samo nie rusza}
+
+Jeżeli po godzinie 13:00 albo 22:00 ładowanie nie startuje mimo podłączonego samochodu, przyczyna nie leży w ustawieniach. Trzeba wtedy dodać dwie kolejne reguły, opisane na następnych stronach.
+
+\vspace{0.25cm}
+
+\apwarnbox{Skąd bierze się ten objaw}{Wpis harmonogramu, który ma włączyć ładowanie, ustawia w ładowarce tryb pracy, ale nie przestawia głównego przełącznika. Jeżeli przełącznik został wcześniej wyłączony — przez automatyzację blokującą albo przez wpis wyłączający z Części A — kolejny wpis nie ma czego uruchomić. Ładowarka ma wtedy podłączony samochód, prawidłowy tryb i prawidłowy prąd, a mimo to stoi. Automatyzacja opisana niżej przestawia przełącznik i tym samym ładowanie rzeczywiście rusza.}
+
+\vspace{0.25cm}
+
+\apinfo{Uwaga na dwa znaczenia słowa „harmonogram”}{W Części A ustawialiśmy harmonogram \emph{w ustawieniach ładowarki} — listę wpisów godzinowych. Teraz użyjemy pozycji o tej samej nazwie, ale z \emph{listy wyzwalaczy sceny}, oznaczonej niebieską ikoną zegara. To dwie różne rzeczy. Do ustawień ładowarki już nie wchodzimy.}
+
+\vspace{0.25cm}
+
+Wpisy włączające z Części A możesz zostawić bez zmian. Nie przeszkadzają, a przy braku internetu bywają jedyną rzeczą, która zadziała — automatyzacje wykonują się w chmurze, harmonogram w samej ładowarce.
+
+\clearpage
+\apheader{Część C — automatyzacja pierwsza}{Reguła „13:02 ładowanie on”\\ kroki 1--4 z 11}
+
+\krok{1}{Otwórz listę automatyzacji}{Na dole ekranu wybierz Smart, u góry zakładkę Automatyzacja. Naciśnij + w prawym górnym rogu, a przy pustej liście przycisk Create na środku.}{w01_lista_pusta.jpg}
+\hfill
+\krok{2}{Wybierz wyzwalacz Harmonogram}{Na ekranie Dodaj scenę wskaż pozycję Harmonogram — tę z niebieską ikoną zegara. Nie wybieraj When device status changes; tej używaliśmy w Części B.}{w02_wybor_harmonogram.jpg}
+
+\vspace{0.42cm}
+
+\krok{3}{Ekran Timer}{Zostaw zaznaczoną pozycję Wyznaczony czas. Niżej są dwa pola do ustawienia: Czas oraz Powtórz. Zaczynamy od pierwszego.}{w03_timer_ekran.jpg}
+\hfill
+\krok{4}{Ustaw godzinę}{Naciśnij Czas. Wysunie się okno z dwoma kółkami — godziny po lewej, minuty po prawej. Ustaw 13:02 i naciśnij Potwierdź pod oknem.}{w04_timer_czas.jpg}
+
+\clearpage
+\apheader{Część C — automatyzacja pierwsza}{ciąg dalszy — kroki 5--8 z 11}
+
+\krok{5}{Otwórz pole Powtórz}{Domyślnie zaznaczone jest Jednorazowo — przy tym ustawieniu reguła zadziała jeden raz i nigdy więcej. To najczęstsza przyczyna tego, że reguła „przestała działać”.}{w05_powtorz_jednorazowo.jpg}
+\hfill
+\krok{6}{Zaznacz dni tygodnia}{Wybierz Od poniedziałku do piątku, tak samo jak w harmonogramie z Części A. Po zaznaczeniu wróć strzałką w lewym górnym rogu.}{w06_powtorz_dni.jpg}
+
+\vspace{0.42cm}
+
+\krok{7}{Sprawdź i zatwierdź Timer}{W polu Czas ma być 13:02, w polu Powtórz — wybrane dni. Naciśnij Potwierdź w prawym górnym rogu.}{w07_timer_gotowy.jpg}
+\hfill
+\krok{8}{Warunek jest gotowy}{Wracasz na ekran sceny. W sekcji If widnieje Harmonogram z godziną i dniami. Sekcja Then jest pusta, a przycisk Zapisz nieaktywny — reguła bez działania nie da się zapisać.}{w07b_scena_warunek.jpg}
+
+\clearpage
+\apheader{Część C — automatyzacja pierwsza}{zakończenie — kroki 9--11 z 11}
+
+\krok{9}{Przejdź do działań}{Naciśnij + przy sekcji Then, wybierz Device, potem Select a single device i wskaż swoją ładowarkę — tę samą co w Części B.}{s07_dodaj_akcje.jpg}
+\hfill
+\krok{10}{Zaznacz trzy działania}{Wszystkie trzy ustawia się na jednym ekranie, kółkami po prawej stronie. Zaznacz Switch i wybierz pod nim \textbf{ON}. Zaznacz Charge Current Set i ustaw prąd suwakiem albo wpisz go w okienku. Zaznacz Work Mode i wybierz pod nim Charging now. Zatwierdź przyciskiem Potwierdź.}{w09_dzialania.jpg}
+
+\vspace{0.42cm}
+
+\krok{11}{Sprawdź komplet i zapisz}{Sekcja Then ma teraz trzy działania: Charge Current Set, Work Mode : Charging now oraz Switch : ON. Pozycja Precondition zostaje na Cały dzień. Naciśnij Zapisz i nadaj nazwę, na przykład 13:02 ladowanie\_on.}{w08_scena_gotowa.jpg}
+\hfill
+\begin{minipage}[t]{0.485\textwidth}\vspace{0pt}\end{minipage}
+
+\clearpage
+
+% ============ CZESC C - DRUGA REGULA ============
+\apheader{Część C — automatyzacja druga}{Uruchomienie ładowania o 22:02\\ poniedziałek--piątek}
+
+\apwarnbox{Dlaczego 13:02, a nie 13:00}{Automatyzacja blokująca z Części B obowiązuje do godziny 13:00 i reaguje na rozpoczęcie ładowania w ułamku sekundy. Start ustawiony równo o 13:00 zostałby przez nią przerwany, zanim zdążysz to zauważyć. Dwie minuty odstępu wystarczą, żeby okna się nie zazębiały. Z tego samego powodu druga reguła ma godzinę 22:02, a nie 22:00.}
+
+\vspace{0.3cm}
+
+Druga reguła jest identyczna jak pierwsza. Różni się wyłącznie godziną i nazwą.
+
+\vspace{0.2cm}
+Wykonaj jeszcze raz wszystkie kroki od 1 do 11, zmieniając tylko dwie rzeczy:
+
+\vspace{0.3cm}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}X@{}}
+\toprule
+\textbf{\color{apnavy}Krok} & \textbf{\color{apnavy}Co wpisać}\\
+\midrule
+Krok 4 \par {\footnotesize godzina} & 22:02\\
+Krok 11 \par {\footnotesize nazwa} & Na przykład 22:02 ladowanie\_on\\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.2cm}
+Wszystkie pozostałe ustawienia — urządzenie, powtarzanie od poniedziałku do piątku, trzy działania \emph{Charge Current Set}, \emph{Work Mode : Charging now} oraz \emph{Switch : ON}, a także \emph{Precondition} pozostawione na \emph{Cały dzień} — nie zmieniają się.
+
+\apokbox{Po zakończeniu Części C}{Na liście automatyzacji powinny być cztery reguły z zielonym przełącznikiem: dwie blokujące z Części B i dwie włączające z Części C.}
+
+\clearpage
+\apheader{Jak to działa na co dzień}{Podsumowanie i typowe sytuacje}
+
+\vspace{0.2cm}
+\begin{tabularx}{\textwidth}{@{}p{4.4cm}X@{}}
+\toprule
+\textbf{\color{apnavy}Sytuacja} & \textbf{\color{apnavy}Co się dzieje}\\
+\midrule
+Wpinasz wtyczkę o 15:00 & Ładowanie rusza normalnie i trwa do 19:00. O 19:00 zostaje przerwane, a o 22:00 wznowione — albo o 22:02, jeżeli ustawiłeś Część C.\\
+Wracasz i wpinasz wtyczkę o 19:10 & Ładowanie rusza na chwilę i zostaje samo przerwane przez automatyzację. Wieczorem rusza ponownie, bez Twojego udziału.\\
+Wpinasz wtyczkę o 23:00 & Ładowanie rusza normalnie i trwa do rana, do godziny 7:00.\\
+Wpinasz wtyczkę w sobotę & Ładowanie działa bez ograniczeń przez cały weekend.\\
+\bottomrule
+\end{tabularx}
+
+\apinfo{Uwaga o połączeniu z internetem}{Automatyzacje wymagają połączenia ładowarki z internetem. Jeżeli w miejscu ładowania zasięg Wi-Fi bywa słaby, warto rozważyć ustawienie harmonogramu ładowania również w samym samochodzie — wtedy pojazd sam nie pobierze prądu poza wyznaczonymi godzinami, niezależnie od aplikacji.}
+
+\vspace{0.6cm}
+{\color{apline}\rule{\textwidth}{0.8pt}}\\[0.15cm]
+{\footnotesize\color{apmuted} W razie pytań prosimy o kontakt: hello@amperepoint.com}
+
+\end{document}

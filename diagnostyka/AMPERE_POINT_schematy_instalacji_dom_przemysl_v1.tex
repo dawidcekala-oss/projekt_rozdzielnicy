@@ -1,0 +1,545 @@
+\documentclass[10pt,a4paper,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.7cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta}
+\usepackage{parskip}
+\pagestyle{empty}
+\renewcommand{\familydefault}{\sfdefault}
+
+% ================= STYLE =================
+\tikzset{every picture/.style={line width=0.55pt},
+lbl/.style={font=\tiny, inner sep=0.5pt, fill=white},
+lblc/.style={font=\tiny, inner sep=0.5pt},
+tag/.style={font=\scriptsize\bfseries, inner sep=1pt},
+zn/.style={font=\tiny, inner sep=0.5pt},
+ods/.style={font=\tiny\itshape, inner sep=0.5pt},
+bus/.style={line width=1.6pt},
+ramka/.style={dashed, line width=0.4pt},
+dlb/.style={densely dashed, line width=0.5pt}}
+
+% ================= MAKRA SYMBOLI (IEC 60617) =================
+% kropka wezla
+\newcommand{\DOT}[2]{\fill (#1,#2) circle (0.055);}
+% uziemienie: zacisk (#1,#2) w dol
+\newcommand{\GNDs}[2]{\draw (#1,#2) -- (#1,{#2-0.22}) ({#1-0.3},{#2-0.22}) -- ({#1+0.3},{#2-0.22}) ({#1-0.19},{#2-0.34}) -- ({#1+0.19},{#2-0.34}) ({#1-0.08},{#2-0.46}) -- ({#1+0.08},{#2-0.46});}
+% wylacznik nadpradowy PIONOWO W DOL: gorny zacisk (#1,#2), dolny (#1,#2-1.2)
+\newcommand{\MCBv}[2]{\draw (#1,#2) -- (#1,{#2-0.18}) ({#1-0.1},{#2-0.08}) -- ({#1+0.1},{#2-0.28}) ({#1-0.1},{#2-0.28}) -- ({#1+0.1},{#2-0.08}) (#1,{#2-0.18}) -- ({#1-0.3},{#2-0.85}) (#1,{#2-0.85}) -- (#1,{#2-1.2});}
+% RCD PIONOWO W DOL: gorny zacisk (#1,#2), dolny (#1,#2-1.55); elipsa=przekladnik sumujacy
+\newcommand{\RCDv}[2]{\MCBv{#1}{#2}\draw (#1,{#2-1.2}) -- (#1,{#2-1.55}); \draw (#1,{#2-1.28}) ellipse (0.26 and 0.13);}
+% rozlacznik izolacyjny POZIOMO: lewy zacisk (#1,#2), prawy (#1+1.2,#2)
+\newcommand{\SWh}[2]{\draw (#1,#2) -- ({#1+0.32},#2) ({#1+0.32},#2) -- ({#1+0.95},{#2+0.3}) ({#1+0.32},{#2-0.13}) -- ({#1+0.32},{#2+0.13}) ({#1+0.95},#2) -- ({#1+1.2},#2);}
+% rozlacznik PIONOWO W DOL
+\newcommand{\SWv}[2]{\draw (#1,#2) -- (#1,{#2-0.3}) ({#1-0.13},{#2-0.3}) -- ({#1+0.13},{#2-0.3}) (#1,{#2-0.3}) -- ({#1-0.3},{#2-0.93}) (#1,{#2-0.93}) -- (#1,{#2-1.2});}
+% bezpiecznik POZIOMO: lewy zacisk (#1,#2), prawy (#1+1.0,#2)
+\newcommand{\FUZh}[2]{\draw (#1,#2) -- ({#1+1.0},#2) ({#1+0.18},{#2-0.16}) rectangle ({#1+0.82},{#2+0.16});}
+% wylacznik mocy (MCCB) POZIOMO: prostokat z x; lewy (#1,#2), prawy (#1+1.0,#2)
+\newcommand{\MCCBh}[2]{\draw (#1,#2) -- ({#1+0.14},#2) ({#1+0.14},{#2-0.22}) rectangle ({#1+0.86},{#2+0.22}) ({#1+0.86},#2) -- ({#1+1.0},#2); \draw ({#1+0.3},{#2-0.12}) -- ({#1+0.7},{#2+0.12}) ({#1+0.3},{#2+0.12}) -- ({#1+0.7},{#2-0.12});}
+% licznik kWh POZIOMO: lewy zacisk (#1,#2), prawy (#1+1.1,#2)
+\newcommand{\KWHh}[2]{\draw (#1,#2) -- ({#1+0.15},#2) ({#1+0.15},{#2-0.32}) rectangle ({#1+0.95},{#2+0.32}) ({#1+0.95},#2) -- ({#1+1.1},#2); \node[font=\tiny] at ({#1+0.55},#2) {kWh};}
+% transformator POZIOMO (dwa okregi): os na (#1,#2); lewy zacisk (#1-0.75,#2), prawy (#1+0.75,#2)
+\newcommand{\TRAFOh}[2]{\draw ({#1-0.75},#2) -- ({#1-0.5},#2); \draw ({#1-0.22},#2) circle (0.3); \draw ({#1+0.22},#2) circle (0.3); \draw ({#1+0.5},#2) -- ({#1+0.75},#2);}
+% SPD (ogranicznik przepiec) PIONOWO W DOL: gorny zacisk (#1,#2), dol laczyc z PE
+\newcommand{\SPDv}[2]{\draw (#1,#2) -- (#1,{#2-0.25}) ({#1-0.22},{#2-0.25}) rectangle ({#1+0.22},{#2-0.95}) (#1,{#2-0.95}) -- (#1,{#2-1.2}); \draw[-{Stealth[length=4pt]}] (#1,{#2-0.32}) -- (#1,{#2-0.88});}
+% lampa: os (#1,#2)
+\newcommand{\LAMP}[2]{\draw (#1,#2) circle (0.22); \draw ({#1-0.156},{#2-0.156}) -- ({#1+0.156},{#2+0.156}) ({#1-0.156},{#2+0.156}) -- ({#1+0.156},{#2-0.156});}
+% grzejnik/odbiornik rezystancyjny: srodek (#1,#2)
+\newcommand{\HEATb}[2]{\draw ({#1-0.35},{#2-0.22}) rectangle ({#1+0.35},{#2+0.22}); \draw ({#1-0.35},{#2-0.05}) -- ({#1+0.35},{#2-0.05}) ({#1-0.35},{#2+0.09}) -- ({#1+0.35},{#2+0.09});}
+% kondensator PIONOWO W DOL: gorny zacisk (#1,#2)
+\newcommand{\CAPv}[2]{\draw (#1,#2) -- (#1,{#2-0.42}) ({#1-0.3},{#2-0.42}) -- ({#1+0.3},{#2-0.42}) ({#1-0.3},{#2-0.58}) -- ({#1+0.3},{#2-0.58}) (#1,{#2-0.58}) -- (#1,{#2-1.0});}
+% silnik: kolo M, centrum, podpis
+\newcommand{\MOT}[3]{\draw (#1,#2) circle (0.42); \node[font=\scriptsize] at (#1,{#2+0.09}) {M}; \node[font=\tiny] at (#1,{#2-0.15}) {#3};}
+% gniazdo (kielich otwarty w gore, zasilanie z gory): zacisk gorny (#1,#2+0.55)
+\newcommand{\SOCKdn}[2]{\draw ({#1-0.22},{#2-0.1}) arc (180:0:0.22); \draw (#1,{#2-0.55}) -- (#1,{#2-0.06});}
+% wtyczka (grot w dol) laczona od dolu urzadzenia
+\newcommand{\PLUGdn}[2]{\draw ({#1-0.16},{#2+0.18}) -- (#1,{#2-0.08}) -- ({#1+0.16},{#2+0.18}); \draw (#1,{#2-0.08}) -- (#1,{#2-0.4});}
+% ukosnik liczby zyl na pionowym przewodzie: (#1,#2) srodek, #3 opis
+\newcommand{\ZYLv}[3]{\draw ({#1-0.14},{#2-0.14}) -- ({#1+0.14},{#2+0.14}); \node[lbl, right] at ({#1+0.12},#2) {#3};}
+% przekladnik pradowy na poziomym przewodzie: os (#1,#2)
+\newcommand{\CTh}[2]{\draw (#1,#2) circle (0.28);}
+% adnotacja: kolo z numerem
+\newcommand{\ANNOT}[3]{\node[draw, circle, line width=0.8pt, inner sep=0.55pt, font=\tiny\bfseries, fill=white] at (#1,#2) {#3};}
+% adnotacja w tekscie
+\newcommand{\annt}[1]{\tikz[baseline=(ann.base)]{\node[draw, circle, line width=0.6pt, inner sep=0.5pt, font=\tiny\bfseries] (ann) {#1};}}
+% zestyk stycznika PIONOWO W DOL
+\newcommand{\KONv}[2]{\draw (#1,#2) -- (#1,{#2-0.18}) (#1,{#2-0.18}) -- ({#1-0.3},{#2-0.85}) (#1,{#2-0.85}) -- (#1,{#2-1.2});}
+% termik PIONOWO W DOL (prostokat z theta)
+\newcommand{\THERMv}[2]{\draw (#1,#2) -- (#1,{#2-0.15}) ({#1-0.2},{#2-0.15}) rectangle ({#1+0.2},{#2-0.75}) (#1,{#2-0.75}) -- (#1,{#2-1.0}); \node[font=\tiny] at (#1,{#2-0.45}) {$\theta$};}
+
+% ================= RAMA ARKUSZA =================
+% #1 oznaczenie strony, #2 opis strony, #3 nr strony, #4 liczba stron
+\newcommand{\ramkaI}[4]{%
+\draw[line width=0.8pt] (0,0) rectangle (28.0,18.8);
+\draw[line width=0.5pt] (0.5,0.5) rectangle (27.5,18.3);
+\foreach \i in {1,...,10}{
+  \draw ({0.5+(\i-1)*2.7},18.3) -- ({0.5+(\i-1)*2.7},18.8) ({0.5+(\i-1)*2.7},0.0) -- ({0.5+(\i-1)*2.7},0.5);
+  \node[font=\scriptsize] at ({0.5+(\i-1)*2.7+1.35},18.55) {\i};
+  \node[font=\scriptsize] at ({0.5+(\i-1)*2.7+1.35},0.25) {\i};}
+\foreach \i/\l in {0/A,1/B,2/C,3/D,4/E,5/F}{
+  \draw (0.0,{18.3-\i*2.966}) -- (0.5,{18.3-\i*2.966}) (27.5,{18.3-\i*2.966}) -- (28.0,{18.3-\i*2.966});
+  \node[font=\scriptsize] at (0.25,{18.3-\i*2.966-1.48}) {\l};
+  \node[font=\scriptsize] at (27.75,{18.3-\i*2.966-1.48}) {\l};}
+\draw[line width=0.5pt] (14.0,0.5) rectangle (27.5,2.6);
+\draw (14.0,1.9) -- (27.5,1.9) (14.0,1.2) -- (23.2,1.2) (18.6,0.5) -- (18.6,2.6) (23.2,0.5) -- (23.2,2.6) (25.6,1.2) -- (25.6,1.9);
+\node[font=\tiny, anchor=north west] at (14.05,2.55) {firma};
+\node[font=\small\bfseries] at (16.3,2.2) {AMPERE POINT};
+\node[font=\tiny, anchor=north west] at (14.05,1.85) {projekt};
+\node[font=\scriptsize] at (16.3,1.5) {AMPERE\_POINT\_instalacje};
+\node[font=\tiny, anchor=north west] at (14.05,1.15) {nr projektu};
+\node[font=\scriptsize] at (16.3,0.8) {AP-INST-001};
+\node[font=\tiny, anchor=north west] at (18.65,2.55) {opis strony};
+\node[font=\tiny, align=left, anchor=west, text width=4.25cm] at (18.72,2.2) {#2};
+\node[font=\tiny, anchor=north west] at (18.65,1.85) {data / edytor};
+\node[font=\scriptsize, anchor=west] at (18.75,1.5) {06.07.2026 \; / \; D.~Cekała};
+\node[font=\tiny, anchor=north west] at (18.65,1.15) {stan: wersja 1 (schemat poglądowo-dydaktyczny)};
+\node[font=\tiny, anchor=north west] at (23.25,2.55) {oznaczenie strony};
+\node[font=\normalsize\bfseries] at (24.4,2.2) {#1};
+\node[font=\tiny, anchor=north west] at (23.25,1.85) {norma};
+\node[font=\scriptsize] at (24.4,1.5) {IEC 60617};
+\node[font=\tiny, anchor=north west] at (25.65,1.85) {strona};
+\node[font=\scriptsize] at (26.55,1.5) {#3 / #4};
+\node[font=\scriptsize\bfseries, anchor=west] at (23.3,0.85) {instalacje odbiorcze z ładowarką EV};
+}
+
+\begin{document}
+
+% ================================================================
+% ============ STRONA =01: INSTALACJA DOMOWA (1-kreskowy) ========
+% ================================================================
+\begin{tikzpicture}[x=1cm,y=1cm]
+\ramkaI{=01}{Instalacja domowa TN-C-S z obwodem ładowarki EV\\[-2pt] (schemat jednokreskowy)}{1}{4}
+
+% ---- ciag glowny: siec -> ZK -> licznik -> RG ----
+\node[tag, anchor=west] at (1.0,17.6) {SIEĆ OSD (nn, układ TN-C)};
+\draw (1.2,15.8) -- (1.55,15.8);
+\TRAFOh{2.3}{15.8}
+\node[lblc, align=center] at (2.3,16.75) {stacja transf. OSD\\ 15/0,4 kV};
+\draw (2.3,15.5) -- (2.3,15.1); \GNDs{2.3}{15.1}
+\node[lblc, anchor=west] at (2.75,15.0) {uziemienie PEN (TN-C)};
+\draw (3.05,15.8) -- (4.7,15.8);
+\ZYLv{3.8}{15.8}{}
+\node[lbl, align=center] at (3.85,16.35) {przyłącze YAKXS 4$\times$35 Al\\ L1 L2 L3 + PEN};
+
+% ZK
+\draw[ramka] (4.7,14.7) rectangle (6.6,17.1);
+\node[ods, anchor=south west] at (4.72,17.12) {ZK — złącze kablowo-pomiarowe};
+\FUZh{4.95}{15.8}
+\node[lbl] at (5.45,16.25) {3$\times$ gG 32 A};
+\ANNOT{6.25}{16.5}{1}
+\draw (5.95,15.8) -- (7.3,15.8);
+\draw[ramka] (6.6,14.4) -- (6.6,13.6); \node[ods, anchor=north, rotate=90] at (6.6,13.5) {};
+\node[ods, align=center] at (6.7,14.05) {};
+
+% licznik
+\KWHh{7.3}{15.8}
+\node[lbl, align=center] at (7.85,16.45) {licznik 3-faz. OSD\\ moc umowna 22 kW};
+\draw (8.4,15.8) -- (9.7,15.8);
+\node[ods, align=center] at (8.9,15.35) {granica: sieć/instalacja\\ odbiorcy};
+
+% ---- RG ----
+\draw[ramka] (9.7,3.2) rectangle (27.1,17.3);
+\node[ods, anchor=south west] at (9.72,17.32) {RG — rozdzielnica główna budynku};
+
+% rozlacznik glowny
+\SWh{9.9}{15.8}
+\node[lbl] at (10.5,16.3) {FR 63 A};
+\draw (11.1,15.8) -- (11.7,15.8);
+
+% punkt rozdzialu PEN
+\DOT{11.7}{15.8}
+\draw (11.7,15.8) -- (11.7,13.2);
+\ANNOT{12.35}{15.3}{2}
+\node[lblc, align=left, anchor=west] at (12.6,15.35) {punkt rozdziału PEN $\to$ N + PE};
+\draw (11.7,14.6) -- (11.0,14.6) -- (11.0,13.9);
+\GNDs{11.0}{13.9}
+\node[lblc, align=center] at (10.6,12.9) {GSU; uziom fundamentowy\\ $R_A \leq 10~\Omega$; poł. wyrównawcze:\\ woda, gaz, c.o., zbrojenie};
+
+% szyna glowna
+\draw[bus] (11.7,13.2) -- (26.7,13.2);
+\node[tag, anchor=west] at (11.8,13.5) {szyny RG: L1 L2 L3 + N + PE (5 żył od tego punktu)};
+
+% SPD
+\draw (12.4,13.2) -- (12.4,12.85); \DOT{12.4}{13.2}
+\SPDv{12.4}{12.85}
+\draw (12.4,11.65) -- (12.4,11.35); \GNDs{12.4}{11.35}
+\node[lbl, align=left] at (13.05,12.3) {SPD T1+T2};
+\ANNOT{13.15}{11.75}{3}
+
+% ---- odplywy zwykle ----
+% oswietlenie
+\DOT{14.3}{13.2} \draw (14.3,13.2) -- (14.3,12.6); \MCBv{14.3}{12.6}
+\node[lbl, right] at (14.35,12.05) {B10};
+\draw (14.3,11.4) -- (14.3,10.3); \ZYLv{14.3}{10.9}{3$\times$1,5}
+\LAMP{14.3}{10.05}
+\node[ods, align=center] at (14.3,9.4) {oświetlenie};
+
+% grupa gniazd za wspolnym RCD
+\DOT{16.2}{13.2} \draw (16.2,13.2) -- (16.2,12.6); \RCDv{16.2}{12.6}
+\node[lbl, right] at (16.28,12.15) {RCD 30 mA typ A};
+\ANNOT{17.15}{11.6}{4}
+\draw (16.2,11.05) -- (16.2,10.75);
+\draw[bus] (15.5,10.75) -- (17.0,10.75);
+\draw (15.7,10.75) -- (15.7,10.45); \MCBv{15.7}{10.45} \node[lbl, right] at (15.74,9.95) {B16};
+\draw (15.7,9.25) -- (15.7,8.85); \SOCKdn{15.7}{8.3}
+\node[ods, align=center] at (15.7,7.6) {gniazda\\ parter};
+\draw (16.8,10.75) -- (16.8,10.45); \MCBv{16.8}{10.45} \node[lbl, right] at (16.84,9.95) {B16};
+\draw (16.8,9.25) -- (16.8,8.85); \SOCKdn{16.8}{8.3}
+\node[ods, align=center] at (16.8,7.6) {gniazda\\ piętro};
+\node[lbl] at (16.2,10.45) {};
+
+% AGD / pralka
+\DOT{18.6}{13.2} \draw (18.6,13.2) -- (18.6,12.6); \RCDv{18.6}{12.6}
+\node[lbl, right] at (18.68,12.15) {RCD 30 mA typ A};
+\draw (18.6,11.05) -- (18.6,10.75); \MCBv{18.6}{10.75} \node[lbl, right] at (18.64,10.25) {B16};
+\draw (18.6,9.55) -- (18.6,9.15); \ZYLv{18.6}{9.35}{3$\times$2,5}
+\MOT{18.6}{8.6}{$\sim$}
+\node[ods, align=center] at (18.6,7.75) {pralka /\\ zmywarka};
+
+% indukcja 3f
+\DOT{20.5}{13.2} \draw (20.5,13.2) -- (20.5,12.6); \MCBv{20.5}{12.6}
+\node[lbl, right] at (20.54,12.05) {B16/3};
+\draw (20.5,11.4) -- (20.5,10.3); \ZYLv{20.5}{10.9}{5$\times$2,5}
+\HEATb{20.5}{10.0}
+\node[ods, align=center] at (20.5,9.3) {płyta induk.\\ 3-faz.};
+
+% bojler
+\DOT{22.0}{13.2} \draw (22.0,13.2) -- (22.0,12.6); \MCBv{22.0}{12.6}
+\node[lbl, right] at (22.04,12.05) {B16};
+\draw (22.0,11.4) -- (22.0,10.3);
+\HEATb{22.0}{10.0}
+\node[ods, align=center] at (22.0,9.3) {bojler 2 kW};
+
+% ---- obwod EV ----
+\draw[ramka] (23.3,3.4) rectangle (27.0,13.0);
+\node[ods, anchor=south west] at (23.32,13.02) {obwód dedykowany EV};
+\DOT{24.6}{13.2} \draw (24.6,13.2) -- (24.6,12.7); \RCDv{24.6}{12.7}
+\node[lbl, right] at (24.68,12.25) {RCD 30 mA typ A};
+\ANNOT{26.45}{12.45}{5}
+\draw (24.6,11.15) -- (24.6,10.9); \MCBv{24.6}{10.9}
+\node[lbl, right] at (24.64,10.4) {B32};
+\draw (24.6,9.7) -- (24.6,8.35);
+\ZYLv{24.6}{9.3}{YDY\.zo 3$\times$6; $L\approx18$ m}
+\node[lbl, right] at (24.72,8.9) {$\Delta U\approx3{,}4$ V ($1{,}5\,\%$) @ 32 A};
+\ANNOT{26.6}{9.3}{6}
+\SOCKdn{24.6}{7.8}
+\node[lbl, right] at (24.9,7.85) {gniazdo CEE 32 A};
+\ANNOT{26.6}{7.5}{7}
+\PLUGdn{24.6}{7.45}
+\draw (24.6,7.05) -- (24.6,6.6);
+% ladowarka
+\draw[line width=0.8pt] (23.5,4.6) rectangle (26.85,6.6);
+\node[tag, anchor=north west] at (23.55,6.55) {ŁADOWARKA AC 7,4 kW};
+\node[lblc, anchor=north west, align=left] at (23.55,6.1) {kontrola U / PE \; \annt{8}\\ RDC-DD 6 mA DC $\cdot$ stycznik\\ licznik kWh $\cdot$ nastawa 6--32 A};
+\draw (23.5,5.6) -- (22.6,5.6);
+\ZYLv{23.05}{5.6}{}
+\node[lbl, align=center] at (22.95,6.15) {kabel Type 2};
+% auto
+\draw (21.0,4.9) rectangle (22.6,6.3);
+\node[lblc, align=center] at (21.8,5.75) {EV\\ OBC AC$\to$DC\\ bateria};
+
+% ---- notka ----
+\node[ods, anchor=west, align=left] at (1.0,3.6) {Schemat poglądowy (wartości przykładowe). Objaśnienia punktów \annt{1}--\annt{8}: strona =04.\\ Jednokreskowo: jedna linia = komplet żył obwodu; liczba żył przy ukośniku.};
+\end{tikzpicture}
+\newpage
+
+% ================================================================
+% ==== STRONA =02: DETAL WIELOKRESKOWY OBWODU EV (dom) ===========
+% ================================================================
+\begin{tikzpicture}[x=1cm,y=1cm]
+\ramkaI{=02}{Obwód EV wielokreskowo: L, N, PE + pilot CP --- co widzi RCD, ładowarka i auto}{2}{4}
+
+% ---- trzy przewody z RG ----
+\node[tag, anchor=west] at (1.0,17.5) {RG (szyny)};
+\draw (1.2,15.6) node[lbl, left=2pt] {} -- (4.2,15.6); \node[lbl] at (1.55,15.85) {L};
+\draw (1.2,14.4) -- (4.2,14.4); \node[lbl] at (1.55,14.65) {N};
+\draw (1.2,12.6) -- (12.4,12.6); \node[lbl] at (1.55,12.85) {PE};
+\draw (1.45,15.6) -- (1.45,16.1) (1.45,14.4) -- (1.45,14.9) (1.45,12.6) -- (1.45,13.1);
+\draw[bus] (1.2,16.1) -- (1.7,16.1); \draw[bus] (1.2,14.9) -- (1.7,14.9); \draw[bus] (1.2,13.1) -- (1.7,13.1);
+
+% ---- RCD: L i N przez przekladnik, PE OMIJA ----
+\draw[ramka] (4.2,13.6) rectangle (7.6,16.6);
+\node[ods, anchor=south west] at (4.22,16.62) {RCD 30 mA typ A (2-bieg.)};
+% zestyki L i N (pionowe klasycznie -> narysowane poziomo jako przerwa z ukosem)
+\draw (4.2,15.6) -- (4.55,15.6) (4.55,15.6) -- (5.25,15.9) (5.25,15.6) -- (5.9,15.6);
+\draw (4.2,14.4) -- (4.55,14.4) (4.55,14.4) -- (5.25,14.7) (5.25,14.4) -- (5.9,14.4);
+\draw[dashed] (4.9,15.75) -- (4.9,14.55);
+% przekladnik sumujacy wokol L+N
+\draw (6.35,15.0) ellipse (0.42 and 1.05);
+\node[lblc, align=center] at (6.35,13.95) {};
+\draw (5.9,15.6) -- (7.6,15.6) (5.9,14.4) -- (7.6,14.4);
+\node[lblc, align=center, anchor=north] at (6.35,13.55) {przekładnik sumujący:\\ mierzy $i_L + i_N$};
+\node[lblc, align=left, anchor=west] at (4.35,16.2) {wyzwala, gdy $|i_L - i_N| > 30$ mA};
+% adnotacja PE omija
+\ANNOT{1.5}{11.7}{A}
+\node[lblc, anchor=west, align=left] at (1.8,11.7) {PE biegnie POZA przekładnikiem --- prąd, który ucieka do PE,\\ nie wraca przez N $\Rightarrow$ powstaje różnica $\Rightarrow$ RCD wyzwala};
+
+% ---- MCB B32 tylko w L ----
+\draw (7.6,15.6) -- (8.1,15.6);
+\draw (8.1,15.6) -- (8.28,15.6) (8.2,15.5) -- (8.36,15.7) (8.2,15.7) -- (8.36,15.5) (8.28,15.6) -- (8.95,15.9) (8.95,15.6) -- (9.4,15.6);
+\node[lbl] at (8.75,16.15) {B32 (tylko L)};
+\draw (7.6,14.4) -- (9.4,14.4);
+
+% ---- kabel instalacji ----
+\draw (9.4,15.6) -- (12.4,15.6) (9.4,14.4) -- (12.4,14.4);
+\draw ({10.4-0.14},{15.0-0.14}) -- ({10.4+0.14},{15.0+0.14});
+\node[lbl, align=center] at (10.6,16.05) {YDY\.zo 3$\times$6 mm$^2$, $\approx$18 m};
+\node[lblc, align=center] at (10.75,13.7) {każdy metr i każdy zacisk toru\\ = rezystancja szeregowa $R$;\\ pod prądem $I$: spadek $U=I\cdot R$};
+
+% ---- gniazdo CEE + wtyczka ----
+\draw[ramka] (12.4,11.9) rectangle (13.6,16.3);
+\node[ods, anchor=south west] at (12.42,16.32) {gniazdo CEE 32 A};
+\foreach \y in {15.6,14.4,12.6}{\draw ({12.85-0.22},{\y-0.08}) arc (180:360:0.22);}
+\foreach \y in {15.6,14.4,12.6}{\draw (12.4,\y) -- (12.63,\y);}
+\foreach \y in {15.6,14.4,12.6}{\draw[line width=1.1pt] (13.15,\y) -- (13.38,\y);}
+\foreach \y in {15.6,14.4,12.6}{\draw (13.38,\y) -- (13.6,\y);}
+\node[lbl, align=center] at (13.0,11.78) {styki gniazda: praca ciągła\\ godzinami = najcieplejszy\\ punkt toru (por. U-001)};
+
+% ---- ladowarka ----
+\draw[line width=0.8pt] (13.6,5.6) rectangle (22.6,16.6);
+\node[tag, anchor=north west] at (13.7,16.5) {ŁADOWARKA AC (IC-CPD / EVSE)};
+\draw (13.6,15.6) -- (15.0,15.6) (13.6,14.4) -- (15.0,14.4) (13.6,12.6) -- (21.0,12.6);
+% pomiar napiecia
+\draw (14.6,15.6) -- (14.6,15.15) (14.6,14.85) circle (0.3) (14.6,14.85) -- (14.6,14.4);
+\draw (14.6,15.15) -- (14.6,15.15);
+\node[font=\tiny] at (14.6,14.85) {V};
+\DOT{14.6}{15.6} \DOT{14.6}{14.4}
+\node[lblc, align=center] at (14.6,13.85) {pomiar $U$\\ (to on ,,widzi'' 70 V)};
+% detekcja PE
+\draw (15.5,15.6) -- (15.5,15.2); \DOT{15.5}{15.6}
+\draw (15.35,15.2) rectangle (15.65,14.5); \node[font=\tiny, right=1pt] at (15.65,14.85) {$\approx$0,4 M$\Omega$};
+\draw (15.5,14.5) -- (15.5,12.6); \DOT{15.5}{12.6}
+\node[lblc, align=center] at (15.75,13.9) {};
+\node[lbl, align=center] at (15.5,12.12) {detekcja PE / polaryzacji\\ (st\k{a}d wynik pomiaru\\ L+N$\to$PE $<$ OL)};
+% RDC-DD
+\draw (17.0,15.05) ellipse (0.32 and 0.85);
+\draw (16.0,15.6) -- (18.2,15.6) (16.0,14.4) -- (18.2,14.4);
+\node[lblc, align=center] at (17.0,13.75) {RDC-DD: wykrywa\\ 6 mA DC (IEC 62955)};
+% stycznik
+\draw (18.2,15.6) -- (18.45,15.6) (18.45,15.6) -- (19.15,15.9) (19.15,15.6) -- (19.6,15.6);
+\draw (18.2,14.4) -- (18.45,14.4) (18.45,14.4) -- (19.15,14.7) (19.15,14.4) -- (19.6,14.4);
+\draw[dashed] (18.8,15.75) -- (18.8,14.55);
+\node[lbl] at (18.95,16.1) {stycznik K1};
+% licznik
+\draw (19.6,15.6) -- (19.9,15.6) (19.9,15.25) rectangle (20.7,15.95); \node[font=\tiny] at (20.3,15.6) {kWh};
+\draw (20.7,15.6) -- (22.6,15.6);
+\draw (19.6,14.4) -- (22.6,14.4);
+% sterownik + CP
+\draw (16.3,8.6) rectangle (19.6,10.3);
+\node[lblc, align=center] at (17.95,9.75) {sterownik (MCU)\\ nastawa 6--32 A\\ WiFi/Tuya};
+\draw[-{Stealth[length=4pt]}] (17.0,10.3) -- (17.0,13.45);
+\node[lbl, rotate=90] at (17.28,11.8) {steruje K1};
+% generator CP
+\draw (19.6,9.45) -- (20.3,9.45);
+\node[lblc, align=center] at (20.9,10.15) {gen. CP $\pm$12 V\\ PWM 1 kHz};
+\draw (20.3,9.2) rectangle (21.5,9.7);
+\node[font=\tiny] at (20.9,9.45) {R1 1k};
+\draw (21.5,9.45) -- (22.6,9.45);
+\node[lbl] at (22.15,9.75) {CP};
+% duty->prad
+\node[lblc, align=left, anchor=west] at (16.3,7.9) {oferta prądu: $I = \mathrm{duty}\,[\%]\times0{,}6$ A\\ (16 A $\approx$ 27\,\%; 32 A $\approx$ 53\,\%)};
+
+% ---- kabel Type 2 do auta ----
+\draw[ramka] (22.6,5.9) rectangle (23.5,16.3);
+\node[ods, anchor=south west, rotate=90] at (22.85,6.1) {złącze Type 2 (L, N, PE, CP, PP)};
+\foreach \y in {15.6,14.4,12.6,9.45}{\draw[line width=1.1pt] (22.75,\y) -- (23.0,\y); \draw (23.0,\y) -- (23.5,\y);}
+\draw (23.5,15.6) -- (24.4,15.6) (23.5,14.4) -- (24.4,14.4) (23.5,12.6) -- (24.4,12.6) (23.5,9.45) -- (24.4,9.45);
+
+% ---- auto ----
+\draw[line width=0.8pt] (24.4,5.9) rectangle (27.0,16.3);
+\node[tag, anchor=north west, align=left] at (24.5,16.2) {POJAZD};
+\draw (24.4,15.6) -- (25.3,15.6) (24.4,14.4) -- (25.3,14.4);
+\draw (25.3,14.0) rectangle (26.7,16.0);
+\node[lblc, align=center] at (26.0,15.0) {OBC\\ AC$\to$DC\\ (prostownik\\ + PFC)};
+\draw[-{Stealth[length=4pt]}] (26.0,14.0) -- (26.0,13.3);
+\node[lblc, align=center] at (26.0,12.9) {bateria HV};
+% obwod CP w aucie
+\draw (24.4,9.45) -- (25.0,9.45);
+\draw (25.0,9.45) -- (25.0,9.1); \draw (24.85,9.1) -- (25.15,9.1) -- (25.0,8.8) -- cycle; % dioda
+\draw (25.0,8.8) -- (25.0,8.45); \draw (24.82,8.45) rectangle (25.18,7.75); \node[font=\tiny, right=1pt] at (25.18,8.1) {R2 2,74k};
+\draw (25.0,7.75) -- (25.0,7.35); \GNDs{25.0}{7.35}
+\draw (25.9,9.45) -- (25.9,9.15) (25.9,9.15) -- (25.65,8.7) (25.9,8.6) -- (25.9,8.45); \DOT{25.9}{9.45}
+\draw (25.72,8.45) rectangle (26.08,7.75); \node[font=\tiny, right=1pt] at (26.08,8.1) {R3 1,3k};
+\draw (25.9,7.75) -- (25.9,7.35); \GNDs{25.9}{7.35}
+\node[lbl] at (26.35,8.9) {S2};
+\node[lblc, align=center] at (25.7,6.6) {stany: B 9 V / C 6 V\\ (S2 zamkni\k{e}ty = C)};
+% PE do masy auta
+\draw (24.4,12.6) -- (26.35,12.6); \draw (26.35,12.6) -- (26.35,12.3); \GNDs{26.35}{12.3}
+\node[lbl] at (26.0,12.15) {};
+\node[lblc, anchor=west] at (24.5,11.9) {masa nadwozia};
+
+% ---- scenariusz uplywu ----
+\draw[dlb, -{Stealth[length=5pt]}] (26.0,13.9) .. controls (24.0,10.8) and (12.0,10.4) .. (7.0,12.55);
+\node[lblc, align=left, anchor=west] at (8.7,10.65) {\annt{B} scenariusz: uszkodzenie izolacji w aucie/kablu $\to$ prąd wraca przewodem PE\\ do RG z pominięciem przekładnika RCD $\to$ RCD widzi różnicę i wyłącza $\leq$30 mA.\\ Składową gładką DC ($<$6 mA), której RCD typ A nie widzi, wykrywa RDC-DD w ładowarce.};
+
+\node[ods, anchor=west, align=left] at (1.0,3.6) {Wartości CP wg IEC 61851-1 i modelu wzorcowego projektu (R1 = 1 k$\Omega$, R2 = 2,74 k$\Omega$, R3 = 1,3 k$\Omega$).\\ Detekcja PE $\approx$0,4 M$\Omega$ --- wartość orientacyjna z pomiaru serwisowego (por. czat diagnostyki).};
+\end{tikzpicture}
+\newpage
+
+% ================================================================
+% ===== STRONA =03: INSTALACJA PRZEMYSŁOWA (1-kreskowy) ==========
+% ================================================================
+\begin{tikzpicture}[x=1cm,y=1cm]
+\ramkaI{=03}{Instalacja przemysłowa TN-S z rozdzielnicą ładowania (4 wallboxy + DLB)}{3}{4}
+
+% ---- zasilanie ----
+\node[tag, anchor=west] at (1.0,17.6) {ZASILANIE ZAKŁADU};
+\draw (1.2,15.9) -- (1.55,15.9);
+\node[lbl, align=center] at (1.6,16.5) {SN 15 kV};
+\TRAFOh{2.3}{15.9}
+\node[lblc, align=center] at (2.3,16.85) {TR1 15/0,4 kV; 400 kVA\\ Dyn5; $u_k=4{,}5\,\%$};
+\draw (2.3,15.6) -- (2.3,15.2); \GNDs{2.3}{15.2}
+\node[lblc, anchor=west, align=left] at (2.75,15.1) {TN-S: punkt gwiazdowy uziemiony\\ TYLKO przy transformatorze;\\ dalej N i PE osobno (5 żył)};
+\draw (3.05,15.9) -- (4.3,15.9);
+\ZYLv{3.7}{15.9}{}
+\node[lbl] at (3.75,16.4) {szynoprzewód / kable 5$\times$240};
+
+% wylacznik glowny + pomiar
+\MCCBh{4.3}{15.9}
+\node[lbl, align=center] at (4.8,16.55) {Q0: wyłącznik 400 A\\ wyzwalacz LSI};
+\ANNOT{4.35}{15.15}{12}
+\draw (5.3,15.9) -- (6.4,15.9);
+\CTh{6.0}{15.9}
+\draw (6.0,15.62) -- (6.0,14.9);
+\draw (5.5,14.9) rectangle (6.5,14.2); \node[font=\tiny, align=center] at (6.0,14.55) {PQ};
+\node[lblc, align=center] at (6.15,13.75) {3$\times$ CT 400/5 + analizator\\ (pomiar do DLM \annt{11})};
+\draw (6.4,15.9) -- (7.4,15.9);
+% SPD
+\DOT{6.9}{15.9} \draw (6.9,15.9) -- (6.9,15.65); \SPDv{6.9}{15.65}
+\draw (6.9,14.45) -- (6.9,14.2); \GNDs{6.9}{14.2}
+\node[lbl, right] at (7.05,15.0) {SPD T1+T2};
+\draw (7.4,15.9) -- (7.9,15.9) -- (7.9,13.2);
+
+% ---- szyny glowne ----
+\draw[bus] (7.9,13.2) -- (26.8,13.2);
+\node[tag, anchor=west] at (7.95,13.5) {szyny główne RGnn 400/230 V, TN-S (L1 L2 L3 + N + PE)};
+
+% PE / uziom otokowy
+\draw (8.4,13.2) -- (8.4,12.5); \DOT{8.4}{13.2} \GNDs{8.4}{12.5}
+\node[lblc, align=center] at (8.5,11.85) {GSZ; uziom otokowy;\\ poł. wyrównawcze: konstrukcja\\ hali, rurociągi, koryta};
+
+% ---- RO1 sila ----
+\DOT{10.6}{13.2} \draw (10.6,13.2) -- (10.6,12.7);
+\draw (10.25,12.7) rectangle (10.95,12.25); \draw (10.35,12.35) -- (10.85,12.6) (10.35,12.6) -- (10.85,12.35);
+\node[lbl, right] at (11.0,12.5) {MCCB 100 A};
+\draw (10.6,12.25) -- (10.6,11.8);
+\draw[ramka] (9.6,7.4) rectangle (12.6,11.8);
+\node[ods, anchor=south west] at (9.62,11.82) {RO1 --- napędy (siła)};
+\draw (10.6,11.8) -- (10.6,11.5); \KONv{10.6}{11.5} \node[lbl, right] at (10.65,11.05) {K};
+\THERMv{10.6}{10.3} \node[lbl, right] at (10.85,9.9) {F $\theta$};
+\draw (10.6,9.3) -- (10.6,8.9); \ZYLv{10.6}{9.1}{5$\times$4}
+\MOT{10.6}{8.4}{3$\sim$}
+\node[ods, align=center] at (10.6,7.7) {kompresor 11 kW};
+\node[lblc, align=center] at (11.9,9.0) {+ dalsze napędy\\ (suwnica, went.)};
+
+% ---- RO2 oswietlenie ----
+\DOT{13.6}{13.2} \draw (13.6,13.2) -- (13.6,12.6); \MCBv{13.6}{12.6}
+\node[lbl, right] at (13.65,12.05) {B10$\times n$};
+\draw (13.6,11.4) -- (13.6,10.7);
+\LAMP{13.6}{10.45}
+\node[ods, align=center] at (13.6,9.75) {oświetlenie hali\\ LED 6 kW};
+
+% ---- kompensacja ----
+\DOT{15.4}{13.2} \draw (15.4,13.2) -- (15.4,12.6); \SWv{15.4}{12.6}
+\draw (15.4,11.4) -- (15.4,11.1);
+\draw (15.2,11.1) rectangle (15.6,10.5); \node[font=\tiny, right=1pt] at (15.6,10.8) {dławik 189 Hz};
+\CAPv{15.4}{10.5}
+\draw (15.4,9.5) -- (15.4,9.3); \GNDs{15.4}{9.3}
+\node[ods, align=center] at (15.5,8.6) {bateria kondensatorów\\ 50 kvar (regulator $\cos\varphi$)};
+\ANNOT{16.6}{11.75}{10}
+
+% ---- gniazda warsztat ----
+\DOT{17.6}{13.2} \draw (17.6,13.2) -- (17.6,12.6); \RCDv{17.6}{12.6}
+\node[lbl, right] at (17.68,12.15) {RCD 30 mA A};
+\draw (17.6,11.05) -- (17.6,10.75); \MCBv{17.6}{10.75} \node[lbl, right] at (17.65,10.25) {B16/B32};
+\draw (17.6,9.55) -- (17.6,9.15); \SOCKdn{17.6}{8.6}
+\node[ods, align=center] at (17.6,7.9) {gniazda CEE\\ warsztat};
+
+% ---- RO-EV ----
+\DOT{19.6}{13.2} \draw (19.6,13.2) -- (19.6,12.7); \SWv{19.6}{12.7}
+\node[lbl, right] at (19.65,12.2) {rozłącznik 125 A};
+\draw (19.6,11.5) -- (19.6,11.1); \ZYLv{19.6}{11.3}{5$\times$35}
+\draw[ramka] (18.7,3.6) rectangle (27.0,11.1);
+\node[ods, anchor=south west] at (20.6,11.12) {RO-EV --- rozdzielnica ładowania (limit wspólny 125 A, dzielony dynamicznie \annt{11})};
+\draw[bus] (19.0,10.6) -- (26.6,10.6);
+\draw (19.6,11.1) -- (19.6,10.6);
+% 4 wallboxy
+\foreach \x/\n in {19.8/1, 21.5/2, 23.2/3, 24.9/4}{
+  \DOT{\x}{10.6}
+  \draw (\x,10.6) -- (\x,10.2); \RCDv{\x}{10.2}
+  \draw (\x,8.65) -- (\x,8.5); \MCBv{\x}{8.5}
+  \draw (\x,7.3) -- (\x,6.6);
+  \draw ({\x-0.14},{6.95-0.14}) -- ({\x+0.14},{6.95+0.14});
+  \draw[line width=0.8pt] ({\x-0.7},5.4) rectangle ({\x+0.7},6.6);
+  \node[font=\tiny\bfseries] at (\x,6.25) {WB\n};
+  \node[font=\tiny, align=center] at (\x,5.85) {22 kW\\ 3$\times$32 A};
+}
+\node[lbl] at (20.55,9.6) {4$\times$ (RCD 30 mA typ A + B32/3); 5$\times$6 mm$^2$};
+% DLB magistrala
+\draw[dlb] (19.8,5.2) -- (19.8,4.6) -- (24.9,4.6) -- (24.9,5.2);
+\draw[dlb] (21.5,5.2) -- (21.5,4.6) (23.2,5.2) -- (23.2,4.6);
+\draw[dlb] (19.8,4.6) -- (19.0,4.6) -- (19.0,9.0);
+\node[lblc, align=left, anchor=west] at (19.9,4.15) {magistrala DLB: wallboxy dzielą wspólny limit; gdy zakład pobiera dużo\\ (pomiar CT przy Q0), ładowarki schodzą z prądem $\to$ auta ładują wolniej \annt{11}};
+% asymetria przy WB2
+\ANNOT{26.3}{8.0}{9}
+\node[lblc, align=left, anchor=west] at (25.35,7.35) {auto 1-fazowe na WB\\ $=$ pobór tylko z L1\\ $\to$ asymetria faz};
+
+% ---- notka ----
+\node[ods, anchor=west, align=left] at (1.0,3.4) {Schemat poglądowy (wartości przykładowe).\\ Objaśnienia \annt{9}--\annt{12}: strona =04.};
+\end{tikzpicture}
+\newpage
+
+% ================================================================
+% ===== STRONA =04: LEGENDA + PUNKTY WPŁYWU ŁADOWARKI ============
+% ================================================================
+\begin{tikzpicture}[x=1cm,y=1cm]
+\ramkaI{=04}{Legenda symboli oraz objaśnienia punktów wpływu ładowarki 1--12}{4}{4}
+
+\node[tag, anchor=west] at (1.0,17.6) {LEGENDA SYMBOLI (IEC 60617)};
+% kolumna 1
+\MCBv{1.6}{17.1} \node[zn, anchor=west] at (2.3,16.5) {wyłącznik nadprądowy (np. B16)};
+\RCDv{1.6}{15.7} \node[zn, anchor=west] at (2.3,14.9) {wyłącznik różnicowoprądowy (RCD)};
+\SWv{1.6}{13.9} \node[zn, anchor=west] at (2.3,13.3) {rozłącznik izolacyjny};
+\draw (1.2,12.4) -- (1.2,12.4); \FUZh{1.2}{12.4} \node[zn, anchor=west] at (2.4,12.4) {bezpiecznik topikowy (gG)};
+\MCCBh{1.2}{11.5} \node[zn, anchor=west] at (2.4,11.5) {wyłącznik mocy (MCCB)};
+\SPDv{1.6}{10.9} \node[zn, anchor=west] at (2.4,10.3) {ogranicznik przepięć (SPD)};
+\KWHh{1.15}{9.2} \node[zn, anchor=west] at (2.4,9.2) {licznik energii};
+\TRAFOh{1.95}{8.2} \node[zn, anchor=west] at (2.9,8.2) {transformator};
+\CTh{1.6}{7.2} \draw (1.2,7.2) -- (2.0,7.2); \node[zn, anchor=west] at (2.4,7.2) {przekładnik prądowy (CT)};
+\DOT{1.6}{6.3} \draw (1.2,6.3) -- (2.0,6.3); \node[zn, anchor=west] at (2.4,6.3) {połączenie (węzeł)};
+% kolumna 2
+\KONv{5.9}{17.1} \node[zn, anchor=west] at (6.5,16.5) {zestyk stycznika};
+\THERMv{5.9}{15.6} \node[zn, anchor=west] at (6.5,15.1) {przekaźnik termiczny};
+\MOT{5.9}{14.0}{3$\sim$} \node[zn, anchor=west] at (6.5,14.0) {silnik};
+\LAMP{5.9}{12.9} \node[zn, anchor=west] at (6.5,12.9) {oprawa oświetleniowa};
+\HEATb{5.9}{11.9} \node[zn, anchor=west] at (6.5,11.9) {odbiornik rezystancyjny};
+\CAPv{5.9}{11.2} \node[zn, anchor=west] at (6.5,10.7) {kondensator (kompensacja)};
+\SOCKdn{5.9}{9.6} \node[zn, anchor=west] at (6.5,9.6) {gniazdo wtyczkowe};
+\draw (5.7,8.6) -- (6.1,8.6); \GNDs{5.9}{8.6} \node[zn, anchor=west] at (6.5,8.4) {uziemienie};
+\draw (5.6,7.4) -- (6.2,7.4); \draw ({5.9-0.14},{7.4-0.14}) -- ({5.9+0.14},{7.4+0.14}); \node[zn, anchor=west] at (6.5,7.4) {liczba i przekrój żył (np. 3$\times$2,5)};
+\draw[bus] (5.6,6.5) -- (6.2,6.5); \node[zn, anchor=west] at (6.5,6.5) {szyna zbiorcza};
+
+% ---- objasnienia ----
+\node[tag, anchor=west] at (10.4,17.6) {PUNKTY WPŁYWU ŁADOWARKI NA INSTALACJĘ --- OBJAŚNIENIA};
+\node[anchor=north west, align=left] at (10.4,17.15) {\begin{minipage}{8.1cm}\tiny
+\annt{1}~\textbf{Moc umowna i zabezpieczenie główne.} Ładowanie EV to pobór \emph{ciągły} pełnym prądem przez wiele godzin --- sumuje się z resztą budynku. Przekroczenie wybija zabezpieczenie główne (ZK), nie obwód EV. Nastawę prądu, porę ładowania i (w zakładzie) DLB dobiera się tak, by suma mieściła się w mocy umownej. Typowy objaw: wieczorne wyłączenia ,,głównego''.\\[3pt]
+\annt{2}~\textbf{Punkt rozdziału PEN (TN-C-S).} Przerwany/luźny PEN w sieci przesuwa potencjał N i PE --- na obudowach może pojawić się napięcie, a napięcia fazowe ,,wędrują'' (70--300~V). Ładowarka kontroluje napięcie i PE, więc często jako \emph{jedyne} urządzenie w domu to zgłasza (odmowa pracy), podczas gdy reszta ,,działa''.\\[3pt]
+\annt{3}~\textbf{SPD (ochrona przepięciowa).} Elektronika EVSE i OBC auta jest czuła na przepięcia burzowe/łączeniowe. Brak lub zużyty SPD $\to$ uszkodzenia typu U-003 (wybijanie + błędy elektroniki). Przy budowie obwodu EV zalecać kontrolę/montaż SPD T2.\\[3pt]
+\annt{4}~\textbf{Wspólny RCD wielu obwodów.} Każde urządzenie dokłada upływ roboczy; ładowarka z autem typowo 2,5--3,5~mA. Na wspólnej różnicówce 30~mA (która może zadziałać już od $\sim$15~mA) EV bywa ,,kroplą przepełniającą'' $\to$ losowe wybicia całej grupy. Rozwiązanie: dedykowany RCD dla obwodu EV.\\[3pt]
+\annt{5}~\textbf{Typ RCD.} Dla EV wymagany typ A; składową gładką DC $>$6~mA (mogłaby ,,oślepić'' typ A) wykrywa RDC-DD wbudowany w ładowarkę (IEC 62955) --- dlatego RCD typu B nie jest wymagany. Typ AC (sama sinusoida na symbolu) jest niewystarczający.\\[3pt]
+\annt{6}~\textbf{Spadek napięcia.} $\Delta U = 2\rho L I/S$ (1-faz.). Rośnie z prądem i długością trasy; dochodzi rezystancja każdego zacisku. Ładowarka mierzy napięcie \emph{za} całym torem, pod pełnym prądem --- dlatego pierwsza ujawnia słabą instalację (błąd podnapięciowy; przypadek ,,70~V'': zły styk o rezystancji rzędu $\Omega$).
+\end{minipage}};
+\node[anchor=north west, align=left] at (19.0,17.15) {\begin{minipage}{7.9cm}\tiny
+\annt{7}~\textbf{Praca ciągła styków.} Gniazda domowe (IEC 60884) są badane pod obciążenia przerywane; EV obciąża je w 100\,\% przez godziny. Wyrobione styki grzeją się ($P=I^2R$, por. U-001/U-002). Od 32~A wymagane gniazdo przemysłowe CEE (IEC 60309-1); na Schuko bezpieczna praktyka to nastawa $\leq$10--13~A.\\[3pt]
+\annt{8}~\textbf{Ładowarka = najczulszy ,,miernik'' w budynku.} Monitoruje U, PE, upływ DC i temperaturę pod pełnym prądem ciągłym. Zadziałanie jej ochrony to informacja o instalacji, nie usterka urządzenia --- sedno diagnostyki ,,u klienta nie działa, w serwisie działa''.\\[3pt]
+\annt{9}~\textbf{Asymetria faz.} Auto z pokładową ładowarką 1-fazową pobiera z wallboxa 3-fazowego tylko L1 ($\to$ 22~kW staje się 7,4~kW, a fazy są obciążone nierówno). Kilka aut 1-fazowych na tej samej fazie = przeciążenie L1 przy pustych L2/L3. W sieci ze słabym N asymetria przesuwa punkt gwiazdowy (nad-/podnapięcia).\\[3pt]
+\annt{10}~\textbf{Harmoniczne a kompensacja.} Prostowniki OBC generują harmoniczne prądu. Bateria kondensatorów bez dławików może wejść z siecią w rezonans (przegrzewanie baterii, wybijanie) --- stąd dławiki odstrajające (np. 189~Hz) i kontrola THD analizatorem przy rozbudowie o ładowarki.\\[3pt]
+\annt{11}~\textbf{DLM/DLB.} Pomiar CT przy zasilaniu głównym steruje limitem stacji: gdy zakład pobiera dużo, ładowarki schodzą z prądem. ,,Auto ładuje wolno'' bywa \emph{poprawnym} działaniem DLB, nie usterką --- sprawdzać przed serwisem (por. O-9 w przewodniku diagnostyki).\\[3pt]
+\annt{12}~\textbf{Selektywność zabezpieczeń.} Kaskadę (gG/MCCB $\to$ B32) dobiera się tak, by zwarcie w obwodzie EV wyłączyło tylko ten obwód, nie cały obiekt (wyzwalacz LSI u góry, charakterystyka B na dole; EVSE nie ma prądu rozruchowego, więc B wystarcza).
+\end{minipage}};
+
+\node[ods, anchor=west, align=left] at (1.0,4.6) {Komplet: =01 dom (1-kreskowy), =02 obwód EV wielokreskowo z pilotem CP, =03 zakład z DLB, =04 objaśnienia.\\ Schematy poglądowo-dydaktyczne z wartościami przykładowymi --- dobór wykonawczy zawsze wg projektu i pomiarów\\ (PN-HD 60364, PN-HD 60364-7-722). Powiązania: przewodnik diagnostyki zdalnej v1 (O-1\ldots O-16), katalog usterek U-001\ldots U-003.};
+\end{tikzpicture}
+
+\end{document}

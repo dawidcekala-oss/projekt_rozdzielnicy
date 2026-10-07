@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Przenośna rozdzielnica — wymiana komponentów</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b313d;
+    --tx:#e8ebf0; --tx2:#a8b0be; --acc:#4da3ff; --ok:#3fbf7f; --warn:#ffb547; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);
+       font:15px/1.6 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;}
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 22px 80px}
+  h1{font-size:30px;line-height:1.25;margin:0 0 6px}
+  h2{font-size:21px;margin:44px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  h3{font-size:16px;margin:24px 0 8px;color:var(--acc)}
+  .sub{color:var(--tx2);margin:0 0 26px;font-size:14px}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--panel2);font-weight:600;color:var(--tx2);font-size:12.5px;
+     text-transform:uppercase;letter-spacing:.03em}
+  tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+        padding:16px 18px;margin:14px 0}
+  .card h3{margin-top:0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+  code,.mono{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:13px}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11.5px;
+       font-weight:600;letter-spacing:.03em;vertical-align:middle}
+  .t-new{background:rgba(77,163,255,.16);color:#8cc6ff;border:1px solid rgba(77,163,255,.35)}
+  .t-old{background:rgba(168,176,190,.12);color:var(--tx2);border:1px solid var(--line)}
+  .box{border-left:3px solid var(--acc);background:var(--panel);padding:12px 16px;
+       margin:14px 0;border-radius:0 8px 8px 0}
+  .box.w{border-left-color:var(--warn)}
+  .box.b{border-left-color:var(--bad)}
+  .box.g{border-left-color:var(--ok)}
+  .box p{margin:6px 0}
+  .box b{color:var(--tx)}
+  ol,ul{padding-left:22px}
+  li{margin:5px 0}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+        padding:14px 18px;margin:10px 0}
+  .step .n{display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;
+        border-radius:50%;background:var(--acc);color:#08101c;font-weight:700;font-size:13px;
+        margin-right:8px}
+  .k{color:var(--tx2)}
+  .ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+  svg{width:100%;height:auto;background:#fff;border-radius:10px;margin:12px 0}
+  .foot{margin-top:60px;padding-top:16px;border-top:1px solid var(--line);
+        color:var(--tx2);font-size:12.5px}
+  @media print{
+    body{background:#fff;color:#000}
+    .wrap{max-width:none;padding:0}
+    .card,.step,.box{background:#fff;border-color:#bbb;break-inside:avoid}
+    th{background:#eee;color:#000}
+    h2{border-color:#999}
+    .t-new,.t-old{border-color:#999;color:#000;background:#eee}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Przenośna rozdzielnica — wymiana komponentów</h1>
+<p class="sub">AMPERE_POINT · opis aparatów starych i nowych, różnice, sposób podłączenia ·
+założenie: <b>wyjścia (gniazda) pozostają bez zmian</b> · 10.08.2026</p>
+
+<div class="box b">
+<p><b>Najważniejsze na wstęp:</b> cztery nowe aparaty ze zdjęć to <b>wyłącznie aparaty
+jednofazowe</b> (1P / 1P+N). Istniejące wyjścia to dwa gniazda CEE 400 V (32 A i 16 A) plus trzy
+gniazda 230 V. Skoro wyjścia mają zostać takie same, <b>nowy komplet nie wystarczy</b> — obwody
+trójfazowe wymagają aparatów 3-biegunowych ze wspólnym wyzwalaniem. Pełne zestawienie braków
+w rozdziale <a href="#bom" style="color:var(--acc)">Czego brakuje</a>.</p>
+</div>
+
+<h2>1. Stan istniejący</h2>
+
+<h3>Aparaty na szynie (od lewej)</h3>
+<table>
+<thead><tr><th>Poz.</th><th>Aparat</th><th>Parametry z tabliczki</th><th>Funkcja</th><th>Mod.</th></tr></thead>
+<tbody>
+<tr>
+  <td>—</td>
+  <td><b>GACIA PR8NM 40 A</b><br><span class="tag t-old">RCD 4P</span></td>
+  <td>I∆n = 30 mA · <b>typ AC</b> · 400 V~ 50/60 Hz · bezzwłoczny 0,1 s ·
+      Im = I∆m = 500 A · Inc = I∆c = 6000 A · IEC 61008-1 · zacisk <b>N po lewej</b></td>
+  <td>Wyłącznik różnicowoprądowy główny — chroni wszystkie trzy obwody</td>
+  <td>4</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td><b>GACIA SB6L B32</b><br><span class="tag t-old">MCB 3P</span></td>
+  <td>char. <b>B</b>, 32 A · 400 V~ · IEC/EN 60898-1 · Icn = 6000 A · klasa ograniczania
+      energii 3 · wspólna dźwignia (wyzwalanie wspólne)</td>
+  <td>Zabezpieczenie gniazda CEE 32 A</td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><b>GACIA SB6L B16</b><br><span class="tag t-old">MCB 3P</span></td>
+  <td>char. <b>B</b>, 16 A · 400 V~ · IEC/EN 60898-1 · Icn = 6000 A · klasa 3</td>
+  <td>Zabezpieczenie gniazda CEE 16 A</td>
+  <td>3</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><b>GACIA SB6L B16</b><br><span class="tag t-old">MCB 1P</span></td>
+  <td>char. B, 16 A · 230/400 V~ · IEC/EN 60898-1 · Icn = 6000 A · klasa 3 ·
+      schemat 1→2 (jeden tor prądowy)</td>
+  <td>Zabezpieczenie wszystkich trzech gniazd 230 V (N prosto z RCD)</td>
+  <td>1</td>
+</tr>
+</tbody>
+</table>
+<p class="k">Razem zajęte ≈ <b>11 modułów</b>; w obudowie widać ok. 12 miejsc (do zmierzenia
+przymiarem przed zakupami).</p>
+
+<h3>Gniazda (wyjścia — pozostają bez zmian)</h3>
+<table>
+<thead><tr><th>Ozn.</th><th>Gniazdo</th><th>Charakterystyka</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>TED IE-N 3253</b>, czerwone CEE</td>
+    <td>32 A · 5-stykowe (3P + N + PE) · 400 V · 6 h · IP54 · klapka uchylna ·
+        montaż tablicowy na płycie czołowej</td></tr>
+<tr><td>2</td><td><b>TED IE-N 1653</b>, czerwone CEE</td>
+    <td>16 A · 5-stykowe (3P + N + PE) · 400 V · 6 h · IP54</td></tr>
+<tr><td>3</td><td>3 × niebieskie 230 V (schuko/2P+Z)</td>
+    <td>16 A · 230 V · klapka IP54 · wszystkie trzy na jednym obwodzie ·
+        środkowe oklejone „AWARIA”</td></tr>
+</tbody>
+</table>
+
+<h3>Okablowanie i obudowa</h3>
+<ul>
+<li>Obudowa przenośna z uchwytem/pasem, drzwiczki z przyciemnianą szybką nad szyną TH35,
+    dławnice w dnie, opis <span class="mono">N L1 L2 L3</span> pod aparatami.</li>
+<li>Zasilanie: kabel 5-żyłowy (nieb. + brąz. + czarny/szary + żółto-zielony) wprowadzony
+    dławnicą, zakończony wtyczką.</li>
+<li>Odpływy: żyły w kolorach brąz / czerwony / czarny / granatowy — <b>bez konsekwentnego
+    kodu L1/L2/L3</b>; kolejność faz w gniazdach CEE do sprawdzenia miernikiem.</li>
+<li>Widoczne złączki gwintowe (kostki) na PE/N — do wymiany na porządne listwy PE i N.</li>
+<li>Na jednym ze zdjęć leży zestaw złączek <b>SIDL-SET-5S</b> (szybkozłączki) — nadają się
+    na rozgałęzienie N do trzech gniazd 230 V.</li>
+</ul>
+
+<h2>2. Nowe komponenty — opis</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>IDEAL TS (Kanlux) KRD6-2/16/10-A <span class="tag t-new">RCD 2P</span></h3>
+<table>
+<tr><td class="k">Typ</td><td>wyłącznik różnicowoprądowy <b>bez</b> członu nadprądowego (RCCB)</td></tr>
+<tr><td class="k">Bieguny</td><td>2P (L + N), 2 moduły</td></tr>
+<tr><td class="k">In / I∆n</td><td>16 A / <b>10 mA</b></td></tr>
+<tr><td class="k">Typ różnicówki</td><td><b>A</b> — prąd sinusoidalny <i>i pulsujący stały</i></td></tr>
+<tr><td class="k">Napięcie</td><td>230 V~ 50 Hz (Ui 400 V)</td></tr>
+<tr><td class="k">Zwarciowo</td><td>Im = I∆m = 500 A · Inc = I∆c = 6000 A</td></tr>
+<tr><td class="k">Norma</td><td>IEC/EN 61008-1, znak VDE, klasa temp. −25 °C</td></tr>
+<tr><td class="k">Zaciski</td><td>góra <b>1 | N</b>, dół <b>2 | N</b> — <b class="warn">N po prawej</b></td></tr>
+<tr><td class="k">Test</td><td>pomarańczowy przycisk „T”</td></tr>
+</table>
+<p><b>Czym się charakteryzuje:</b> 10 mA to najwyższa dostępna czułość w aparaturze modułowej —
+około trzykrotnie czulszy niż standardowe 30 mA. Stosuje się go na <b>pojedynczych</b> gniazdach
+o podwyższonym ryzyku (stanowiska pomiarowe, laboratoria). Nie ma zabezpieczenia zwarciowego
+— <b>musi</b> pracować szeregowo z wyłącznikiem nadprądowym ≤ 16 A.</p>
+</div>
+
+<div class="card">
+<h3>EATON FAZ-Z16/1 (xEffect), kat. 278626 <span class="tag t-new">MCB 1P</span></h3>
+<table>
+<tr><td class="k">Typ</td><td>wyłącznik nadprądowy 1-biegunowy, 1 moduł</td></tr>
+<tr><td class="k">In / charakterystyka</td><td>16 A / <b>Z</b></td></tr>
+<tr><td class="k">Wyzwalanie magnetyczne</td><td><b>2–3 × In → ok. 32–48 A</b> (dla porównania B: 3–5×, C: 5–10×)</td></tr>
+<tr><td class="k">Norma</td><td><b>IEC/EN 60947-2</b> — charakterystyki Z nie ma w EN 60898-1</td></tr>
+<tr><td class="k">Zdolność zwarciowa</td><td>15 kA @ 240 V~ wg 60947-2 (u części dystrybutorów podawane 10 kA — sprawdzić w karcie Eaton dla konkretnej partii)</td></tr>
+<tr><td class="k">Dodatki</td><td>optyczny wskaźnik położenia styków (zielony trójkąt), klasa ograniczania energii 3</td></tr>
+</table>
+<p><b>Czym się charakteryzuje:</b> bardzo niski próg zwarciowy. Dwie konsekwencje:
+<span class="ok">plus</span> — zadziała przy dużo wyższej impedancji pętli zwarcia
+(Zs ≤ 230/48 ≈ <b>4,8 Ω</b> wobec ≈ 2,9 Ω dla B16), czyli sprawdza się przy długich
+przedłużaczach i „miękkiej sieci”;
+<span class="warn">minus</span> — wyzwoli się od prądu rozruchowego zasilaczy impulsowych,
+transformatorów, styczników i sterowników LED. Do gniazd ogólnego przeznaczenia to zła
+charakterystyka, do zabezpieczenia toru pomiarowego / badanego urządzenia — bardzo dobra.</p>
+</div>
+
+<div class="card">
+<h3>NOARK Ex9BN B32/1, kat. 100011 <span class="tag t-new">MCB 1P</span></h3>
+<table>
+<tr><td class="k">Typ</td><td>wyłącznik nadprądowy 1-biegunowy, 1 moduł</td></tr>
+<tr><td class="k">In / charakterystyka</td><td>32 A / <b>B</b> (magnetyczne 3–5 × In)</td></tr>
+<tr><td class="k">Napięcie</td><td>240 / 415 V~</td></tr>
+<tr><td class="k">Norma / Icn</td><td>IEC/EN 60898-1 · <b>6000 A</b> · klasa ograniczania energii 3</td></tr>
+</table>
+<p><b>Czym się charakteryzuje:</b> odpowiednik funkcjonalny starego GACIA SB6L B32 — ta sama
+norma, ta sama charakterystyka, ta sama zdolność zwarciowa, tylko <b>jeden biegun zamiast
+trzech</b>. Sam w sobie nie zastąpi zabezpieczenia gniazda CEE 32 A.</p>
+</div>
+
+<div class="card">
+<h3>IDEAL TS (Kanlux) KLI-G, kat. 23321 <span class="tag t-new">Lampka</span></h3>
+<table>
+<tr><td class="k">Typ</td><td>lampka sygnalizacyjna LED, zielona, 1 moduł, szyna TH35</td></tr>
+<tr><td class="k">Napięcie</td><td>230 V~ 50 Hz (1-fazowa)</td></tr>
+<tr><td class="k">Ochrona</td><td>IP20</td></tr>
+<tr><td class="k">Zaciski</td><td><b>1</b> (góra) i <b>2</b> (dół) — symbol na obudowie: LED między 1 a 2</td></tr>
+<tr><td class="k">Pobór</td><td>rzędu 1–3 mA — pomijalny, ale <b>doliczany do prądu upływu</b></td></tr>
+</table>
+<p><b>Czym się charakteryzuje:</b> zwykły wskaźnik „obwód pod napięciem”. Nie jest wskaźnikiem
+bezpieczeństwa — brak świecenia nie dowodzi braku napięcia (przepalona dioda). Do sprawdzania
+przed dotknięciem zawsze próbnik dwubiegunowy.</p>
+</div>
+
+</div><!--/grid-->
+
+<h2>3. Stare ↔ nowe: co czym zastąpić</h2>
+<table>
+<thead><tr><th>Obwód / wyjście</th><th>Dziś</th><th>Nowy aparat</th><th>Ocena</th></tr></thead>
+<tbody>
+<tr>
+  <td><b>Główny RCD</b> (całość)</td>
+  <td>GACIA PR8NM 4P 40 A / 30 mA <b>typ AC</b></td>
+  <td class="warn">brak odpowiednika w komplecie</td>
+  <td class="bad">Typ AC to dziś minimum, którego się nie stosuje — nie wykrywa pulsującego
+      prądu stałego. Do wymiany na 4P 40 A / 30 mA <b>typ A</b>. Przy testach ładowarek EV:
+      typ B albo typ A + moduł RDC-DD 6 mA DC.</td>
+</tr>
+<tr>
+  <td><b>Gniazdo CEE 32 A</b></td>
+  <td>GACIA SB6L B32 <b>3P</b></td>
+  <td>Noark Ex9BN B32 <b>1P</b> — 1 szt.</td>
+  <td class="bad">Zabezpieczy tylko jedną fazę. Potrzebny aparat 3-biegunowy
+      (np. Noark Ex9BN 3P B32, kat. 100056) — patrz ostrzeżenie o wyzwalaniu wspólnym.</td>
+</tr>
+<tr>
+  <td><b>Gniazdo CEE 16 A</b></td>
+  <td>GACIA SB6L B16 <b>3P</b></td>
+  <td>Eaton FAZ-Z16/1 <b>1P</b> — 1 szt.</td>
+  <td class="bad">j.w. — potrzebny 3-biegunowy. Odpowiednik trójbiegunowy: FAZ-Z16/3
+      (kat. 278927) albo, jeśli mają tam pracować zwykłe odbiorniki, zwykły B16 3P.</td>
+</tr>
+<tr>
+  <td><b>3 × gniazdo 230 V</b></td>
+  <td>GACIA SB6L B16 1P (bez własnego RCD)</td>
+  <td class="ok">FAZ-Z16/1 + KRD6-2/16/10-A + KLI-G</td>
+  <td class="ok">To jedyne miejsce, gdzie nowy komplet pasuje bez uzupełnień — i wyraźnie
+      podnosi poziom ochrony. Zastrzeżenie co do 10 mA niżej.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="bom">4. Czego brakuje (zakupy)</h2>
+<table>
+<thead><tr><th>Poz.</th><th>Aparat</th><th>Szt.</th><th>Po co</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>RCD 4P 40 A / 30 mA <b>typ A</b> (lub typ B / A + RDC-DD dla EV)</td><td>1</td>
+    <td>zastąpienie PR8NM typu AC</td></tr>
+<tr><td>2</td><td>MCB <b>3P</b> B32, 6 kA (Noark Ex9BN 3P B32 – 100056)</td><td>1</td>
+    <td>gniazdo CEE 32 A — wyzwalanie wspólne</td></tr>
+<tr><td>3</td><td>MCB <b>3P</b> 16 A, char. B lub Z (Eaton FAZ-Z16/3 – 278927)</td><td>1</td>
+    <td>gniazdo CEE 16 A — wyzwalanie wspólne</td></tr>
+<tr><td>4</td><td>Listwa PE (min. 6 zacisków) + listwa N na izolatorze</td><td>1+1</td>
+    <td>zastąpienie kostek gwintowych</td></tr>
+<tr><td>5</td><td>Tulejki zaciskowe 1,5 / 2,5 / 6 mm² + zaciskarka</td><td>kpl.</td>
+    <td>wszystkie żyły linkowe</td></tr>
+<tr><td>6</td><td>Obudowa przenośna min. <b>15–18 modułów</b> <span class="k">(opcjonalnie)</span></td><td>1</td>
+    <td>patrz bilans miejsca poniżej</td></tr>
+</tbody>
+</table>
+
+<div class="box w">
+<p><b>Bilans miejsca na szynie.</b> Docelowo: RCD 4P (4) + MCB 3P B32 (3) + MCB 3P 16 A (3)
++ RCD 2P 10 mA (2) + MCB 1P 16 A (1) + lampka (1) = <b>14 modułów</b>, a licząc rezerwę i
+odstęp — 15. Obecna obudowa mieści ok. 12. Trzy wyjścia z tego:</p>
+<p>a) większa obudowa przenośna (18 modułów, 2 rzędy);<br>
+b) rezygnacja z osobnego MCB dla gniazd 230 V — KRD6 zasilany wprost z FAZ-Z16/1
+   (to już jest ujęte wyżej, oszczędza 0);<br>
+c) użycie aparatów zespolonych RCBO 3P+N zamiast pary RCD + MCB.</p>
+</div>
+
+<h2>5. Decyzje projektowe, które trzeba świadomie podjąć</h2>
+
+<div class="box b">
+<p><b>1. Wyzwalanie wspólne w obwodach trójfazowych.</b> Trzy osobne wyłączniki 1P na gniazdo
+CEE oznaczają, że przy przeciążeniu jednej fazy odbiornik dostaje dalej dwie pozostałe —
+klasyczny scenariusz spalenia silnika lub zasilacza ładowarki. Spinki mechaniczne łączą
+<i>dźwignie</i>, nie gwarantują jednoczesnego <i>wyzwolenia</i>. Do gniazd CEE stosuj wyłącznik
+3-biegunowy fabrycznie sprzężony.</p>
+</div>
+
+<div class="box b">
+<p><b>2. Typ AC musi zniknąć.</b> Stary PR8NM typ AC nie zadziała przy prądzie różnicowym
+o składowej stałej — a taką generuje praktycznie każdy prostownik, falownik i ładowarka EV.
+Przy tym stanowisku (badanie ładowarek) to nie jest formalność, tylko realna dziura
+w ochronie. Minimum typ A; przy ładowarkach — typ B albo typ A z modułem RDC-DD 6 mA.</p>
+</div>
+
+<div class="box w">
+<p><b>3. 10 mA to bardzo mało — dla trzech gniazd może być za mało.</b> Pojedynczy zasilacz
+impulsowy ma normatywnie dopuszczony upływ do 3,5 mA. Trzy urządzenia w gniazdach + lampka
+i jesteś na progu wyzwolenia bez żadnej usterki. Zalecenie: <b>10 mA na jedno wydzielone
+gniazdo testowe</b> (np. to oklejone „AWARIA”), pozostałe dwa na 30 mA — albo zaakceptuj
+częste wyzwalanie jako cechę stanowiska.</p>
+</div>
+
+<div class="box w">
+<p><b>4. Brak selektywności 10 mA ↔ 30 mA.</b> Oba są bezzwłoczne, więc upływ 12 mA może
+wyłączyć całą rozdzielnicę zamiast jednego obwodu. Selektywność dałby dopiero RCD typu S
+(zwłoczny) na wejściu — ale RCD zwłoczny nie liczy się jako ochrona uzupełniająca gniazd.
+Na stanowisku warsztatowym: zaakceptować i wiedzieć, dlaczego wyłącza się wszystko.</p>
+</div>
+
+<div class="box">
+<p><b>5. Charakterystyka Z na gniazdach 230 V.</b> FAZ-Z16 wyzwoli przy ok. 32–48 A —
+odkurzacz przemysłowy, sprężarka albo ładowarka w chwili załączenia to przekroczą.
+Jeśli te gniazda mają być „ogólnego użytku” → daj tam B16, a Z16 zostaw na obwód pomiarowy
+/ zasilanie badanego urządzenia, gdzie jego zaleta (zadziałanie przy wysokiej impedancji
+pętli) jest realnie potrzebna.</p>
+</div>
+
+<div class="box">
+<p><b>6. Nie łącz grzebieniem aparatów różnych producentów.</b> Geometria zacisków
+Noark / Eaton / IDEAL nie jest zamienna — szyny grzebieniowe stosuj wyłącznie w obrębie
+jednej marki, resztę połącz przewodem z tulejkami.</p>
+</div>
+
+<h2>6. Schemat ideowy (układ docelowy)</h2>
+
+<svg viewBox="0 0 1180 640" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <style>
+    .w1{stroke:#111;stroke-width:2;fill:none}
+    .wn{stroke:#2f6fd0;stroke-width:2;fill:none}
+    .wpe{stroke:#3a9a3a;stroke-width:2;fill:none}
+    .bx{fill:#fff;stroke:#111;stroke-width:1.6}
+    .lb{font-size:12px;fill:#111}
+    .lbb{font-size:12.5px;fill:#111;font-weight:bold}
+    .sm{font-size:10.5px;fill:#555}
+    .dash{stroke:#999;stroke-width:1;stroke-dasharray:4 3;fill:none}
+  </style>
+
+  <!-- supply -->
+  <text class="lbb" x="14" y="24">ZASILANIE  5 × (H07RN-F)</text>
+  <text class="sm" x="14" y="40">L1 L2 L3 N PE — wtyczka CEE 32 A</text>
+  <line class="w1" x1="20" y1="70"  x2="150" y2="70"/>
+  <line class="w1" x1="20" y1="92"  x2="150" y2="92"/>
+  <line class="w1" x1="20" y1="114" x2="150" y2="114"/>
+  <line class="wn" x1="20" y1="136" x2="150" y2="136"/>
+  <line class="wpe" x1="20" y1="170" x2="1120" y2="170"/>
+  <text class="lb" x="24" y="66">L1</text><text class="lb" x="24" y="88">L2</text>
+  <text class="lb" x="24" y="110">L3</text><text class="lb" x="24" y="132" fill="#2f6fd0">N</text>
+  <text class="lb" x="24" y="164" fill="#3a9a3a">PE — bezpośrednio na listwę PE, NIGDY przez RCD/MCB</text>
+
+  <!-- main RCD -->
+  <rect class="bx" x="150" y="52" width="150" height="104" rx="6"/>
+  <text class="lbb" x="160" y="74">RCD 4P</text>
+  <text class="lb"  x="160" y="92">40 A / 30 mA</text>
+  <text class="lb"  x="160" y="108" font-weight="bold">typ A</text>
+  <text class="sm"  x="160" y="126">(wymiana za typ AC)</text>
+  <text class="sm"  x="160" y="142">1/3/5/N → 2/4/6/N</text>
+
+  <line class="w1" x1="300" y1="70"  x2="360" y2="70"/>
+  <line class="w1" x1="300" y1="92"  x2="360" y2="92"/>
+  <line class="w1" x1="300" y1="114" x2="360" y2="114"/>
+  <line class="wn" x1="300" y1="136" x2="1000" y2="136"/>
+  <text class="sm" x="960" y="132" fill="#2f6fd0">listwa N</text>
+
+  <!-- bus verticals -->
+  <line class="w1" x1="360" y1="70"  x2="360" y2="560"/>
+  <line class="w1" x1="380" y1="92"  x2="380" y2="560"/>
+  <line class="w1" x1="400" y1="114" x2="400" y2="560"/>
+  <line class="w1" x1="360" y1="70"  x2="360" y2="70"/>
+  <line class="w1" x1="300" y1="92"  x2="380" y2="92"/>
+  <line class="w1" x1="300" y1="114" x2="400" y2="114"/>
+
+  <!-- circuit 1 -->
+  <rect class="bx" x="470" y="210" width="180" height="70" rx="6"/>
+  <text class="lbb" x="482" y="232">MCB 3P B32</text>
+  <text class="sm"  x="482" y="249">Noark Ex9BN 3P B32</text>
+  <text class="sm"  x="482" y="265">wyzwalanie wspólne</text>
+  <line class="w1" x1="360" y1="225" x2="470" y2="225"/>
+  <line class="w1" x1="380" y1="243" x2="470" y2="243"/>
+  <line class="w1" x1="400" y1="261" x2="470" y2="261"/>
+  <line class="w1" x1="650" y1="243" x2="740" y2="243"/>
+  <line class="wn" x1="700" y1="136" x2="700" y2="258"/>
+  <line class="wn" x1="700" y1="258" x2="740" y2="258"/>
+  <rect class="bx" x="740" y="205" width="200" height="80" rx="6"/>
+  <text class="lbb" x="752" y="228">GNIAZDO 1 — CEE 32 A</text>
+  <text class="sm"  x="752" y="246">TED IE-N 3253 · 3P+N+PE</text>
+  <text class="sm"  x="752" y="262">400 V · 6 h · IP54</text>
+  <text class="sm"  x="752" y="278">przewody 6 mm²</text>
+
+  <!-- circuit 2 -->
+  <rect class="bx" x="470" y="320" width="180" height="70" rx="6"/>
+  <text class="lbb" x="482" y="342">MCB 3P 16 A</text>
+  <text class="sm"  x="482" y="359">FAZ-Z16/3 lub B16 3P</text>
+  <text class="sm"  x="482" y="375">wyzwalanie wspólne</text>
+  <line class="w1" x1="360" y1="335" x2="470" y2="335"/>
+  <line class="w1" x1="380" y1="353" x2="470" y2="353"/>
+  <line class="w1" x1="400" y1="371" x2="470" y2="371"/>
+  <line class="w1" x1="650" y1="353" x2="740" y2="353"/>
+  <line class="wn" x1="680" y1="136" x2="680" y2="368"/>
+  <line class="wn" x1="680" y1="368" x2="740" y2="368"/>
+  <rect class="bx" x="740" y="315" width="200" height="80" rx="6"/>
+  <text class="lbb" x="752" y="338">GNIAZDO 2 — CEE 16 A</text>
+  <text class="sm"  x="752" y="356">TED IE-N 1653 · 3P+N+PE</text>
+  <text class="sm"  x="752" y="372">400 V · 6 h · IP54</text>
+  <text class="sm"  x="752" y="388">przewody 2,5 mm²</text>
+
+  <!-- circuit 3 -->
+  <rect class="bx" x="425" y="440" width="120" height="66" rx="6"/>
+  <text class="lbb" x="435" y="462">MCB 1P 16 A</text>
+  <text class="sm"  x="435" y="479">FAZ-Z16/1</text>
+  <text class="sm"  x="435" y="495">(lub B16)</text>
+  <line class="w1" x1="360" y1="473" x2="425" y2="473"/>
+
+  <rect class="bx" x="585" y="430" width="150" height="86" rx="6"/>
+  <text class="lbb" x="596" y="452">RCD 2P 16 A</text>
+  <text class="lb"  x="596" y="470">10 mA · typ A</text>
+  <text class="sm"  x="596" y="486">KRD6-2/16/10-A</text>
+  <text class="sm"  x="596" y="502">1|N góra → 2|N dół</text>
+  <line class="w1" x1="545" y1="473" x2="585" y2="473"/>
+  <line class="wn" x1="660" y1="136" x2="660" y2="420"/>
+  <line class="wn" x1="660" y1="420" x2="710" y2="420"/>
+  <line class="wn" x1="710" y1="420" x2="710" y2="430"/>
+
+  <line class="w1" x1="735" y1="465" x2="800" y2="465"/>
+  <line class="wn" x1="735" y1="495" x2="800" y2="495"/>
+  <rect class="bx" x="800" y="430" width="200" height="86" rx="6"/>
+  <text class="lbb" x="812" y="452">GNIAZDA 3 — 3 × 230 V</text>
+  <text class="sm"  x="812" y="470">schuko 16 A, IP54</text>
+  <text class="sm"  x="812" y="486">L z RCD 10 mA, N z RCD 10 mA</text>
+  <text class="sm"  x="812" y="502">przewody 2,5 mm²</text>
+
+  <!-- lamp -->
+  <rect class="bx" x="585" y="545" width="150" height="60" rx="6"/>
+  <text class="lbb" x="596" y="567">LAMPKA KLI-G</text>
+  <text class="sm"  x="596" y="584">zacisk 1 → L (za MCB)</text>
+  <text class="sm"  x="596" y="599">zacisk 2 → N</text>
+  <line class="w1" x1="545" y1="473" x2="565" y2="473"/>
+  <line class="w1" x1="565" y1="473" x2="565" y2="575"/>
+  <line class="w1" x1="565" y1="575" x2="585" y2="575"/>
+  <line class="wn" x1="660" y1="420" x2="660" y2="615"/>
+  <line class="wn" x1="660" y1="615" x2="750" y2="615"/>
+  <line class="wn" x1="750" y1="615" x2="750" y2="590"/>
+  <line class="wn" x1="735" y1="590" x2="750" y2="590"/>
+
+  <text class="sm" x="1010" y="180" fill="#3a9a3a">PE do wszystkich gniazd</text>
+  <line class="wpe" x1="960" y1="170" x2="960" y2="285"/>
+  <line class="wpe" x1="920" y1="170" x2="920" y2="395"/>
+  <line class="wpe" x1="880" y1="170" x2="880" y2="430"/>
+</svg>
+
+<p class="k">Uwaga do schematu: lampka KLI-G pokazana za MCB obwodu gniazd 230 V — świeci wtedy,
+gdy ten obwód jest załączony. Jeśli ma sygnalizować obecność napięcia zasilania w ogóle,
+przenieś jej zacisk 1 przed RCD główny (wtedy jednak jej prąd nie płynie przez RCD i nie
+dokłada się do upływu).</p>
+
+<h2>7. Podłączenie krok po kroku</h2>
+
+<div class="box b">
+<p><b>Przed rozpoczęciem:</b> wyjmij wtyczkę z gniazda, sprawdź brak napięcia próbnikiem
+dwubiegunowym na wszystkich żyłach, rozładuj ewentualne kondensatory filtrów. Rozdzielnica
+przenośna = kabel można wpiąć w każdej chwili; zabezpiecz wtyczkę przed przypadkowym
+włączeniem (kłódka / opaska / trzymaj przy sobie).</p>
+</div>
+
+<div class="step"><span class="n">1</span><b>Dokumentacja stanu przed demontażem.</b>
+Zrób zdjęcia z bliska każdego zacisku i spisz, która żyła (kolor + trasa) idzie gdzie.
+Przy 4 aparatach i ~15 żyłach pamięć zawiedzie. Naklej taśmę z opisem na każdą żyłę
+odpływową: <span class="mono">G1-L1, G1-L2, G1-L3, G1-N, G2-L1 …</span></div>
+
+<div class="step"><span class="n">2</span><b>Demontaż.</b> Zwolnij żyły, wypnij aparaty
+z szyny TH35 (śrubokręt w zatrzask od dołu). Przy okazji sprawdź szynę pod kątem
+korozji i luzu w obudowie.</div>
+
+<div class="step"><span class="n">3</span><b>Listwy PE i N.</b> Zamontuj listwę PE (metalowa,
+przykręcona do obudowy metalowej lub na wsporniku) i listwę N na izolatorze. Wyrzuć kostki
+gwintowe. <b>PE nigdy nie przechodzi przez RCD ani MCB</b> — prosto z żyły żółto-zielonej
+zasilania na listwę PE, stamtąd do każdego gniazda.</div>
+
+<div class="step"><span class="n">4</span><b>Kolejność aparatów na szynie (od lewej).</b><br>
+<span class="mono">[RCD 4P 40 A/30 mA typ A] → [MCB 3P B32] → [MCB 3P 16 A] →
+[MCB 1P 16 A] → [RCD 2P 16 A/10 mA] → [KLI-G]</span><br>
+Zostaw 1 moduł rezerwy. Zwróć uwagę: w starym RCD GACIA zacisk <b>N jest po lewej</b>,
+w nowym KRD6 <b>N jest po prawej</b> — nie przenoś nawyku 1:1.</div>
+
+<div class="step"><span class="n">5</span><b>Zasilanie do RCD głównego.</b>
+Żyły L1/L2/L3 → zaciski górne 1/3/5, N → zacisk N górny. Dół RCD (2/4/6/N) to szyna
+rozdzielcza całej rozdzielnicy. PE omija RCD.</div>
+
+<div class="step"><span class="n">6</span><b>Rozdział faz na wyłączniki.</b>
+Z zacisków 2/4/6 RCD na górne zaciski wyłączników — grzebieniem 3-fazowym <b>tylko
+w obrębie jednej marki</b>, w przeciwnym razie mostkami z przewodu 6 mm² (do B32)
+i 2,5 mm² (do pozostałych), zawsze z tulejkami.</div>
+
+<div class="step"><span class="n">7</span><b>Gniazdo CEE 32 A.</b>
+MCB 3P B32 zaciski 2/4/6 → styki L1/L2/L3 gniazda, przewód <b>6 mm²</b>.
+N gniazda → listwa N (za RCD). PE gniazda → listwa PE. Zachowaj <b>kolejność faz zgodną
+z ruchem wskazówek zegara</b> patrząc na czoło gniazda (styk PE na godz. 6).</div>
+
+<div class="step"><span class="n">8</span><b>Gniazdo CEE 16 A.</b> Analogicznie,
+przewód <b>2,5 mm²</b>, z MCB 3P 16 A. Kolejność faz taka sama jak w gnieździe 32 A —
+inaczej to samo urządzenie zmieni kierunek obrotów zależnie od gniazda.</div>
+
+<div class="step"><span class="n">9</span><b>Obwód gniazd 230 V.</b><br>
+a) z jednej fazy (np. L1, za RCD głównym) → zacisk <b>1</b> MCB 1P 16 A;<br>
+b) zacisk <b>2</b> MCB → zacisk <b>1</b> (góra, lewy) KRD6;<br>
+c) listwa N (za RCD głównym) → zacisk <b>N</b> (góra, prawy) KRD6;<br>
+d) zacisk <b>2</b> KRD6 (dół, lewy) → L gniazd 230 V (rozgałęzienie szybkozłączką SIDL);<br>
+e) zacisk <b>N</b> KRD6 (dół, prawy) → N gniazd 230 V — <b class="warn">ten N nie może wracać
+   na listwę N ogólną</b>, bo prąd ominąłby przekładnik i RCD 10 mA wyłączyłby natychmiast;<br>
+f) PE gniazd → listwa PE (bezpośrednio).<br>
+<span class="k">To najczęstszy błąd przy montażu RCD wydzielonego: N obwodu chronionego musi
+być odseparowany od N reszty instalacji.</span></div>
+
+<div class="step"><span class="n">10</span><b>Lampka KLI-G.</b>
+Zacisk <b>1</b> → L za MCB obwodu, który ma sygnalizować (mostek 1,5 mm²).
+Zacisk <b>2</b> → N tego samego obwodu. Jeśli podpinasz ją za RCD 10 mA — pamiętaj, że jej
+prąd (ok. 1–3 mA) przepływa przez przekładnik symetrycznie, więc nie powoduje wyzwolenia;
+problemem byłby dopiero jej upływ do PE.</div>
+
+<div class="step"><span class="n">11</span><b>Dokręcenie i opis.</b>
+Momenty wg producenta — orientacyjnie MCB 1P: 2,0–2,5 N·m, RCD: 2,5–3,0 N·m. Dokręć
+<b>dwukrotnie</b>, w odstępie kilku minut (linka się układa). Naklej nowe opisy obwodów
+i uzupełnij tabliczkę: I∆n, typy RCD, In wyłączników.</div>
+
+<h2>8. Sprawdzenie po montażu</h2>
+<table>
+<thead><tr><th>#</th><th>Próba</th><th>Kryterium</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Ciągłość PE od wtyczki do styku PE każdego gniazda</td><td>&lt; 0,3 Ω (nisko­napięciowo, prądem ≥ 200 mA)</td></tr>
+<tr><td>2</td><td>Rezystancja izolacji L-L, L-N, L-PE, N-PE, 500 V DC</td><td>≥ 1 MΩ (aparaty elektroniczne odłączone / wyłączniki zamknięte)</td></tr>
+<tr><td>3</td><td>Brak połączenia N–PE za rozdzielnicą</td><td>rozdzielone (układ TN-S za wtyczką)</td></tr>
+<tr><td>4</td><td>RCD główny: I∆n, 5×I∆n, przycisk T</td><td>wyzwolenie ≤ 300 ms przy I∆n, ≤ 40 ms przy 5×I∆n</td></tr>
+<tr><td>5</td><td>RCD 10 mA: wyzwolenie i prąd rzeczywisty wyzwolenia</td><td>0,5–1,0 × I∆n, czyli 5–10 mA</td></tr>
+<tr><td>6</td><td>Kolejność faz w obu gniazdach CEE</td><td>zgodna, prawoskrętna, identyczna w obu</td></tr>
+<tr><td>7</td><td>Polaryzacja gniazd 230 V (L na prawym styku patrząc na czoło)</td><td>L / N nie zamienione, PE na kołku</td></tr>
+<tr><td>8</td><td>Impedancja pętli zwarcia Zs na każdym gnieździe</td><td>B16 ≤ 2,87 Ω · B32 ≤ 1,44 Ω · Z16 ≤ 4,79 Ω (dla 230 V)</td></tr>
+<tr><td>9</td><td>Próba obciążeniowa 15 min na każdym obwodzie</td><td>brak grzania zacisków (termowizja / dotyk po wyłączeniu)</td></tr>
+<tr><td>10</td><td>Lampka świeci przy załączonym obwodzie</td><td>tak; brak świecenia ≠ brak napięcia</td></tr>
+</tbody>
+</table>
+
+<div class="box g">
+<p><b>Wskazówka pod stanowisko testowe EV.</b> Jeśli ta rozdzielnica ma służyć do symulacji
+wad instalacji, warto od razu przewidzieć: (a) gniazdo z celowo podniesioną impedancją pętli
+(szeregowy rezystor mocy / dławik) — wtedy charakterystyka Z ma sens, bo nadal zadziała;
+(b) rozłącznik pozwalający przerwać PE (badanie reakcji ładowarki na brak PE) — <b>tylko
+z blokadą i opisem, wyłącznie na stanowisku</b>; (c) możliwość zamiany L↔N w gnieździe
+230 V. Te trzy funkcje to osobne moduły — nie mieszaj ich z torem ochronnym rozdzielnicy.</p>
+</div>
+
+<div class="foot">
+Opracowano na podstawie zdjęć z folderu <span class="mono">AMPERE_POINT\rozdzielnica</span>
+(5 zdjęć aparatów nowych, 6 zdjęć rozdzielnicy istniejącej) oraz kart katalogowych
+producentów. Wartości odczytane z tabliczek na zdjęciach — przed zakupem zweryfikuj
+oznaczenia na aparatach fizycznie. Dokument nie zastępuje projektu ani protokołu z pomiarów
+odbiorczych wykonanych przez osobę z uprawnieniami.
+</div>
+
+</div>
+</body>
+</html>

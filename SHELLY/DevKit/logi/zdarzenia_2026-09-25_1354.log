@@ -1,0 +1,30 @@
+13:54:36  Monitor DevKitu przez Wi-Fi, 192.168.0.238. Ustawienia na starcie:
+13:54:36      Ładowanie włączone (DP 18): tak
+13:54:36      Limit prądu (DP 4): 12 A
+13:54:36      Stan ładowarki (DP 3): Wolna
+13:54:36      odczyty: energia sesji 0 kWh | czas sesji 0 min | moc 0 W, prąd 0 A, napięcia 0/0/0 V, licznik 0 kWh
+13:54:36  Log przez Wi-Fi: połączono z 192.168.0.238
+13:54:45      TMCU: D shelly_tmcu.cpp:598     RX: 0x24 v=3 [] (state Ready)
+13:54:45      TMCU: D shelly_tmcu.cpp:890     TX: 0x24 v=3 [c8] (Ready)
+13:54:48      TMCU: D shelly_tmcu.cpp:598     RX: 0x00 v=3 [01] (state Ready)
+13:54:48      TMCU: D shelly_tmcu.cpp:79      Tmcu Event 1 (0x3fca0e40)
+13:54:53      TMCU: D shelly_tmcu.cpp:993     wifi report state is SendRealState
+13:54:53      TMCU: D shelly_tmcu.cpp:520     Sending WiFi status 4
+13:54:53      TMCU: D shelly_tmcu.cpp:890     TX: 0x03 v=3 [04] (Ready)
+13:54:53      TMCU: D shelly_tmcu.cpp:598     RX: 0x03 v=3 [] (state Ready)
+13:54:58      TMCU: D shelly_tmcu.cpp:598     RX: 0x1c v=3 [] (state Ready)
+13:54:58      TMCU: D shelly_tmcu.cpp:890     TX: 0x1c v=3 [011a09190d370005] (Ready)
+13:54:58      TMCU: D shelly_tmcu.cpp:598     RX: 0x24 v=3 [] (state Ready)
+13:54:58      TMCU: D shelly_tmcu.cpp:890     TX: 0x24 v=3 [c8] (Ready)
+13:55:03      TMCU: D shelly_tmcu.cpp:598     RX: 0x00 v=3 [01] (state Ready)
+13:55:03      TMCU: D shelly_tmcu.cpp:79      Tmcu Event 1 (0x3fca0e40)
+13:55:16      TMCU: D shelly_tmcu.cpp:598     RX: 0x1c v=3 [] (state Ready)
+13:55:16      TMCU: D shelly_tmcu.cpp:890     TX: 0x1c v=3 [011a09190d371205] (Ready)
+13:55:16      TMCU: D shelly_tmcu.cpp:598     RX: 0x24 v=3 [] (state Ready)
+13:55:16      TMCU: D shelly_tmcu.cpp:890     TX: 0x24 v=3 [c8] (Ready)
+13:55:18      TMCU: D shelly_tmcu.cpp:598     RX: 0x00 v=3 [01] (state Ready)
+13:55:18      TMCU: D shelly_tmcu.cpp:79      Tmcu Event 1 (0x3fca0e40)
+13:55:23      TMCU: D shelly_tmcu.cpp:993     wifi report state is SendRealState
+13:55:23      TMCU: D shelly_tmcu.cpp:520     Sending WiFi status 4
+13:55:23      TMCU: D shelly_tmcu.cpp:890     TX: 0x03 v=3 [04] (Ready)
+13:55:23      TMCU: D shelly_tmcu.cpp:598     RX: 0x03 v=3 [] (state Ready)

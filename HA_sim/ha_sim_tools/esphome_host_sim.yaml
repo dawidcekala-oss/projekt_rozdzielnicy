@@ -1,0 +1,42 @@
+# ============================================================================
+# ESPHome bez fizycznego ukladu - platforma "host" (uruchamiana w WSL)
+# Projekt AMPERE_POINT - 2026-07-06
+#
+# Kompiluje sie i dziala jako zwykly program na komputerze; Home Assistant
+# laczy sie z nim jak z prawdziwym urzadzeniem ESPHome (natywne API, port 6053).
+#
+# URUCHOMIENIE (Windows -> WSL):
+#   wsl
+#   pip install esphome
+#   esphome run esphome_host_sim.yaml
+# W HA: Ustawienia -> Urzadzenia i uslugi -> Dodaj integracje -> ESPHome
+#   Host: host.docker.internal   Port: 6053
+# ============================================================================
+
+esphome:
+  name: symulator-esphome
+  friendly_name: Symulator ESPHome
+
+host:            # <- zamiast esp32/esp8266: program na komputerze
+
+logger:
+
+api:             # natywne API dla Home Assistant (port 6053)
+
+sensor:
+  - platform: template
+    name: "Symulowana temperatura rozdzielnicy"
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    update_interval: 5s
+    lambda: |-
+      // 22 stopnie +/- 3, wolny dryf sinusoidalny + szum
+      static float t = 0;
+      t += 0.05;
+      return 22.0 + 3.0 * sin(t) + (rand() % 10) / 10.0;
+
+switch:
+  - platform: template
+    name: "Symulowany przekaznik"
+    optimistic: true

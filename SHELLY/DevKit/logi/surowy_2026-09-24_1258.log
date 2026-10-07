@@ -1,0 +1,842 @@
+12:58:12 I y_notifications.cpp:168 Status change of number:207: {"value":36.7}
+12:58:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:58:14 I y_notifications.cpp:168 Status change of number:207: {"value":36.3}
+12:58:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:58:16 I y_notifications.cpp:168 Status change of number:207: {"value":35.9}
+12:58:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:58:18 I y_notifications.cpp:168 Status change of number:207: {"value":35.5}
+12:58:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:58:20 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:58:20 I y_notifications.cpp:168 Status change of number:207: {"value":35.1}
+12:58:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:58:22 I y_notifications.cpp:168 Status change of number:207: {"value":34.7}
+12:58:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:58:24 I y_notifications.cpp:168 Status change of number:207: {"value":34.4}
+12:58:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:58:26 I y_notifications.cpp:168 Status change of number:207: {"value":34.1}
+12:58:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:58:28 I y_notifications.cpp:168 Status change of number:207: {"value":33.7}
+12:58:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:58:30 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:58:30 I y_notifications.cpp:168 Status change of number:207: {"value":33.4}
+12:58:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:58:32 I y_notifications.cpp:168 Status change of number:207: {"value":33.1}
+12:58:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:58:34 I y_notifications.cpp:168 Status change of number:207: {"value":32.8}
+12:58:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:58:36 I y_notifications.cpp:168 Status change of number:207: {"value":32.5}
+12:58:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:58:38 I y_notifications.cpp:168 Status change of number:207: {"value":32.2}
+12:58:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:58:40 I y_notifications.cpp:168 Status change of number:207: {"value":31.9}
+12:58:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:58:42 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:58:42 I y_notifications.cpp:168 Status change of number:207: {"value":31.7}
+12:58:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:58:44 I y_notifications.cpp:168 Status change of number:207: {"value":31.4}
+12:58:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:58:46 I y_notifications.cpp:168 Status change of number:207: {"value":31.1}
+12:58:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:58:48 I y_notifications.cpp:168 Status change of number:207: {"value":30.9}
+12:58:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:58:50 I y_notifications.cpp:168 Status change of number:207: {"value":30.7}
+12:58:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:58:52 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:58:52 I y_notifications.cpp:168 Status change of number:207: {"value":30.4}
+12:58:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:58:54 I y_notifications.cpp:168 Status change of number:207: {"value":30.2}
+12:58:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:58:56 I y_notifications.cpp:168 Status change of number:207: {"value":30}
+12:58:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:58:58 I y_notifications.cpp:168 Status change of number:207: {"value":29.8}
+12:58:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:59:00 I y_notifications.cpp:168 Status change of number:207: {"value":29.6}
+12:59:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:59:02 I y_notifications.cpp:168 Status change of number:207: {"value":29.4}
+12:59:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:59:04 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:59:04 I y_notifications.cpp:168 Status change of number:207: {"value":29.2}
+12:59:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:59:06 I y_notifications.cpp:168 Status change of number:207: {"value":29}
+12:59:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:59:08 I y_notifications.cpp:168 Status change of number:207: {"value":28.8}
+12:59:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:59:10 I y_notifications.cpp:168 Status change of number:207: {"value":28.7}
+12:59:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:59:12 I y_notifications.cpp:168 Status change of number:207: {"value":28.5}
+12:59:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:59:14 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:59:14 I y_notifications.cpp:168 Status change of number:207: {"value":28.3}
+12:59:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:59:16 I y_notifications.cpp:168 Status change of number:207: {"value":28.2}
+12:59:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:59:18 I y_notifications.cpp:168 Status change of number:207: {"value":28}
+12:59:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:59:20 I y_notifications.cpp:168 Status change of number:207: {"value":27.9}
+12:59:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:59:22 I y_notifications.cpp:168 Status change of number:207: {"value":27.7}
+12:59:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:59:24 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:59:24 I y_notifications.cpp:168 Status change of number:207: {"value":27.6}
+12:59:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:59:26 I y_notifications.cpp:168 Status change of number:207: {"value":27.4}
+12:59:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:59:28 I y_notifications.cpp:168 Status change of number:207: {"value":27.3}
+12:59:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:59:30 I y_notifications.cpp:168 Status change of number:207: {"value":27.2}
+12:59:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:59:32 I y_notifications.cpp:168 Status change of number:207: {"value":27}
+12:59:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:59:34 I y_notifications.cpp:168 Status change of number:207: {"value":26.9}
+12:59:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:59:36 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:59:36 I y_notifications.cpp:168 Status change of number:207: {"value":26.8}
+12:59:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:59:38 I y_notifications.cpp:168 Status change of number:207: {"value":26.7}
+12:59:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:59:40 I y_notifications.cpp:168 Status change of number:207: {"value":26.6}
+12:59:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:59:42 I y_notifications.cpp:168 Status change of number:207: {"value":26.5}
+12:59:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:59:44 I y_notifications.cpp:168 Status change of number:207: {"value":26.4}
+12:59:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:59:46 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:59:46 I y_notifications.cpp:168 Status change of number:207: {"value":26.3}
+12:59:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:59:48 I y_notifications.cpp:168 Status change of number:207: {"value":26.2}
+12:59:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:59:50 I y_notifications.cpp:168 Status change of number:207: {"value":26.1}
+12:59:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:59:52 I y_notifications.cpp:168 Status change of number:207: {"value":26}
+12:59:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:59:54 I y_notifications.cpp:168 Status change of number:207: {"value":25.9}
+12:59:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:59:56 I y_notifications.cpp:168 Status change of number:207: {"value":25.8}
+12:59:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:59:58 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:59:58 I y_notifications.cpp:168 Status change of number:207: {"value":25.7}
+12:59:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:00:00 I y_notifications.cpp:168 Status change of number:207: {"value":25.6}
+13:00:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:00:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:00:04 I y_notifications.cpp:168 Status change of number:207: {"value":25.5}
+13:00:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:00:06 I y_notifications.cpp:168 Status change of number:207: {"value":25.4}
+13:00:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:00:08 I y_notifications.cpp:168 Status change of number:207: {"value":25.3}
+13:00:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:00:10 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+13:00:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:00:12 I y_notifications.cpp:168 Status change of number:207: {"value":25.2}
+13:00:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:00:14 I y_notifications.cpp:168 Status change of number:207: {"value":25.1}
+13:00:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:00:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:00:18 I y_notifications.cpp:168 Status change of number:207: {"value":25}
+13:00:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:00:20 I y_notifications.cpp:168 Status change of number:207: {"value":24.9}
+13:00:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:00:22 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:00:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:00:24 I y_notifications.cpp:168 Status change of number:207: {"value":24.8}
+13:00:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:00:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:00:28 I y_notifications.cpp:168 Status change of number:207: {"value":24.7}
+13:00:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:00:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:00:32 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+13:00:32 I y_notifications.cpp:168 Status change of number:207: {"value":24.6}
+13:00:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:00:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:00:36 I y_notifications.cpp:168 Status change of number:207: {"value":24.5}
+13:00:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:00:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:00:40 I y_notifications.cpp:168 Status change of number:207: {"value":24.4}
+13:00:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:00:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:00:44 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:00:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:00:46 I y_notifications.cpp:168 Status change of number:207: {"value":24.3}
+13:00:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:00:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:00:50 I y_notifications.cpp:168 Status change of number:207: {"value":24.2}
+13:00:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:00:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:00:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:00:56 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:00:56 I y_notifications.cpp:168 Status change of number:207: {"value":24.1}
+13:00:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:00:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:01:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:01:02 I y_notifications.cpp:168 Status change of number:207: {"value":24}
+13:01:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:01:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:01:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:01:08 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:01:08 I y_notifications.cpp:168 Status change of number:207: {"value":23.9}
+13:01:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:01:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:01:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:01:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:01:16 I y_notifications.cpp:168 Status change of number:207: {"value":23.8}
+13:01:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:01:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:01:20 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:01:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:01:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:01:24 I y_notifications.cpp:168 Status change of number:207: {"value":23.7}
+13:01:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:01:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:01:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:01:30 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:01:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:01:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:01:33 I shos_wifi_sta.cpp:813   Avg RSSI -81, will scan for a better AP
+13:01:34 I y_notifications.cpp:168 Status change of number:207: {"value":23.6}
+13:01:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:01:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:01:37 I shos_wifi_sta.cpp:634   Trying to switch to ae:9c:6c:cc:eb:a8 (RSSI -84 -> -67)
+13:01:37 I wifi                    I (654668) wifi:state: run -> init (0x0)
+13:01:37 I wifi                    I (654668) wifi:pm stop, total sleep time: 0 us / 648157146 us
+13:01:37 I wifi                    I (654678) wifi:<ba-del>idx:0, tid:0
+13:01:37 I wifi                    I (654688) wifi:<ba-del>idx:1, tid:6
+13:01:37 I wifi                    I (654688) wifi:new:<11,0>, old:<11,0>, ap:<255,255>, sta:<11,0>, prof:1, snd_ch_cfg:0x0
+13:01:37 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 8
+13:01:37 I shos_lwip.cpp:204       ws(0x3fcbf370): Link down
+13:01:37 I shos_lwip.cpp:118       Default: ws(0x3fcbf370) -> (null) (0.0.0.0, NAT? no)
+13:01:37 W wifi                    W (654728) wifi:Haven't to connect to a suitable AP now!
+13:01:37 W wifi                    W (654728) wifi:Haven't to connect to a suitable AP now!
+13:01:37 I hos_http_client.cpp:676 0x3fcb3570: Finished; bytes 248078/7716, code 101, redir 0/3, auth 0, status -1: Connection error: -13
+13:01:37 I y_notifications.cpp:213 Event from wifi: {"component":"wifi","event":"sta_disconnected","sta_ip":null,"ssid":null,"reason":8,"ts":1790247696.63}
+13:01:37 I y_notifications.cpp:168 Status change of wifi: {"channel":0,"rssi":0,"ssid":null,"sta_ip":"0.0.0.0","status":"connecting"}
+13:01:37 I y_notifications.cpp:168 Status change of cloud: {"connected":false}
+13:01:37 I shos_net.cpp:110        WiFi STA: disconnected
+13:01:37 I wifi                    I (654808) wifi:Set ps type: 0, coexist: 0
+13:01:37 I shos_wifi.c:58          WiFi STA: Connecting, BSSID ae:9c:6c:cc:eb:a8 ch 11 RSSI -67
+13:01:37 I wifi                    I (654828) wifi:new:<11,0>, old:<11,0>, ap:<255,255>, sta:<11,0>, prof:1, snd_ch_cfg:0x0
+13:01:37 I wifi                    I (654838) wifi:state: init -> auth (0xb0)
+13:01:37 I y_notifications.cpp:168 Status change of wifi: {"channel":0,"rssi":-66,"ssid":null,"sta_ip":"0.0.0.0","status":"connecting"}
+13:01:37 I wifi                    I (654848) wifi:state: auth -> assoc (0x0)
+13:01:37 I shos_net.cpp:114        WiFi STA: connecting
+13:01:37 I wifi                    I (654878) wifi:state: assoc -> run (0x10)
+13:01:37 I wifi                    I (654918) wifi:connected with AmperePoint, aid = 5, channel 11, BW20, bssid = ae:9c:6c:cc:eb:a8
+13:01:37 I wifi                    I (654928) wifi:security: WPA2-PSK, phy: bgn, rssi: -66
+13:01:37 I wifi                    I (654938) wifi:pm start, type: 0
+13:01:37 I wifi                    I (654938) wifi:set rx beacon pti, rx_bcn_pti: 0, bcn_timeout: 25000, mt_pti: 0, mt_time: 10000
+13:01:37 I shos_wifi.c:68          WiFi STA: Connected, BSSID ae:9c:6c:cc:eb:a8 ch 11 RSSI -66
+13:01:37 I shos_lwip.cpp:204       ws(0x3fcbf370): Link up
+13:01:37 I y_notifications.cpp:168 Status change of wifi: {"channel":11,"rssi":-66,"ssid":"AmperePoint","sta_ip":"0.0.0.0","status":"connected"}
+13:01:37 I wifi                    I (654978) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+13:01:37 I shos_net.cpp:118        WiFi STA: connected
+13:01:37 I wifi                    I (655018) wifi:<ba-add>idx:0 (ifx:0, ae:9c:6c:cc:eb:a8), tid:0, ssn:0, winSize:64
+13:01:37 I shos_lwip.cpp:118       Default: (null) -> ws(0x3fcbf370) (192.168.0.1, NAT? no)
+13:01:37 I y_notifications.cpp:168 Status change of wifi: {"channel":11,"rssi":-67,"ssid":"AmperePoint","sta_ip":"192.168.0.238","status":"got ip"}
+13:01:37 I shos_net.cpp:125        WiFi STA: ready, IP 192.168.0.238, GW 192.168.0.1, DNS 192.168.0.1, NTP 0.0.0.0
+13:01:37 I hos_http_client.cpp:334 0x3fcc7010: WSS shelly-288-eu.shelly.cloud:6022/jrpc (CA shelly_cloud.pem,ca.pem)
+13:01:38 I hos_http_client.cpp:606 0x3fcc7010: WS handshake complete
+13:01:38 I shos_rpc_inst.c:241     Shelly.GetComponents [6912936@iotc_291_1-shelly-288-eu] via SHC 34.40.19.158:6022
+13:01:38 I shos_rpc_inst.c:241     Shelly.GetComponents [6912937@iotc_291_1-shelly-288-eu] via SHC 34.40.19.158:6022
+13:01:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:01:38 I shos_rpc_inst.c:241     shc.channelready [6912938@iotc_291_1-shelly-288-eu] via SHC 34.40.19.158:6022
+13:01:38 I y_notifications.cpp:168 Status change of cloud: {"connected":true}
+13:01:40 I ns_sd_responder.cpp:236 ws(0x3fcbf370): Announced Q11-symulator--DevKit-.local any@any (fe80::5632:4ff:fe51:6334)
+13:01:40 I ns_sd_responder.cpp:236 ws(0x3fcbf370): Announced ShellyXC3-543204516334.local any@any (fe80::5632:4ff:fe51:6334)
+13:01:40 I ns_sd_responder.cpp:236 ws(0x3fcbf370): Announced Q11-symulator--DevKit-.local any@any (192.168.0.238)
+13:01:40 I ns_sd_responder.cpp:236 ws(0x3fcbf370): Announced ShellyXC3-543204516334.local any@any (192.168.0.238)
+13:01:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:01:42 I wifi                    I (660098) wifi:<ba-add>idx:1 (ifx:0, ae:9c:6c:cc:eb:a8), tid:6, ssn:2, winSize:64
+13:01:42 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:01:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:01:44 I y_notifications.cpp:168 Status change of number:207: {"value":23.5}
+13:01:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:01:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:01:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:01:48 W y_notifications.cpp:122 ch type=WS_in info=from 192.168.0.57:57784 via ws0 has no DST
+13:01:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:01:50 W y_notifications.cpp:122 ch type=WS_in info=from 192.168.0.57:57784 via ws0 has no DST
+13:01:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:01:52 W y_notifications.cpp:122 ch type=WS_in info=from 192.168.0.57:57784 via ws0 has no DST
+13:01:54 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:01:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:01:54 W y_notifications.cpp:122 ch type=WS_in info=from 192.168.0.57:57784 via ws0 has no DST
+13:01:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:01:56 W y_notifications.cpp:122 ch type=WS_in info=from 192.168.0.57:57784 via ws0 has no DST
+13:01:58 I y_notifications.cpp:168 Status change of number:207: {"value":23.4}
+13:01:58 W y_notifications.cpp:122 ch type=WS_in info=from 192.168.0.57:57784 via ws0 has no DST
+13:01:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:01:58 W y_notifications.cpp:122 ch type=WS_in info=from 192.168.0.57:57784 via ws0 has no DST
+13:02:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:02:00 W y_notifications.cpp:122 ch type=WS_in info=from 192.168.0.57:57784 via ws0 has no DST
+13:02:01 I shos_rpc_inst.c:241     RPC.Ping [24@web-1790247367824] via WS_in from 192.168.0.57:57784 via ws0
+13:02:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:02:04 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:02:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:02:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:02:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:02:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:02:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:02:14 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:02:14 I y_notifications.cpp:168 Status change of number:207: {"value":23.3}
+13:02:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:02:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:02:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:02:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:02:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:02:24 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:02:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:02:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:02:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:02:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:02:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:02:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:02:36 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:02:36 I y_notifications.cpp:168 Status change of number:207: {"value":23.2}
+13:02:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:02:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:02:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:02:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:02:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:02:46 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:02:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:02:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:02:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:02:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:02:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:02:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:02:58 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+13:02:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:02:59 E shos_rpc_inst.c:223     No handler for Service.ListConfigOptions
+13:03:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:03:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:03:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:03:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:03:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:03:10 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:03:10 I y_notifications.cpp:168 Status change of number:207: {"value":23.1}
+13:03:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:03:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:03:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:03:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:03:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:03:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:03:22 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:03:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:03:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:03:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:03:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:03:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:03:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:03:34 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:03:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:03:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:03:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:03:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:03:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:03:44 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:03:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:03:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:03:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:03:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:03:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:03:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:03:54 I shos_rpc_inst.c:241     boolean.setconfig [1790247833039@ShellyApp] via HTTP_in POST from 192.168.0.146:49182 via ws0
+13:03:54 I ly_virtual_base.cpp:469 Persistent status save
+13:03:56 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:03:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:03:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:04:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:04:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:04:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:04:06 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:04:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:04:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:04:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:04:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:04:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:04:16 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:04:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:04:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:04:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:04:22 I y_notifications.cpp:168 Status change of number:207: {"value":23}
+13:04:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:04:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:04:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:04:28 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+13:04:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:04:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:04:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:04:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:04:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:04:38 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+13:04:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:04:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:04:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:04:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:04:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:04:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:04:50 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:04:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:04:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:04:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:04:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:04:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:05:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:05:02 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:05:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:05:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:05:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:05:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:05:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:05:12 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:05:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:05:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:05:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:05:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:05:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:05:22 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:05:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:05:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:05:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:05:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:05:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:05:32 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:05:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:05:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:05:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:05:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:05:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:05:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:05:44 I shelly_script.cpp:204   script:1 5.8% CPU utilization
+13:05:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:05:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:05:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:05:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:05:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:05:54 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:05:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:05:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:05:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:06:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:06:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:06:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:06:06 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:06:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:06:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:06:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:06:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:06:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:06:16 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+13:06:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:06:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:06:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:06:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:06:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:06:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:06:28 I shelly_script.cpp:204   script:1 5.8% CPU utilization
+13:06:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:06:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:06:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:06:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:06:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:06:38 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:06:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:06:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:06:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:06:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:06:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:06:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:06:50 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:06:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:06:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:06:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:06:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:06:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:07:00 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:07:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:07:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:07:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:07:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:07:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:07:10 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:07:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:07:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:07:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:07:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:07:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:07:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:07:22 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:07:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:07:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:07:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:07:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:07:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:07:32 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:07:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:07:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:07:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:07:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:07:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:07:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:07:44 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:07:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:07:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:07:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:07:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:07:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:07:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:07:56 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:07:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:07:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:08:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:08:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:08:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:08:06 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:08:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:08:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:08:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:08:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:08:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:08:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:08:18 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:08:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:08:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:08:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:08:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:08:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:08:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:08:30 I shelly_script.cpp:204   script:1 5.8% CPU utilization
+13:08:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:08:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:08:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:08:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:08:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:08:40 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:08:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:08:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:08:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:08:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:08:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:08:50 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:08:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:08:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:08:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:08:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:08:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:09:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:09:02 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:09:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:09:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:09:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:09:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:09:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:09:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:09:14 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:09:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:09:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:09:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:09:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:09:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:09:24 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:09:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:09:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:09:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:09:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:09:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:09:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:09:36 I shelly_script.cpp:204   script:1 6.2% CPU utilization
+13:09:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:09:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:09:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:09:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:09:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:09:46 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:09:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:09:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:09:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:09:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:09:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:09:56 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:09:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:09:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:10:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:10:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:10:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:10:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:10:08 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:10:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:10:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:10:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:10:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:10:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:10:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:10:20 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:10:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:10:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:10:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:10:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:10:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:10:30 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:10:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:10:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:10:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:10:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:10:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:10:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:10:42 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:10:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:10:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:10:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:10:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:10:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:10:52 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:10:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:10:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:10:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:10:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:11:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:11:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:11:04 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:11:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:11:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:11:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:11:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:11:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:11:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:11:16 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:11:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:11:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:11:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:11:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:11:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:11:26 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:11:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:11:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:11:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:11:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:11:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:11:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:11:38 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:11:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:11:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:11:40 I shos_rpc_inst.c:241     Group.Set [1790248298899@ShellyApp] via HTTP_in POST from 192.168.0.146:52148 via ws0
+13:11:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:11:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:11:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:11:48 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:11:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:11:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:11:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:11:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:11:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:11:58 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:11:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:12:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:12:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:12:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:12:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:12:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:12:10 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:12:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:12:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:12:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:12:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:12:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:12:20 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:12:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:12:22 I shos_rpc_inst.c:241     schedule.list [1790248340449@ShellyApp] via HTTP_in POST from 192.168.0.146:40742 via ws0
+13:12:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:12:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:12:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:12:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:12:30 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:12:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:12:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:12:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:12:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:12:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:12:40 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:12:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:12:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:12:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:12:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:12:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:12:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:12:52 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:12:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:12:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:12:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:12:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:13:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:13:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:13:04 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:13:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:13:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:13:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:13:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:13:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:13:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:13:16 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:13:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:13:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:13:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:13:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:13:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:13:25 I shos_rpc_inst.c:241     boolean.set [1790248403488@ShellyApp] via HTTP_in POST from 192.168.0.146:50342 via ws0
+13:13:25 I ly_virtual_base.cpp:469 Persistent status save
+13:13:25 I y_notifications.cpp:168 Status change of boolean:200: {"source":"rpc","value":false}
+13:13:26 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:13:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:13:28 I shos_rpc_inst.c:241     Group.Set [1790248406698@ShellyApp] via HTTP_in POST from 192.168.0.146:50346 via ws0
+13:13:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:13:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:13:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:13:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:13:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:13:38 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:13:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:13:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:13:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:13:43 I shos_rpc_inst.c:241     schedule.list [1790248421551@ShellyApp] via HTTP_in POST from 192.168.0.146:48536 via ws0
+13:13:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:13:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:13:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:13:50 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:13:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:13:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:13:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:13:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:13:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:14:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:14:02 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:14:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:14:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:14:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:14:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:14:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:14:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:14:14 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:14:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:14:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:14:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:14:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:14:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:14:24 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:14:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:14:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:14:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:14:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:14:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:14:34 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:14:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:14:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:14:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:14:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:14:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:14:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:14:46 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:14:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:14:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:14:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:14:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:14:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:14:56 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:14:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:14:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:15:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:15:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:15:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:15:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:15:08 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:15:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:15:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:15:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:15:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:15:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:15:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:15:20 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:15:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:15:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:15:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:15:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:15:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:15:30 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:15:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:15:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:15:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:15:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:15:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:15:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:15:42 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:15:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:15:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:15:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:15:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:15:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:15:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:15:54 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:15:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:15:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:15:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:16:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:16:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:16:04 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:16:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:16:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:16:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:16:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:16:14 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:16:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+13:16:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:16:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:16:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:16:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:16:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:16:26 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:16:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:16:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:16:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:16:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:16:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:16:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:16:38 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:16:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:16:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+13:16:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:16:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:16:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:16:48 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:16:48 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:16:50 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:16:52 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:16:54 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:16:56 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:16:58 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:17:00 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:17:00 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+13:17:02 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:17:04 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+13:17:06 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:17:08 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:17:10 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:17:10 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:17:12 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:17:14 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:17:16 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:17:18 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:17:20 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:17:22 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:17:22 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+13:17:24 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:17:26 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:17:28 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+13:17:30 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:17:32 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+13:17:34 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:17:34 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:17:36 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+13:17:38 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+13:17:40 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:17:42 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+13:17:44 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+13:17:44 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+13:17:46 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}

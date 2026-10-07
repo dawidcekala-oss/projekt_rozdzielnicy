@@ -1,0 +1,347 @@
+                                                                                                      Dynamiczne zarzdzanie moc
+
+Skrócona instrukcja
+obslugi
+
+Kontroler DLB do
+ladowarek
+Mode 3 (Wall Box)
+
+Model DLBA1 Obslugiwane wallboxy 1-3 Lcze 433 MHz (tylko radiowe)
+
+Rev. 20251109
+Spis treci                               Parowanie i praca ..... 7
+                                         Wskaniki ..... 8
+Zawarto zestawu ..... 3                  Przyklady typowej alokacji ..... 8
+Zakres i bezpieczestwo ..... 4           Kluczowa specyfikacja ..... 9
+Opis i zasada dzialania ..... 4          Zalcznik A -- szybka tabela DIP ..... 10
+Elementy i zlcza (I/O) ..... 5           Zalcznik B -- lcze radiowe 433 MHz ..... 11
+Instalacja ..... 6                       Warunki gwarancji ..... 12
+
+   Umiejscowienie CT
+   Antena (433 MHz)
+Ustawienia ..... 7
+   Skonfigurowany limit zasilania (DIP)
+   Minimalny prd podtrzymujcy
+
+Informacje ogólne: DLB monitoruje w czasie rzeczywistym calkowity prd pobierany przez
+budynek i przydziela optymalny prd ladowania do 1-3 wallboxów tak, aby nigdy nie przekroczy
+limitu przylczeniowego -- wykorzystujc kady dostpny amper.
+
+Instalacja i konfiguracja wylcznie przez wykwalifikowanego elektryka. DLB nie jest
+wodo-/pyloszczelny -- montuj wylcznie w suchej, wolnej od pylu, wentylowanej rozdzielnicy.
+
+Dzikujemy za wybór AmperePoint.
+
+www.amperepoint.pl
+
++48 666 612 044                                                                              2
+Zawarto zestawu
+
+                                      Zestaw DLB-A1 w postaci, w jakiej jest dostarczany.
+    1 × kontroler DLB-A1 (Dynamic Load Balancing)
+    3 × przekladnik prdowy (CT) z kablem -- na L1 / L2 / L3
+    1 × antena 433 MHz, podstawa magnetyczna, z kablem
+    1 × modul radiowy 433 MHz -- skonfigurowany fabrycznie; wpina si w dedykowane zlcze wewntrz wallboxa
+    (patrz Zalcznik B)
+    1 × skrócona instrukcja obslugi (ten dokument, brak na zdjciu)
+
+www.amperepoint.pl
+
++48 666 612 044     3
+Zakres i bezpieczestwo
+
+Dotyczy kontrolera DLB przeznaczonego do zastosowa domowych i malych instalacji komercyjnych. Opisuje
+funkcje, zasady bezpieczestwa, instalacj, parowanie i prac, wskaniki oraz typow alokacj prdu dla 1-3
+ladowarek wallbox.
+
+Zasady bezpieczestwa
+
+    Instalacja i konfiguracja wylcznie przez wykwalifikowanego elektryka.
+    Odlcz zasilanie przed okablowaniem; stosuj procedur LOTO (lock-out/tag-out) tam, gdzie ma zastosowanie.
+    Orientacja przekladnika prdowego (CT) musi by prawidlowa -- nigdy nie zalczaj zasilania przy rozwartym
+    obwodzie wtórnym CT.
+    Ustaw skonfigurowany limit zasilania (CSL) zgodnie z przekrojem kabla zasilajcego, nastaw zabezpieczenia
+    glównego oraz lokalnymi przepisami.
+    Montuj wylcznie w suchej, wolnej od pylu, wentylowanej rozdzielnicy -- urzdzenie nie jest
+    wodo-/pyloszczelne.
+    Trzymaj anten radiow z dala od silnych ródel zaklóce (EMI); zapewnij prawidlow odcik kabli.
+
+Opis i zasada dzialania
+
+DLB monitoruje w czasie rzeczywistym calkowity prd budynku (instalacja jedno- lub trójfazowa) i przydziela
+optymalny prd ladowania do 1-3 wallboxów tak, aby nigdy nie przekroczy limitu przylczeniowego.
+
+    Dynamiczne zarzdzanie obcieniem -- optymalizacja per pojazd, wykorzystanie kadego dostpnego
+    ampera bez przekraczania limitu.
+    Bufor bezpieczestwa -- limit uyteczny dostpny do ladowania pojazdów to 90% skonfigurowanego limitu
+    zasilania (10% marginesu), pomniejszone o najwyszy zmierzony przez CT prd fazowy reszty budynku.
+    Komunikacja -- wylcznie bezprzewodowa 433 MHz (antena SMA); docelowa warto prdu przekazywana do
+    wallboxa w czasie rzeczywistym. Lcze przewodowe RS485 nie jest obecnie oferowane.
+    Podzial i ograniczenia -- kady wallbox jest ograniczony do danego przez siebie prdu; gal poniej
+    minimalnego prdu podtrzymujcego zostaje wstrzymana.
+
+         Rys. 1 -- Schemat systemu DLB: zasilanie  rozdzielnica (DLB + CT)  obcienie domu  1-3
+      wallboxy. Przyklad: CSL 56 A, uyteczne 26,4 A podzielone 8/8/10 A. (Opisy w jz. angielskim --
+
+                                                              rysunek producenta.)
+
+www.amperepoint.pl
+
++48 666 612 044                                                                                      4
+Elementy i zlcza (I/O)
+
+    Antena (zlocone SMA) -- lczno bezprzewodowa 433 MHz.
+    Wejcie zasilania -- AC 100-240 V, 50/60 Hz, L / N / PE.
+    Wejcia CT -- przekladniki prdowe L1 / L2 / L3.
+    Przycisk parowania -- przytrzymaj 5 s, aby wej w tryb parowania (kasuje wszystkie powizania); krótkie
+    nacinicie koczy parowanie wczeniej, inaczej tryb wygasa po ok. 2 min.
+    Diody LED powiza -- status polczenia dla maks. trzech wallboxów.
+    Przelcznik DIP (8-pozycyjny) -- ustawia skonfigurowany limit zasilania; 1-255 A mechanicznie, ale nie moe
+    przekracza znamionowego zakresu zamontowanego CT (patrz Kluczowa specyfikacja).
+    Wywietlacz -- cyklicznie pokazuje L1  warto prdu  L2  warto prdu  L3  warto prdu  SEt 
+    skonfigurowan warto CSL (pelny cykl ok. 8 s); odczyty obcite do pelnych amperów. To jedyny lokalny
+    interfejs -- uywaj go przy uruchomieniu do weryfikacji okablowania/orientacji CT oraz potwierdzenia
+    skonfigurowanego CSL.
+
+Rys. 2 -- Plytka kontrolera DLB-A1 z opisanymi zlczami/przelcznikami. Etykiety na zdjciu w
+                                                        jzyku angielskim.
+
+www.amperepoint.pl
+
++48 666 612 044                                                                             5
+Instalacja
+
+Wane: instalacja i konfiguracja wylcznie przez wykwalifikowanego elektryka, zgodnie z lokalnymi
+przepisami.
+
+    Montuj wewntrz glównej rozdzielnicy -- skraca to okablowanie CT i ulatwia podlczenie zasilania.
+    CT -- zacinij na przewodach zasilajcych L1/L2/L3, PRZED wszystkimi wylcznikami odgalzie (nie na
+    odgalzieniach). Strzalka w kierunku odbiornika; przy instalacji trójfazowej monitoruj wszystkie fazy i limituj wg
+    najbardziej obcionej.
+    Antena 433 MHz -- ustaw pionowo, najlepiej poza metalow obudow, dla najlepszego sygnalu.
+
+Rys. 3 -- Schemat instalacji DLB-A1: zasilanie, zabezpieczenie glówne, CT (L1/L2/L3), zasilanie
+                     modulu DLB, obwody domowe oraz lcze radiowe 433 MHz do wallboxa.
+
+www.amperepoint.pl
+
++48 666 612 044                                                                                                        6
+Ustawienia
+
+5.1 Skonfigurowany limit zasilania
+
+Uyj przelcznika DIP (8-pozycyjnego, wagi 128/64/32/16/8/4/2/1 A), aby ustawi skonfigurowany limit zasilania
+(CSL) na najmniejsz z wartoci: prd zabezpieczenia glównego, prd wynikajcy z mocy umownej oraz
+obcialno kabla/WLZ po zastosowaniu wspólczynników korekcyjnych. Przelcznik mechanicznie pozwala
+ustawi dowoln warto od 1 do 255 A, jednak skonfigurowana warto nie moe przekracza znamionowego
+prdu pierwotnego zamontowanego CT -- 0-100 A dla CT dostarczanego standardowo, lub do 150/200/250 A z
+odpowiednim CT o wyszym zakresie.
+
+Przyklady: 75 A = 64+8+2+1 · 62 A = 32+16+8+4+2 · 50 A = 32+16+2
+
+DLB stosuje 90% wartoci CSL jako margines bezpieczestwa, a nastpnie odejmuje najwyszy zmierzony przez CT
+prd fazowy reszty budynku; to, co zostaje, to limit uyteczny dostpny do ladowania pojazdów. Margines 10%
+pokrywa okno czasowe midzy skokiem obcienia gdzie indziej w budynku a reakcj regulatora -- to odpowied
+skokowa, nie natychmiastowa.
+
+5.2 Minimalny prd podtrzymujcy
+
+Zalecane: 6 A. Jeli dana gal otrzymalaby mniej ni 6 A, odpowiadajcy jej wallbox zostaje wstrzymany do czasu
+powrotu zapasu mocy.
+
+Parowanie i praca
+
+6.1 Parowanie
+
+Uwaga: wejcie w tryb parowania kasuje WSZYSTKIE istniejce powizania -- sparuj ponownie wszystkie
+wallboxy (1-3) jednoczenie.
+
+    DLB -- przytrzymaj przycisk parowania przez 5 s, a wszystkie trzy diody powiza zaczn miga; tryb
+    parowania wygasa po 2 minutach.
+    Wallbox -- gdy nie laduje: przytrzymaj A + C przez 5 s  Ustawienia  Parowanie DLB  Wlczone 
+    Potwierd  Home. Migajca niebieska ikona DLB = tryb parowania.
+    Sukces -- dioda powizania DLB wieci cigle; ikona DLB na wallboxie zmienia kolor na zielony. Nacinij
+    przycisk parowania raz, aby zakoczy wczeniej.
+
+6.2 Praca
+
+    Ladowanie pelnym prdem (zielona ikona DLB, bialy kolor prdu) -- wystarczajcy zapas mocy, kady wallbox
+    laduje z danym przez siebie prdem.
+    Ladowanie zredukowanym prdem (pomaraczowa ikona DLB i kolor prdu) -- zapas mocy si zmniejsza;
+    DLB optymalizuje, utrzymujc kad gal na poziomie 6 A gdzie to moliwe, w przeciwnym razie gal
+    zostaje wstrzymana.
+    Wstrzymane (czerwona ikona DLB i kolor prdu) -- powany niedobór prdu; wznowienie nastpuje
+    automatycznie po powrocie zapasu mocy.
+
+6.3 Wznowienie (narastanie prdu)
+
+Gdy zapas mocy wraca, DLB automatycznie przydziela dodatkowy prd kademu wallboxowi. Wielko kroku i
+tempo narastania prdu nie zostaly jeszcze udokumentowane przez producenta -- nie naley zaklada
+konkretnego czasu wznowienia w scenariuszach krytycznych czasowo, dopóki nie zostanie to potwierdzone.
+
+www.amperepoint.pl
+
++48 666 612 044     7
+Wskaniki                         LED DLB          Ikona DLB (wallbox)   Kolor prdu
+                                 Wylczona            Szara              Bialy
+  Tryb                           Miga                Migajca niebieska  Bialy
+  Niesparowany / offline         wieci cigle         Zielona            Bialy
+  Parowanie                      Wolne miganie       Zielona            Bialy
+  Sparowany / online             Wolne miganie       Pomaraczowa        Pomaraczowy
+  Ladowanie pelnym prdem         Szybkie miganie     Czerwona           Czerwony
+  Ladowanie zredukowanym prdem
+  Ladowanie wstrzymane
+
+Przyklady typowej alokacji
+
+Zaloenia: CSL = 74 A  limit uyteczny = 90% × CSL minus najwyszy zmierzony przez CT prd fazowy ( 66 A,
+gdy reszta budynku pobiera bliskie zeru); WB1 da do 32 A, WB2 i WB3 daj po 16 A kady; min. prd
+podtrzymujcy = 6 A.
+
+Jeden wallbox       Dostpny (A)  WB1 (A)          Ikona  Uwagi
+  Scenariusz        56           32                      Limit z maks. 32 A wallboxa
+  Pelny prd         21,3         21                      Ograniczone obcieniem domu
+  Zredukowany prd   0-5          0                       Poniej 6 A  wstrzymanie
+  Wstrzymane
+
+www.amperepoint.pl
+
++48 666 612 044                                                                                        8
+Dwa wallboxy          Dostpny (A)    WB1 (A)    WB2 (A)       Uwagi
+  Scenariusz          56             32         16            Wszystkie dania spelnione, brak redukcji
+  Pelny prd           26,5           17         9             Redukcja proporcjonalna
+  Zredukowany prd     9,6            9          0             WB2 < 6 A  wstrzymanie WB2
+  Krytyczny
+
+Trzy wallboxy         Dostpny (A)      WB1      WB2           WB3  Uwagi
+  Scenariusz          64               32       16            16   Wszystkie dania spelnione
+  Pelny prd           35               18       9             8    Redukcja proporcjonalna
+  Zredukowany prd     9,6              9        0             0    WB2/WB3 < 6 A  wstrzymanie
+  Krytyczny
+
+Kluczowa specyfikacja
+
+Numer modelu                    DLBA1
+
+Zasilanie                       AC 100-240 V, 50/60 Hz
+
+Obslugiwane wallboxy            1-3
+
+Komunikacja                     433 MHz (SMA), tylko radiowo
+
+Zasig 433 MHz                   20-30 m wewntrz budynku (typowo); 80-100 m w linii wzroku (otwarty teren);
+                                zaleny od warunków
+
+Wejcia CT                       L1/L2/L3, 0-100 A (2000:1), klasa dokladnoci 0,5
+
+Skonfigurowany limit zasilania  1-255 A mechanicznie (DIP 8-pozycyjny); nie moe przekracza znamionowego
+                                zakresu zamontowanego CT -- 0-100 A standardowo, do 150/200/250 A z
+                                odpowiednim CT o wyszym zakresie
+
+Limit uyteczny                  90% × CSL, minus najwyszy zmierzony przez CT prd fazowy
+
+Min. prd podtrzymujcy           6 A na wallbox
+
+Reakcja na nadprd               < 1 s (typowo) dla pierwszego kroku redukcji -- pojedyncza obserwacja;
+                                wielko kroku i czas dojcia do pelnej zgodnoci niepotwierdzone jeszcze
+                                oscyloskopem na CP, traktowa jako warto tymczasow
+
+Warunki pracy                   -20 do +55 °C, 95% RH (bez kondensacji)
+
+www.amperepoint.pl
+
++48 666 612 044                                                                                             9
+Zalcznik A -- szybka tabela DIP
+
+Wagi: 128/64/32/16/8/4/2/1 (A). Przelcz na ON tak, aby suma odpowiadala docelowej wartoci prdu --
+urzdzenie automatycznie stosuje 10% bufora bezpieczestwa.
+
+CSL (A)             Wlczone wagi
+25                  16+8+1
+30                  16+8+4+2
+35                  32+2+1
+42                  32+8+2
+48                  32+16
+50                  32+16+2
+55                  32+16+4+2+1
+62                  32+16+8+4+2
+65                  64+1
+68                  64+4
+70                  64+4+2
+75                  64+8+2+1
+78                  64+8+4+2
+80                  64+16
+85                  64+16+4+1
+90                  64+16+8+2
+93                  64+16+8+4+1
+95                  64+16+8+4+2+1
+100                 64+32+4
+
+www.amperepoint.pl
+
++48 666 612 044                                                                                    10
+Zalcznik B -- lcze radiowe 433 MHz
+
+Antena po stronie DLB
+
+    Typ anteny -- prtowa wierfalowa 433 MHz, SMA, podstawa magnetyczna.
+    Monta -- zainstaluj DLB wewntrz rozdzielnicy; wyprowad kabel anteny na zewntrz i przymocuj
+    magnetycznie podstaw na zewntrznej metalowej powierzchni (górnej lub bocznej).
+    Orientacja -- trzymaj anten pionowo; jest dookólna.
+    Odleglo i droga sygnalu -- utrzymuj moliwie krótki dystans DLB-wallbox, z niezaklócon drog sygnalu,
+    bez duych obiektów metalowych pomidzy.
+    Plaszczyzna uziemiajca -- metalowa powierzchnia pod podstaw poprawia dzialanie.
+    Prowadzenie kabla -- z dala od przewodów wysokoprdowych/falowników; skrzyowania pod ktem prostym;
+    podstawowa odcika, bez ostrych zagi.
+
+Antena po stronie wallboxa
+
+Wallbox wykorzystuje anten wewntrzn, zamknit w obudowie -- stal, nieregulowan. Poniewa znajduje si
+wewntrz zamknitej obudowy, to zazwyczaj slabszy koniec lcza. Jeli zasig jest na granicy, priorytetem powinno
+by zapewnienie czystej linii wzroku i minimalizacja przeszkód metalowych midzy DLB a wallboxem, a nie próba
+poprawy samej anteny wallboxa.
+
+Modul i zgodno z przepisami
+
+    Konfiguracja radiowa (czstotliwo, moc nadawania, cykl pracy) jest ustawiana fabrycznie i nie podlega
+    regulacji przez uytkownika. Zgodno z obowizujcymi przepisami dot. urzdze radiowych jest obowizkiem
+    producenta, objtym Deklaracj zgodnoci -- instalator nie konfiguruje ani nie weryfikuje parametrów pasma
+    ISM.
+    Uywaj wylcznie modulu radiowego dostarczonego przez AmperePoint z tym egzemplarzem DLB-A1. Nie
+    zastpuj innym modulem: poniewa wpina si on w rozlczalne zlcze, zamontowanie niedostarczonego
+    modulu zmienia konfiguracj RF wyrobu i uniewania zadeklarowan zgodno.
+    Monta modulu -- odlcz wallbox od zasilania sieciowego, nastpnie otwórz jego obudow i wepnij
+    dostarczony modul radiowy w dedykowane zlcze. Dokladn lokalizacj zlcza sprawd w instrukcji instalacji
+    wallboxa. Zamknij obudow przed ponownym podlczeniem zasilania.
+
+www.amperepoint.pl
+
++48 666 612 044     11
+Warunki gwarancji
+
+ 1. Gwarancja dotyczy samego produktu.
+ 2. Okres gwarancji: 24 miesice. Bezplatna naprawa lub wymiana w przypadku awarii/uszkodzenia podczas
+
+    normalnego uytkowania.
+ 3. Data rozpoczcia: data sprzeday.
+ 4. Dystrybutor moe naliczy dodatkowe koszty lub odmówi serwisu, jeli: (a) awaria wynika z nieprzestrzegania
+
+    niniejszej instrukcji -- bldny CSL, odwrócony CT, monta przez osob niewykwalifikowan; (b) uszkodzenie
+    powstalo wskutek poaru/zalania/nieprawidlowego napicia; (c) zastosowania niezgodne z przeznaczeniem; (d)
+    ciala obce/wilgo dostaly si do obudowy -- DLB nie jest wodo-/pyloszczelny; (e) inne zewntrzne czynniki
+    wywolane przez czlowieka.
+ 5. Wana wylcznie z dowodem zakupu.
+ 6. Niniejsza gwarancja nie wylcza, nie ogranicza ani nie zawiesza uprawnie kupujcego wynikajcych z
+    niezgodnoci towaru z umow (art. 577¹ § 2 Kodeksu cywilnego).
+
+Gwarant: Ampere Point, ul. Bohaterów Wrzenia 9, Warszawa.
+Serwis gwarancyjny: hello@amperepoint.com
+
+Nie wyrzuca tego produktu z odpadami komunalnymi. Odda do wyznaczonego punktu zbiórki ZSEE (zuytego
+sprztu elektrycznego i elektronicznego), zgodnie z lokalnymi przepisami.
+
+www.amperepoint.pl
+
++48 666 612 044     12
+

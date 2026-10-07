@@ -1,0 +1,116 @@
+{"seq":458, "ts":1790267452.631, "level":3, "data":"hos_http_server.cpp:754 0x3fcc5634: Switching to WebSockets", "fd":2}
+{"seq":459, "ts":1790267452.633, "level":3, "data":"shos_rpc_inst.c:479     0x3fcb2a04 FRAME SENT (1)", "fd":2}
+{"seq":460, "ts":1790267452.643, "level":2, "data":"shelly_debug.cpp:245    Streaming logs to 192.168.0.57:56060", "fd":2}
+{"seq":461, "ts":1790267453.578, "level":3, "data":"shos_rpc_inst.c:452     0x3fcb2a04 GOT FRAME (122): {\"id\":7110808,\"src\":\"iotc_291_1-shelly-288-eu\",\"method\":\"Shelly.GetComponents\",\"params\":{\"offset\":0,\"include\":[\"config\"]}}", "fd":2}
+{"seq":462, "ts":1790267453.586, "level":3, "data":"shos_rpc_inst.c:331     '7110808' 'iotc_291_1-shelly-288-eu' '' 'Shelly.GetComponents'", "fd":2}
+{"seq":463, "ts":1790267453.589, "level":2, "data":"shos_rpc_inst.c:241     Shelly.GetComponents [7110808@iotc_291_1-shelly-288-eu] via SHC 34.40.19.158:6022", "fd":2}
+{"seq":464, "ts":1790267453.593, "level":3, "data":"shos_rpc_inst.c:683     0x3fcb2a04 SEND FRAME (2161): {\"id\":7110808,\"src\":\"apq11dev-543204516334\",\"dst\":\"iotc_291_1-shelly-288-eu\",\"result\":{\"components\":[{\"key\":\"ble\",\"config\":{\"rpc\":{\"enable\":true}}},{\"key\":\"boolean:200\",\"config\":{\"id\":200,\"name\":\"Charging\",\"meta\":{\"cloud\":[\"log\"],\"ui\":{\"view\":\"toggle\",\"titles\":[\"Off\",\"On\"]}},\"persisted\":true,\"default_value\":false},\"attrs\":{\"access\":\"crw\",\"owner\":\"service:0\",\"role\":\"state\"}},{\"key\":\"bthome\",\"config\":{}},{\"key\":\"cloud\",\"config\":{\"enable\":true,\"server\":\"shelly-288-eu.shelly.cloud:6022/jrpc\"}},{\"key\":\"enum:200\",\"config\":{\"id\":200,\"name\":\"Charger mode\",\"options\":[\"charger_free\",\"charger_insert\",\"charger_free_fault\",\"charger_wait\",\"charger_charging\",\"charger_pause\",\"charger_end\",\"charger_fault\"],\"meta\":{\"cloud\":[\"log\"],\"ui\":{\"view\":\"label\",\"titles\":{\"charger_free\":\"Free\",\"charger_insert\":\"Insert\",\"charger_free_fault\":\"Free fault\",\"charger_wait\":\"Wait\",\"charger_charging\":\"Charging\",\"charger_pause\":\"Pause\",\"charger_end\":\"End\",\"charger_fault\":\"Fault\"}}},\"persisted\":false,\"default_value\":\"charger_free\"},\"attrs\":{\"access\":\"cr\",\"owner\":\"service:0\",\"role\":\"mode\"}},{\"key\":\"modbus\",\"config\":{\"enable\":true}},{\"key\":\"mqtt\",\"config\":{\"enable\":false,\"server\":null,\"client_id\":\"apq11dev-543204516334\",\"user\":null,\"ssl_ca\":null,\"topic_prefix\":\"apq11dev-543204516334\",\"rpc_ntf\":true,\"status_ntf\":false,\"use_client_cert\":false,\"enable_rpc\":true,\"enable_control\":true}},{\"key\":\"number:200\",\"config\":{\"id\":200,\"name\":\"Current limit\",\"min\":6,\"max\":16,\"meta\":{\"cloud\":[\"log\"],\"ui\":{\"view\":\"slider\",\"unit\":\"A\",\"step\":1}},\"persisted\":true,\"default_value\":16},\"attrs\":{\"access\":\"crw\",\"owner\":\"service:0\",\"role\":\"current_limit\"}},{\"key\":\"number:201\",\"config\":{\"id\":201,\"name\":\"Session duration\",\"min\":0,\"max\":50000,\"meta\":{\"cloud\":[\"log\"],\"ui\":{\"view\":\"label\",\"unit\":\"min\"}},\"persisted\":false,\"default_value\":0},\"attrs\":{\"access\":\"cr\",\"owner\":\"service:0\",\"role\":\"session_duration\"}},{\"key\":\"number:202\",\"config\":{\"id\":202,\"name\":\"Session energy\",\"min\":0,\"max\":9999999999,\"meta\":{\"cloud\":[\"log\"],\"ui\":{\"view\":\"label\",\"unit\":\"kWh\"}},\"persisted\":false,\"default_value\":0},\"attrs\":{\"access\":\"cr\",\"owner\":\"service:0\",\"role\":\"session_energy\"}}],\"cfg_rev\":26,\"offset\":0,\"total\":15}} -> 1", "fd":2}
+{"seq":465, "ts":1790267453.695, "level":3, "data":"ns_sd_responder.cpp:349 ws(0x3fcc2404): Probe 1 apq11dev-543204516334.local any@any (192.168.0.238)", "fd":2}
+{"seq":466, "ts":1790267453.700, "level":3, "data":"ns_sd_responder.cpp:349 ws(0x3fcc2404): Probe 1 apq11dev-543204516334.local any@any (fe80::5632:4ff:fe51:6334)", "fd":2}
+{"seq":467, "ts":1790267453.704, "level":2, "data":"shos_init.cpp:108       New min heap free: 81712", "fd":2}
+{"seq":468, "ts":1790267453.721, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":469, "ts":1790267453.723, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":470, "ts":1790267453.726, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":471, "ts":1790267453.742, "level":2, "data":"shos_init.cpp:108       New min heap free: 80752", "fd":2}
+{"seq":472, "ts":1790267453.745, "level":3, "data":"shos_rpc_inst.c:479     0x3fcb2a04 FRAME SENT (1)", "fd":2}
+{"seq":473, "ts":1790267454.022, "level":3, "data":"shos_rpc_inst.c:452     0x3fcb2a04 GOT FRAME (123): {\"id\":7110812,\"src\":\"iotc_291_1-shelly-288-eu\",\"method\":\"Shelly.GetComponents\",\"params\":{\"offset\":10,\"include\":[\"config\"]}}", "fd":2}
+{"seq":474, "ts":1790267454.028, "level":3, "data":"shos_rpc_inst.c:331     '7110812' 'iotc_291_1-shelly-288-eu' '' 'Shelly.GetComponents'", "fd":2}
+{"seq":475, "ts":1790267454.031, "level":2, "data":"shos_rpc_inst.c:241     Shelly.GetComponents [7110812@iotc_291_1-shelly-288-eu] via SHC 34.40.19.158:6022", "fd":2}
+{"seq":476, "ts":1790267454.035, "level":3, "data":"shelly_service.cpp:585  service:0: GetConfig not implemented", "fd":2}
+{"seq":477, "ts":1790267454.038, "level":3, "data":"shos_rpc_inst.c:683     0x3fcb2a04 SEND FRAME (1380): {\"id\":7110812,\"src\":\"apq11dev-543204516334\",\"dst\":\"iotc_291_1-shelly-288-eu\",\"result\":{\"components\":[{\"key\":\"object:200\",\"config\":{\"id\":200,\"name\":\"Consumption\",\"meta\":{\"cloud\":[\"bymin\"],\"ui\":{\"unit\":\"kWh\"}}},\"attrs\":{\"access\":\"cr\",\"owner\":\"service:0\",\"role\":\"phase_info\"}},{\"key\":\"service:0\",\"config\":{}},{\"key\":\"sys\",\"config\":{\"device\":{\"name\":null,\"mac\":\"543204516334\",\"fw_id\":\"20260921-060046/2.0.0-beta11xciohttpfix-g35669f3\",\"discoverable\":true,\"eco_mode\":false,\"tls_check_cert_validity_time\":true,\"enhanced_security\":false},\"location\":{\"tz\":\"Europe/Warsaw\",\"lat\":51.806100,\"lon\":21.898700},\"debug\":{\"level\":3,\"file_level\":null,\"mqtt\":{\"enable\":false},\"websocket\":{\"enable\":true},\"udp\":{\"addr\":null}},\"ui_data\":{\"device_revision\":\"1-22\"},\"rpc_udp\":{\"dst_addr\":null,\"listen_port\":null},\"sntp\":{\"server\":\"time.cloudflare.com\"},\"cfg_rev\":26}},{\"key\":\"wifi\",\"config\":{\"ap\":{\"ssid\":\"apq11dev-543204516334\",\"is_open\":true, \"enable\":false, \"range_extender\": {\"enable\":false}},\"sta\":{\"ssid\":\"AmperePoint\",\"is_open\":false, \"enable\":true, \"ipv4mode\":\"dhcp\",\"ip\":null,\"netmask\":null,\"gw\":null,\"nameserver\":null},\"sta1\":{\"ssid\":null,\"is_open\":true, \"enable\":false, \"ipv4mode\":\"dhcp\",\"ip\":null,\"netmask\":null,\"gw\":null,\"nameserver\":null},\"roam\":{\"rssi_thr\":-80,\"interval\":60}}},{\"key\":\"ws\",\"config\":{\"enable\":false,\"server\":null,\"ssl_ca\":\"ca.pem\"}}],\"cfg_rev\":26,\"offset\":10,\"total\":15}} -> 1", "fd":2}
+{"seq":478, "ts":1790267454.096, "level":3, "data":"ns_sd_responder.cpp:349 ws(0x3fcc2404): Probe 2 apq11dev-543204516334.local any@any (192.168.0.238)", "fd":2}
+{"seq":479, "ts":1790267454.100, "level":3, "data":"ns_sd_responder.cpp:349 ws(0x3fcc2404): Probe 2 apq11dev-543204516334.local any@any (fe80::5632:4ff:fe51:6334)", "fd":2}
+{"seq":480, "ts":1790267454.104, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 402 MC 553 ctr 20/105 ping 0 num_act 0", "fd":2}
+{"seq":481, "ts":1790267454.108, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 88084", "fd":2}
+{"seq":482, "ts":1790267454.120, "level":3, "data":"shos_rpc_inst.c:479     0x3fcb2a04 FRAME SENT (1)", "fd":2}
+{"seq":483, "ts":1790267454.246, "level":3, "data":"ns_sd_responder.cpp:349 ws(0x3fcc2404): Probe 3 apq11dev-543204516334.local any@any (192.168.0.238)", "fd":2}
+{"seq":484, "ts":1790267454.250, "level":3, "data":"ns_sd_responder.cpp:349 ws(0x3fcc2404): Probe 3 apq11dev-543204516334.local any@any (fe80::5632:4ff:fe51:6334)", "fd":2}
+{"seq":485, "ts":1790267454.294, "level":3, "data":"ns_sd_responder.cpp:411 ws(0x3fcc2404): Announce 1 apq11dev-543204516334.local any@any (192.168.0.238)", "fd":2}
+{"seq":486, "ts":1790267454.298, "level":3, "data":"ns_sd_responder.cpp:411 ws(0x3fcc2404): Announce 1 apq11dev-543204516334.local any@any (fe80::5632:4ff:fe51:6334)", "fd":2}
+{"seq":487, "ts":1790267454.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":488, "ts":1790267454.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":489, "ts":1790267455.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":490, "ts":1790267455.267, "level":3, "data":"ns_sd_responder.cpp:411 ws(0x3fcc2404): Announce 2 apq11dev-543204516334.local any@any (192.168.0.238)", "fd":2}
+{"seq":491, "ts":1790267455.319, "level":2, "data":"ns_sd_responder.cpp:236 ws(0x3fcc2404): Announced apq11dev-543204516334.local any@any (192.168.0.238)", "fd":2}
+{"seq":492, "ts":1790267455.324, "level":3, "data":"ns_sd_responder.cpp:411 ws(0x3fcc2404): Announce 2 apq11dev-543204516334.local any@any (fe80::5632:4ff:fe51:6334)", "fd":2}
+{"seq":493, "ts":1790267455.328, "level":2, "data":"ns_sd_responder.cpp:236 ws(0x3fcc2404): Announced apq11dev-543204516334.local any@any (fe80::5632:4ff:fe51:6334)", "fd":2}
+{"seq":494, "ts":1790267455.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":495, "ts":1790267455.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":496, "ts":1790267455.546, "level":3, "data":"shos_wifi_sta.cpp:524   State 8 ev -1 timeout 1", "fd":2}
+{"seq":497, "ts":1790267455.548, "level":3, "data":"shos_wifi_sta.cpp:813   Avg RSSI -67, ok", "fd":2}
+{"seq":498, "ts":1790267456.022, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 413 MC 566 ctr 16/105 ping 0 num_act 0", "fd":2}
+{"seq":499, "ts":1790267456.036, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 97928", "fd":2}
+{"seq":500, "ts":1790267456.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":501, "ts":1790267456.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":502, "ts":1790267456.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":503, "ts":1790267457.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":504, "ts":1790267457.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":505, "ts":1790267457.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":506, "ts":1790267458.042, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 419 MC 575 ctr 16/105 ping 0 num_act 0", "fd":2}
+{"seq":507, "ts":1790267458.056, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 97928", "fd":2}
+{"seq":508, "ts":1790267458.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":509, "ts":1790267458.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":510, "ts":1790267458.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":511, "ts":1790267459.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":512, "ts":1790267459.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":513, "ts":1790267459.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":514, "ts":1790267460.062, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 425 MC 586 ctr 16/105 ping 0 num_act 0", "fd":2}
+{"seq":515, "ts":1790267460.076, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 97928", "fd":2}
+{"seq":516, "ts":1790267460.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":517, "ts":1790267460.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":518, "ts":1790267460.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":519, "ts":1790267461.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":520, "ts":1790267461.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":521, "ts":1790267461.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":522, "ts":1790267462.082, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 431 MC 598 ctr 16/105 ping 0 num_act 0", "fd":2}
+{"seq":523, "ts":1790267462.096, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 97928", "fd":2}
+{"seq":524, "ts":1790267462.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":525, "ts":1790267462.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":526, "ts":1790267462.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":527, "ts":1790267463.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":528, "ts":1790267463.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":529, "ts":1790267463.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":530, "ts":1790267464.102, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 437 MC 605 ctr 16/105 ping 0 num_act 0", "fd":2}
+{"seq":531, "ts":1790267464.116, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 97928", "fd":2}
+{"seq":532, "ts":1790267464.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":533, "ts":1790267464.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":534, "ts":1790267464.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":535, "ts":1790267465.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":536, "ts":1790267465.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":537, "ts":1790267465.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":538, "ts":1790267466.122, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 443 MC 609 ctr 16/105 ping 0 num_act 0", "fd":2}
+{"seq":539, "ts":1790267466.136, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 97928", "fd":2}
+{"seq":540, "ts":1790267466.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":541, "ts":1790267466.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":542, "ts":1790267466.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":543, "ts":1790267467.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":544, "ts":1790267467.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":545, "ts":1790267467.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":546, "ts":1790267468.142, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 450 MC 614 ctr 16/105 ping 0 num_act 0", "fd":2}
+{"seq":547, "ts":1790267468.156, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 96176", "fd":2}
+{"seq":548, "ts":1790267468.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":549, "ts":1790267468.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":550, "ts":1790267468.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":551, "ts":1790267468.558, "level":3, "data":"shos_vfs.c:622          lseek 256 0 0 => 0x3fca5bc0:0 => 0", "fd":2}
+{"seq":552, "ts":1790267468.561, "level":3, "data":"shos_vfs.c:622          lseek 256 0 0 => 0x3fca5bc0:0 => 0", "fd":2}
+{"seq":553, "ts":1790267468.563, "level":3, "data":"shos_vfs.c:622          lseek 256 3027 0 => 0x3fca5bc0:0 => 3027", "fd":2}
+{"seq":554, "ts":1790267468.566, "level":3, "data":"shos_vfs.c:622          lseek 256 0 0 => 0x3fca5bc0:0 => 0", "fd":2}
+{"seq":555, "ts":1790267468.569, "level":3, "data":"shos_vfs.c:622          lseek 256 0 0 => 0x3fca5bc0:0 => 0", "fd":2}
+{"seq":556, "ts":1790267468.571, "level":3, "data":"shos_vfs.c:622          lseek 256 803 0 => 0x3fca5bc0:0 => 803", "fd":2}
+{"seq":557, "ts":1790267468.574, "level":2, "data":"shelly_script.cpp:204   service:0 0.2% CPU utilization", "fd":2}
+{"seq":558, "ts":1790267469.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":559, "ts":1790267469.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":560, "ts":1790267469.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":561, "ts":1790267470.162, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 456 MC 621 ctr 16/105 ping 0 num_act 0", "fd":2}
+{"seq":562, "ts":1790267470.176, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 97928", "fd":2}
+{"seq":563, "ts":1790267470.184, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":564, "ts":1790267470.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":565, "ts":1790267470.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":566, "ts":1790267470.545, "level":3, "data":"shos_wifi_sta.cpp:524   State 8 ev -1 timeout 1", "fd":2}
+{"seq":567, "ts":1790267470.548, "level":3, "data":"shos_wifi_sta.cpp:813   Avg RSSI -68, ok", "fd":2}
+{"seq":568, "ts":1790267471.180, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":569, "ts":1790267471.386, "level":3, "data":"shelly_tmcu.cpp:927     Process 1 commands", "fd":2}
+{"seq":570, "ts":1790267471.388, "level":3, "data":"shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Expecting heartbeat)", "fd":2}
+{"seq":571, "ts":1790267472.186, "level":3, "data":"esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 462 MC 626 ctr 16/105 ping 0 num_act 0", "fd":2}
+{"seq":572, "ts":1790267472.189, "level":1, "data":"shelly_tmcu.cpp:507     Heartbeat timed out!", "fd":2}
+{"seq":573, "ts":1790267472.203, "level":3, "data":"hos_lwip_eth_if.cpp:513 ws(0x3fcc2404): Status: server 0 oper_up 1 link_up 1/1 hf 97832", "fd":2}

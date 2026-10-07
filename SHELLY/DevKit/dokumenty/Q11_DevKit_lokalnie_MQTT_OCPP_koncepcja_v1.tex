@@ -1,0 +1,179 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small AMPERE POINT — Q11 na DevKit: lokalnie, MQTT, OCPP · koncepcja v1 · 2026-09-25}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Q11 na Shelly DevKit: praca lokalna, MQTT i OCPP\par}
+{\large Koncepcja do sprawdzenia przed wdrożeniem · AMPERE POINT · 25 września 2026\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+
+\section{Stan wyjściowy}
+
+DevKit jest przylutowany do płytki sterującej Q11 i rozmawia z jej mikrokontrolerem protokołem Tuya przy 9600 b/s. Aplikacja Shelly włącza i wyłącza ładowanie oraz zmienia limit prądu, a Q11 potwierdza każdą zmianę. Wszystkie fakty poniżej pochodzą z odczytu DevKitu przez sieć lokalną 25.09.2026, bez żadnych zmian w jego ustawieniach. Surowe odczyty leżą w folderze \texttt{logi\textbackslash{}inwentarz\_\allowbreak{}2026-\allowbreak{}09-\allowbreak{}25\_\allowbreak{}1116}.
+
+
+\section{Co działa bez chmury}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.91cm}>{\raggedright\arraybackslash}p{1.30cm}>{\raggedright\arraybackslash}p{1.82cm}>{\raggedright\arraybackslash}p{7.80cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Kanał} & \textbf{Bez chmury} & \textbf{Dane ładowarki} & \textbf{Uwagi} \\
+\midrule\endhead
+\bottomrule\endfoot
+Polecenia HTTP w sieci lokalnej & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & wszystkie pola; tym kanałem pracujemy od wczoraj \\
+WebSocket w sieci lokalnej & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & te same polecenia plus powiadomienia o każdej zmianie \\
+Strona WWW DevKitu & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & interfejs zbudowany w portalu \\
+Home Assistant, integracja Shelly & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \leavevmode{\symbolfont\color{apamber}\textbf{◐}} & 5 z 6 pól; pole faz jest obiektem i HA go nie pokaże \\
+MQTT & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & potrzebny broker w sieci; klient w DevKicie gotowy, wyłączony \\
+Wychodzący WebSocket & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & do serwera w sieci lokalnej; wyłączony; tylko protokół Shelly \\
+Bluetooth & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & zasięg kilku metrów \\
+Modbus TCP, port 502 & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & włączony, ale podaje tylko MAC i model; sprawdzone odczytem \\
+Chmura Shelly, aplikacja poza siecią & \leavevmode{\symbolfont\color{apred}\textbf{✘}} & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & wymaga internetu \\
+\end{longtable}
+
+\textbf{Wniosek.} Do sterowania i odczytu bez chmury wystarczą polecenia HTTP, WebSocket albo MQTT. Modbus odpada: w tej wersji oprogramowania nie udostępnia pól ładowarki. Przykład: odczyt rejestru z adresem urządzenia zwraca „S3XT-0S”, a próba odczytu dalszych rejestrów kończy się kodem błędu 2, czyli „nieistniejący adres”.
+
+
+\section{Co DevKit przechowuje}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{6.75cm}>{\raggedright\arraybackslash}p{2.76cm}>{\raggedright\arraybackslash}p{5.77cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Co} & \textbf{Gdzie} & \textbf{Po restarcie DevKitu} \\
+\midrule\endhead
+\bottomrule\endfoot
+konfiguracja produktu z portalu, skrypt, manifest, interfejs & pamięć flash & zostaje \\
+Wi-Fi, chmura, MQTT, strefa czasowa, serwer czasu & pamięć flash & zostaje \\
+limit prądu i włączenie ładowania & pola zapamiętywane w flash & zostają; Q11 i tak nadpisuje je swoimi wartościami \\
+stan ładowarki, fazy & pamięć RAM & wracają przy pierwszym meldunku Q11, w ciągu kilku sekund \\
+energia i czas sesji & pamięć RAM skryptu & \textbf{giną}; skrypt liczy sesję od nowa \\
+harmonogramy, webhooki, pamięć klucz-wartość & pamięć flash & dostępne, dziś puste \\
+licznik energii, nastawy i harmonogram ładowania & mikrokontroler Q11 & DevKit ich nie trzyma, tylko przekazuje \\
+\end{longtable}
+
+Wolne miejsce w pamięci flash: 356 kB z 896 kB. Ta wersja oprogramowania nie ma skryptów użytkownika, jest tylko skrypt usługi z portalu.
+
+
+\section{Co się psuje bez internetu}
+
+\begin{enumerate}
+\item \textbf{Zegar.} DevKit nie ma baterii zegara. Po każdym restarcie pobiera czas z serwera \texttt{time.\allowbreak{}cloudflare.\allowbreak{}com}. Q11 regularnie pyta moduł o czas lokalny; widać to w logu jako pytanie o godzinę, na które moduł odpowiada datą i godziną. Bez internetu po restarcie DevKit nie zna godziny, więc harmonogram ładowania w Q11 może przestać działać. \textbf{Naprawa:} serwer czasu w sieci lokalnej, na routerze albo w HA, wpisany w ustawieniach DevKitu. Do sprawdzenia, czy router biura udostępnia serwer czasu.
+\item \textbf{Energia i czas sesji.} Liczy je skrypt w pamięci RAM. Przykład: sesja trwa 40 minut i ma 7 kWh, DevKit się restartuje, a pola pokazują 0. \textbf{Naprawa:} zapis punktu startu sesji w pamięci klucz-wartość przy każdej zmianie stanu i co kilka minut.
+\item \textbf{Aplikacja Shelly poza siecią biura} nie działa bez chmury. W sieci lokalnej zostają strona WWW i HA. Do sprawdzenia, czy aplikacja w tej samej sieci steruje DevKitem lokalnie.
+\item \textbf{Aktualizacje z portalu} wymagają internetu, bo DevKit sam pobiera oprogramowanie z serwera Shelly.
+\end{enumerate}
+
+\textbf{Test offline, do zrobienia za Twoją zgodą:} wyłączyć chmurę na DevKicie, zrestartować go, a potem sprawdzić zegar, rozmowę z Q11, sterowanie lokalne i HA. Wszystko da się cofnąć jednym poleceniem.
+
+
+\clearpage
+
+\section{MQTT}
+
+DevKit ma gotowego klienta MQTT. Wysyła powiadomienia o każdej zmianie pola i przyjmuje polecenia. Brakuje tylko brokera w sieci.
+
+
+\textbf{Plan:}
+
+\begin{enumerate}
+\item Broker Mosquitto w Dockerze na laptopie, obok HA. Oficjalny obraz \texttt{eclipse-\allowbreak{}mosquitto} ma kilkanaście MB. Docelowo broker przenosi się na OptiPlexa razem z HA.
+\item Włączenie MQTT w DevKicie jednym poleceniem w sieci lokalnej, bez portalu: adres brokera i przedrostek tematów, na przykład \texttt{ampere/\allowbreak{}q11dev}.
+\item Sprawdzenie tematów: zmiany pól przychodzą na \texttt{ampere/\allowbreak{}q11dev/\allowbreak{}events/\allowbreak{}rpc}, a polecenia idą na \texttt{ampere/\allowbreak{}q11dev/\allowbreak{}rpc}.
+\item Opcjonalnie integracja MQTT w HA, jako drugi kanał obok integracji Shelly.
+\end{enumerate}
+
+\begin{przyklad}[{Przykład}]
+włączenie ładowania przez MQTT to jedna wiadomość na temat \texttt{ampere/\allowbreak{}q11dev/\allowbreak{}rpc} z treścią \texttt{\{"id":\allowbreak{}1,"src":\allowbreak{}"ha","method":\allowbreak{}"Boolean.\allowbreak{}Set","params":\allowbreak{}\{"id":\allowbreak{}200,"value":\allowbreak{}true\}\}}. DevKit przekaże to do Q11 tak samo jak kliknięcie w aplikacji.
+\end{przyklad}
+
+\section{OCPP}
+
+\textbf{Werdykt: OCPP wprost na DevKicie jest dziś niewykonalne.} Skrypt usługi z portalu ma dostęp tylko do portu szeregowego, obsługi Tuya, poleceń HTTP i zegara. Nie ma klienta WebSocket do dowolnego serwera, a OCPP 1.6J działa właśnie po WebSocket. Wbudowany wychodzący WebSocket mówi wyłącznie protokołem Shelly. Shelly nie udostępnia też SDK do własnego kodu w C, więc biblioteki takiej jak MicroOcpp nie da się dołączyć. Otwarte pytanie do Shelly: czy planują OCPP w oprogramowaniu modułu.
+
+
+\textbf{Wykonalne: most OCPP.} To osobny program, który z jednej strony rozmawia z DevKitem protokołem Shelly, a z drugiej udaje ładowarkę OCPP 1.6J wobec serwera operatora, czyli CSMS.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{5.99cm}>{\raggedright\arraybackslash}p{3.30cm}>{\raggedright\arraybackslash}p{2.55cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Wariant} & \textbf{Jak łączy się z DevKitem} & \textbf{Zalety} & \textbf{Wady} \\
+\midrule\endhead
+\bottomrule\endfoot
+A, lokalny & most na laptopie albo OptiPlexie łączy się do DevKitu w sieci biura & najszybszy do pokazania & most musi być w tej samej sieci co ładowarka \\
+B, serwerowy & DevKit sam łączy się wychodzącym WebSocketem do mostu AmperePoint w internecie & działa za routerem klienta; jeden most obsługuje wiele ładowarek & trzeba utrzymywać serwer \\
+\end{longtable}
+
+Kod mostu jest w obu wariantach prawie ten sam. Różni się tylko tym, kto nawiązuje połączenie.
+
+
+\textbf{Serwer testowy OCPP do wyboru:}
+
+\begin{itemize}
+\item integracja OCPP do HA z HACS: HA staje się serwerem OCPP, a Q11 pojawia się w nim jako ładowarka OCPP,
+\item prosty serwer w Pythonie, który tylko zapisuje wymianę komunikatów i niczego nie zmienia w HA.
+\end{itemize}
+
+\textbf{Mapowanie OCPP na Q11:}
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.27cm}>{\raggedright\arraybackslash}p{11.45cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Komunikat OCPP} & \textbf{Źródło w Q11} \\
+\midrule\endhead
+\bottomrule\endfoot
+BootNotification & producent AmperePoint, model Q11, numer seryjny = identyfikator DevKitu \\
+StatusNotification & pole stanu: wolna {\symbolfont→} Available, auto podłączone {\symbolfont→} Preparing, ładuje {\symbolfont→} Charging, czeka lub pauza {\symbolfont→} SuspendedEVSE, zakończone {\symbolfont→} Finishing, błąd {\symbolfont→} Faulted \\
+MeterValues & fazy: napięcie, prąd, moc; licznik całkowity jako Energy.Active.Import.Register \\
+StartTransaction, StopTransaction & przejście do ładowania i koniec sesji; stan licznika na starcie i końcu \\
+RemoteStartTransaction, RemoteStopTransaction & pole włączenia ładowania, punkt danych 18 \\
+SetChargingProfile & pole limitu prądu, punkt danych 4, 6–16 A \\
+Heartbeat & most sam, co ustalony czas \\
+\end{longtable}
+
+\textbf{Braki do uzupełnienia w konfiguracji v2.} OCPP potrzebuje kodów błędów i licznika całkowitego. Dziś nie ma ich jako osobnych pól. Trzeba dodać w portalu pola dla punktów danych 1 (licznik), 10 (błędy), 13 (sygnał z auta) i 24 (temperatura). Skrypt wypełni je jednym wierszem na pole.
+
+
+\textbf{Potrzebne oprogramowanie:} biblioteka \texttt{ocpp} dla Pythona, otwarta, licencja MIT, oraz \texttt{websockets}.
+
+
+\section{Decyzje do podjęcia}
+
+\begin{enumerate}
+\item \textbf{Zgoda na pobranie:} obrazu Docker \texttt{eclipse-\allowbreak{}mosquitto} oraz pakietów Pythona \texttt{ocpp} i \texttt{websockets}.
+\item \textbf{Serwer testowy OCPP:} integracja w HA, która zmienia HA, czy osobny prosty serwer w Pythonie, który niczego w HA nie zmienia.
+\item \textbf{Test offline:} zgoda na wyłączenie chmury w DevKicie na czas testu; aplikacja pokaże go wtedy jako niedostępny. Informacja, czy router biura udostępnia serwer czasu.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,6 @@
+[submodule "diagnostyka/repair-protocols"]
+	path = diagnostyka/repair-protocols
+	url = https://github.com/dawidcekala-oss/repair-protocols.git
+[submodule "SHELLY/shelly-x-integration"]
+	path = SHELLY/shelly-x-integration
+	url = https://github.com/dawidcekala-oss/shelly-x-integration.git

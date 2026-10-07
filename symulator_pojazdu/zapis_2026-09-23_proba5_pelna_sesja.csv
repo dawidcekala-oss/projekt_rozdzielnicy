@@ -1,0 +1,149 @@
+# AMPERE POINT - symulator pojazdu, proba 5, 23 IX 2026
+# ladowarka Q37, 1 faza 16 A; kabel 20 A (PP 2,040 V = 689 om)
+# pelna sesja: B -> C -> B -> zanik pojazdu -> B; bez usterek
+s;pilot_V;wypelnienie_%;okres_us;oferta_A;przekazniki;stan
+0;8.87;40.04;1004;24.0;spoczynek;B pojazd zgloszony
+1;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+2;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+3;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+4;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+5;5.97;27.82;999;16.7;LADOWANIE;C LADOWANIE
+6;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+7;6.10;27.79;999;16.7;LADOWANIE;C LADOWANIE
+8;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+9;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+10;6.00;27.80;999;16.7;LADOWANIE;C LADOWANIE
+11;6.03;27.80;999;16.7;LADOWANIE;C LADOWANIE
+12;6.00;27.80;999;16.7;LADOWANIE;C LADOWANIE
+13;6.03;27.79;999;16.7;LADOWANIE;C LADOWANIE
+14;5.93;27.80;999;16.7;LADOWANIE;C LADOWANIE
+15;5.97;27.79;999;16.7;LADOWANIE;C LADOWANIE
+16;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+17;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+18;5.93;27.80;999;16.7;LADOWANIE;C LADOWANIE
+19;5.97;27.79;999;16.7;LADOWANIE;C LADOWANIE
+20;6.03;27.80;999;16.7;LADOWANIE;C LADOWANIE
+21;5.97;27.79;999;16.7;LADOWANIE;C LADOWANIE
+22;5.97;27.79;999;16.7;LADOWANIE;C LADOWANIE
+23;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+24;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+25;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+26;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+27;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+28;6.06;27.79;999;16.7;LADOWANIE;C LADOWANIE
+29;5.97;27.80;999;16.7;LADOWANIE;C LADOWANIE
+30;8.84;28.25;999;17.0;spoczynek;B pojazd zgloszony
+31;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+32;8.90;28.28;999;17.0;spoczynek;B pojazd zgloszony
+33;9.06;28.28;999;17.0;spoczynek;B pojazd zgloszony
+34;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+35;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+36;8.93;28.28;999;17.0;spoczynek;B pojazd zgloszony
+37;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+38;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+39;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+40;11.97;28.58;997;17.1;ZANIK POJAZDU;A brak pojazdu
+41;12.00;-;-;-;ZANIK POJAZDU;A brak pojazdu
+42;11.87;-;-;-;ZANIK POJAZDU;A brak pojazdu
+43;11.90;-;-;-;ZANIK POJAZDU;A brak pojazdu
+44;12.00;-;-;-;ZANIK POJAZDU;A brak pojazdu
+45;8.90;29.08;1010;17.4;spoczynek;B pojazd zgloszony
+46;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+47;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+48;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+49;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+50;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+51;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+52;9.03;28.28;999;17.0;spoczynek;B pojazd zgloszony
+53;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+54;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+55;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+56;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+57;9.00;28.28;999;17.0;spoczynek;B pojazd zgloszony
+58;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+59;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+60;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+61;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+62;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+63;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+64;8.90;28.28;999;17.0;spoczynek;B pojazd zgloszony
+65;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+66;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+67;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+68;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+69;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+70;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+71;8.97;28.28;999;17.0;spoczynek;B pojazd zgloszony
+72;9.10;28.28;999;17.0;spoczynek;B pojazd zgloszony
+73;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+74;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+75;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+76;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+77;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+78;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+79;8.90;28.28;999;17.0;spoczynek;B pojazd zgloszony
+80;8.90;28.28;999;17.0;spoczynek;B pojazd zgloszony
+81;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+82;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+83;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+84;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+85;8.90;28.28;999;17.0;spoczynek;B pojazd zgloszony
+86;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+87;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+88;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+89;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+90;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+91;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+92;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+93;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+94;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+95;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+96;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+97;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+98;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+99;8.93;28.28;999;17.0;spoczynek;B pojazd zgloszony
+100;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+101;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+102;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+103;8.97;28.28;999;17.0;spoczynek;B pojazd zgloszony
+104;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+105;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+106;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+107;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+108;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+109;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+110;8.90;28.28;999;17.0;spoczynek;B pojazd zgloszony
+111;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+112;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+113;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+114;8.93;28.28;999;17.0;spoczynek;B pojazd zgloszony
+115;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+116;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+117;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+118;8.97;28.28;999;17.0;spoczynek;B pojazd zgloszony
+119;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+120;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+121;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+122;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+123;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+124;8.97;28.28;999;17.0;spoczynek;B pojazd zgloszony
+125;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+126;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+127;8.97;28.28;999;17.0;spoczynek;B pojazd zgloszony
+128;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+129;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+130;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+131;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+132;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+133;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+134;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+135;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+136;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+137;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+138;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+139;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+140;8.87;28.28;999;17.0;spoczynek;B pojazd zgloszony
+141;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+142;8.84;28.28;999;17.0;spoczynek;B pojazd zgloszony
+143;8.90;28.28;999;17.0;spoczynek;B pojazd zgloszony
+144;8.90;28.28;999;17.0;spoczynek;B pojazd zgloszony

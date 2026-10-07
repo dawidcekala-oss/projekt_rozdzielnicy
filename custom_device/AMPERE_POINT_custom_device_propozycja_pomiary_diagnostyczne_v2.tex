@@ -1,0 +1,131 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+
+\title{\textbf{AMPERE POINT --- custom device}\\[4pt]
+\large PROPOZYCJA v2: pomiary wspierające diagnostykę przypadków\\
+,,u klienta nie działa, u nas działa'' (moduł A)\\[2pt]
+\normalsize wersja 2 --- do zatwierdzenia; zastępuje propozycję v1 po uwagach z 2026-07-09}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{9 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\section{Uwagi do v1 --- przyjęte}
+P1 (konformancja CP) i P3 (funkcje L--N/PE) --- producent testuje to u siebie, przełączanie stanów
+w praktyce serwisowej nie zawodzi; P2 --- Tuya to poglądowa informacja dla klienta, nie przyrząd,
+rozliczenia nie opierają się na liczniku ładowarki, a ewentualna korekta wymagałaby wielopoziomowej
+pracy po stronie producenta. \textbf{Wniosek:} nie testujemy zgodności produktu --- wspieramy
+\emph{proces diagnostyki}, zwłaszcza najdroższy jego przypadek: \textbf{reklamacja działa u klienta,
+sprzęt na stole działa poprawnie}.
+
+\section{Skąd się bierze ,,u klienta nie działa, u nas działa''}
+Ładowarka jest sprawna --- różni się \emph{środowisko}. Typowe różnice (na bazie materiałów
+w folderze: instrukcja serii P, katalog usterek, przewodnik pomiarów, doświadczenia serwisu):
+\begin{enumerate}
+\item \textbf{Zasilanie klienta}: napięcie za wysokie (sieć z PV w południe, $>$253~V) lub za
+niskie; \textbf{miękka sieć} --- napięcie siada pod prądem ładowania (długi WLZ, przedłużacz,
+słabe gniazdo); zapady od rozruchów innych odbiorników; asymetria; krótkie przerwy.
+\item \textbf{Instalacja klienta}: RCD wyzwala, bo \emph{suma} upływów (inne odbiory $+$ auto $+$
+ładowarka) przekracza 30~mA, choć każdy z osobna jest OK; zły typ RCD; grzejące się gniazdo;
+zamiana L--N / słabe PE (ładowarka poprawnie blokuje --- klient widzi ,,nie działa'').
+\item \textbf{Auto klienta}: nietypowe zachowania CP po stronie pojazdu (usypianie/wybudzanie,
+harmonogramy auta, wolne przejścia stanów, chwilowe upływy DC z OBC wyzwalające RDC-DD 6~mA),
+przejściówki i kable.
+\item \textbf{Łączność}: słabe WiFi w miejscu montażu $\to$ ,,appka nie działa'' $=$ reklamacja,
+choć elektrycznie wszystko gra.
+\item \textbf{Środowisko}: temperatura (wstrzymania termiczne), wilgoć/kondensacja (upływy nocą).
+\end{enumerate}
+Diagnoza wymaga: \textbf{(a) zarejestrować incydent tam, gdzie występuje} (u klienta, w chwili
+awarii), \textbf{(b) odtworzyć te warunki na stole}, aż sprawny egzemplarz zawiedzie tak samo.
+Stąd trzy tryby pracy modułu A + analityka.
+
+\section{Proponowane pakiety D1--D5}
+\subsection{D1 --- tryb REJESTRATOR: czarna skrzynka u klienta (dni--tygodnie)}
+Moduł A wpięty \textbf{przelotowo} w zasilanie ładowarki klienta (przenośne P/B/Q: gniazdo
+klienta $\to$ moduł A $\to$ wtyczka ładowarki; wallbox: przez rozłączkę serwisową). Rejestruje
+z rozdzielczością półokresu: U RMS (min/max, zapady/przepięcia ze znacznikiem czasu), prąd, moc,
+\textbf{upływ różnicowy sumaryczny toru} (RCM --- kluczowe przy ,,RCD u klienta wyzwala''),
+impedancję źródła $\Delta$U/$\Delta$I liczoną z naturalnych zmian obciążenia, temperatury,
+\textbf{RSSI WiFi i zajętość kanału} w miejscu montażu (radio ESP32 --- za darmo), zdarzenia
+(zanik L, wstrzymania). Log na SD $+$ zdalny podgląd (HA), praca bez nadzoru. Wynik: \emph{dowód},
+co dokładnie działo się w chwili awarii.
+\subsection{D2 --- tryb PRZELOT auto$\leftrightarrow$ładowarka: podsłuch prawdziwej sesji}
+Nowy kabel pojazdowy z modułu A (wtyk Type~2 ,,do auta''): ładowarka klienta wpięta w -X1, auto
+w kabel --- moduł A siedzi \textbf{w środku sesji} i biernie rejestruje: przebieg CP obu stron
+(stany, duty, anomalie czasowe), PP, U/I/P (przez istniejące -B1/-T/-U2), upływ różnicowy pary
+auto$+$ładowarka. Rozstrzyga spory ,,wina auta czy ładowarki'' i łapie przypadki zależne od
+konkretnego pojazdu. (Podsłuch wysokoimpedancyjny --- bez ingerencji w sesję.)
+\subsection{D3 --- tryb SYMULATOR: odtwarzanie warunków klienta na stole}
+W sekcji bench-test (zasilanie DUT z panelu): \textbf{wtrącana impedancja linii} (odczepy
+0,15/0,3/0,6~\ohm, rezystory drutowe z termikami --- symulacja miękkiej sieci/przedłużacza),
+\textbf{regulowany upływ tła} L$\to$PE przed DUT (rozszerzenie istniejącego generatora -A3
+o przełącznik strony --- symulacja ,,doładowanych'' upływów instalacji), \textbf{krótkie przerwy
+i zapady} (szybki stycznik z wyzwalaniem czasowym), zamiana L--N / przerwa PE (przekaźniki ---
+tu w roli \emph{reprodukcji zgłoszenia}, nie testu zgodności). Opcja etapu 2: autotransformator
+16~A (używany) dla pełnej regulacji 190--260~V. Procedura ,,\textbf{replay}'': firmware odtwarza
+sekwencję zdarzeń zarejestrowaną w D1 aż do powtórzenia usterki.
+\subsection{D4 --- diagnostyka łączności (zero sprzętu)}
+Pomiar na miejscu u klienta (moduł A lub sam ESP32 serwisowy): mapa RSSI 2,4~GHz, zajętość kanałów,
+stabilność połączenia z chmurą Tuya (opóźnienia/utraty), test ,,ładowarka widzi router, ale nie
+chmurę''. Duża część zgłoszeń ,,nie działa'' to appka --- ten pakiet zamyka je w minuty.
+\subsection{D5 --- analityka i pamięć przypadków}
+Raport diagnostyczny z D1--D4 w jednym formacie; \textbf{biblioteka profili klienckich} (nagrane
+warunki: ,,miękka sieć 0,6~\ohm'', ,,upływ tła 18~mA'', ,,WiFi $-$82~dBm'') do regresji nowych
+partii importu; powiązanie z katalogiem usterek U-xxx (nowe wpisy z dowodami z rejestratora).
+
+\section{Wpływ na konstrukcję modułu A (krótko; do zatwierdzenia)}
+\begin{longtable}{@{}p{0.07\textwidth}p{0.55\textwidth}p{0.14\textwidth}p{0.14\textwidth}@{}}
+\toprule
+\textbf{Pak.} & \textbf{Zmiana konstrukcyjna} & \textbf{Koszt} & \textbf{Praca}\\
+\midrule
+D1 & tor przelotowy 1F/3F-16 A w sekcji bench-test: wejście CEE16$+$Schuko $\to$ \textbf{druga
+wiązka przez okna istniejących -B1 i -T1} (tryb R $=$ tor główny bez prądu, więc czujniki wolne)
+$\to$ gniazdo wyjściowe; przekaźnik -K34 przełącza dzielniki -U2 na tor przelotowy; zasilanie
+logiki jak dotąd z osobnego przewodu & 150--300 zł & 1 dzień\\
+D2 & kabel z wtykiem pojazdowym Type~2 $+$ złącze panelowe; odczep przelotowy CP/PP z -X1
+z przekaźnikiem trybu (podsłuch zamiast PM701E); blokada programowa: w trybie P stycznik -K1
+otwarty & 250--450 zł & 0,5--1 dzień\\
+D3 & w sekcji bench-test: 3 odczepy rezystancji linii (drutowe $+$ termiki do pętli -F11),
+2 przekaźniki (L--N, PE), szybki stycznik przerw, przełącznik strony dla -A3; \emph{opcja:}
+autotransformator 16 A używany & 200--400 zł (opcja $+$400--700) & 1 dzień\\
+D4 & bez zmian sprzętowych (radio ESP32 $+$ firmware) & 0 & 0,5 dnia\\
+D5 & firmware $+$ szablon raportu $+$ format profili na SD & 0 & 1 dzień\\
+\midrule
+ & \textbf{Razem (bez opcji)} & \textbf{600--1150 zł} & \textbf{4--4,5 dnia}\\
+\bottomrule
+\end{longtable}
+Bez zmian: tor mocy E1 (tryby R/P używają go biernie), łańcuch E2, szafa B, sekwencja pomiarów
+obowiązkowych. Warunek: sekcja bench-test (decyzja Z3) --- D1/D3 jej wymagają. Dokumentacyjnie:
+nowy arkusz E4 (tor przelotowy, symulator, przełączniki trybów) --- po zatwierdzeniu.
+
+\section{Przebieg diagnostyki po zmianie (docelowy proces)}
+zgłoszenie $\to$ \textbf{D4} zdalnie/na miejscu (łączność? --- 30\% przypadków kończy się tu)
+$\to$ \textbf{D1} rejestrator u klienta na 2--7 dni (incydent złapany z dowodem) $\to$ analiza
+$\to$ \textbf{D3} replay na stole na sprawnym egzemplarzu $\to$ wniosek: wada środowiska (raport
+dla klienta/elektryka) albo wada ukryta (raport z dowodami do producenta) $\to$ wpis do katalogu
+U-xxx $+$ profil do biblioteki (\textbf{D5}) $\to$ regresja przyszłych partii tym profilem.
+
+\section{Decyzja}
+\textbf{Z20 (v2):} zakres D1--D5, budżet $\sim$0,6--1,15 tys. zł ($+$opcja autotransformatora),
+$\sim$4--4,5 dnia pracy; D1/D3 warunkowane zatwierdzeniem sekcji bench-test (Z3). Rekomendowana
+kolejność wdrożenia: \textbf{D4 $\to$ D1 $\to$ D5 $\to$ D3 $\to$ D2}.
+
+\end{document}

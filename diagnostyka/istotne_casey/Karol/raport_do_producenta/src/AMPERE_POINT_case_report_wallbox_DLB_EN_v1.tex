@@ -1,0 +1,191 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\newcommand{\DOCFOOT}{AMPERE POINT · Case report: wall box + DLB-A1 · 26 September 2026}
+\input{ap_report_preamble.tex}
+\hypersetup{pdftitle={Case report: wall box with DLB-A1 controller},pdfauthor={AMPERE POINT Service}}
+\begin{document}
+
+\apheader{Case report: wall box with DLB-A1 controller}%
+{Charging current exceeds the wall box current limit, overload protection trips, no automatic resume after a DLB pause}%
+{AMPERE POINT — Service · report for the manufacturer\\26 September 2026\\Case reference: wall box \texttt{bfe26d78713489f8a6ulsj} + DLB-A1}
+
+\section{Summary}
+
+An AmperePoint 11~kW three-phase wall box (Tuya device ID \texttt{bfe26d78713489f8a6ulsj}, firmware \texttt{(V8.0.7)F1.3.6}) worked correctly at the customer's site. After a DLB-A1 dynamic load balancing controller was added to the installation, two problems appeared. On 26 September 2026 the installers found both problems on site and documented them on video. The same events are visible in the device event log on the Tuya platform. All facts in this report come from that video documentation and from the corresponding entries in the device event log.
+
+\begin{apredb}[Problem 1 — absolute priority: in DLB mode the wall box does not respect its own current limit]
+With the wall box current limit set to \textbf{16~A} and the DLB controller set to \textbf{18~A}, the wall box charged at \textbf{16.9~A} (7.3~kW). When the wall box limit was lowered to \textbf{9~A} during charging, the wall box kept charging at \textbf{16.6~A / 7.1~kW} for several seconds and then showed \emph{``Current overload protection — automatic switch to low-current charging''}; instead of switching to a low current, it stopped charging completely. \textbf{Problem 1 caused a failure of the on-board charger in the three-phase vehicle: the vehicle became unresponsive and a mechanic was needed to restore it.}
+\end{apredb}
+
+\begin{apwarnb}[Problem 2: after a DLB pause the wall box does not resume charging]
+When an additional household load makes the DLB reduce the wall box current below 6~A, the wall box stops charging — correctly. After the load is disconnected, charging does \textbf{not} resume, not even after 5 minutes. It only resumes after the vehicle is unplugged and plugged in again.
+\end{apwarnb}
+
+The wall box worked correctly on the same installation and the same socket before the DLB was added, so the installation is excluded. The tests were made with two vehicles — one with a two-phase and one with a three-phase on-board charger — so the vehicle is excluded. Two independent DLB controller kits with accessories were used, and the problems occurred with both. This is therefore a problem of the wall box / DLB combination. We ask for an analysis and a corrected firmware. Evidence, log extracts and specific questions follow.
+
+\section{Equipment}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{12.9cm}}
+\toprule
+\rowcolor{aphead}\textbf{Item} & \textbf{Details} \\
+\midrule\endhead
+\bottomrule\endfoot
+Wall box & AmperePoint wall box, 11~kW, three-phase, maximum 16~A. Tuya device ID \texttt{bfe26d78713489f8a6ulsj}, product ID \texttt{gbmxngploofmhbjc}, firmware \texttt{(V8.0.7)F1.3.6}, device info \emph{``Type~B, AC~30mA + DC~6mA''}, product variant 3 (as reported by the device in the Tuya log). \\
+DLB controller & DLB-A1. \textbf{Two independent kits} (controller with accessories) were used — the problems occurred with both. \\
+Vehicles & \textbf{Vehicle A}: two-phase on-board charger (charges on L1 and L2 only) — Problem 1. \textbf{Vehicle B}: three-phase on-board charger — Problem 2; its on-board charger failed as a consequence of Problem 1. Charging inlets of both vehicles: Fig.~\ref{fig:cars}. \\
+\end{longtable}
+
+\begin{apbox}[What has been excluded]
+\begin{itemize}
+\item \textbf{Installation:} before the DLB was added, the wall box charged correctly on the same installation and the same socket.
+\item \textbf{Defective wall box:} the same wall box works correctly without the DLB.
+\item \textbf{Vehicle:} tested with two different vehicles (two-phase and three-phase on-board chargers).
+\item \textbf{Defective DLB unit or current transformer:} two complete, independent DLB-A1 kits were used (controller with all accessories, including the current transformers) — the problems occurred with both.
+\end{itemize}
+\end{apbox}
+
+\section{Problem 1 — current above the wall box limit, overload protection trips, charging stops}
+
+\subsection{Documented on video (26 September 2026, 12:27–12:32 local time)}
+
+Vehicle A (two-phase). Settings: DLB controller \textbf{18~A} (DLB display \emph{018}, Fig.~\ref{fig:p1}), wall box limit \textbf{16~A}.
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \kroknum{1} Charging in progress. Wall box display: \textbf{DLB 16.9~A}, 7.3~kW, 225~V, limit 16~A. Despite the 16~A limit of the wall box, the DLB limits the current to 16.9~A — even allowing for some tolerance, this is above the limit.
+\item \kroknum{2} The charging current limit is lowered on the wall box from 16~A to \textbf{9~A} while charging. Display: DLB 16.9~A, 7.3~kW, limit 9~A.
+\item \kroknum{3} The wall box does not reduce the charging power: for several seconds it keeps charging at \textbf{16.6~A / 7.1~kW} with a 9~A limit.
+\item \kroknum{4} After a few seconds the overload protection message appears: \emph{``Ochrona przed przeciążeniem prądu — Automatyczne przełączenie na ładowanie niskim prądem''} (Polish: \emph{``Current overload protection — Automatic switch to low-current charging''}). Display: DLB 0.0~A, 226~V, limit now \textbf{8~A}. The wall box did not switch to low-current charging — it stopped charging completely.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\shot{0.19\textwidth}{p1_step1.png}{\kroknum{1} 16.9~A, 7.3~kW, limit 16~A}\hfill
+\shot{0.19\textwidth}{p1_step2.png}{\kroknum{2} limit lowered to 9~A — still 16.9~A}\hfill
+\shot{0.19\textwidth}{p1_step3.png}{\kroknum{3} several seconds later: 16.6~A, 7.1~kW at 9~A}\hfill
+\shot{0.19\textwidth}{p1_step4.png}{\kroknum{4} overload protection, limit 8~A, charging stopped}\hfill
+\shot{0.19\textwidth}{p1_dlb018_rot.png}{DLB display: SEt = 018 (18~A); frame rotated 180° for readability}
+\caption{Problem 1 — frames from the installers' video.}
+\label{fig:p1}
+\end{figure}
+
+\subsection{The same minutes in the device event log (Tuya platform)}
+
+Times are local (UTC+2). Data point names are quoted as they appear in the Tuya log.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{14.1cm}}
+\toprule
+\rowcolor{aphead}\textbf{Time} & \textbf{Event} \\
+\midrule\endhead
+\bottomrule\endfoot
+12:27:14 & Wall box online after power-on; \dpn{设置充电电流} (current limit) = 16; 12:27:20 \dpn{工作状态} (work state) = 300 (charging) \\
+12:29:11 – 12:31:10 & \dpn{指标信息} (measurements): \textbf{L1 17.0~A, L2 15.3~A, L3 0~A, 7.3~kW} — steady \\
+12:31:57 – 12:31:59 & \dpn{设置充电电流} reported by the device (not by the app): 6 → 7 → 8 → \textbf{9}; work state still 300 (charging) \\
+12:32:09 & \dpn{报警信息} (alarm) \texttt{\{"t":"2026-09-26 12:32:05","v":400\}}; \dpn{工作状态} = \textbf{400}; \dpn{调试用工作状态} = \dpn{发生故障} (fault); \dpn{设置充电电流} = \textbf{8}; measurements 0~A \\
+12:32:30 & \dpn{充电记录} (session record): 12:27–12:32, 287~s \\
+\end{longtable}
+
+The log matches the video: 7.3~kW at limit 16~A, the limit lowered to 9~A on the device while charging, no reduction of the current, then alarm 400 about 10~s after the last limit change, with the limit lowered to 8~A and charging stopped. The wall box's own measurement in the log (17.0~A on L1) agrees with the value shown in the DLB field of the display (16.9~A).
+
+\begin{apredb}[Consequence]
+Problem 1 caused a failure of the on-board charger in the three-phase vehicle. The vehicle became unresponsive and a mechanic was needed to bring it back to life. Fixing Problem 1 is therefore the absolute priority.
+\end{apredb}
+
+\section{Problem 2 — no automatic resume after a DLB pause}
+
+\subsection{Documented on video (26 September 2026, 12:36–12:44 local time)}
+
+Vehicle B (three-phase). Settings: the DLB controller was \textbf{deliberately set to a lower current} in order to provoke the fault, which gives a lower maximum wall box current; wall box limit 16~A.
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \kroknum{1} Charging at \textbf{DLB 10.8~A}, 7.4~kW, 226~V, limit 16~A.
+\item \kroknum{2} A kettle is connected to simulate additional load on the installation. The DLB works as it should and reduces the wall box current; it falls below 6~A and the wall box \textbf{correctly stops charging}. Display: DLB 0.0~A, 0.0~kW, 228~V, limit 16~A, vehicle still connected.
+\item \kroknum{3} The kettle is disconnected. \textbf{The wall box does not start charging again.} The installers waited 5 minutes — still no charging.
+\item \kroknum{4} Only after the vehicle is \textbf{unplugged and plugged in again} does charging resume.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\shot{0.26\textwidth}{p2_step1.png}{\kroknum{1} charging at DLB 10.8~A, 7.4~kW, limit 16~A}\hspace{1.5cm}
+\shot{0.26\textwidth}{p2_step2.png}{\kroknum{2} stopped after the kettle was connected: DLB 0.0~A, 0.0~kW, vehicle connected — and it stays like this}
+\caption{Problem 2 — frames from the installers' video.}
+\label{fig:p2}
+\end{figure}
+
+\subsection{The same minutes in the device event log (Tuya platform)}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{14.1cm}}
+\toprule
+\rowcolor{aphead}\textbf{Time} & \textbf{Event} \\
+\midrule\endhead
+\bottomrule\endfoot
+12:35:51 & Wall box online after a power restart; charging in progress (current measurements from 12:35:54) \\
+12:36:13 – 12:37:34 & \dpn{指标信息}: \textbf{10.5–10.8 / 10.7–11.0 / 11.1–11.6~A, 7.4~kW}, 225–226~V — steady \\
+12:37:53 & \dpn{工作状态} = \textbf{200} (vehicle connected, not charging) — the pause \\
+12:37:53 – 12:44:21 & No charging state and no current reported; the wall box stays in state 200 \\
+12:44:21 & Wall box goes offline (\emph{keepalive\_timeout}) \\
+\end{longtable}
+
+The DLB-A1 Quick User Manual (section 6.2, \emph{Paused}) states: \emph{``Recovery is automatic when headroom returns.''} This does not happen.
+
+\section{Observed behaviour versus documented behaviour}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.0cm}>{\raggedright\arraybackslash}p{5.1cm}>{\raggedright\arraybackslash}p{5.8cm}}
+\toprule
+\rowcolor{aphead}\textbf{Function} & \textbf{Documented (DLB-A1 Quick User Manual, Rev.~20251109) or displayed} & \textbf{Observed} \\
+\midrule\endhead
+\bottomrule\endfoot
+Upper bound of the charging current & ``each wall box is capped by its own requested current'' & Current exceeds the wall box limit: 16.9~A at a 16~A limit; 16.6~A at a 9~A limit \\
+Usable ceiling & ``90\,\% of the Configured Supply Limit (10\,\% buffer)'' & With the DLB set to 18~A the wall box charged at 16.9~A, above 90\,\% $\times$ 18~A = 16.2~A \\
+Reduction when headroom drops, pause below 6~A & reduces, keeps $\geq$6~A where possible, otherwise pauses & Works (Problem 2, step 2) \\
+Resume after pause & ``Recovery is automatic when headroom returns'' & No resume, not even after 5~min; the vehicle must be re-plugged \\
+Overload protection message & Wall box message: ``Automatic switch to low-current charging'' & Charging stops completely; the limit is lowered from 9~A to 8~A \\
+\end{longtable}
+
+\section{Our reading of the evidence}
+
+The following is our reading of the evidence; we ask you to confirm or correct it.
+
+\begin{enumerate}
+\item In DLB mode the current allowance signalled to the vehicle on the Control Pilot appears to follow the DLB allocation only and is \textbf{not limited by the wall box's own current limit}: 16.9~A with a 16~A limit, 16.6~A with a 9~A limit. With the DLB set to 18~A the allowance was also above 90\,\% of that setting, which suggests that the 10\,\% safety buffer is not applied.
+\item When the limit is lowered during charging, the new value appears to be applied to the overload protection immediately, while the CP allowance stays at the DLB value. The vehicle is never asked to reduce its current, and about 10~s later the protection trips, lowers the limit by 1~A and stops charging.
+\item Problem 2 is separate: after a pause caused by an allocation below 6~A, the wall box (or the DLB) does not restart charging when the additional load is removed.
+\end{enumerate}
+
+Expected behaviour: CP allowance = min(wall box current limit, DLB allocation); a limit change during charging first lowers the PWM duty cycle and gives the vehicle the standard time to comply before any protection is evaluated; automatic resume after a pause.
+
+\section{Requests and questions}
+
+\begin{enumerate}
+\item \textbf{First of all: please fix both problems so that they do not occur in further units.} Provide a corrected firmware for the wall box (currently \texttt{(V8.0.7)F1.3.6}) and/or for the DLB-A1, and tell us which firmware versions and production batches are affected, so that we can inform other customers.
+\item In DLB mode, is the CP allowance calculated as \textbf{min(wall box current limit, DLB allocation)}? Our observations indicate that it is not.
+\item Which allocation formula does the DLB-A1 actually implement? The manual states 90\,\% $\times$ Configured Supply Limit minus the highest CT-measured phase current; with the DLB set to 18~A we observed 16.9~A.
+\item What is the trip condition of the overload protection (alarm 400), and what exactly does ``automatic switch to low-current charging'' do? We observed: charging stops completely and the limit is lowered by 1~A.
+\item When the current limit is changed during charging, does the wall box lower the CP allowance first and wait for the vehicle to comply before evaluating the protection?
+\item Why does the wall box not resume charging after a DLB pause when the additional load is removed? Is a re-plug of the vehicle required by design?
+\item For diagnostics: could the DLB allocation (the target current sent to the wall box) be reported as a data point in the Tuya log? At present the log contains no DLB-related data point.
+\end{enumerate}
+
+\needspace{6\baselineskip}
+\begin{apgreenb}[Interim measure we give to customers]
+Until a corrected firmware is available: operate the wall box without the DLB — without it the wall box works correctly.
+\end{apgreenb}
+
+\section{Attachments and available material}
+
+\begin{itemize}
+\item Frames from the installers' video of 26 September 2026 (Problem 1 and Problem 2): Fig.~\ref{fig:p1} and Fig.~\ref{fig:p2}.
+\item Photos of the charging inlets of both vehicles (Fig.~\ref{fig:cars}).
+\item Device event log of \texttt{bfe26d78713489f8a6ulsj} for 26 September 2026 on the Tuya platform — the events quoted above can be found there under this device ID. All times in this report are local (UTC+2); the log itself is stored in UTC.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\shotsm{0.24\textwidth}{car2ph.png}{Vehicle A — two-phase on-board charger}\hspace{1.2cm}
+\shotsm{0.24\textwidth}{car3ph.png}{Vehicle B — three-phase on-board charger}
+\caption{Vehicles used in the tests.}
+\label{fig:cars}
+\end{figure}
+
+{\color{apmuted}\small AMPERE POINT — Service · www.amperepoint.pl · +48 666 612 044 · Report prepared on 26 September 2026 from the installers' video and the Tuya device event log.}
+
+\end{document}

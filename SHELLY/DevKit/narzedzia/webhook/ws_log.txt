@@ -1,0 +1,32 @@
+14:06:48.082 serwer start
+14:07:27.859 POLACZENIE od 172.17.0.1, naglowki: {'Host': '192.168.0.57:8098', 'Connection': 'Upgrade', 'Upgrade': 'websocket', 'Sec-WebSocket-Version': '13', 'Sec-WebSocket-Key': '8ImmuEBs/0YoX70Gjc7RQA==', 'Sec-WebSocket-Protocol': 'json-rpc', 'User-Agent': 'XC3/2.0.0 (ShellyOS)'}
+14:07:29.108 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyFullStatus","params":{"ts":1790683657.03,"ble":{"addr":"54:32:04:51:63:36,p","flags":["advertising"]},"bthome":{},"cloud":{"connected":false},"modbus":{},"mqtt":{"connected":true},"service:0":{"etag":"80c7f33f9153d6fdf8a3f020cf7b682a","state":"running","dev_mode":true,"stats":{"mem":1505,"mem_peak":1603},"files":{"code":{"sha256":"13fe4e047ecfb43c618fee735d4fa3eb9ee4789a2293728410cc8d8d414dc5bc"},"manifest":{"sha256":"38cc1295339a48326ebdc6f76b4d18eaa3a263d565377afc93ad4f2a81f6871b"},"ui":{"sha256":"8ba525eff60a93fbb68425d63abcdff8ef27b
+14:07:29.769 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyStatus","params":{"ts":1790683656.36,"mqtt":{"connected":true}}}
+14:07:29.987 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyStatus","params":{"ts":1790683657.37,"ws":{"connected":true}}}
+14:07:32.865 -> {"id": 1, "src": "ampere-serwer", "method": "Shelly.GetDeviceInfo"}
+14:07:32.867 -> {"id": 2, "src": "ampere-serwer", "method": "Number.GetStatus", "params": {"id": 200}}
+14:07:33.062 <- {"id":1,"src":"apq11dev-543204516334","dst":"ampere-serwer","result":{"name":null,"id":"apq11dev-543204516334","mac":"543204516334","slot":1,"model":"S3XT-0S","gen":3,"fw_id":"20260921-060046/2.0.0-beta11xciohttpfix-g35669f3","ver":"2.0.0+13109-3815","app":"XC3+evse:portable:3109","auth_en":false,"auth_domain":null,"jti":"001094000005","jwt":{"p":"apq11dev","n":"Q11 DevKit test","url":"https://amperepoint.pl","m":"Ampere Point"},"ch":[{"key":"service:0","type":"evse:portable:3109"}],"provision":"unmanaged","enhanced_security":false}}
+14:07:33.351 <- {"id":2,"src":"apq11dev-543204516334","dst":"ampere-serwer","result":{"value":12,"source":"rpc","last_update_ts":1790683566}}
+14:07:37.879 -> {"id": 3, "src": "ampere-serwer", "method": "Number.Set", "params": {"id": 200, "value": 10}}
+14:07:38.028 <- {"id":3,"src":"apq11dev-543204516334","dst":"ampere-serwer","result":null}
+14:07:38.881 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyStatus","params":{"ts":1790683666.19,"number:200":{"value":10}}}
+14:07:47.890 -> {"id": 4, "src": "ampere-serwer", "method": "Number.Set", "params": {"id": 200, "value": 12}}
+14:07:48.044 <- {"id":4,"src":"apq11dev-543204516334","dst":"ampere-serwer","result":null}
+14:07:48.898 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyStatus","params":{"ts":1790683676.21,"number:200":{"value":12}}}
+14:09:25.450 serwer start
+14:09:53.816 POLACZENIE od 172.17.0.1, naglowki: {'Host': '192.168.0.57:8098', 'Connection': 'Upgrade', 'Upgrade': 'websocket', 'Sec-WebSocket-Version': '13', 'Sec-WebSocket-Key': '+ffuZaiMeTn01ttaZKrNoA==', 'Sec-WebSocket-Protocol': 'json-rpc', 'User-Agent': 'XC3/2.0.0 (ShellyOS)'}
+14:09:54.159 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyFullStatus","params":{"ts":1790683802.12,"ble":{"addr":"54:32:04:51:63:36,p","flags":["advertising"]},"bthome":{},"cloud":{"connected":false},"modbus":{},"mqtt":{"connected":true},"service:0":{"etag":"80c7f33f9153d6fdf8a3f020cf7b682a","state":"running","dev_mode":true,"stats":{"mem":1505,"mem_peak":1603},"files":{"code":{"sha256":"13fe4e047ecfb43c618fee735d4fa3eb9ee4789a2293728410cc8d8d414dc5bc"},"manifest":{"sha256":"38cc1295339a48326ebdc6f76b4d18eaa3a263d565377afc93ad4f2a81f6871b"},"ui":{"sha256":"8ba525eff60a93fbb68425d63abcdff8ef27b
+14:09:54.452 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyStatus","params":{"ts":1790683802.43,"ws":{"connected":true}}}
+14:09:58.823 -> {"id": 1, "src": "ampere-serwer", "method": "Shelly.GetDeviceInfo"}
+14:09:58.828 -> {"id": 2, "src": "ampere-serwer", "method": "Number.GetStatus", "params": {"id": 200}}
+14:09:58.933 <- {"id":1,"src":"apq11dev-543204516334","dst":"ampere-serwer","result":{"name":null,"id":"apq11dev-543204516334","mac":"543204516334","slot":1,"model":"S3XT-0S","gen":3,"fw_id":"20260921-060046/2.0.0-beta11xciohttpfix-g35669f3","ver":"2.0.0+13109-3815","app":"XC3+evse:portable:3109","auth_en":false,"auth_domain":null,"jti":"001094000005","jwt":{"p":"apq11dev","n":"Q11 DevKit test","url":"https://amperepoint.pl","m":"Ampere Point"},"ch":[{"key":"service:0","type":"evse:portable:3109"}],"provision":"unmanaged","enhanced_security":false}}
+14:09:59.032 <- {"id":2,"src":"apq11dev-543204516334","dst":"ampere-serwer","result":{"value":12,"source":"rpc","last_update_ts":1790683676}}
+14:10:03.841 -> {"id": 3, "src": "ampere-serwer", "method": "Number.Set", "params": {"id": 200, "value": 10}}
+14:10:03.983 <- {"id":3,"src":"apq11dev-543204516334","dst":"ampere-serwer","result":null}
+14:10:04.842 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyStatus","params":{"ts":1790683812.16,"number:200":{"value":10}}}
+14:10:13.846 -> {"id": 4, "src": "ampere-serwer", "method": "Number.Set", "params": {"id": 200, "value": 12}}
+14:10:13.995 <- {"id":4,"src":"apq11dev-543204516334","dst":"ampere-serwer","result":null}
+14:10:14.864 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyStatus","params":{"ts":1790683822.16,"number:200":{"value":12}}}
+14:11:16.622 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyStatus","params":{"ts":1790683884.49,"sys":{"restart_required":true}}}
+14:11:35.218 <- {"src":"apq11dev-543204516334","dst":"ws","method":"NotifyEvent","params":{"ts":1790683902.81,"events":[{"component":"ws","event":"config_changed","restart_required":true,"ts":1790683902.81,"cfg_rev":118}]}}
+14:11:37.861 ROZLACZENIE

@@ -1,0 +1,198 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+
+\title{\textbf{Instalacja elektryczna --- opis powykonawczy}\\[3pt]
+\large jak zbudowana jest instalacja i co jest z czym połączone\\[2pt]
+\normalsize wersja 1 --- towarzyszy schematom \texttt{instalacja\_schematy\_v1.pdf} (ark. 1--5)}
+\author{Opracowanie: AMPERE POINT (na podstawie zdjęć i rzutu odręcznego)}
+\date{12 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\section{Materiał źródłowy i zastrzeżenia}
+Opis sporządzono wyłącznie na podstawie: rzutu odręcznego (\texttt{schemat\_ideowy\_moj\_rysowany.jpg})
+oraz zdjęć: szafa korytarzowa ,,O'' (front, rząd górny/środkowy/dolny, opis na drzwiach), szafa
+tylna ,,X'' (front, licznik, część dolna), słupek ,,SZAFA AMPERE'' (front, wnętrze białej skrzynki),
+skrzynia z wentylatorem. \textbf{Zastrzeżenia:} (1) przebiegi przewodów w ścianach nie są widoczne
+--- na schematach oznaczono je liniami przerywanymi jako orientacyjne; (2) przekroje żył przyjęto
+opisowo (bez pomiaru); (3) na rzucie brakuje jednego pomieszczenia obok łazienki (w stronę frontu)
+oraz poziomu $-1$ (piwnica/kotłownia), które wynikają z opisu tablicy; (4) typy RCD (AC/A) należy
+potwierdzić z piktogramów na aparatach --- lista niepewności w rozdz.~\ref{sec:niepewnosci}.
+
+\section{Topologia całości (od sieci do odbiorników)}
+\begin{enumerate}
+\item \textbf{Przyłącze z sieci} dochodzi na tył posesji do \textbf{szafy X} (na elewacji za ścianą
+pokoju 2, od podwórza) --- kabel w peszlu wchodzi od góry. Do rozdziału (pkt 3) instalacja jest
+w układzie \textbf{TN-C} (żyły L1 L2 L3 $+$ PEN).
+\item \textbf{Pomiar OSD}: licznik trójfazowy Apator NORAX~3 w szafie X (plomby operatora).
+\item \textbf{Zabezpieczenie zalicznikowe}: rozłącznik nadprądowy Moeller/F\&G xClear
+\textbf{CLS6-C25/3} (charakterystyka C, 25~A, 3 bieguny) pod licznikiem.
+\item \textbf{Punkt rozdziału PEN}: w części dolnej szafy X --- niebieski blok zaciskowy (N)
+i żółty blok (PE) połączone żółto-zielonym mostkiem. Od tego miejsca instalacja jest
+\textbf{TN-C-S} (dalej 5 żył: L1 L2 L3 N PE).
+\item \textbf{WLZ} wychodzi dołem szafy X przez ścianę do wnętrza budynku i biegnie (trasa
+orientacyjna) do \textbf{szafy O} na korytarzu.
+\item \textbf{Szafa O} (rozdzielnica główna): wyłącznik główny GE 100~A 3P (poz.~15), ochronniki
+przepięciowe 4$\times$Eaton SPCT2-280 (poz.~16), a następnie \textbf{21 obwodów odbiorczych}
+w czterech grupach RCD i z aparatami RCBO (rozdz.~\ref{sec:szafaO}).
+\item \textbf{Odpływy szczególne}: obwód \textbf{9} (B16 trójfazowy za RCD 4P) zasila siłę kuchni,
+kotłownię oraz \textbf{słupek AMPERE} na podwórzu; obwód \textbf{17} (C20 trójfazowy) zasila
+\textbf{tablicę pieca} (podrozdzielnicę kotłowni, poziom $-1$, brak zdjęć); tablica dolna szafy O
+zasila domofon (zasilacz Vidos) i oświetlenie terenu.
+\item \textbf{Słupek AMPERE}: kabel zasilający poprowadzony \textbf{wewnątrz słupa} do białej
+skrzynki (podlicznik $\to$ RCD $\to$ B16/3), z której zasilane jest \textbf{gniazdo CEE 16~A}
+(prawa strona, pod skrzynką); drugi kabel od dołu, zakończony \textbf{wtykiem CEE}, służy do
+wpięcia w to gniazdo odbiornika słupka (ładowarki).
+\item \textbf{Skrzynia z wentylatorem} (przy ścianie, obok słupka): zasilanie nieustalone
+na podstawie materiału --- do weryfikacji.
+\end{enumerate}
+
+\section{Szafa X --- złącze kablowo-licznikowe (arkusz 3)}
+\textbf{Obudowa:} PCV Sakspol (typ z etykiety: OPS 40$\times$75Pgzt), dwie części: górna z okienkiem
+odczytowym (licznik), dolna z ostrzeżeniem ,,nie dotykać''.
+\begin{longtable}{@{}p{0.30\textwidth}p{0.64\textwidth}@{}}
+\toprule
+\textbf{Element} & \textbf{Opis / dane z tabliczki}\\
+\midrule
+licznik Apator \textbf{NORAX 3} & trójfazowy, 3$\times$230/400 V, 0,25--5(80) A, kl. B (kWh)
+i 2 (kvarh), 2500 imp/kWh, DLMS, IP54, rok 2020; nr fabr. 96992507; \textbf{plomba OSD
+(innogy, nr 1855250)} na osłonie zacisków\\
+zabezpieczenie zalicznikowe & Moeller/F\&G xClear \textbf{CLS6-C25/3} (C25, 3P, 400 V) w małej
+obudowie natynkowej pod licznikiem\\
+blok N (niebieski) & zaciski śrubowe; wejście N/PEN, wyjście N do WLZ\\
+blok PE (żółty) & zaciski śrubowe; wyjście PE do WLZ; żyły żółto-zielone\\
+\textbf{mostek N--PE} & żółto-zielona żyła łącząca oba bloki $=$ \textbf{punkt rozdziału PEN}
+(początek układu TN-C-S)\\
+\bottomrule
+\end{longtable}
+\textbf{Połączenia (kolejność toru):} przyłącze (z góry, kabel w peszlu) $\to$ zaciski wejściowe
+licznika $\to$ zaciski wyjściowe licznika $\to$ C25/3 (L1 L2 L3) $\to$ WLZ w dół przez ścianę;
+N przyłącza $\to$ blok N; z bloku N mostek do bloku PE; z bloków N i PE żyły do WLZ.
+\textbf{Uwaga:} połączenie punktu rozdziału z uziomem (bednarką) nie jest widoczne na zdjęciach
+--- powinno istnieć; do potwierdzenia przy oględzinach (rozdz.~\ref{sec:niepewnosci}).
+
+\section{Szafa O --- rozdzielnica główna na korytarzu (arkusz 4)}
+\label{sec:szafaO}
+\textbf{Obudowa:} podtynkowa, biała, dwudrzwiowa (górne drzwi: 3 rzędy aparatury; dolne drzwiczki:
+,,tablica dolna''). Aparatura: Eaton (serie xClear CLS6, CF16, CKN6) $+$ rozłącznik GE.
+\textbf{Struktura zasilania:} WLZ $\to$ \textbf{GE 100~A 3P} (wyłącznik główny budynku, poz.~15)
+$\to$ \textbf{ochronniki SPCT2-280} (T2, układ L1 L2 L3 N, poz.~16) $\to$ rozdział na: grupy RCD
+(I--IV), aparaty RCBO (obwody z własnym członem różnicowym) oraz odpływy 17--21.
+
+\subsection{Pełny wykaz obwodów (opis z drzwi $+$ aparaty ze zdjęć)}
+\begin{longtable}{@{}c l l p{0.40\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Aparat} & \textbf{Ochrona różnicowa} & \textbf{Obwód i uwagi}\\
+\midrule
+1 & RCBO CKN6-10/1N/B/003 & własna, 30 mA & rolety (napędy okienne; char. B10)\\
+2 & CLS6-B10 & grupa I (CF16-25/2/003) & oświetlenie: pokój $+$ sypialnia (pokoje 1 i 2)\\
+3 & CLS6-B16 & grupa I & gniazda kuchni (część 1)\\
+4 & CLS6-B16 & grupa I & pralka (łazienka)\\
+5 & CLS6-B10 & grupa II (CF16-25/2/003) & oświetlenie: salon $+$ jadalnia (pokój 1)\\
+6 & CLS6-B16 & grupa II & gniazda kuchni (część 2)\\
+7 & CLS6-B16 & grupa II & gniazda sypialni (pokój 2)\\
+8 & RCBO CKN6-16/1N/B/003 & własna, 30 mA & oświetlenie piwnicy (poziom $-1$)\\
+9 & \textbf{CLS6-B16/3 (3P)} & \textbf{grupa III (CF16-25/4/003, 4P)} & \textbf{siła: kuchnia
+(płyta indukcyjna) $+$ kotłownia $+$ skrzynka $=$ słupek AMPERE}\\
+10 & CLS6-B16 & grupa III & piekarnik $+$ gniazda kotłowni\\
+11 & CLS6-B10 & grupa IV (CF16-25/2/003) & oświetlenie: wejście, kotłownia, łazienka, kuchnia (i in.)\\
+12 & CLS6-B16 & grupa IV & zmywarka\\
+13 & CLS6-B16 & grupa IV & gniazda salonu (pokój 1)\\
+14 & CLS6-B16 & grupa IV & bojler (kotłownia)\\
+15 & GE 100 A 3P (AST M) & --- & \textbf{wyłącznik główny budynku}\\
+16 & 4$\times$ SPCT2-280 & --- & ochronniki przepięciowe T2, 280 V AC, tor L1 L2 L3 N\\
+17 & \textbf{CLS6-C20/3 (3P)} & --- (RCD w podrozdzielnicy?) & \textbf{zasilanie tablicy pieca}
+(podrozdzielnica kotłowni; zawartość nieudokumentowana)\\
+18 & RCBO CKN6-16/1N/B/003 & własna, 30 mA & gniazda: korytarz $+$ łazienka (i in.)\\
+19 & RCBO CKN6-10/1N/B/003 & własna, 30 mA & brama wjazdowa\\
+20 & CLS6-B10 (tabl. dolna) & --- (za grupą? do ustalenia) & domofon --- zasilacz Vidos
+PSU5B (wy: 14,5 V DC, 1,3 A) obok aparatu\\
+21 & RCBO CKN6-10/1N/B/003 (tabl. dolna) & własna, 30 mA & oświetlenie terenu zewnętrznego\\
+\bottomrule
+\end{longtable}
+\textbf{Jak czytać grupy RCD:} każdy z czterech wyłączników różnicowych CF16 (30~mA) zasila
+,,swoje'' eski umieszczone bezpośrednio po nim (kolejność na szynie $=$ przynależność, zgodnie
+z arkuszem 4): grupa I $\to$ 2, 3, 4; grupa II $\to$ 5, 6, 7; grupa III (4-biegunowa, bo obejmuje
+obwód trójfazowy) $\to$ 9, 10; grupa IV $\to$ 11, 12, 13, 14. Obwody 1, 8, 18, 19, 21 mają
+aparaty RCBO (różnicówka $+$ nadprądówka w jednym, każdy niezależny). Wszystkie człony różnicowe
+w szafie mają czułość 30~mA.
+
+\section{Słupek ,,SZAFA AMPERE'' (arkusz 5)}
+\textbf{Konstrukcja:} czarny słupek (kiosk) z frontem szklanym i logo AmperePoint, osadzony na
+stalowym słupie zakotwionym w fundamencie; drzwi boczne. \textbf{Wewnątrz:} biała rozdzielniczka
+hermetyczna (,,biała skrzynka'') z przezroczystą pokrywą oraz --- po prawej stronie, przymocowane
+do skrzynki --- czerwone \textbf{gniazdo CEE 16~A, 400~V, 5p (Mennekes)}.
+\begin{longtable}{@{}p{0.30\textwidth}p{0.64\textwidth}@{}}
+\toprule
+\textbf{Element} & \textbf{Opis / dane z tabliczki}\\
+\midrule
+podlicznik \textbf{ADELID L3F-RS} & trójfazowy, 3$\times$230/400 V, 10(100) A, 1000 imp/kWh,
+50 Hz, diody L1 L2 L3, przycisk RESET (licznik ,,od-do''), interfejs RS-485; stan na zdjęciu
+2752,7 kWh\\
+RCD \textbf{Doktorvolt DV-5576} & 40 A, I$\Delta$n 30 mA, 4-biegunowy, 400/415 V; normy
+EN 61008-1 $+$ EN 62423 (typ --- patrz piktogram; do potwierdzenia)\\
+MCB \textbf{Siemens 5SL, B16 3P} & wyłącznik nadprądowy B16, trzy bieguny, 400 V\\
+gniazdo \textbf{CEE 16 A 5p} & Mennekes, czerwone (3P$+$N$+$PE), zasilane z wyjścia B16\\
+\bottomrule
+\end{longtable}
+\textbf{Tor zasilania:} kabel z szafy O (obwód \textbf{9}) $\to$ w ziemi/po terenie do słupa $\to$
+\textbf{wewnątrz słupa} do białej skrzynki $\to$ podlicznik ADELID $\to$ RCD DV-5576 $\to$ B16 3P
+$\to$ gniazdo CEE. \textbf{Drugi kabel} wychodzący od dołu słupka jest zakończony \textbf{wtykiem
+CEE 16 A} i służy do wpięcia w gniazdo --- w ten sposób zasila się urządzenie zabudowane
+w słupku (ładowarkę), z możliwością szybkiego odłączenia. \textbf{Po co podlicznik:} energia
+słupka jest mierzona osobno (rozliczenia/kontrola), niezależnie od licznika OSD w szafie X;
+RS-485 pozwala w przyszłości czytać stan zdalnie.
+
+\section{Skrzynia z wentylatorem}
+Biała obudowa blaszana na stalowym stelażu przy ścianie (obok słupka): duża okrągła kratka
+wentylatora z boku, żaluzje wylotowe z przodu. Funkcja wskazuje na wymuszony nawiew/wyciąg
+(np. chłodzenie pomieszczenia technicznego). \textbf{Na materiale zdjęciowym nie widać źródła
+zasilania} --- brak podłączenia na schematach (oznaczono ,,?''); najbliższe kandydatury to obwód
+oświetlenia/gniazd zewnętrznych lub odpływ z tablicy pieca --- do ustalenia.
+
+\section{Trasy przewodów --- co jest pewne, a co orientacyjne}
+\textbf{Pewne (widoczne):} wejście przyłącza od góry do szafy X (peszel); zejście WLZ dołem
+z szafy X przez ścianę; wyjścia obwodów z szafy O w górę (nad rzędami) i w dół (tablica dolna);
+kabel zasilający słupka prowadzony wewnątrz słupa; przewód z wtykiem CEE od dołu słupka.
+\textbf{Orientacyjne (rysowane przerywaną):} przebieg WLZ wewnątrz budynku (przyjęto: wzdłuż
+ściany południowej i pionem korytarza), rozprowadzenie obwodów w ścianach/stropie, trasa obwodu 9
+od szafy O do słupa, zejścia do kotłowni. Kanały narysowane na arkuszu 2 grupują obwody kolorami
+i nie odzwierciedlają rzeczywistej liczby przewodów w bruzdach.
+
+\section{Niepewności / do potwierdzenia przy oględzinach}
+\label{sec:niepewnosci}
+\begin{enumerate}
+\item \textbf{Typy RCD} (AC vs A): CF16 w szafie O i DV-5576 w słupku --- odczytać piktogramy;
+istotne przy ładowaniu EV (por. przewodnik o instalacjach).
+\item \textbf{Uziemienie punktu rozdziału} w szafie X (bednarka/uziom) --- niewidoczne na zdjęciach.
+\item \textbf{Przekroje i typy kabli}: WLZ, obwód 9 (do słupka), obwód 17 (tablica pieca).
+\item \textbf{Zasilanie skrzyni z wentylatorem} oraz zawartość \textbf{tablicy pieca}.
+\item \textbf{Obwód pokoju 3} (brak na opisie drzwi wprost) --- prawdopodobnie w ramach 2/13.
+\item Doprecyzowanie listy odbiorów obwodów 11 i 18 (,,$+$ inne'' w rękopisie trudne do odczytania).
+\item Czy aparat 20 (domofon) jest za którymś członem różnicowym.
+\end{enumerate}
+
+\section{Powiązane dokumenty}
+\texttt{instalacja\_schematy\_v1.pdf} (arkusze 1--5, w tym po jednym szczegółowym na każdą szafę);
+zdjęcia źródłowe w folderze \texttt{instalacja}; ,,Instalacje elektryczne a ładowanie EV ---
+przewodnik'' (folder główny) --- tło teoretyczne (TN-C-S, RCD, spadki).
+
+\end{document}

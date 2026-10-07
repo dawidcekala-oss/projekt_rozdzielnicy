@@ -1,0 +1,60 @@
+% !TEX program = xelatex
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\usepackage{xcolor}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc,shapes.geometric}
+\definecolor{tuya}{HTML}{B45309}
+\definecolor{shelly}{HTML}{0E7C86}
+\definecolor{ocpp}{HTML}{15803D}
+\definecolor{inny}{HTML}{1D4ED8}
+\definecolor{szary}{HTML}{6B7280}
+\definecolor{nasz}{HTML}{7C3AED}
+\tikzset{
+  box/.style={draw=#1, fill=#1!9, rounded corners=3pt, line width=0.8pt, align=center, font=\small, inner sep=4pt, minimum height=1.25cm, minimum width=2.9cm},
+  grp/.style={draw=#1, dashed, rounded corners=7pt, line width=0.8pt, inner sep=7pt},
+  glab/.style={font=\scriptsize\bfseries, text=#1, anchor=south west, inner sep=2pt},
+  lang/.style={font=\scriptsize, text=#1, fill=white, inner sep=1.5pt, align=center},
+  link/.style={{Stealth[length=2.4mm]}-{Stealth[length=2.4mm]}, line width=1.3pt, #1},
+  note/.style={font=\scriptsize, text=szary, align=left},
+}
+\newcommand{\legenda}[2]{%
+  \node[anchor=north west, font=\scriptsize, align=left] at (#1,#2) {%
+  {\color{tuya}\rule[0.5ex]{0.7cm}{1.3pt}}\ język Tuya\quad
+  {\color{shelly}\rule[0.5ex]{0.7cm}{1.3pt}}\ język Shelly\quad
+  {\color{ocpp}\rule[0.5ex]{0.7cm}{1.3pt}}\ OCPP\quad
+  {\color{szary}\rule[0.5ex]{0.7cm}{0.8pt}}\ niezależne od OCPP\quad
+  {\color{nasz}\rule{0.32cm}{0.32cm}}\ tu działa tłumacz OCPP};}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[box=szary] (kier) at (0,3.3) {\textbf{Kierowca}\\telefon z aplikacją\\operatora};
+\node[box=szary] (auto) at (0,0) {\textbf{Auto}\\w teście: symulator\\auta};
+\node[box=tuya] (ster) at (3.9,0) {\textbf{Sterownik Q11}\\mikrokontroler\\decyduje o prądzie};
+\node[box=shelly, minimum width=3.3cm] (mod) at (7.8,0) {\textbf{Moduł łączności}\\dziś Tuya, docelowo X1\\w teście DevKit};
+\begin{scope}[on background layer]
+\node[grp=tuya, fit=(ster)(mod)] (q) {};
+\end{scope}
+\node[glab=tuya] at (q.north west) {Ładowarka Q11, produkt AmperePoint};
+\node[box=szary, minimum width=2.2cm] (rt) at (11.7,0) {\textbf{Router}\\Wi-Fi klienta};
+\node[box=ocpp, minimum width=3.2cm] (op) at (15.9,1.9) {\textbf{Serwer operatora}\\CSMS};
+\node[box=shelly, minimum width=3.2cm] (sh) at (15.9,-1.9) {\textbf{Chmura Shelly}};
+\begin{scope}[on background layer]
+\node[grp=inny, fit=(op)(sh)] (net) {};
+\end{scope}
+\node[glab=inny] at (net.north west) {Internet};
+\node[box=szary, minimum width=3.3cm] (wl) at (7.8,-3.3) {\textbf{Właściciel ładowarki}\\telefon z aplikacją\\Shelly};
+\draw[-{Stealth[length=2.4mm]}, line width=0.8pt, szary] (kier) -- node[lang=szary, right=2pt] {podpina\\przewód} (auto);
+\draw[link=szary, line width=0.8pt] (auto) -- node[lang=szary, above=1pt] {przewód} node[lang=szary, below=1pt] {ładowania} (ster);
+\draw[link=tuya] (ster) -- node[lang=tuya, above=1pt] {Tuya} (mod);
+\draw[link=shelly] (mod) -- node[lang=shelly, above=1pt] {Wi-Fi} (rt);
+\draw[link=ocpp] (rt) -- node[lang=ocpp, above=2pt, sloped] {OCPP} (op);
+\draw[link=shelly] (rt) -- node[lang=shelly, below=2pt, sloped] {Shelly} (sh);
+\draw[-{Stealth[length=2.4mm]}, line width=0.8pt, szary, dashed] (kier.east) -| node[lang=szary, pos=0.3, above=1pt] {aplikacja operatora: start ładowania, płatność} (op.north);
+\draw[-{Stealth[length=2.4mm]}, line width=0.8pt, szary, dashed] (wl.east) -| node[lang=szary, pos=0.3, below=1pt] {aplikacja Shelly: podgląd, ustawienia} (sh.south);
+\node[note, anchor=north west] at (-1.5,-4.4) {Auto nie ma dostępu do sieci ładowarki. Rozmawia ze sterownikiem tylko przez przewód ładowania. Operator i Shelly to dwie niezależne drogi.};
+\legenda{-1.5}{-4.95}
+
+\end{tikzpicture}
+\end{document}

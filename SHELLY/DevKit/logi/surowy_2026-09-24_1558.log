@@ -1,0 +1,836 @@
+15:58:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:58:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:58:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:03 I shos_rpc_inst.c:241     RPC.Ping [194@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+15:59:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:13 I shos_rpc_inst.c:241     RPC.Ping [195@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+15:59:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:13 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+15:59:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:23 I shos_rpc_inst.c:241     RPC.Ping [196@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+15:59:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:33 I shos_rpc_inst.c:241     RPC.Ping [197@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+15:59:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:43 I shos_rpc_inst.c:241     RPC.Ping [198@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+15:59:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:44 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+15:59:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:53 I shos_rpc_inst.c:241     RPC.Ping [199@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+15:59:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+15:59:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:03 I shos_rpc_inst.c:241     RPC.Ping [200@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:00:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:13 I shos_rpc_inst.c:241     RPC.Ping [201@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:00:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:13 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:00:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:23 I shos_rpc_inst.c:241     RPC.Ping [202@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:00:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:33 I shos_rpc_inst.c:241     RPC.Ping [203@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:00:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:43 I shos_rpc_inst.c:241     RPC.Ping [204@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:00:43 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:00:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:53 I shos_rpc_inst.c:241     RPC.Ping [205@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:00:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:00:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:03 I shos_rpc_inst.c:241     RPC.Ping [206@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:01:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:13 I shos_rpc_inst.c:241     RPC.Ping [207@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:01:14 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:01:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:23 I shos_rpc_inst.c:241     RPC.Ping [208@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:01:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:33 I shos_rpc_inst.c:241     RPC.Ping [209@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:01:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:44 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:01:44 I shos_rpc_inst.c:241     RPC.Ping [210@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:01:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:53 I shos_rpc_inst.c:241     RPC.Ping [211@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:01:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:01:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:04 I shos_rpc_inst.c:241     RPC.Ping [212@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:02:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:13 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:02:14 I shos_rpc_inst.c:241     RPC.Ping [213@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:02:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:24 I shos_rpc_inst.c:241     RPC.Ping [214@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:02:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:34 I shos_rpc_inst.c:241     RPC.Ping [215@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:02:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:43 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:02:44 I shos_rpc_inst.c:241     RPC.Ping [216@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:02:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:54 I shos_rpc_inst.c:241     RPC.Ping [217@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:02:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:02:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:04 I shos_rpc_inst.c:241     RPC.Ping [218@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:03:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:13 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:03:14 I shos_rpc_inst.c:241     RPC.Ping [219@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:03:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:24 I shos_rpc_inst.c:241     RPC.Ping [220@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:03:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:34 I shos_rpc_inst.c:241     RPC.Ping [221@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:03:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:43 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:03:44 I shos_rpc_inst.c:241     RPC.Ping [222@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:03:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:54 I shos_rpc_inst.c:241     RPC.Ping [223@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:03:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:03:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:04 I shos_rpc_inst.c:241     RPC.Ping [224@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:04:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:13 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:04:14 I shos_rpc_inst.c:241     RPC.Ping [225@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:04:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:24 I shos_rpc_inst.c:241     RPC.Ping [226@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:04:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:34 I shos_rpc_inst.c:241     RPC.Ping [227@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:04:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:43 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:04:44 I shos_rpc_inst.c:241     RPC.Ping [228@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:04:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:54 I shos_rpc_inst.c:241     RPC.Ping [229@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:04:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:04:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:04 I shos_rpc_inst.c:241     RPC.Ping [230@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:05:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:13 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:05:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:14 I shos_rpc_inst.c:241     RPC.Ping [231@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:05:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:24 I shos_rpc_inst.c:241     RPC.Ping [232@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:05:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:34 I shos_rpc_inst.c:241     RPC.Ping [233@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:05:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:44 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:05:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:44 I shos_rpc_inst.c:241     RPC.Ping [234@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:05:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:54 I shos_rpc_inst.c:241     RPC.Ping [235@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:05:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:05:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:04 I shos_rpc_inst.c:241     RPC.Ping [236@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:06:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:13 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:06:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:14 I shos_rpc_inst.c:241     RPC.Ping [237@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:06:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:25 I shos_rpc_inst.c:241     RPC.Ping [238@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:06:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:34 I shos_rpc_inst.c:241     RPC.Ping [239@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:06:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:43 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:06:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:45 I shos_rpc_inst.c:241     RPC.Ping [240@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:06:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:55 I shos_rpc_inst.c:241     RPC.Ping [241@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:06:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:06:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:04 I shos_rpc_inst.c:241     RPC.Ping [242@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:07:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:13 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:07:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:15 I shos_rpc_inst.c:241     RPC.Ping [243@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:07:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:25 I shos_rpc_inst.c:241     RPC.Ping [244@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:07:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:35 I shos_rpc_inst.c:241     RPC.Ping [245@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:07:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:43 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:07:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:45 I shos_rpc_inst.c:241     RPC.Ping [246@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:07:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:55 I shos_rpc_inst.c:241     RPC.Ping [247@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:07:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:07:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:05 I shos_rpc_inst.c:241     RPC.Ping [248@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:08:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:13 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:08:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:15 I shos_rpc_inst.c:241     RPC.Ping [249@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:08:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:25 I shos_rpc_inst.c:241     RPC.Ping [250@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:08:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:35 I shos_rpc_inst.c:241     RPC.Ping [251@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:08:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:43 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:08:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:45 I shos_rpc_inst.c:241     RPC.Ping [252@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:08:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:46 I shos_rpc_inst.c:241     Sys.GetConfig [1886437249@] via HTTP_in GET from 192.168.0.57:50336 via ws0
+16:08:46 I shos_rpc_inst.c:241     Shelly.GetDeviceInfo [1249594405@] via HTTP_in GET from 192.168.0.57:50337 via ws0
+16:08:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:55 I shos_rpc_inst.c:241     RPC.Ping [253@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:08:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:08:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:00 I shos_rpc_inst.c:241     Sys.SetConfig [1@] via HTTP_in POST from 192.168.0.57:55012 via ws0
+16:09:00 I 2xx_ota_backend.cpp:837 Not storing core dumps
+16:09:00 I y_notifications.cpp:213 Event from sys: {"component":"sys","event":"config_changed","restart_required":false,"ts":1790258940.72,"cfg_rev":25}
+16:09:00 I y_notifications.cpp:168 Status change of sys: {"cfg_rev":25}
+16:09:00 I shos_rpc_inst.c:241     sys.GetConfig [254@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:09:00 I shelly_debug.cpp:245    Streaming logs to 192.168.0.57:58830
+16:09:00 I shelly_debug.cpp:245    Streaming logs to 192.168.0.57:58831
+16:09:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:01 I shos_rpc_inst.c:241     Shelly.GetComponents [7022985@iotc_291_1-shelly-288-eu] via SHC 34.40.19.158:6022
+16:09:01 I shos_rpc_inst.c:241     Shelly.GetComponents [7022995@iotc_291_1-shelly-288-eu] via SHC 34.40.19.158:6022
+16:09:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:02 I ns_sd_responder.cpp:236 ws(0x3fcc4d68): Announced apq11dev-543204516334.local any@any (192.168.0.238)
+16:09:03 I ns_sd_responder.cpp:236 ws(0x3fcc4d68): Announced apq11dev-543204516334.local any@any (fe80::5632:4ff:fe51:6334)
+16:09:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:08 I shelly_debug.cpp:143    Stopped streaming logs to 192.168.0.57:58831
+16:09:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:10 I shos_rpc_inst.c:241     RPC.Ping [255@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:09:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:13 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:09:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:20 I shos_rpc_inst.c:241     RPC.Ping [256@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:09:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:30 I shos_rpc_inst.c:241     RPC.Ping [257@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:09:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:40 I shos_rpc_inst.c:241     RPC.Ping [258@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:09:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:43 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:09:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:50 I shos_rpc_inst.c:241     RPC.Ping [259@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:09:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:55 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:56 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:57 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:58 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:09:58 I shos_rpc_inst.c:241     Boolean.GetStatus [1057328526@] via HTTP_in GET from 192.168.0.57:64552 via ws0
+16:09:58 I shos_rpc_inst.c:241     Number.GetStatus [85813279@] via HTTP_in GET from 192.168.0.57:64553 via ws0
+16:09:58 I shos_rpc_inst.c:241     Enum.GetStatus [1226619086@] via HTTP_in GET from 192.168.0.57:64554 via ws0
+16:09:58 I shos_rpc_inst.c:241     Number.GetStatus [84896147@] via HTTP_in GET from 192.168.0.57:64555 via ws0
+16:09:58 I shos_rpc_inst.c:241     Number.GetStatus [1560104525@] via HTTP_in GET from 192.168.0.57:64556 via ws0
+16:09:58 I shos_rpc_inst.c:241     Object.GetStatus [1039472275@] via HTTP_in GET from 192.168.0.57:64557 via ws0
+16:09:58 I shelly_debug.cpp:245    Streaming logs to 192.168.0.57:64558
+16:09:59 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:00 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:00 I shos_rpc_inst.c:241     RPC.Ping [260@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:10:01 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:02 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:03 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:04 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:05 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:06 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:07 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:08 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:09 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:10 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:10 I shos_rpc_inst.c:241     RPC.Ping [261@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:10:11 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:12 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:13 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:13 I shelly_script.cpp:204   service:0 0.1% CPU utilization
+16:10:14 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:15 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:16 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:17 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:18 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:19 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:20 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:20 I shos_rpc_inst.c:241     RPC.Ping [262@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:10:21 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:22 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:23 I shelly_debug.cpp:143    Stopped streaming logs to 192.168.0.57:64558
+16:10:23 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:24 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:25 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:26 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:27 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:28 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:29 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:30 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:30 I shos_rpc_inst.c:241     RPC.Ping [263@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:10:31 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:32 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:33 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:34 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:35 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:36 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:37 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:38 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:39 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:40 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:40 I shos_rpc_inst.c:241     RPC.Ping [264@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:10:41 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:42 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:43 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:43 I shelly_script.cpp:204   service:0 0.0% CPU utilization
+16:10:44 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:45 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:46 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:47 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:48 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:49 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:50 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:50 I shos_rpc_inst.c:241     RPC.Ping [265@web-1790247367824] via WS_in from 192.168.0.57:50960 via ws0
+16:10:51 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:52 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:53 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:54 W shelly_tmcu.cpp:507     Heartbeat timed out!
+16:10:55 W shelly_tmcu.cpp:507     Heartbeat timed out!

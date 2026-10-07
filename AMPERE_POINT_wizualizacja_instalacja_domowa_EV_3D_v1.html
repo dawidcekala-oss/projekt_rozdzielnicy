@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMPERE POINT — instalacja domowa TN-C-S przystosowana do EV — wizualizacja 3D</title>
+<style>
+:root{--surface-1:#f1f3f5;--surface-2:#fff;--text-primary:#16191d;--text-secondary:#555b63;--text-muted:#8a9099;--border:#d9dee3;--border-strong:#c2c9d0;--radius:8px;--bg-accent:#e6f1fb;--text-accent:#185fa5}
+body{margin:0;font-family:system-ui,sans-serif;background:var(--surface-1);color:var(--text-primary)}
+.page{max-width:1240px;margin:0 auto;padding:14px}
+h1{font-size:17px;font-weight:500;margin:4px 0 10px}
+button{padding:6px 12px;border:1px solid var(--border-strong);border-radius:var(--radius);background:var(--surface-2);color:var(--text-primary);cursor:pointer;font-size:13px}
+button.on{background:var(--bg-accent);color:var(--text-accent);border-color:var(--text-accent)}
+button.ev{border-color:#e65100;color:#a33c00}
+button.ev.on{background:#fff3e0;color:#a33c00;border-color:#e65100}
+select{padding:6px 10px;border:1px solid var(--border-strong);border-radius:var(--radius);background:var(--surface-2);color:var(--text-primary);font-size:13px;max-width:360px}
+</style>
+</head>
+<body>
+<div class="page">
+<h1>Najpopularniejsza instalacja domowa (TN-C-S, dom jednorodzinny) przystosowana do ładowania EV — pełny przebieg przewodów, realistyczne aparaty. Przycisk „Wyróżnij elementy EV" podświetla to, co dodano pod ładowanie.</h1>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px">
+ <button id="btnEv" class="ev">Wyróżnij elementy EV</button>
+ <button id="btnXray">Przezroczyste ściany</button>
+ <button id="btnLbl" class="on">Etykiety</button>
+ <button id="btnReset">Reset widoku</button>
+ <select id="selPart"><option value="">— wybierz element instalacji —</option></select>
+</div>
+<div style="position:relative;border:1px solid var(--border);border-radius:12px;overflow:hidden">
+ <canvas id="cv" style="display:block;width:100%;height:600px"></canvas>
+</div>
+<div style="margin:10px 2px 2px;min-height:44px">
+ <span id="infoName" style="font-weight:500;font-size:14px"></span>
+ <span id="infoDesc" style="font-size:13px;color:var(--text-secondary);margin-left:8px"></span>
+</div>
+<div style="font-size:12px;color:var(--text-muted)">obrót: lewy przycisk myszy · zoom: kółko · przesuwanie: prawy przycisk · kliknij element lub wybierz z listy · szczegóły merytoryczne: „Instalacje elektryczne a ładowanie EV — przewodnik"</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const T=THREE;
+const cv=document.getElementById('cv');
+const renderer=new T.WebGLRenderer({canvas:cv,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
+renderer.setClearColor(0xeef1f4);
+const scene=new T.Scene();
+const cam=new T.PerspectiveCamera(40,1,10,90000);
+const parts={},clickable=[],wallsX=[],labelsG=new T.Group();
+function M(c,o){return new T.MeshStandardMaterial(Object.assign({color:c,roughness:.8,metalness:.1},o||{}))}
+function bx(w,h,d,x,y,z,c,o){const m=new T.Mesh(new T.BoxGeometry(w,h,d),M(c,o));m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;return m}
+function cy(r,h,x,y,z,c,o,seg){const m=new T.Mesh(new T.CylinderGeometry(r,r,h,seg||24),M(c,o));m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;return m}
+function tube(pts,r,c,o){const cu=new T.CatmullRomCurve3(pts.map(p=>new T.Vector3(p[0],p[1],p[2])));const m=new T.Mesh(new T.TubeGeometry(cu,120,r,10,false),M(c,Object.assign({roughness:.6},o||{})));m.castShadow=true;return m}
+function reg(id,name,info,fx,fy,fz){parts[id]={name:name,info:info,focus:new T.Vector3(fx,fy,fz),meshes:[]}}
+function tag(o,id,ev){o.traverse(n=>{if(n.isMesh){n.userData.pid=id;if(ev)n.userData.ev=true;clickable.push(n);parts[id].meshes.push(n)}})}
+function canvasTex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');draw(g,w,h);const t=new T.CanvasTexture(c);t.minFilter=T.LinearFilter;t.anisotropy=4;return t}
+function texPlane(wmm,hmm,drawFn){const k=Math.min(8,1024/wmm,1024/hmm);const t=canvasTex(Math.max(32,Math.round(wmm*k)),Math.max(32,Math.round(hmm*k)),drawFn);const m=new T.Mesh(new T.PlaneGeometry(wmm,hmm),new T.MeshBasicMaterial({map:t}));return m}
+scene.add(new T.HemisphereLight(0xffffff,0x8fa0b0,.9));
+const d1=new T.DirectionalLight(0xffffff,.8);d1.position.set(6000,9000,7000);d1.castShadow=true;
+d1.shadow.mapSize.set(2048,2048);d1.shadow.camera.left=-9000;d1.shadow.camera.right=9000;d1.shadow.camera.top=9000;d1.shadow.camera.bottom=-9000;d1.shadow.camera.far=40000;scene.add(d1);
+const d2=new T.DirectionalLight(0xffffff,.22);d2.position.set(-7000,5000,-6000);scene.add(d2);
+const gnd=new T.Mesh(new T.CircleGeometry(16000,56),M(0xdfe5dd,{roughness:.95}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;scene.add(gnd);
+scene.add(bx(16000,4,1600,0,3,6300,0xb9bec4));
+scene.add(bx(120,2,2300,-3500,4,5150,0x8a7f72));
+const H=new T.Group();scene.add(H);
+scene.add(bx(10500,90,8500,0,-45,0,0xd7d9d4));
+const gfl=bx(3450,6,7900,3320,4,0,0xc2c7cd);scene.add(gfl);
+function wall(w,h,d,x,y,z){const m=bx(w,h,d,x,y,z,0xece8df,{roughness:.85});wallsX.push(m);H.add(m);return m}
+wall(10300,2800,150,0,1400,-4075);
+wall(150,2800,8000,-5075,1400,0);
+wall(150,2800,8000,5075,1400,0);
+wall(10300,1000,150,0,500,4075);
+wall(120,2800,2400,1500,1400,-2800);
+wall(120,2800,4400,1500,1400,1800);
+reg('zk','Złącze kablowo-pomiarowe (ZK + licznik)','na elewacji: zabezpieczenie główne (rozłącznik z wkładkami gG 25 A) i licznik OSD; tu jest PUNKT ROZDZIAŁU sieci TN-C na N i PE (początek TN-C-S) — połączony z uziomem budynku',-3500,1000,4200);
+const zk=new T.Group();
+zk.add(bx(440,640,250,-3500,950,4210,0xdcdedb,{roughness:.6}));
+const zkf=texPlane(420,620,(g,w,h)=>{g.fillStyle='#e7e9e6';g.fillRect(0,0,w,h);g.strokeStyle='#9aa0a6';g.lineWidth=6;g.strokeRect(8,8,w-16,h-16);g.fillStyle='#16191d';g.font='500 68px system-ui';g.textAlign='center';g.fillText('ZK + ZL',w/2,90);g.font='44px system-ui';g.fillText('zabezpieczenie główne gG 25 A',w/2,160);g.fillStyle='#0b0e11';g.fillRect(w/2-260,220,520,260);g.fillStyle='#8bff9a';g.font='700 96px monospace';g.fillText('004237.4',w/2,370);g.font='48px monospace';g.fillText('kWh',w/2,440);g.fillStyle='#444';g.font='40px system-ui';g.fillText('licznik OSD — plomby',w/2,560);g.fillStyle='#a33c00';g.font='500 42px system-ui';g.fillText('punkt rozdziału PEN na N + PE',w/2,880);g.fillStyle='#2e7d32';g.fillRect(w/2-24,910,48,120);g.fillStyle='#fdd835';g.fillRect(w/2-24,940,48,24);g.fillStyle='#444';g.font='38px system-ui';g.fillText('do uziomu',w/2,1120)});
+zkf.position.set(-3500,950,4338);zk.add(zkf);
+H.add(zk);tag(zk,'zk');
+reg('przylacze','Przyłącze kablowe z sieci','kabel YAKXS 4×25 mm² (L1 L2 L3 + PEN) w ziemi, od złącza OSD w ulicy do ZK — układ dochodzi jako TN-C',-3500,150,5200);
+const prz=tube([[-3500,15,6300],[-3500,15,4600],[-3500,330,4320]],13,0x22262a);H.add(prz);tag(prz,'przylacze');
+reg('otok','Uziom — otok fundamentowy + bednarka','taśma FeZn wokół fundamentów; łączy się z punktem rozdziału w ZK i z GSU przy rozdzielnicy — od jego jakości zależy ochrona (i spokój ładowarki, która pilnuje PE)',5180,60,0);
+const otok=new T.Group();
+otok.add(bx(10420,8,34,0,16,4185,0x8d9aa5,{metalness:.5}));otok.add(bx(10420,8,34,0,16,-4185,0x8d9aa5,{metalness:.5}));
+otok.add(bx(34,8,8420,-5185,16,0,0x8d9aa5,{metalness:.5}));otok.add(bx(34,8,8420,5185,16,0,0x8d9aa5,{metalness:.5}));
+otok.add(bx(8,320,26,-3360,180,4185,0x8d9aa5,{metalness:.5}));
+H.add(otok);tag(otok,'otok');
+reg('gsu','GSU — główna szyna uziemiająca','mosiężna listwa przy rozdzielnicy: schodzą się uziom (bednarka), PE instalacji i połączenia wyrównawcze (rury wody/CO)',1500,300,560);
+const gsu=new T.Group();
+gsu.add(bx(14,180,30,1448,300,560,0xd4af37,{metalness:.6,roughness:.3}));
+gsu.add(tube([[5170,20,560],[2200,18,560],[1470,120,560],[1452,240,560]],6,0x8d9aa5,{metalness:.5}));
+H.add(gsu);tag(gsu,'gsu');
+reg('bonding','Połączenie wyrównawcze (rura wody)','żyła żółto-zielona z GSU do metalowych rur — wyrównuje potencjały; wymóg przy każdej modernizacji',-4700,400,-3700);
+const bon=new T.Group();
+bon.add(cy(16,700,-4780,350,-3780,0xb87333,{metalness:.6,roughness:.35}));
+bon.add(tube([[1452,180,600],[900,60,900],[-2000,55,-1500],[-4740,60,-3720],[-4780,320,-3770]],4.5,0x9acd32));
+H.add(bon);tag(bon,'bonding');
+reg('wlz','WLZ 5×10 mm² (od złącza do rozdzielnicy)','po rozdziale w ZK do domu idzie już 5 żył: L1 L2 L3 N PE — po ścianie/w posadzce do rozdzielnicy głównej',0,120,2400);
+const wlz=tube([[-3500,620,4055],[-3500,120,3990],[-3500,60,3800],[1418,60,3700],[1418,60,700],[1418,1240,640]],12,0x6b7075);
+H.add(wlz);tag(wlz,'wlz');
+function fitT(g,txt,maxW,px,wgt){let s=px;g.font=(wgt||'400')+' '+Math.round(s)+'px system-ui';let m=g.measureText(txt).width;if(m>maxW){s=s*maxW/m;g.font=(wgt||'400')+' '+Math.round(Math.max(9,s))+'px system-ui'}}
+function faceMCB(g,w,h,big,sub,phases){g.fillStyle='#f2f3ef';g.fillRect(0,0,w,h);g.fillStyle='#16191d';g.textAlign='center';fitT(g,'AMPER',w*.9,h*.15,'500');g.fillText('AMPER',w/2,h*.16);fitT(g,big,w*.92,h*.32,'700');g.fillText(big,w/2,h*.5);fitT(g,sub,w*.94,h*.12);g.fillText(sub,w/2,h*.66);fitT(g,'230/400V~ 6000',w*.94,h*.11);g.fillText('230/400V~ 6000',w/2,h*.8);if(phases>1){fitT(g,(phases===3?'3P':'4P'),w*.5,h*.11,'500');g.fillText((phases===3?'3P':'4P'),w/2,h*.93)}}
+function dinDev(mods,kind,big,sub,lever,extra){
+ const w=mods*18,G=new T.Group();
+ G.add(bx(w-1.5,85,50,0,0,0,0xf2f3ef,{roughness:.55}));
+ G.add(bx(w-1.5,46,16,0,1,32,0xf2f3ef,{roughness:.55}));
+ const f=texPlane(w-3,44,(g,cw,ch)=>{ if(kind==='rcd'){g.fillStyle='#f2f3ef';g.fillRect(0,0,cw,ch);g.fillStyle='#16191d';g.textAlign='center';g.font='500 '+Math.round(ch*.15)+'px system-ui';g.fillText('AMPER RCCB',cw/2,ch*.16);g.font='700 '+Math.round(ch*.24)+'px system-ui';g.fillText(big,cw/2,ch*.42);g.font='700 '+Math.round(ch*.20)+'px system-ui';g.fillStyle=(sub.indexOf('A')>=0&&sub.indexOf('AC')<0)?'#a33c00':'#16191d';g.fillText(sub,cw/2,ch*.64);g.fillStyle='#16191d';g.font=Math.round(ch*.12)+'px system-ui';g.fillText('IΔn 30 mA  •  TEST co 30 dni',cw/2,ch*.82)} else if(kind==='spd'){g.fillStyle='#f2f3ef';g.fillRect(0,0,cw,ch);g.fillStyle='#16191d';g.textAlign='center';g.font='700 '+Math.round(ch*.22)+'px system-ui';g.fillText(big,cw/2,ch*.3);g.font=Math.round(ch*.14)+'px system-ui';g.fillText(sub,cw/2,ch*.5);for(let i=0;i<4;i++){g.fillStyle='#2e7d32';g.fillRect(cw*(.14+i*.2),ch*.62,cw*.12,ch*.22)}} else if(kind==='main'){g.fillStyle='#f2f3ef';g.fillRect(0,0,cw,ch);g.fillStyle='#c62828';g.fillRect(0,0,cw,ch*.14);g.fillStyle='#16191d';g.textAlign='center';g.font='700 '+Math.round(ch*.3)+'px system-ui';g.fillText(big,cw/2,ch*.5);g.font=Math.round(ch*.15)+'px system-ui';g.fillText(sub,cw/2,ch*.72)} else faceMCB(g,cw,ch,big,sub,mods)});
+ f.position.set(0,0,40.6);G.add(f);
+ const lw=Math.min(w-8,10+mods*4);
+ const lv=bx(lw,16,8,0,12,44,lever);lv.rotation.x=-0.45;G.add(lv);
+ for(let i=0;i<mods;i++){const sx=-w/2+9+i*18;const s1=cy(2.6,6,sx,40,26,0x8a8f95,{metalness:.5},12);s1.rotation.x=Math.PI/2;G.add(s1);const s2=cy(2.6,6,sx,-40,26,0x8a8f95,{metalness:.5},12);s2.rotation.x=Math.PI/2;G.add(s2)}
+ if(kind==='rcd'){G.add(bx(9,9,4,w/2-12,-10,42.5,0xe07820))}
+ if(extra)extra(G,w);
+ return {g:G,w:w};
+}
+reg('rg','Rozdzielnica główna (RG)','natynkowa, 3 rzędy TH35; od góry: rozłącznik główny i SPD, obwody domowe za RCD typu AC, osobny rząd obwodu EV; na dole listwy N i PE',1418,1600,600);
+reg('fr','Rozłącznik główny 63 A (izolacyjny)','wyłącza całą rozdzielnicę do prac; czerwone pole = aparat główny',1418,1790,600);
+reg('spd','Ogranicznik przepięć SPD T1+T2','chroni elektronikę (także wallbox) przed przepięciami; zielone okienka = wkładki sprawne',1418,1790,470);
+reg('rcdac','RCD 40 A / 30 mA typ AC — obwody domowe','różnicówka grupowa starego typu: widzi tylko upływ sinusoidalny; dla obwodów AGD wystarcza',1418,1600,690);
+reg('mcb','Wyłączniki nadprądowe obwodów domowych','B10 oświetlenie, B16 gniazda/pralka/zmywarka, B16 3P płyta indukcyjna — chronią przewody, nie urządzenia',1418,1600,530);
+reg('rcda','RCD 40 A / 30 mA typ A — OBWÓD EV','dedykowana różnicówka dla ładowania: typ A widzi też upływ pulsujący; gładki DC do 6 mA wykrywa RDC-DD w ładowarce AMPERE — razem dają wymagany poziom ochrony',1418,1410,660);
+reg('b16ev','Wyłącznik B16 3P — OBWÓD EV (11 kW)','osobne zabezpieczenie tylko dla wallboxa: 3 fazy × 16 A; nic innego na tym obwodzie',1418,1410,560);
+reg('szyny','Listwy N (niebieska) i PE (zielona)','wspólne szyny zbiorcze; od rozdziału w ZK przewody N i PE prowadzone są już OSOBNO',1418,1320,600);
+reg('grzeb','Szyna grzebieniowa (mostek faz)','łączy zasilanie na górnych zaciskach rzędu aparatów — zamiast wielu pojedynczych mostków',1418,1650,560);
+reg('opisy','Opisy obwodów','pasek z nazwami obwodów — obowiązkowy element dobrej praktyki (i szybkiej diagnostyki)',1418,1500,600);
+const RG=new T.Group();RG.position.set(1418,1600,600);RG.rotation.y=-Math.PI/2;
+RG.add(bx(560,680,26,0,0,-52,0xfafafa,{roughness:.5}));
+RG.add(bx(560,26,110,0,340,-8,0xfafafa));RG.add(bx(560,26,110,0,-340,-8,0xfafafa));
+RG.add(bx(26,680,110,-280,0,-8,0xfafafa));RG.add(bx(26,680,110,280,0,-8,0xfafafa));
+[190,0,-190].forEach(y=>{RG.add(bx(500,20,3,0,y-1,-32,0x9aa0a6,{metalness:.5}));RG.add(bx(500,8,12,0,y,-26,0xb2b8bd,{metalness:.5}))});
+function row(y,items){let x=-240;items.forEach(it=>{it.d.g.position.set(x+it.d.w/2,y,-14);RG.add(it.d.g);tag(it.d.g,it.id,it.ev);x+=it.d.w+2});return x}
+const dFR=dinDev(3,'main','63 A','rozłącznik FR303',0xc62828);
+const dSPD=dinDev(4,'spd','SPD','T1+T2  Up 1,5 kV',0x222222);
+row(190,[{d:dFR,id:'fr'},{d:dSPD,id:'spd'}]);
+const dRAC=dinDev(4,'rcd','40 A','typ AC',0x2255aa);
+const m1=dinDev(1,'mcb','B10','oświetlenie',0x222222),m2=dinDev(1,'mcb','B10','oświetl. 2',0x222222),m3=dinDev(1,'mcb','B16','gniazda kuchnia',0x222222),m4=dinDev(1,'mcb','B16','gniazda salon',0x222222),m5=dinDev(1,'mcb','B16','pralka',0x222222),m6=dinDev(1,'mcb','B16','zmywarka',0x222222),m7=dinDev(3,'mcb','B16','płyta indukcyjna',0x222222);
+row(0,[{d:dRAC,id:'rcdac'},{d:m1,id:'mcb'},{d:m2,id:'mcb'},{d:m3,id:'mcb'},{d:m4,id:'mcb'},{d:m5,id:'mcb'},{d:m6,id:'mcb'},{d:m7,id:'mcb'}]);
+const dRA=dinDev(4,'rcd','40 A','typ A',0x2255aa);
+const dBEV=dinDev(3,'mcb','B16','wallbox 11 kW',0x222222);
+row(-190,[{d:dRA,id:'rcda',ev:true},{d:dBEV,id:'b16ev',ev:true}]);
+const evst=texPlane(120,20,(g,w,h)=>{g.fillStyle='#fff3e0';g.fillRect(0,0,w,h);g.fillStyle='#a33c00';g.font='700 '+Math.round(h*.62)+'px system-ui';g.textAlign='center';g.fillText('OBWÓD EV',w/2,h*.72)});
+evst.position.set(-116,-128,32);RG.add(evst);tag(evst,'rcda',true);
+[[190,'zasilanie  •  SPD'],[0,'RCD AC: światło • gniazda • pralka • zmywarka • indukcja'],[-190,'RCD A: wallbox — obwód dedykowany']].forEach(p=>{const s=texPlane(490,18,(g,w,h)=>{g.fillStyle='#ffffff';g.fillRect(0,0,w,h);g.strokeStyle='#c2c9d0';g.strokeRect(0,0,w,h);g.fillStyle='#444';g.font=Math.round(h*.6)+'px system-ui';g.textAlign='center';g.fillText(p[1],w/2,h*.72)});s.position.set(0,p[0]-62,34);RG.add(s);tag(s,'opisy')});
+const gz1=bx(150,6,12,-98,236,20,0x22262a),gz2=bx(96,6,12,-171,46,20,0x22262a);RG.add(gz1);RG.add(gz2);tag(gz1,'grzeb');tag(gz2,'grzeb');
+const bN=bx(170,12,12,-150,-292,0,0xd4af37,{metalness:.6,roughness:.3}),bP=bx(170,12,12,90,-292,0,0xd4af37,{metalness:.6,roughness:.3});
+const bNp=texPlane(60,12,(g,w,h)=>{g.fillStyle='#1565c0';g.fillRect(0,0,w,h);g.fillStyle='#fff';g.font='700 '+h*.7+'px system-ui';g.textAlign='center';g.fillText('N',w/2,h*.78)});bNp.position.set(-150,-276,8);
+const bPp=texPlane(60,12,(g,w,h)=>{g.fillStyle='#2e7d32';g.fillRect(0,0,w,h);g.fillStyle='#fdd835';g.font='700 '+h*.7+'px system-ui';g.textAlign='center';g.fillText('PE',w/2,h*.78)});bPp.position.set(90,-276,8);
+RG.add(bN);RG.add(bP);RG.add(bNp);RG.add(bPp);tag(bN,'szyny');tag(bP,'szyny');tag(bNp,'szyny');tag(bPp,'szyny');
+[[0x8d5524,-236],[0x22262a,-228],[0x9aa0a6,-220],[0x1565c0,-212],[0x9acd32,-204]].forEach((cw,i)=>{RG.add(tube([[cw[1],330,-6],[cw[1],258,10],[-160+i*6,238,14]],2.6,cw[0]))});
+RG.add(tube([[-212,330,-4],[-190,-250,6],[-160,-286,4]],2.6,0x1565c0));
+RG.add(tube([[-204,330,-2],[60,-250,8],[86,-286,4]],2.6,0x9acd32));
+RG.add(tube([[-98,142,16],[-150,80,14],[-171,66,16]],2.6,0x8d5524));
+RG.add(tube([[-171,-46,16],[-150,-90,14],[-116,-142,16]],2.6,0x8d5524));
+RG.add(tube([[-52,-238,10],[-40,-270,8],[-30,-330,-4]],2.8,0x9acd32));
+RG.add(tube([[-96,-238,10],[-96,-300,4],[-96,-330,-4]],2.8,0x1565c0));
+H.add(RG);
+tag(RG.children[0],'rg');tag(RG.children[1],'rg');tag(RG.children[2],'rg');tag(RG.children[3],'rg');tag(RG.children[4],'rg');
+reg('osw','Obwód oświetlenia (3×1,5 mm²)','z B10 pod sufit do lamp; najcieńsze przewody w domu',-1500,2700,-500);
+const osw=new T.Group();
+osw.add(tube([[1418,1960,640],[1418,2720,640],[1418,2720,-2000],[-3500,2720,-2000]],5.5,0xd9dadb));
+osw.add(tube([[-800,2720,-2000],[-800,2720,1500]],5.5,0xd9dadb));
+const lp1=cy(180,26,-3500,2740,-2000,0xfff3d6,{emissive:0xffe6a3,emissiveIntensity:.7});
+const lp2=cy(180,26,-800,2740,1500,0xfff3d6,{emissive:0xffe6a3,emissiveIntensity:.7});
+osw.add(lp1);osw.add(lp2);H.add(osw);tag(osw,'osw');
+reg('gnk','Obwód gniazd kuchennych (3×2,5 mm²)','z B16 po ścianie i w bruzdach do gniazd; osobne B16 dla pralki i zmywarki',-2800,1500,-3900);
+const gnk=new T.Group();
+gnk.add(tube([[1418,1960,600],[1418,2500,600],[1418,2500,-3940],[-4300,2500,-3940]],6,0xd9dadb));
+[[-3000],[-2400],[-4200]].forEach(p=>{gnk.add(tube([[p[0],2500,-3940],[p[0],1150,-3940]],5,0xd9dadb))});
+H.add(gnk);tag(gnk,'gnk');
+function gniazdo(x,y,z,label){const s=texPlane(90,90,(g,w,h)=>{g.fillStyle='#fff';g.fillRect(0,0,w,h);g.strokeStyle='#c2c9d0';g.lineWidth=4;g.strokeRect(2,2,w-4,h-4);g.beginPath();g.arc(w/2,h/2,w*.3,0,7);g.fillStyle='#e8e9e6';g.fill();g.fillStyle='#222';g.beginPath();g.arc(w*.38,h/2,w*.05,0,7);g.fill();g.beginPath();g.arc(w*.62,h/2,w*.05,0,7);g.fill();g.fillStyle='#555';g.font=h*.11+'px system-ui';g.textAlign='center';g.fillText(label||'',w/2,h*.94)});s.position.set(x,y,z);return s}
+const gso=new T.Group();
+gso.add(gniazdo(-3000,1100,-3993,'kuchnia'));gso.add(gniazdo(-2400,1100,-3993,'pralka'));gso.add(gniazdo(-800,320,-3993,'salon'));
+H.add(gso);tag(gso,'gnk');
+reg('agd','AGD w kuchni (kontekst RCD)','pralka, zmywarka, indukcja, lodówka — każde z filtrem dokłada 0,5–2 mA upływu do wspólnego RCD typu AC',-3600,600,-3600);
+const agd=new T.Group();
+agd.add(bx(2600,860,620,-3600,430,-3660,0xd9d3c6));
+agd.add(bx(620,10,520,-4200,868,-3660,0x0b0e11));
+const pr=bx(600,850,600,-2400,425,-3660,0xfafafa);agd.add(pr);
+const prd=texPlane(400,400,(g,w,h)=>{g.fillStyle='#fafafa';g.fillRect(0,0,w,h);g.strokeStyle='#9aa0a6';g.lineWidth=10;g.beginPath();g.arc(w/2,h/2,w*.33,0,7);g.stroke();g.fillStyle='#cfd4d9';g.beginPath();g.arc(w/2,h/2,w*.26,0,7);g.fill()});
+prd.position.set(-2400,430,-3357);agd.add(prd);
+agd.add(bx(700,1800,650,-4780,900,-3620,0xf2f3f0));
+H.add(agd);tag(agd,'agd');
+reg('evkabel','Przewód obwodu EV — YDY 5×2,5 mm² w peszlu','WYRÓŻNIONE: dedykowana trasa z RG przez ścianę garażu do wallboxa; 5 żył (3 fazy + N + PE), bez żadnych odgałęzień',3200,2400,900);
+const evk=new T.Group();
+const evPath=[[1418,1240,560],[1470,1200,560],[1560,1210,600],[1560,2540,600],[4900,2540,1200],[4900,1690,1200]];
+evk.add(tube(evPath,8,0xf3f4f2));
+evk.add(tube(evPath,12,0xaab2b8,{transparent:true,opacity:.35,depthWrite:false}));
+H.add(evk);tag(evk,'evkabel',true);
+reg('wallbox','Wallbox 11 kW (AMPERE POINT)','WYRÓŻNIONE: ładowarka naścienna 3F 16 A z kablem Type 2; własny pomiar energii, RCD wewnętrzne typ A + RDC-DD 6 mA DC',4900,1450,1200);
+const WB=new T.Group();WB.position.set(4985,1450,1200);WB.rotation.y=-Math.PI/2;
+WB.add(bx(360,470,120,0,0,-60,0xfafafa,{roughness:.4}));
+const wbf=texPlane(340,450,(g,w,h)=>{g.fillStyle='#fafafa';g.fillRect(0,0,w,h);g.fillStyle='#16191d';g.textAlign='center';g.font='700 '+h*.09+'px system-ui';g.fillText('AMPERE POINT',w/2,h*.14);g.font='500 '+h*.07+'px system-ui';g.fillText('HM 11  •  3F 16 A',w/2,h*.24);g.fillStyle='#0b0e11';g.fillRect(w*.2,h*.3,w*.6,h*.16);g.fillStyle='#7ce08a';g.font='700 '+h*.09+'px monospace';g.fillText('11 kW',w/2,h*.42);g.fillStyle='#555';g.font=h*.055+'px system-ui';g.fillText('RCD A + 6 mA DC  •  Type 2',w/2,h*.55)});
+wbf.position.set(0,0,1);WB.add(wbf);
+const ring=new T.Mesh(new T.TorusGeometry(85,9,12,40),M(0x2e7d32,{emissive:0x2e7d32,emissiveIntensity:.6}));ring.position.set(0,-120,4);WB.add(ring);
+WB.add(bx(90,60,50,0,-235,-30,0x22262a));
+H.add(WB);tag(WB,'wallbox',true);
+reg('evwtyk','Kabel Type 2 do auta','WYRÓŻNIONE: kabel ładowarki wpięty w gniazdo pojazdu; jedyna „rozmowa" auto–ładowarka idzie pilotem CP w tym kablu',3600,700,1400);
+const evw=new T.Group();
+evw.add(tube([[4930,1190,1230],[4500,520,1420],[3600,420,1500],[2760,820,1490]],11,0x16191d));
+evw.add(bx(90,70,120,2690,860,1490,0x16191d));
+H.add(evw);tag(evw,'evwtyk',true);
+reg('auto','Samochód elektryczny','pobiera prąd przez własną ładowarkę pokładową (OBC); to auto decyduje, ile prądu płynie (do limitu z CP)',3300,700,300);
+const car=new T.Group();
+car.add(bx(1700,620,3900,3300,700,200,0xe8eaed,{roughness:.35}));
+car.add(bx(1500,540,2100,3300,1260,-100,0xdfe3e8,{roughness:.3}));
+car.add(bx(1460,420,1900,3300,1300,-100,0x2a3947,{roughness:.2}));
+[[2520,-1300],[2520,1250],[4080,-1300],[4080,1250]].forEach(p=>{const w=cy(330,220,p[0],330,p[1],0x1c1f24,{},24);w.rotation.z=Math.PI/2;car.add(w)});
+const port=cy(90,16,2445,860,1490,0x455a64,{},24);port.rotation.z=Math.PI/2;car.add(port);
+H.add(car);tag(car,'auto');
+reg('pen','Dlaczego to TN-C-S','z sieci przychodzą 4 żyły (TN-C: L1 L2 L3 + PEN); w ZK PEN dzieli się na N i PE i dalej w domu biegnie już 5 żył (TN-S) — najpopularniejszy układ w Polsce',-3500,700,4400);
+tag(prz,'pen');
+function mkLabel(txt,ax,ay,az,ox,oy,oz,ev){const c2=document.createElement('canvas');let g=c2.getContext('2d');g.font='500 46px system-ui';const w=Math.ceil(g.measureText(txt).width)+56;c2.width=w;c2.height=78;g=c2.getContext('2d');g.font='500 46px system-ui';g.fillStyle=ev?'rgba(140,60,0,.94)':'rgba(24,32,44,.92)';if(g.roundRect){g.beginPath();g.roundRect(0,0,w,78,20);g.fill()}else g.fillRect(0,0,w,78);g.fillStyle='#fff';g.textAlign='center';g.textBaseline='middle';g.fillText(txt,w/2,42);
+const tx=new T.CanvasTexture(c2);tx.minFilter=T.LinearFilter;
+const sp=new T.Sprite(new T.SpriteMaterial({map:tx,depthTest:false,transparent:true}));
+sp.scale.set(w*3.2,78*3.2*0.75,1);sp.position.set(ax+ox,ay+oy,az+oz);sp.renderOrder=99;
+const ln=new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(ax,ay,az),sp.position.clone()]),new T.LineBasicMaterial({color:0x5b6672,depthTest:false,transparent:true,opacity:.8}));
+ln.renderOrder=98;labelsG.add(sp);labelsG.add(ln)}
+mkLabel('ZK + licznik (punkt rozdziału PEN)',-3500,1300,4340,-900,900,700);
+mkLabel('przyłącze YAKXS 4×25 (TN-C)',-3500,20,5600,-500,450,700);
+mkLabel('WLZ 5×10 mm²',1418,60,2600,900,500,900);
+mkLabel('rozdzielnica główna',1418,1960,600,500,900,1400);
+mkLabel('RCD typ A + B16 3P — obwód EV',1360,1410,600,-300,-750,2100,true);
+mkLabel('YDY 5×2,5 w peszlu — do wallboxa',3200,2540,900,300,650,1500,true);
+mkLabel('wallbox 11 kW',4985,1700,1200,300,750,900,true);
+mkLabel('kabel Type 2',3600,430,1500,150,-260,1500,true);
+mkLabel('otok fundamentowy (uziom)',5185,20,2600,700,350,900);
+mkLabel('GSU + wyrównanie potencjałów',1450,240,560,-100,-190,2100);
+mkLabel('kuchnia: AGD na wspólnym RCD typu AC',-3400,1400,-3800,300,900,-700);
+mkLabel('oświetlenie',-3500,2740,-2000,-500,450,-500);
+scene.add(labelsG);
+const groups={'Przyłącze i pomiar':['przylacze','zk','pen','wlz'],'Rozdzielnica główna':['rg','fr','spd','rcdac','mcb','grzeb','szyny','opisy'],'Obwód EV (wyróżniany)':['rcda','b16ev','evkabel','wallbox','evwtyk'],'Obwody i odbiorniki':['osw','gnk','agd','auto'],'Uziemienie':['otok','gsu','bonding']};
+const sel=document.getElementById('selPart');
+Object.keys(groups).forEach(gn=>{const og=document.createElement('optgroup');og.label=gn;groups[gn].forEach(id=>{const o=document.createElement('option');o.value=id;o.textContent=parts[id].name;og.appendChild(o)});sel.appendChild(og)});
+const tgt=new T.Vector3(0,900,300);let sph={r:13500,th:2.45,ph:1.12},focusTo=null,interacted=false;
+function applyCam(){cam.position.set(tgt.x+sph.r*Math.sin(sph.ph)*Math.sin(sph.th),tgt.y+sph.r*Math.cos(sph.ph),tgt.z+sph.r*Math.sin(sph.ph)*Math.cos(sph.th));cam.lookAt(tgt)}
+let selId=null;
+const nameEl=document.getElementById('infoName'),descEl=document.getElementById('infoDesc');
+function select(id){if(selId&&parts[selId])parts[selId].meshes.forEach(m=>{if(m.material.emissive){m.material.emissive.setHex(0);m.material.emissiveIntensity=1}});
+selId=id;if(!id||!parts[id]){nameEl.textContent='';descEl.textContent='';return}
+parts[id].meshes.forEach(m=>{if(m.material.emissive){m.material.emissive.setHex(0x2563eb);m.material.emissiveIntensity=.45}});
+nameEl.textContent=parts[id].name;descEl.textContent=parts[id].info;sel.value=id;focusTo=parts[id].focus.clone()}
+sel.addEventListener('change',()=>select(sel.value));
+let evOn=false,xray=false,lblOn=true;const allM=[];scene.traverse(n=>{if(n.isMesh&&!n.isSprite)allM.push(n)});
+const bEv=document.getElementById('btnEv'),bX=document.getElementById('btnXray'),bL=document.getElementById('btnLbl');
+bEv.onclick=()=>{evOn=!evOn;bEv.classList.toggle('on',evOn);allM.forEach(m=>{const mm=m.material;if(!mm)return;if(m.userData.ev){if(mm.emissive){mm.emissive.setHex(evOn?0xff6d00:0);mm.emissiveIntensity=.55}}else{if(m===gnd)return;mm.transparent=true;if(evOn){mm._o=(mm._o===undefined?mm.opacity:mm._o);mm.opacity=.13;mm.depthWrite=false}else{mm.opacity=(mm._o!==undefined?mm._o:1);mm.depthWrite=mm.opacity>0.5;}mm.needsUpdate=true}})};
+bX.onclick=()=>{xray=!xray;bX.classList.toggle('on',xray);wallsX.forEach(m=>{m.material.transparent=true;m.material.opacity=xray?.12:1;m.material.depthWrite=!xray;m.material.needsUpdate=true})};
+bL.onclick=()=>{lblOn=!lblOn;bL.classList.toggle('on',lblOn);labelsG.visible=lblOn};
+document.getElementById('btnReset').onclick=()=>{sph={r:13500,th:2.45,ph:1.12};tgt.set(0,900,300);focusTo=null;select('')};
+let drag=null;
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,b:e.button,moved:0};interacted=true;cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved+=Math.abs(dx)+Math.abs(dy);
+if(drag.b===2||e.ctrlKey){const f=sph.r*.0011,right=new T.Vector3(),up=new T.Vector3(0,1,0);cam.getWorldDirection(right);right.cross(up).normalize();tgt.addScaledVector(right,-dx*f);tgt.y+=dy*f;focusTo=null}
+else{sph.th-=dx*.005;sph.ph=Math.min(1.52,Math.max(.12,sph.ph-dy*.005))}
+drag.x=e.clientX;drag.y=e.clientY});
+cv.addEventListener('pointerup',e=>{if(drag&&drag.moved<6){const r=cv.getBoundingClientRect(),v=new T.Vector2(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1),rc=new T.Raycaster();rc.setFromCamera(v,cam);const hit=rc.intersectObjects(clickable,false)[0];select(hit?hit.object.userData.pid:'')}drag=null});
+cv.addEventListener('wheel',e=>{e.preventDefault();interacted=true;sph.r=Math.min(30000,Math.max(1200,sph.r*(1+e.deltaY*.001)))},{passive:false});
+function resize(){const w=cv.clientWidth,h=cv.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+window.addEventListener('resize',resize);
+let t0=0;
+function loop(ts){requestAnimationFrame(loop);
+if(!interacted)sph.th+=.0012;
+if(evOn){const k=.4+.3*Math.sin(ts*.004);allM.forEach(m=>{if(m.userData.ev&&m.material.emissive)m.material.emissiveIntensity=k})}
+if(focusTo){tgt.lerp(focusTo,.06);if(tgt.distanceTo(focusTo)<4)focusTo=null}
+applyCam();renderer.render(scene,cam)}
+resize();applyCam();loop(0);
+</script>
+</body>
+</html>

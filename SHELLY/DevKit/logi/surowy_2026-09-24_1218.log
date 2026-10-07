@@ -1,0 +1,929 @@
+12:18:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:18:58 I bt_nimble_gatts.cpp:399 DISCONNECT 76:05:b7:61:57:c7,rr ch 1 reason 531
+12:18:58 I luetooth_server.cpp:185 BLE advertising enabled (RPC 1/0, auth 0, disc 1, locked 0, svcs 2, bond 0)
+12:18:58 I y_notifications.cpp:168 Status change of ble: {"flags":["advertising"]}
+12:18:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:19:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:19:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:19:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:19:07 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:19:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:19:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:19:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:19:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:19:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:19:17 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:19:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:19:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:19:21 I y_notifications.cpp:168 Status change of number:207: {"value":23}
+12:19:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:19:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:19:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:19:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:19:29 I shelly_script.cpp:204   script:1 5.8% CPU utilization
+12:19:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:19:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:19:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:19:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:19:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:19:39 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:19:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:19:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:19:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:19:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:19:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:19:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:19:51 I shelly_script.cpp:204   script:1 5.8% CPU utilization
+12:19:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:19:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:19:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:19:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:19:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:20:01 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:20:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:20:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:20:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:20:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:20:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:20:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:20:13 I shelly_script.cpp:204   script:1 5.8% CPU utilization
+12:20:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:20:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:20:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:20:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:20:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:20:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:20:25 I bt_nimble_gatts.cpp:362 CONNECT 76:05:b7:61:57:c7,rr ch 2 st 0 PM 247 M 23
+12:20:25 I luetooth_server.cpp:185 BLE advertising enabled (RPC 1/0, auth 0, disc 1, locked 0, svcs 2, bond 0)
+12:20:25 I y_notifications.cpp:168 Status change of ble: {"flags":["advertising","connected"]}
+12:20:25 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:20:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:20:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:20:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:20:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:20:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:20:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:20:37 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:20:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:20:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:20:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:20:43 I shos_rpc_inst.c:241     Shelly.GetDeviceInfo [1@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:20:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:20:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:20:47 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:20:47 I shos_rpc_inst.c:241     Shelly.GetConfig [2@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:20:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:20:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:20:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:20:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:20:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:20:56 I shos_rpc_inst.c:241     Shelly.GetStatus [3@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:20:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:20:59 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:20:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:21:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:21:02 I shos_rpc_inst.c:241     Cloud.SetConfig [4@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:02 I loud_connection.cpp:194 Config changed (0x1), arming setup
+12:21:02 I y_notifications.cpp:213 Event from cloud: {"component":"cloud","event":"config_changed","restart_required":false,"ts":1790245262.16,"cfg_rev":23}
+12:21:02 I y_notifications.cpp:168 Status change of sys: {"cfg_rev":23}
+12:21:02 I hos_http_client.cpp:334 0x3fcc6d78: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:21:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:21:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:21:05 I shos_rpc_inst.c:241     WiFi.SetConfig [5@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:05 I y_notifications.cpp:213 Event from wifi: {"component":"wifi","event":"config_changed","restart_required":false,"ts":1790245265.58,"cfg_rev":24}
+12:21:05 I y_notifications.cpp:168 Status change of sys: {"cfg_rev":24}
+12:21:06 I wifi                    I (2247294) wifi:mode : sta (54:32:04:51:63:34) + softAP (54:32:04:51:63:35)
+12:21:06 I wifi                    I (2247304) wifi:enable tsf
+12:21:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:21:09 I hos_http_client.cpp:676 0x3fcc6d78: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:21:09 I shos_rpc_inst.c:241     WiFi.GetStatus [6@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:09 W wifi                    W (2249864) wifi:Haven't to connect to a suitable AP now!
+12:21:09 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 1
+12:21:09 I wifi                    I (2250234) wifi:enable tsf
+12:21:09 I hos_lwip_eth_if.cpp:286 ws(0x3fcc72ac): MAC: 54:32:04:51:63:34, MTU: 1500, IP: DHCP
+12:21:09 I shos_lwip.cpp:198       ws(0x3fcc72ac): Added
+12:21:09 I wifi                    I (2250254) wifi:Set ps type: 0, coexist: 0
+12:21:09 I shos_lwip.cpp:208       ws(0x3fcc72ac): Status up
+12:21:09 I shos_lwip.cpp:222       ws(0x3fcc72ac): IPv6 addrs: fe80::5632:4ff:fe51:6334,t0
+12:21:09 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:21:09 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:21:09 W wifi                    W (2250424) wifi:Haven't to connect to a suitable AP now!
+12:21:09 W wifi                    W (2250434) wifi:Haven't to connect to a suitable AP now!
+12:21:09 I y_notifications.cpp:168 Status change of wifi: {"channel":0,"rssi":0,"ssid":null,"sta_ip":"0.0.0.0","status":"connecting"}
+12:21:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:21:09 I shos_net.cpp:114        WiFi STA: connecting
+12:21:10 I hos_http_client.cpp:334 0x3fcc5e48: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:21:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:21:12 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:21:12 I shos_wifi_sta.cpp:763   Connect failed
+12:21:12 I shos_net.cpp:110        WiFi STA: disconnected
+12:21:13 I shos_wifi_sta.cpp:644   No candidate APs
+12:21:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:21:14 I shos_rpc_inst.c:241     WiFi.GetStatus [7@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:14 W wifi                    W (2255224) wifi:Haven't to connect to a suitable AP now!
+12:21:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:21:17 I hos_http_client.cpp:676 0x3fcc5e48: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:21:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:21:18 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 2
+12:21:18 I wifi                    I (2259204) wifi:Set ps type: 0, coexist: 0
+12:21:18 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:21:18 I shos_net.cpp:114        WiFi STA: connecting
+12:21:18 I hos_http_client.cpp:334 0x3fcc8364: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:21:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:21:19 I shos_rpc_inst.c:241     WiFi.GetStatus [8@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:19 W wifi                    W (2260584) wifi:Haven't to connect to a suitable AP now!
+12:21:21 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:21:21 I shos_wifi_sta.cpp:763   Connect failed
+12:21:21 I shos_net.cpp:110        WiFi STA: disconnected
+12:21:21 I shelly_script.cpp:204   script:1 6.2% CPU utilization
+12:21:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:21:22 I shos_wifi_sta.cpp:644   No candidate APs
+12:21:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:21:25 I hos_http_client.cpp:676 0x3fcc8364: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:21:25 I shos_rpc_inst.c:241     WiFi.GetStatus [9@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:25 W wifi                    W (2265994) wifi:Haven't to connect to a suitable AP now!
+12:21:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:21:27 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 3
+12:21:27 I wifi                    I (2268364) wifi:Set ps type: 0, coexist: 0
+12:21:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:21:27 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:21:27 I shos_net.cpp:114        WiFi STA: connecting
+12:21:28 I hos_http_client.cpp:334 0x3fcc851c: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:21:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:21:30 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:21:30 I shos_wifi_sta.cpp:763   Connect failed
+12:21:30 I shos_net.cpp:110        WiFi STA: disconnected
+12:21:30 I shos_rpc_inst.c:241     WiFi.GetStatus [10@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:30 W wifi                    W (2271354) wifi:Haven't to connect to a suitable AP now!
+12:21:31 I shos_wifi_sta.cpp:644   No candidate APs
+12:21:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:21:33 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:21:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:21:35 I hos_http_client.cpp:676 0x3fcc851c: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:21:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:21:35 I shos_rpc_inst.c:241     WiFi.GetStatus [11@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:35 W wifi                    W (2276764) wifi:Haven't to connect to a suitable AP now!
+12:21:36 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 4
+12:21:36 I wifi                    I (2277584) wifi:Set ps type: 0, coexist: 0
+12:21:36 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:21:36 I shos_net.cpp:114        WiFi STA: connecting
+12:21:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:21:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:21:39 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:21:39 I shos_wifi_sta.cpp:763   Connect failed
+12:21:39 I shos_net.cpp:110        WiFi STA: disconnected
+12:21:40 I shos_wifi_sta.cpp:644   No candidate APs
+12:21:41 I shos_rpc_inst.c:241     WiFi.GetStatus [12@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:41 W wifi                    W (2282134) wifi:Haven't to connect to a suitable AP now!
+12:21:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:21:42 I hos_http_client.cpp:334 0x3fcc8b10: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:21:43 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:21:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:21:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:21:46 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 5
+12:21:46 I wifi                    I (2286844) wifi:Set ps type: 0, coexist: 0
+12:21:46 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:21:46 I shos_net.cpp:114        WiFi STA: connecting
+12:21:46 I shos_rpc_inst.c:241     WiFi.GetStatus [13@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:46 W wifi                    W (2287594) wifi:Haven't to connect to a suitable AP now!
+12:21:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:21:48 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:21:48 I shos_wifi_sta.cpp:763   Connect failed
+12:21:48 I shos_net.cpp:110        WiFi STA: disconnected
+12:21:49 I hos_http_client.cpp:676 0x3fcc8b10: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:21:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:21:49 I shos_wifi_sta.cpp:644   No candidate APs
+12:21:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:21:52 I shos_rpc_inst.c:241     WiFi.GetStatus [14@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:52 W wifi                    W (2292954) wifi:Haven't to connect to a suitable AP now!
+12:21:53 I shelly_script.cpp:204   script:1 6.2% CPU utilization
+12:21:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:21:55 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 6
+12:21:55 I wifi                    I (2296364) wifi:Set ps type: 0, coexist: 0
+12:21:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:21:55 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:21:55 I shos_net.cpp:114        WiFi STA: connecting
+12:21:57 I shos_rpc_inst.c:241     WiFi.GetStatus [15@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:21:57 W wifi                    W (2298374) wifi:Haven't to connect to a suitable AP now!
+12:21:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:21:58 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:21:58 I shos_wifi_sta.cpp:763   Connect failed
+12:21:58 I shos_net.cpp:110        WiFi STA: disconnected
+12:21:59 I shos_wifi_sta.cpp:644   No candidate APs
+12:21:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:22:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:22:02 I shos_rpc_inst.c:241     WiFi.GetStatus [16@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:22:02 W wifi                    W (2303674) wifi:Haven't to connect to a suitable AP now!
+12:22:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:22:03 I hos_http_client.cpp:334 0x3fcc94d0: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:22:05 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 7
+12:22:05 I wifi                    I (2305934) wifi:Set ps type: 0, coexist: 0
+12:22:05 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:22:05 I shos_net.cpp:114        WiFi STA: connecting
+12:22:05 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:22:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:22:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:22:08 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:22:08 I shos_wifi_sta.cpp:763   Connect failed
+12:22:08 I shos_net.cpp:110        WiFi STA: disconnected
+12:22:08 I shos_rpc_inst.c:241     WiFi.GetStatus [17@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:22:08 W wifi                    W (2309044) wifi:Haven't to connect to a suitable AP now!
+12:22:09 I shos_wifi_sta.cpp:644   No candidate APs
+12:22:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:22:10 I hos_http_client.cpp:676 0x3fcc94d0: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:22:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:22:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:22:13 I shos_rpc_inst.c:241     WiFi.GetStatus [18@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:22:13 W wifi                    W (2314404) wifi:Haven't to connect to a suitable AP now!
+12:22:14 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 8
+12:22:14 I wifi                    I (2315474) wifi:Set ps type: 0, coexist: 0
+12:22:14 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:22:14 I shos_net.cpp:114        WiFi STA: connecting
+12:22:15 I shelly_script.cpp:204   script:1 6.2% CPU utilization
+12:22:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:22:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:22:17 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:22:17 I shos_wifi_sta.cpp:763   Connect failed
+12:22:17 I shos_net.cpp:110        WiFi STA: disconnected
+12:22:18 I shos_wifi_sta.cpp:644   No candidate APs
+12:22:18 I shos_rpc_inst.c:241     WiFi.GetStatus [19@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:22:18 W wifi                    W (2319814) wifi:Haven't to connect to a suitable AP now!
+12:22:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:22:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:22:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:22:24 I shos_rpc_inst.c:241     WiFi.GetStatus [20@shelly-app] via GATTS peer 76:05:b7:61:57:c7,rr
+12:22:24 W wifi                    W (2325174) wifi:Haven't to connect to a suitable AP now!
+12:22:24 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 9
+12:22:24 I wifi                    I (2325194) wifi:Set ps type: 0, coexist: 0
+12:22:24 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:22:24 I shos_net.cpp:114        WiFi STA: connecting
+12:22:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:22:27 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:22:27 I shos_wifi_sta.cpp:763   Connect failed
+12:22:27 I shos_net.cpp:110        WiFi STA: disconnected
+12:22:27 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:22:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:22:28 I shos_wifi_sta.cpp:644   No candidate APs
+12:22:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:22:30 I bt_nimble_gatts.cpp:399 DISCONNECT 76:05:b7:61:57:c7,rr ch 2 reason 531
+12:22:30 I luetooth_server.cpp:185 BLE advertising enabled (RPC 1/0, auth 0, disc 1, locked 0, svcs 2, bond 0)
+12:22:30 I y_notifications.cpp:168 Status change of ble: {"flags":["advertising"]}
+12:22:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:22:33 I bt_nimble_gatts.cpp:362 CONNECT 7a:66:7e:df:62:f7,rr ch 1 st 0 PM 247 M 23
+12:22:33 I luetooth_server.cpp:185 BLE advertising enabled (RPC 1/0, auth 0, disc 1, locked 0, svcs 2, bond 0)
+12:22:33 I y_notifications.cpp:168 Status change of ble: {"flags":["advertising","connected"]}
+12:22:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:22:34 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 10
+12:22:34 I wifi                    I (2334944) wifi:Set ps type: 0, coexist: 0
+12:22:34 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:22:34 I shos_net.cpp:114        WiFi STA: connecting
+12:22:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:22:36 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:22:37 I shos_wifi_sta.cpp:763   Connect failed
+12:22:37 I shos_net.cpp:110        WiFi STA: disconnected
+12:22:37 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:22:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:22:37 I shos_wifi_sta.cpp:644   No candidate APs
+12:22:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:22:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:22:42 I hos_http_client.cpp:334 0x3fcc93e4: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:22:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:22:44 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 11
+12:22:44 I wifi                    I (2344834) wifi:Set ps type: 0, coexist: 0
+12:22:44 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:22:44 I shos_net.cpp:114        WiFi STA: connecting
+12:22:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:22:46 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:22:46 I shos_wifi_sta.cpp:763   Connect failed
+12:22:46 I shos_net.cpp:110        WiFi STA: disconnected
+12:22:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:22:47 I shos_wifi_sta.cpp:644   No candidate APs
+12:22:49 I hos_http_client.cpp:676 0x3fcc93e4: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:22:49 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:22:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:22:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:22:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:22:54 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 12
+12:22:54 I wifi                    I (2354844) wifi:Set ps type: 0, coexist: 0
+12:22:54 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:22:54 I shos_net.cpp:114        WiFi STA: connecting
+12:22:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:22:56 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:22:56 I shos_wifi_sta.cpp:763   Connect failed
+12:22:56 I shos_net.cpp:110        WiFi STA: disconnected
+12:22:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:22:58 I shos_wifi_sta.cpp:644   No candidate APs
+12:22:59 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:22:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:23:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:23:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:23:04 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 13
+12:23:04 I wifi                    I (2364964) wifi:Set ps type: 0, coexist: 0
+12:23:04 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:23:04 I shos_net.cpp:114        WiFi STA: connecting
+12:23:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:23:06 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:23:06 I shos_wifi_sta.cpp:763   Connect failed
+12:23:06 I shos_net.cpp:110        WiFi STA: disconnected
+12:23:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:23:08 I shos_wifi_sta.cpp:644   No candidate APs
+12:23:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:23:10 I shos_rpc_inst.c:241     Shelly.GetDeviceInfo [22@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:11 I shelly_script.cpp:204   script:1 6.2% CPU utilization
+12:23:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:23:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:23:14 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 14
+12:23:14 I wifi                    I (2374994) wifi:Set ps type: 0, coexist: 0
+12:23:14 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:23:14 I shos_net.cpp:114        WiFi STA: connecting
+12:23:14 I shos_rpc_inst.c:241     Shelly.GetConfig [23@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:23:17 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:23:17 I shos_wifi_sta.cpp:763   Connect failed
+12:23:17 I shos_net.cpp:110        WiFi STA: disconnected
+12:23:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:23:18 I shos_wifi_sta.cpp:644   No candidate APs
+12:23:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:23:21 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:23:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:23:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:23:23 I shos_rpc_inst.c:241     Shelly.GetStatus [24@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:23 W wifi                    W (2384784) wifi:Haven't to connect to a suitable AP now!
+12:23:24 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 15
+12:23:24 I wifi                    I (2385224) wifi:Set ps type: 0, coexist: 0
+12:23:24 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:23:24 I shos_net.cpp:114        WiFi STA: connecting
+12:23:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:23:27 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:23:27 I shos_wifi_sta.cpp:763   Connect failed
+12:23:27 I shos_net.cpp:110        WiFi STA: disconnected
+12:23:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:23:28 I shos_wifi_sta.cpp:644   No candidate APs
+12:23:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:23:30 I shos_rpc_inst.c:241     Cloud.SetConfig [25@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:30 I y_notifications.cpp:213 Event from cloud: {"component":"cloud","event":"config_changed","restart_required":false,"ts":1790245409.89,"cfg_rev":25}
+12:23:30 I y_notifications.cpp:168 Status change of sys: {"cfg_rev":25}
+12:23:31 I shelly_script.cpp:204   script:1 6.2% CPU utilization
+12:23:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:23:33 I shos_rpc_inst.c:241     WiFi.SetConfig [26@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:23:34 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 16
+12:23:34 I wifi                    I (2395574) wifi:Set ps type: 0, coexist: 0
+12:23:34 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:23:34 I shos_net.cpp:114        WiFi STA: connecting
+12:23:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:23:36 I shos_rpc_inst.c:241     WiFi.GetStatus [27@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:36 W wifi                    W (2397524) wifi:Haven't to connect to a suitable AP now!
+12:23:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:23:37 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:23:37 I shos_wifi_sta.cpp:763   Connect failed
+12:23:37 I shos_net.cpp:110        WiFi STA: disconnected
+12:23:38 I shos_wifi_sta.cpp:644   No candidate APs
+12:23:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:23:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:23:42 I shos_rpc_inst.c:241     WiFi.GetStatus [28@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:42 W wifi                    W (2402934) wifi:Haven't to connect to a suitable AP now!
+12:23:43 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:23:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:23:45 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 17
+12:23:45 I wifi                    I (2405914) wifi:Set ps type: 0, coexist: 0
+12:23:45 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:23:45 I shos_net.cpp:114        WiFi STA: connecting
+12:23:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:23:45 I hos_http_client.cpp:334 0x3fcc8a44: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:23:47 I shos_rpc_inst.c:241     WiFi.GetStatus [29@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:47 W wifi                    W (2408374) wifi:Haven't to connect to a suitable AP now!
+12:23:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:23:48 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:23:48 I shos_wifi_sta.cpp:763   Connect failed
+12:23:48 I shos_net.cpp:110        WiFi STA: disconnected
+12:23:49 I shos_wifi_sta.cpp:644   No candidate APs
+12:23:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:23:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:23:52 I hos_http_client.cpp:676 0x3fcc8a44: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:23:52 I shos_rpc_inst.c:241     WiFi.GetStatus [30@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:52 W wifi                    W (2413654) wifi:Haven't to connect to a suitable AP now!
+12:23:53 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:23:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:23:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:23:55 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 18
+12:23:55 I wifi                    I (2416454) wifi:Set ps type: 0, coexist: 0
+12:23:55 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:23:55 I shos_net.cpp:114        WiFi STA: connecting
+12:23:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:23:58 I shos_rpc_inst.c:241     WiFi.GetStatus [31@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:23:58 W wifi                    W (2419014) wifi:Haven't to connect to a suitable AP now!
+12:23:58 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:23:58 I shos_wifi_sta.cpp:763   Connect failed
+12:23:58 I shos_net.cpp:110        WiFi STA: disconnected
+12:23:59 I shos_wifi_sta.cpp:644   No candidate APs
+12:23:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:24:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:24:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:24:03 I shos_rpc_inst.c:241     WiFi.GetStatus [32@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:03 W wifi                    W (2424434) wifi:Haven't to connect to a suitable AP now!
+12:24:05 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:24:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:24:06 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 19
+12:24:06 I wifi                    I (2426954) wifi:Set ps type: 0, coexist: 0
+12:24:06 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:24:06 I shos_net.cpp:114        WiFi STA: connecting
+12:24:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:24:09 I shos_rpc_inst.c:241     WiFi.GetStatus [33@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:09 W wifi                    W (2429794) wifi:Haven't to connect to a suitable AP now!
+12:24:09 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:24:09 I shos_wifi_sta.cpp:763   Connect failed
+12:24:09 I shos_net.cpp:110        WiFi STA: disconnected
+12:24:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:24:10 I shos_wifi_sta.cpp:644   No candidate APs
+12:24:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:24:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:24:14 I shos_rpc_inst.c:241     WiFi.GetStatus [34@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:14 W wifi                    W (2435204) wifi:Haven't to connect to a suitable AP now!
+12:24:15 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:24:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:24:16 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 20
+12:24:16 I wifi                    I (2437754) wifi:Set ps type: 0, coexist: 0
+12:24:17 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:24:17 I shos_net.cpp:114        WiFi STA: connecting
+12:24:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:24:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:24:19 I shos_rpc_inst.c:241     WiFi.GetStatus [35@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:19 W wifi                    W (2440614) wifi:Haven't to connect to a suitable AP now!
+12:24:19 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:24:19 I shos_wifi_sta.cpp:763   Connect failed
+12:24:19 I shos_net.cpp:110        WiFi STA: disconnected
+12:24:20 I shos_wifi_sta.cpp:644   No candidate APs
+12:24:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:24:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:24:25 I shos_rpc_inst.c:241     WiFi.GetStatus [36@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:25 W wifi                    W (2446074) wifi:Haven't to connect to a suitable AP now!
+12:24:25 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:24:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:24:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:24:27 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 21
+12:24:27 I wifi                    I (2448394) wifi:Set ps type: 0, coexist: 0
+12:24:27 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:24:27 I shos_net.cpp:114        WiFi STA: connecting
+12:24:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:24:30 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:24:30 I shos_wifi_sta.cpp:763   Connect failed
+12:24:30 I shos_net.cpp:110        WiFi STA: disconnected
+12:24:30 I shos_rpc_inst.c:241     WiFi.GetStatus [37@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:30 W wifi                    W (2451434) wifi:Haven't to connect to a suitable AP now!
+12:24:31 I shos_wifi_sta.cpp:644   No candidate APs
+12:24:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:24:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:24:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:24:36 I shos_rpc_inst.c:241     WiFi.GetStatus [38@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:36 W wifi                    W (2456794) wifi:Haven't to connect to a suitable AP now!
+12:24:37 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:24:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:24:38 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 22
+12:24:38 I wifi                    I (2459124) wifi:Set ps type: 0, coexist: 0
+12:24:38 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:24:38 I shos_net.cpp:114        WiFi STA: connecting
+12:24:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:24:41 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:24:41 I shos_wifi_sta.cpp:763   Connect failed
+12:24:41 I shos_net.cpp:110        WiFi STA: disconnected
+12:24:41 I shos_rpc_inst.c:241     WiFi.GetStatus [39@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:41 W wifi                    W (2462164) wifi:Haven't to connect to a suitable AP now!
+12:24:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:24:42 I shos_wifi_sta.cpp:644   No candidate APs
+12:24:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:24:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:24:46 I shos_rpc_inst.c:241     WiFi.GetStatus [40@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:46 W wifi                    W (2467524) wifi:Haven't to connect to a suitable AP now!
+12:24:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:24:48 I hos_http_client.cpp:334 0x3fcc91fc: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:24:48 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 23
+12:24:49 I wifi                    I (2469824) wifi:Set ps type: 0, coexist: 0
+12:24:49 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:24:49 I shos_net.cpp:114        WiFi STA: connecting
+12:24:49 I shelly_script.cpp:204   script:1 6.2% CPU utilization
+12:24:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:24:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:24:51 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:24:51 I shos_wifi_sta.cpp:763   Connect failed
+12:24:51 I shos_net.cpp:110        WiFi STA: disconnected
+12:24:52 I shos_rpc_inst.c:241     WiFi.GetStatus [41@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:52 W wifi                    W (2472934) wifi:Haven't to connect to a suitable AP now!
+12:24:52 I shos_wifi_sta.cpp:644   No candidate APs
+12:24:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:24:55 I hos_http_client.cpp:676 0x3fcc91fc: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:24:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:24:57 I shos_rpc_inst.c:241     WiFi.GetStatus [42@shelly-app] via GATTS peer 7a:66:7e:df:62:f7,rr
+12:24:57 W wifi                    W (2478374) wifi:Haven't to connect to a suitable AP now!
+12:24:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:24:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:24:59 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 24
+12:24:59 I wifi                    I (2480534) wifi:Set ps type: 0, coexist: 0
+12:24:59 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:24:59 I shos_net.cpp:114        WiFi STA: connecting
+12:25:01 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:25:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:25:02 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:25:02 I shos_wifi_sta.cpp:763   Connect failed
+12:25:02 I shos_net.cpp:110        WiFi STA: disconnected
+12:25:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:25:03 I shos_wifi_sta.cpp:644   No candidate APs
+12:25:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:25:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:25:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:25:10 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 25
+12:25:10 I wifi                    I (2491204) wifi:Set ps type: 0, coexist: 0
+12:25:10 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:25:10 I shos_net.cpp:114        WiFi STA: connecting
+12:25:11 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:25:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:25:13 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:25:13 I shos_wifi_sta.cpp:763   Connect failed
+12:25:13 I shos_net.cpp:110        WiFi STA: disconnected
+12:25:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:25:14 I shos_wifi_sta.cpp:644   No candidate APs
+12:25:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:25:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:25:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:25:21 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 26
+12:25:21 I wifi                    I (2501894) wifi:Set ps type: 0, coexist: 0
+12:25:21 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:25:21 I shos_net.cpp:114        WiFi STA: connecting
+12:25:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:25:23 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:25:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:25:23 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:25:23 I shos_wifi_sta.cpp:763   Connect failed
+12:25:23 I shos_net.cpp:110        WiFi STA: disconnected
+12:25:24 I shos_wifi_sta.cpp:644   No candidate APs
+12:25:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:25:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:25:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:25:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:25:31 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 27
+12:25:31 I wifi                    I (2512714) wifi:Set ps type: 0, coexist: 0
+12:25:31 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:25:31 I shos_net.cpp:114        WiFi STA: connecting
+12:25:33 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:25:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:25:34 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:25:34 I shos_wifi_sta.cpp:763   Connect failed
+12:25:34 I shos_net.cpp:110        WiFi STA: disconnected
+12:25:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:25:35 I shos_wifi_sta.cpp:644   No candidate APs
+12:25:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:25:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:25:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:25:42 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 28
+12:25:42 I wifi                    I (2523394) wifi:Set ps type: 0, coexist: 0
+12:25:42 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:25:42 I shos_net.cpp:114        WiFi STA: connecting
+12:25:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:25:45 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:25:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:25:45 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:25:45 I shos_wifi_sta.cpp:763   Connect failed
+12:25:45 I shos_net.cpp:110        WiFi STA: disconnected
+12:25:46 I shos_wifi_sta.cpp:644   No candidate APs
+12:25:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:25:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:25:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:25:53 I hos_http_client.cpp:334 0x3fcc9120: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:25:53 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 29
+12:25:53 I wifi                    I (2534374) wifi:Set ps type: 0, coexist: 0
+12:25:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:25:53 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:25:53 I shos_net.cpp:114        WiFi STA: connecting
+12:25:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:25:56 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:25:56 I shos_wifi_sta.cpp:763   Connect failed
+12:25:56 I shos_net.cpp:110        WiFi STA: disconnected
+12:25:57 I shos_wifi_sta.cpp:644   No candidate APs
+12:25:57 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:25:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:25:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:26:00 I hos_http_client.cpp:676 0x3fcc9120: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:26:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:26:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:26:04 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 30
+12:26:04 I wifi                    I (2545054) wifi:Set ps type: 0, coexist: 0
+12:26:04 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:26:04 I shos_net.cpp:114        WiFi STA: connecting
+12:26:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:26:07 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:26:07 I shos_wifi_sta.cpp:763   Connect failed
+12:26:07 I shos_net.cpp:110        WiFi STA: disconnected
+12:26:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:26:08 I shos_wifi_sta.cpp:644   No candidate APs
+12:26:09 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:26:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:26:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:26:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:26:14 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 31
+12:26:14 I wifi                    I (2555714) wifi:Set ps type: 0, coexist: 0
+12:26:14 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:26:14 I shos_net.cpp:114        WiFi STA: connecting
+12:26:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:26:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:26:17 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:26:17 I shos_wifi_sta.cpp:763   Connect failed
+12:26:17 I shos_net.cpp:110        WiFi STA: disconnected
+12:26:18 I shos_wifi_sta.cpp:644   No candidate APs
+12:26:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:26:21 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:26:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:26:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:26:25 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 32
+12:26:25 I wifi                    I (2566364) wifi:Set ps type: 0, coexist: 0
+12:26:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:26:25 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:26:25 I shos_net.cpp:114        WiFi STA: connecting
+12:26:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:26:28 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:26:28 I shos_wifi_sta.cpp:763   Connect failed
+12:26:28 I shos_net.cpp:110        WiFi STA: disconnected
+12:26:29 I shos_wifi_sta.cpp:644   No candidate APs
+12:26:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:26:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:26:33 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:26:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:26:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:26:36 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 33
+12:26:36 I wifi                    I (2577184) wifi:Set ps type: 0, coexist: 0
+12:26:36 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:26:36 I shos_net.cpp:114        WiFi STA: connecting
+12:26:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:26:39 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:26:39 I shos_wifi_sta.cpp:763   Connect failed
+12:26:39 I shos_net.cpp:110        WiFi STA: disconnected
+12:26:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:26:40 I shos_wifi_sta.cpp:644   No candidate APs
+12:26:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:26:43 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:26:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:26:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:26:47 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 34
+12:26:47 I wifi                    I (2587954) wifi:Set ps type: 0, coexist: 0
+12:26:47 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:26:47 I shos_net.cpp:114        WiFi STA: connecting
+12:26:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:26:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:26:50 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:26:50 I shos_wifi_sta.cpp:763   Connect failed
+12:26:50 I shos_net.cpp:110        WiFi STA: disconnected
+12:26:50 I shos_wifi_sta.cpp:644   No candidate APs
+12:26:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:26:53 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:26:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:26:54 I hos_http_client.cpp:334 0x3fcc889c: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:26:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:26:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:26:57 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 35
+12:26:57 I wifi                    I (2598614) wifi:Set ps type: 0, coexist: 0
+12:26:57 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:26:57 I shos_net.cpp:114        WiFi STA: connecting
+12:26:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:27:00 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:27:00 I shos_wifi_sta.cpp:763   Connect failed
+12:27:00 I shos_net.cpp:110        WiFi STA: disconnected
+12:27:01 I hos_http_client.cpp:676 0x3fcc889c: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:27:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:27:01 I shos_wifi_sta.cpp:644   No candidate APs
+12:27:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:27:05 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:27:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:27:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:27:08 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 36
+12:27:08 I wifi                    I (2609314) wifi:Set ps type: 0, coexist: 0
+12:27:08 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:27:08 I shos_net.cpp:114        WiFi STA: connecting
+12:27:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:27:11 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:27:11 I shos_wifi_sta.cpp:763   Connect failed
+12:27:11 I shos_net.cpp:110        WiFi STA: disconnected
+12:27:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:27:12 I shos_wifi_sta.cpp:644   No candidate APs
+12:27:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:27:15 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:27:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:27:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:27:19 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 37
+12:27:19 I wifi                    I (2620084) wifi:Set ps type: 0, coexist: 0
+12:27:19 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:27:19 I shos_net.cpp:114        WiFi STA: connecting
+12:27:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:27:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:27:22 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:27:22 I shos_wifi_sta.cpp:763   Connect failed
+12:27:22 I shos_net.cpp:110        WiFi STA: disconnected
+12:27:23 I shos_wifi_sta.cpp:644   No candidate APs
+12:27:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:27:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:27:27 I shelly_script.cpp:204   script:1 6.2% CPU utilization
+12:27:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:27:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:27:29 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 38
+12:27:29 I wifi                    I (2630664) wifi:Set ps type: 0, coexist: 0
+12:27:29 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:27:29 I shos_net.cpp:114        WiFi STA: connecting
+12:27:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:27:32 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:27:32 I shos_wifi_sta.cpp:763   Connect failed
+12:27:32 I shos_net.cpp:110        WiFi STA: disconnected
+12:27:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:27:33 I shos_wifi_sta.cpp:644   No candidate APs
+12:27:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:27:37 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:27:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:27:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:27:40 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 39
+12:27:40 I wifi                    I (2641424) wifi:Set ps type: 0, coexist: 0
+12:27:40 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:27:40 I shos_net.cpp:114        WiFi STA: connecting
+12:27:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:27:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:27:43 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:27:43 I shos_wifi_sta.cpp:763   Connect failed
+12:27:43 I shos_net.cpp:110        WiFi STA: disconnected
+12:27:44 I shos_wifi_sta.cpp:644   No candidate APs
+12:27:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:27:47 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:27:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:27:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:27:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:27:51 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 40
+12:27:51 I wifi                    I (2652384) wifi:Set ps type: 0, coexist: 0
+12:27:51 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:27:51 I shos_net.cpp:114        WiFi STA: connecting
+12:27:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:27:54 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:27:54 I shos_wifi_sta.cpp:763   Connect failed
+12:27:54 I shos_net.cpp:110        WiFi STA: disconnected
+12:27:55 I shos_wifi_sta.cpp:644   No candidate APs
+12:27:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:27:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:27:58 I hos_http_client.cpp:334 0x3fcc92d8: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:27:59 I shelly_script.cpp:204   script:1 6.0% CPU utilization
+12:27:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:28:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:28:02 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 41
+12:28:02 I wifi                    I (2663074) wifi:Set ps type: 0, coexist: 0
+12:28:02 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:28:02 I shos_net.cpp:114        WiFi STA: connecting
+12:28:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:28:05 I hos_http_client.cpp:676 0x3fcc92d8: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:28:05 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:28:05 I shos_wifi_sta.cpp:763   Connect failed
+12:28:05 I shos_net.cpp:110        WiFi STA: disconnected
+12:28:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:28:06 I shos_wifi_sta.cpp:644   No candidate APs
+12:28:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:28:09 I shelly_script.cpp:204   script:1 6.1% CPU utilization
+12:28:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:28:10 I bt_nimble_gatts.cpp:399 DISCONNECT 7a:66:7e:df:62:f7,rr ch 1 reason 531
+12:28:10 I luetooth_server.cpp:185 BLE advertising enabled (RPC 1/0, auth 0, disc 1, locked 0, svcs 2, bond 0)
+12:28:10 I y_notifications.cpp:168 Status change of ble: {"flags":["advertising"]}
+12:28:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:28:13 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 42
+12:28:13 I wifi                    I (2673884) wifi:Set ps type: 0, coexist: 0
+12:28:13 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:28:13 I shos_net.cpp:114        WiFi STA: connecting
+12:28:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:28:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:28:16 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:28:16 I shos_wifi_sta.cpp:763   Connect failed
+12:28:16 I shos_net.cpp:110        WiFi STA: disconnected
+12:28:17 I shos_wifi_sta.cpp:644   No candidate APs
+12:28:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:28:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.1 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:28:21 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:28:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:28:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:28:23 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 43
+12:28:23 I wifi                    I (2684604) wifi:Set ps type: 0, coexist: 0
+12:28:23 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:28:23 I shos_net.cpp:114        WiFi STA: connecting
+12:28:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:28:26 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:28:26 I shos_wifi_sta.cpp:763   Connect failed
+12:28:26 I shos_net.cpp:110        WiFi STA: disconnected
+12:28:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:28:27 I shos_wifi_sta.cpp:644   No candidate APs
+12:28:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:28:31 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:28:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:28:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:28:34 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 44
+12:28:34 I wifi                    I (2695204) wifi:Set ps type: 0, coexist: 0
+12:28:34 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:28:34 I shos_net.cpp:114        WiFi STA: connecting
+12:28:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.6 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:28:37 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:28:37 I shos_wifi_sta.cpp:763   Connect failed
+12:28:37 I shos_net.cpp:110        WiFi STA: disconnected
+12:28:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:28:38 I shos_wifi_sta.cpp:644   No candidate APs
+12:28:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:28:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:28:43 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:28:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.3 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:28:45 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 45
+12:28:45 I wifi                    I (2705924) wifi:Set ps type: 0, coexist: 0
+12:28:45 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:28:45 I shos_net.cpp:114        WiFi STA: connecting
+12:28:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:28:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:28:48 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:28:48 I shos_wifi_sta.cpp:763   Connect failed
+12:28:48 I shos_net.cpp:110        WiFi STA: disconnected
+12:28:49 I shos_wifi_sta.cpp:644   No candidate APs
+12:28:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:28:53 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:28:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW"}
+12:28:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:28:55 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 46
+12:28:55 I wifi                    I (2716664) wifi:Set ps type: 0, coexist: 0
+12:28:55 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:28:55 I shos_net.cpp:114        WiFi STA: connecting
+12:28:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:28:58 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:28:58 I shos_wifi_sta.cpp:763   Connect failed
+12:28:58 I shos_net.cpp:110        WiFi STA: disconnected
+12:28:59 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:28:59 I shos_wifi_sta.cpp:644   No candidate APs
+12:29:01 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.0 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:29:02 I hos_http_client.cpp:334 0x3fcc851c: WSS iot.shelly.cloud:6012/jrpc (CA shelly_cloud.pem,ca.pem)
+12:29:03 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.4 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:29:05 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:29:05 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:29:06 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 47
+12:29:06 I wifi                    I (2727324) wifi:Set ps type: 0, coexist: 0
+12:29:06 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:29:06 I shos_net.cpp:114        WiFi STA: connecting
+12:29:07 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:29:09 I hos_http_client.cpp:676 0x3fcc851c: Finished; bytes 0/0, code 0, redir 0/3, auth 0, status -10: Host not found
+12:29:09 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:29:09 I shos_wifi_sta.cpp:763   Connect failed
+12:29:09 I shos_net.cpp:110        WiFi STA: disconnected
+12:29:09 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:29:10 I shos_wifi_sta.cpp:644   No candidate APs
+12:29:11 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:29:13 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:29:15 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:29:17 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 48
+12:29:17 I wifi                    I (2738064) wifi:Set ps type: 0, coexist: 0
+12:29:17 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:29:17 I shos_net.cpp:114        WiFi STA: connecting
+12:29:17 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:29:17 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:29:19 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:29:20 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:29:20 I shos_wifi_sta.cpp:763   Connect failed
+12:29:20 I shos_net.cpp:110        WiFi STA: disconnected
+12:29:21 I shos_wifi_sta.cpp:644   No candidate APs
+12:29:21 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:29:23 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.5 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:29:25 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.5 V 0.0 A 0.00 kW"}
+12:29:27 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.8 V 0.0 A 0.00 kW"}
+12:29:27 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 49
+12:29:27 I wifi                    I (2748744) wifi:Set ps type: 0, coexist: 0
+12:29:27 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:29:27 I shos_net.cpp:114        WiFi STA: connecting
+12:29:29 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:29:29 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.0 V 0.0 A 0.00 kW | L3 231.4 V 0.0 A 0.00 kW"}
+12:29:30 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:29:30 I shos_wifi_sta.cpp:763   Connect failed
+12:29:30 I shos_net.cpp:110        WiFi STA: disconnected
+12:29:31 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:29:31 I shos_wifi_sta.cpp:644   No candidate APs
+12:29:33 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.2 V 0.0 A 0.00 kW"}
+12:29:35 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:29:37 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:29:38 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 50
+12:29:38 I wifi                    I (2759494) wifi:Set ps type: 0, coexist: 0
+12:29:38 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:29:38 I shos_net.cpp:114        WiFi STA: connecting
+12:29:39 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:29:39 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:29:41 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.7 V 0.0 A 0.00 kW | L2 230.6 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}
+12:29:41 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:29:41 I shos_wifi_sta.cpp:763   Connect failed
+12:29:41 I shos_net.cpp:110        WiFi STA: disconnected
+12:29:42 I shos_wifi_sta.cpp:644   No candidate APs
+12:29:43 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.8 V 0.0 A 0.00 kW | L2 230.2 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:29:45 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 231.3 V 0.0 A 0.00 kW"}
+12:29:47 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:29:49 I shos_wifi_sta.cpp:678   Trying AmperePoint  cfg 0 AP (auto) att 51
+12:29:49 I wifi                    I (2770194) wifi:Set ps type: 0, coexist: 0
+12:29:49 I shos_wifi.c:58          WiFi STA: Connecting, BSSID 00:00:00:00:00:00 ch 0 RSSI 0
+12:29:49 I shos_net.cpp:114        WiFi STA: connecting
+12:29:49 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.2 V 0.0 A 0.00 kW | L2 230.9 V 0.0 A 0.00 kW | L3 230.6 V 0.0 A 0.00 kW"}
+12:29:51 I shelly_script.cpp:204   script:1 5.9% CPU utilization
+12:29:51 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.5 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.5 V 0.0 A 0.00 kW"}
+12:29:52 I shos_wifi.c:51          WiFi STA: Disconnected, reason: 201
+12:29:52 I shos_wifi_sta.cpp:763   Connect failed
+12:29:52 I shos_net.cpp:110        WiFi STA: disconnected
+12:29:53 I shos_wifi_sta.cpp:644   No candidate APs
+12:29:53 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.1 V 0.0 A 0.00 kW | L2 230.8 V 0.0 A 0.00 kW | L3 231.1 V 0.0 A 0.00 kW"}
+12:29:55 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 229.9 V 0.0 A 0.00 kW | L2 230.5 V 0.0 A 0.00 kW | L3 230.9 V 0.0 A 0.00 kW"}
+12:29:57 I y_notifications.cpp:168 Status change of text:200: {"value":"L1 230.4 V 0.0 A 0.00 kW | L2 230.3 V 0.0 A 0.00 kW | L3 231.0 V 0.0 A 0.00 kW"}

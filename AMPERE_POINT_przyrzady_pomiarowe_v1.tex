@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.92]
+\setsansfont{DejaVu Sans}[Scale=0.92]
+\setmonofont{DejaVu Sans Mono}[Scale=0.84]
+\usepackage{amssymb}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+
+\definecolor{navy}{RGB}{19,40,82}
+\definecolor{rulegrey}{RGB}{180,190,205}
+\definecolor{accent}{RGB}{0,110,90}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=accent,citecolor=navy}
+
+\emergencystretch=3em
+\hbadness=3000
+
+\titleformat{\section}{\large\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{1.1em}{0.35em}
+\titlespacing*{\subsection}{0pt}{0.7em}{0.2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlist[itemize]{leftmargin=1.2em,itemsep=0.1em,topsep=0.15em}
+\newcommand{\key}[1]{\textbf{\color{navy}#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{rulegrey}\leaders\hrule height \footrulewidth\hfill}}
+\fancyfoot[L]{\footnotesize\sffamily\color{rulegrey}AMPERE POINT — przyrządy pomiarowe dla zakładu, v1}
+\fancyfoot[R]{\footnotesize\sffamily\color{rulegrey}\thepage}
+
+\begin{document}
+{\sffamily\bfseries\color{navy}\LARGE AMPERE POINT — przyrządy pomiarowe dla zakładu}\\[3pt]
+{\sffamily\large\color{navy} Dobór sprzętu do pomiarów stacji/ładowarek AC oraz diagnostyki serwisowej}\\[6pt]
+{\color{rulegrey}\hrule height 1pt}\vspace{4pt}
+{\footnotesize\sffamily Wersja v1 \quad•\quad data: 2026-06-28 \quad•\quad podstawa: „Przewodnik w zakresie wykonywania pomiarów elektrycznych stacji ładowania'' (Warszawa 2024) oraz katalog usterek i pytania do producenta z projektu}\\[2pt]
+
+\section{Cel i zasada doboru}
+Lista obejmuje przyrządy potrzebne, by zakład mógł samodzielnie wykonywać pomiary stacji i ładowarek AC (kontrola jakości importu, testy, serwis) oraz diagnostykę przypadków serwisowych. Dobór wynika z dwóch źródeł: obowiązkowego zakresu pomiarów określonego w przewodniku oraz realnych potrzeb diagnostycznych z projektu (np. przypadek U-001 — nagrzewanie złącza, gdzie kluczowy był pomiar spadku napięcia pod obciążeniem i termowizja). Zasada: \key{możliwie najtaniej, ale z pełnym pokryciem wymaganych pomiarów}. Tam, gdzie jeden przyrząd wielofunkcyjny zastępuje kilka osobnych, wybrano właśnie jego.
+
+Ceny są orientacyjne (rynek PL, czerwiec 2026), brutto/netto bywa różne u sprzedawców — przed zakupem zweryfikuj aktualną ofertę pod linkiem. Do oficjalnych protokołów potrzebne jest aktualne świadectwo wzorcowania.
+
+\section{Wymagane pomiary i przypisany przyrząd}
+Przewodnik (za rozporządzeniem) wymienia pięć obowiązkowych pomiarów. Wszystkie pokrywa jeden miernik wielofunkcyjny współpracujący z adapterem EVSE.
+
+\vspace{2pt}\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{0.5cm} Y p{4.3cm} p{3.5cm}@{}}
+\toprule
+\textbf{Lp} & \textbf{Pomiar wg przewodnika} & \textbf{Przyrząd} & \textbf{Uwaga} \\
+\midrule
+1 & Ciągłość przewodów ochronnych (prąd $\geq$200 mA) & Miernik wielofunkcyjny (funkcja ciągłości) + adapter EVSE & pomiar przez wyjście PE adaptera \\
+2 & Rezystancja izolacji (250/500/1000 V DC) & Miernik wielofunkcyjny (izolacja) + adapter EVSE & kryterium min. 1 M$\Omega$ \\
+3 & Rezystancja uziemienia roboczego & Miernik wielofunkcyjny (3-elektrodowo) lub dedykowany miernik uziemienia & metoda szpilkowa (techniczna) \\
+4 & Działanie RCD (typ, czas, prąd, napięcie dotyku) & Miernik wielofunkcyjny (RCD) + adapter EVSE & adapter wprowadza stację w status C \\
+5 & Skuteczność ochrony — impedancja pętli Zs & Miernik wielofunkcyjny (pętla zwarcia) + adapter EVSE & warunek Zs·Ia $\leq$ Uo \\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+\section{Zestaw minimalny (rekomendowany, najtańszy)}
+Pokrywa wszystkie pięć pomiarów plus podstawową diagnostykę serwisową. Sercem zestawu jest tani miernik wielofunkcyjny Uni-T UT595 (robi pomiary 1–5) oraz generyczny adapter EVSE, który współpracuje z dowolnym miernikiem wielofunkcyjnym.
+
+\vspace{2pt}\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{3.15cm} Y p{3.0cm} p{1.9cm} p{1.25cm}@{}}
+\toprule
+\textbf{Przyrząd} & \textbf{Do czego} & \textbf{Kluczowe parametry} & \textbf{Cena orient.} & \textbf{Link} \\
+\midrule
+\key{Uni-T UT595} — miernik wielofunkcyjny & ciągłość, izolacja, pętla Zs, RCD, uziemienie (pomiary 1–5) & 200 mA; izolacja 250/500/1000 V; RCD; pętla; uziom & ok. 1800–2300 zł & \href{https://centrummiernictwa.pl/produkt/ut595-wielofunkcyjny-miernik-instalacji-uni-t/}{sklep} / \href{https://www.ceneo.pl/35724086}{Ceneo} \\
+\addlinespace
+\key{Kyoritsu KEW8602} — adapter EVSE & wprowadza stację w status A/B/C/D, wyprowadza L/N/PE (Type 2), symuluje CP/PP & współpracuje z miernikiem wielofunkcyjnym & ok. 1960 zł netto & \href{https://www.elektryknet.pl/produkt/kew8602-evse-adapter-do-testowania-stacji-ladowania-pojazdow-elektrycznych}{sklep} / \href{https://www.tme.eu/en/details/kew8602/pv-and-evse-testers-and-meters/kyoritsu/}{TME} \\
+\addlinespace
+\key{Uni-T UT61E+} — multimetr TRMS & napięcia, spadki napięcia pod obciążeniem, ciągłość & True RMS, 22000, USB & ok. 310–430 zł & \href{https://termoplus.pl/ut61e-plus.html}{sklep} / \href{https://www.ceneo.pl/157180044}{Ceneo} \\
+\addlinespace
+\key{Uni-T UT210E} — cęgi AC/DC TRMS & prąd obciążenia i upływu, asymetria, NCV & AC/DC do 100 A, True RMS & ok. 250–300 zł & \href{https://termoplus.pl/ut210e.html}{sklep} / \href{https://www.ceneo.pl/75262019}{Ceneo} \\
+\addlinespace
+\key{InfiRay P2 Pro} — kamera termowizyjna & wykrywanie hot-spotów i przegrzań złączy (jak w U-001) & 256×192, 25 Hz, USB-C do telefonu & ok. 800–1190 zł & \href{https://snapdiag.pl/product/kamera-termowizyjna-na-podczerwien-usb-c-infiray-p2-pro-makro-256x152-25hz-pirometr/}{sklep} \\
+\addlinespace
+\key{Wkrętak dynamometryczny} 0,8–5 Nm & dokręcanie zacisków właściwym momentem (U-001) & zakres ok. 0,8–5 Nm, wymienne groty & ok. 150–300 zł & \href{https://dynamometryczne.pl/wkretaki-c4}{sklep} \\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+\vspace{3pt}
+\key{Razem zestaw minimalny:} orientacyjnie \key{ok. 5300–6500 zł} brutto. Największa pozycja to adapter EVSE — bez niego nie da się wykonać pomiarów 1, 2, 4 i 5 na stacji, bo to on wprowadza ją w stan ładowania i daje dostęp do żył L/N/PE.
+
+\section{Rozszerzenie i warianty opcjonalne}
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}p{3.15cm} Y p{1.9cm} p{1.25cm}@{}}
+\toprule
+\textbf{Przyrząd} & \textbf{Do czego / kiedy} & \textbf{Cena orient.} & \textbf{Link} \\
+\midrule
+\key{Kyoritsu 4105A} — miernik uziemienia & gdy potrzebny solidny, dedykowany pomiar uziomu metodą szpilkową (dokładniejszy niż funkcja w UT595) & ok. 1150–1490 zł & \href{https://centrummiernictwa.pl/produkt/kew4105a-miernik-rezystancji-uziemienia-kyoritsu/}{sklep} \\
+\addlinespace
+\key{CEM EVSE-200} — alternatywny adapter EVSE & odpowiednik KEW8602; Type 1 i Type 2, 1- i 3-fazowo; jeśli korzystniejsza cena & sprawdź u sprzedawcy & \href{https://termoplus.pl/evse-200.html}{sklep} \\
+\addlinespace
+\key{Ścieżka „pod protokoły UDT'': Sonel MPI-520 + EVSE-01} & gdy potrzebne oficjalne protokoły uznawane w PL; pełny PN-EN 61557, adapter dedykowany Sonel & MPI-520 ok. 5550–6675 zł + EVSE-01 ok. 2670–2915 zł & \href{https://www.ceneo.pl/oferty/sonel-mpi-520}{MPI-520} / \href{https://sonel.pl/en/product/adapter-for-testing-vehicle-charging-stations-sonel-evse-01}{EVSE-01} \\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+\section{Uwagi praktyczne}
+\begin{itemize}
+\item \key{Adapter EVSE jest obowiązkowy} do pomiarów na stacji. KEW8602 i CEM EVSE-200 współpracują z dowolnym miernikiem wielofunkcyjnym; Sonel EVSE-01 działa tylko z miernikami Sonel serii MPI (520/530/540) — dlatego w zestawie tanim wybrano KEW8602.
+\item \key{RCD typu B i detekcja 6 mA DC (RDC-DD).} UT595 bada RCD typu AC/A. Weryfikacja w stacji EV detekcji gładkiego prądu stałego 6 mA (zgodnie z IEC 62955) to badanie specjalne — opieraj się na deklaracji producenta lub mierniku wyższej klasy. To wiąże się z otwartym pytaniem do producenta (lista pytań P6).
+\item \key{Wzorcowanie.} Do protokołów potrzebne aktualne świadectwo wzorcowania miernika i adaptera; wielu sprzedawców oferuje wersje „F'' z certyfikatem za dopłatą.
+\item \key{Uprawnienia i BHP.} Pomiary wykonują osoby z uprawnieniami (SEP E/D) zgodnie z rozdziałem „Kwalifikacje osób wykonujących pomiary'' w przewodniku.
+\item \key{Tańsza vs droższa ścieżka.} UT595 + KEW8602 to ok. 4200 zł za rdzeń pomiarowy wobec ok. 8200–9600 zł za Sonel MPI-520 + EVSE-01 — przy tym samym zakresie fizycznych pomiarów. Różnica to głównie marka, ergonomia oraz rozpoznawalność w oficjalnych protokołach.
+\end{itemize}
+
+\end{document}

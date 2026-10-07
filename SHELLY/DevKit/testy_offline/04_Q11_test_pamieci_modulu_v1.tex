@@ -1,0 +1,153 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\newfontfamily\symbolfont{Segoe UI Symbol}
+\newfontfamily\cjkfont{Microsoft YaHei}[Scale=0.9]
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,longtable,array,geometry,enumitem,graphicx,fancyhdr,caption}
+\usepackage[most]{tcolorbox}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\emergencystretch=2.5em
+\geometry{a4paper,margin=2.1cm,top=2.3cm,bottom=2.3cm}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apredlight}{HTML}{FEE2E2}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\renewcommand{\arraystretch}{1.25}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\small AMPERE POINT — test pamięci modułu · Q11 z modułem Shelly · v1 · 2026-09-30}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtcolorbox{uwaga}[1][Uwaga]{enhanced,breakable,colback=apamberlight,colframe=apamber,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{info}[1][Jak to działa]{enhanced,breakable,colback=apteallight,colframe=apteal,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{wazne}[1][Ważne]{enhanced,breakable,colback=apredlight,colframe=apred,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{przyklad}[1][Przykład liczbowy]{enhanced,breakable,colback=apgreenlight,colframe=apgreen,title={#1},fonttitle=\bfseries,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+\newtcolorbox{kodbox}{enhanced,breakable,colback=apgrey,colframe=apgrey,boxrule=0pt,arc=2pt,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\ttfamily\footnotesize}
+\setlist{nosep,leftmargin=*}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+{\LARGE\bfseries Test pamięci modułu: co przetrwa zanik zasilania\par}
+\vspace{4pt}\textcolor{apteal}{\rule{\textwidth}{1.2pt}}
+
+\emph{Pamięć jest w module, więc wynik nie zależy od chmury, internetu ani Wi-Fi · AMPERE POINT · 30 września 2026 · oprac. Dawid Cekała}
+
+
+\section*{W skrócie}
+
+\begin{itemize}
+\item \textbf{Cel.} Ustalić, co moduł Shelly zapisuje w pamięci trwałej, i sprawdzić, czy po zaniku zasilania ładowarki wraca dokładnie to, co powinno. Restart poleceniem sprawdziliśmy w B4–B6; tu chodzi o prawdziwe odcięcie prądu.
+\item \textbf{Czas.} Około 40 minut. Dawid 3 razy wyłącza i włącza ładowarkę, resztę robi laptop.
+\item \textbf{Ryzyko: małe.} Tester odłączony, bez obciążenia. W najgorszym razie zanik w trakcie zapisu (krok P4) zepsuje plik z wartościami pól; wtedy wrócą wartości domyślne: limit 16 A, ładowanie wyłączone.
+\item \textbf{Różnica z C8.} C8 sprawdza, co zachowuje sterownik i czy moduł go nie nadpisuje. Ten test sprawdza sam moduł. Wyniki posłużą obu.
+\end{itemize}
+
+\section*{Co moduł trzyma w pamięci}
+
+Spis z kopii konfiguracji (B10) i z logu zapisu plików modułu (29.09).
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{4.67cm}>{\raggedright\arraybackslash}p{2.53cm}>{\raggedright\arraybackslash}p{1.82cm}>{\raggedright\arraybackslash}p{3.02cm}>{\raggedright\arraybackslash}p{2.36cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Co} & \textbf{Plik w module} & \textbf{Ma przetrwać} & \textbf{Jak moduł zapisuje} & \textbf{Co sprawdzamy} \\
+\midrule\endhead
+\bottomrule\endfoot
+Ustawienia: Wi-Fi, adres, MQTT, serwer czasu, log UDP, chmura wyłączona, Bluetooth, strefa czasowa & \texttt{conf9.json} & tak & nowy plik obok, potem podmiana; zanik w trakcie zostawia stary & wszystkie sekcje ustawień \\
+Pamięć klucz-wartość & \texttt{shelly\_\allowbreak{}kvs.\allowbreak{}json} & tak & jak wyżej & klucze i wartości \\
+Harmonogram & \texttt{crontab.json} & tak & jak wyżej & lista zadań \\
+Webhooki & \texttt{webhooks.\allowbreak{}json} & tak & jak wyżej & lista \\
+Definicje 15 pól usługi & \texttt{components\_\allowbreak{}storage.\allowbreak{}json} & tak & przy wgraniu usługi & definicje pól \\
+Wartości pól zapamiętywanych: włącznik ładowania i limit prądu & \texttt{storage.json} & tak & \textbf{1–2 s po każdej zmianie, wprost do pliku, bez pliku obok} & wartości; kroki P4 i P5 \\
+Wartości 13 pozostałych pól & brak & nie & tylko pamięć robocza & po starcie wartość domyślna, potem od sterownika \\
+Stan skryptu: czas i energia sesji, stan początkowy licznika, ostatnie komunikaty & brak & nie & pamięć robocza & czas sesji po starcie \\
+Pliki usługi (skrypt, opis, ekran) i ich wersja & pliki usługi & tak & przy wgraniu & skróty plików \\
+Token produktu, identyfikator, firmware & pamięć systemowa & tak & przy wgraniu & porównanie \\
+Klucz Bluetooth & \texttt{bt\_kvs.json} & tak & przy parowaniu & — \\
+Godzina & brak zegara z baterią & nie & z serwera czasu po starcie & po ilu sekundach wraca \\
+\end{longtable}
+
+\section*{Co już wiemy}
+
+\begin{itemize}
+\item Po \textbf{restarcie poleceniem} zostają harmonogram (B4), pamięć klucz-wartość (B6) i webhooki (B5c).
+\item \textbf{30.09 rano moduł wystartował po zaniku zasilania} (przyczyna restartu podana przez moduł: włączenie zasilania, około 10:06). Limit 12 A i włącznik „wł.” wróciły takie jak wieczorem, czyli pola zapamiętywane przetrwały. Pola okna godzin pokazują 0–0, a wieczorem sterownik miał 2–0. Sterownik pierwszy raz zgłosił wersję („V1”). Startu nie ma w logu, bo laptop spał, więc to tylko wskazówka: albo sterownik po zaniku kasuje okno, albo go przy starcie nie zgłosił. Test to rozstrzygnie.
+\end{itemize}
+
+\section*{Zużycie pamięci przy częstej zmianie limitu}
+
+\textbf{Wniosek:} jeśli limit prądu będzie zmieniany automatycznie (nadwyżka PV, równoważenie obciążenia), zapamiętywanie go w module może zużyć pamięć modułu w ciągu kilku lat.
+
+
+\textbf{Mechanizm.} Każda zmiana limitu to zapis pliku \texttt{storage.json}. Pamięć flash znosi około 100 000 kasowań na blok. System plików rozkłada zapisy po wolnych blokach: dziś wolne 340 kB, czyli około 85 bloków po 4 kB.
+
+
+\textbf{Przykład liczbowy.} Zmiana co 10 s daje 8640 zapisów na dobę, 3,15 mln rocznie. Rozłożone na 85 bloków to około 37 000 kasowań bloku rocznie, więc granicę 100 000 osiągamy po około 2,7 roku. Przy zmianie co minutę: około 16 lat.
+
+
+\textbf{Założenia do sprawdzenia:} jedno kasowanie bloku na zapis i równe rozłożenie zapisów. Krok P6 liczy, ile zapisów daje jedna zmiana.
+
+
+\textbf{Pomiar z P6 (30.09):} moduł zapisuje najwyżej raz na około 3 s. Najgorszy przypadek, ciągłe zmiany: 28 800 zapisów na dobę, około 124 000 kasowań bloku rocznie, czyli granica po mniej niż roku. Przy zmianie co 10 s rachunek wyżej się nie zmienia (2,7 roku).
+
+
+\textbf{Wniosek dla produktu:} limit sterowany automatycznie nie powinien być polem zapamiętywanym albo skrypt powinien zapisywać go rzadziej. Nic na tym nie tracimy, bo sterownik pamięta własny limit przez zanik zasilania (P3: 11 A, potem 9 A).
+
+
+\section*{Przebieg}
+
+Kto: \textbf{L} laptop (robię to ja), \textbf{D} Dawid. Migawka to zapis wszystkiego, co moduł trzyma, narzędziem \texttt{DevKit\textbackslash{}narzedzia\textbackslash{}pamiec\textbackslash{}migawka.\allowbreak{}py}; porównanie dwóch migawek daje tabelę z wynikiem dla każdej pozycji z rozdziału 1.
+
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.00cm}>{\raggedright\arraybackslash}p{1.85cm}>{\raggedright\arraybackslash}p{6.62cm}>{\raggedright\arraybackslash}p{3.36cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Krok} & \textbf{Kto} & \textbf{Co robimy} & \textbf{Co zapisujemy} \\
+\midrule\endhead
+\bottomrule\endfoot
+P1 & L & Znaczniki: klucz w pamięci klucz-wartość z godziną, wyłączone zadanie harmonogramu (nie odpali), wyłączony webhook-znacznik, limit 11 A, ładowanie wyłączone. 10 s czekania na zapis, migawka „przed” & migawka; co sterownik potwierdził \\
+P2 & D & Wyłącznik ładowarki: wyłączyć na 30 s, włączyć. Podać godzinę wyłączenia & — \\
+P3 & L & 90 s po włączeniu migawka „po” i porównanie. Z logu UDP: od której sekundy widać start, po ilu sekundach moduł ma godzinę, co zgłosił sterownik (limit, włącznik, tryb, okno, wersja) & tabela porównania; okno po zaniku \\
+P3b & D, opcjonalnie & Przed zanikiem zmienić limit w menu ładowarki (np. 8 A), żeby moduł pamiętał 11 A, a sterownik 8 A. Po zaniku: kto wygrał & czy moduł nadpisuje sterownik po starcie (to też C8i) \\
+P4 & L i D & Zanik zaraz po zmianie. Zadanie harmonogramu zmienia limit na 9 A równo o pełnej minucie; D wyłącza ładowarkę 1 s później według zegara w telefonie (zegar modułu jest zgodny z czasem sieciowym; zegar laptopa spóźnia się 8 s) & po starcie 9 A czy 11 A; czy wróciły oba pola zapamiętywane \\
+P5 & L i D & Jak P4, ale wyłączenie 15 s po zmianie & powinno wrócić 9 A: zapis zdążył \\
+P6 & L & Liczenie zapisów: 20 zmian limitu co 5 s, z logu liczba zapisów \texttt{storage.json} & zapisy na zmianę; poprawka rachunku z rozdziału 3 \\
+P7 & L & Sprzątanie: usunąć znaczniki, przywrócić limit sprzed testu & — \\
+\end{longtable}
+
+\textbf{Uwagi do wykonania.}
+
+
+\begin{itemize}
+\item Moduł jest zasilany z płyty ładowarki, więc wyłącznik ładowarki odcina oba. Nigdy nie zasilać modułu z USB, gdy jest wpięty w płytę.
+\item Log UDP pokazuje start dopiero od 23. sekundy, czyli od połączenia z Wi-Fi. Wcześniejszych sekund nie widać żadną drogą sieciową. To, czy moduł przy starcie coś wysłał sterownikowi, oceniamy po wartościach, które sterownik zgłosi.
+\item Ręczne wyłączenie ma rozrzut około 1 s. Jeśli P4 da wynik niejednoznaczny, powtarzamy go 2–3 razy.
+\item Test robimy przy Wi-Fi, bo tylko tak odczytamy wynik. Powtórka P1–P3 bez internetu wchodzi w C8 i używa tego samego narzędzia.
+\end{itemize}
+
+\section*{Wyniki}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.01cm}>{\raggedright\arraybackslash}p{1.82cm}>{\raggedright\arraybackslash}p{8.56cm}>{\raggedright\arraybackslash}p{1.44cm}}
+\toprule
+\rowcolor{apteallight}\textbf{Krok} & \textbf{Wynik} & \textbf{Co zaobserwowano} & \textbf{Data} \\
+\midrule\endhead
+\bottomrule\endfoot
+P1 znaczniki i migawka & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Klucz w pamięci klucz-wartość, wyłączone zadanie, wyłączony webhook, limit 11 A, wyłączenie ładowania; migawka 11:00:12. Sterownik odpowiedział starymi wartościami (12 A, „wł.”) & 30.09 11:00 \\
+P3 porównanie po zaniku & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} z uwagą & Moduł wystartował 11:04:37 (przyczyna: włączenie zasilania), godzina z serwera na laptopie po około 25 s. Wróciło wszystko z rozdziału 1: ustawienia, pamięć klucz-wartość, zadanie, webhooki, usługa z plikami, token, definicje pól, limit 11 A. Włącznik: moduł pamiętał „wył.”, ale sterownik zgłosił „wł.” i skrypt wpisał jego wartość. Ponowne „wyłącz” (11:06:50) i restart samego modułu: sterownik dalej „wł.”, czyli nie przyjmuje wyłączenia (rejestr S-24). Sterownik po włączeniu zasilania zgłosił limit (zachował 11 A), tryb i wersję „V1”; okna nie zgłosił ani wtedy, ani po restarcie samego modułu, więc pola okna zostają 0–0 & 30.09 11:06 \\
+P3b menu ładowarki & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} bez konfliktu & Limit 8 A ustawiony w menu (14:05) sterownik zgłosił od razu; moduł wpisał go do pola, zapamiętał i wywołał webhook. Moduł nie może więc pamiętać innej wartości niż sterownik. Po zaniku zasilania (poziom C, 14:06) obaj mają 8 A, moduł przy starcie nic sterownikowi nie zapisał & 30.09 14:07 \\
+P4 zanik tuż po zmianie & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} z uwagą & Pole testowe (zapamiętywane, sterownik go nie dotyka) zmieniał laptop; przy zaniku sam przestawał, więc po starcie nic go nie nadpisało. Runda 1: zanik 0,5–4,7 s po zmianie, wartość przetrwała. Runda 2: zanik co najmniej 4,45 s po zmianie, przetrwała. Runda 3 (zmiany co 1,5 s): zanik 1,2 s po zmianie na 423 i najwyżej 0,9 s po zmianie na 424; po starcie 422, zapisane 2,5 s przed zanikiem. Dwie ostatnie zmiany przepadły, plik nieuszkodzony. Pierwsze podejście z zadaniami harmonogramu odpadło: po zaniku moduł wykonuje harmonogram według zapamiętanego, nieaktualnego zegara (rejestr S-45) & 30.09 11:38 \\
+P5 zanik długo po zmianie & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Objęty rundą 2 z P4: wartość przetrwała & 30.09 11:37 \\
+P8 okno i tryb sterownika po zaniku & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Okna nie da się ustawić z menu ładowarki (menu ma tylko opóźnienie ładowania), więc ustawione z modułu: 2–4; sterownik potwierdził i przeszedł w tryb „harmonogram”. Restart samego modułu (odniesienie): sterownik zgłosił okno 2–4 i tryb „harmonogram”. Po zaniku zasilania (12:1x): tryb „od razu”, okna brak (pola 0–0 także po restarcie modułu), limit 12 A został. \textbf{Sterownik przy zaniku zasilania traci okno i tryb, pamięta limit prądu} & 30.09 12:28 \\
+P6 zapisy na zmianę & \leavevmode{\symbolfont\color{apgreen}\textbf{✔}} & Przy zmianach rzadszych niż co 3 s: jeden zapis na zmianę, około 1,9 s po niej. Przy częstszych: zapis najwyżej raz na około 3 s, zmiany z tego czasu w jednym zapisie (log: 70,2, 73,2, 76,2, 79,3 s pracy przy zmianach co 1,5 s). Po zaniku może więc przepaść najwyżej około 3 s zmian & 30.09 11:38 \\
+\end{longtable}
+
+\end{document}

@@ -1,0 +1,371 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+% Polski bez babel (brak texlive-lang-polish w środowisku kompilacji):
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\renewcommand{\figurename}{Rysunek}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+
+\newcommand{\ohm}{$\Omega$}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+\title{\textbf{AMPERE POINT --- Wielofunkcyjne urządzenie pomiarowe (custom device)}\\[4pt]
+\large Wstępna koncepcja budowy --- wersja 1 do zatwierdzenia}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{3 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+
+\noindent\textbf{Status dokumentu:} wstępna koncepcja do zatwierdzenia. Po zatwierdzeniu: schematy ideowe, dobór finalny komponentów, schemat elektryczny (EPLAN), pełna dokumentacja projektowa. Dokument celowo nie zawiera schematów graficznych --- wymagane schematy są opisane tekstowo w~rozdz.~\ref{sec:dokumentacja}.
+
+\tableofcontents
+
+\section{Cel i zasady projektowe}
+\label{sec:cel}
+
+Celem projektu jest zautomatyzowana stacja testowa ładowarek AC (EVSE), umożliwiająca wykonanie wszystkich pięciu obowiązkowych pomiarów z~,,Przewodnika w~zakresie wykonywania pomiarów elektrycznych stacji ładowania'' (Warszawa 2024) oraz prób funkcjonalnych pod realnym obciążeniem --- docelowo bez użycia samochodu testowego. Urządzenie pełni rolę pojazdu: symuluje stany złącza wg IEC~61851-1, pobiera zadany prąd testowy i~rejestruje wyniki.
+
+Zasady projektowe przyjęte w~koncepcji:
+\begin{enumerate}
+\item \textbf{Spójność na poziomie realnych połączeń} --- każdy blok opisany jest do poziomu złączy, przewodów i~sygnałów, tak aby architekturę dało się przenieść 1:1 na schemat elektryczny.
+\item \textbf{Bezpieczeństwo sprzętowe, nie programowe} --- rozłączenie obwodów mocy realizuje sprzętowy łańcuch bezpieczeństwa niezależny od mikrokontrolera; firmware może wyłącznie zezwalać, nigdy wymuszać załączenie.
+\item \textbf{Praktyczna wykonalność} --- komponenty dostępne rynkowo, budowa etapowa, każdy etap kończy się urządzeniem użytecznym w~warsztacie.
+\item \textbf{Wiarygodność protokołów} --- pomiary wymagane do protokołów urzędowych wykonują przyrządy z~ważnym świadectwem wzorcowania; bloki własne pokrywają to, czego przyrządy gotowe nie umieją (test 6~mA~DC, obciążenie, termika, automatyzacja sekwencji).
+\end{enumerate}
+
+\section{Analiza dotychczasowych ustaleń}
+\label{sec:analiza}
+
+Koncepcja przejmuje wszystkie cztery decyzje zakresu z~2026-07-03: (Q1) pełna automatyzacja PM701E przez mechaniczne przełączanie serwomechanizmami, (Q2) obudowa w~stylu rozdzielnicy przemysłowej jako inspiracja, z~gniazdami zaprojektowanymi pod realne potrzeby, (Q3) pełny moduł obciążenia 1-fazowego i~3-fazowego, (Q4) pełne pokrycie RCD typu~B/6~mA~DC. Analiza materiałów źródłowych wykazała jednak trzy punkty, w~których dotychczasowe zapisy wymagają doprecyzowania lub korekty, zanim powstaną schematy:
+
+\subsection{Korekta 1: tor prądu obciążenia nie może przechodzić przez PM701E}
+\label{sec:korekta1}
+
+Dotychczasowe założenie (topologia z~pkt~4.4 pliku informacyjnego) przewidywało, że prąd obciążenia płynie z~ładowarki przez PM701E i~jego gniazda bananowe do modułu obciążenia. Adaptery testowe tej klasy nie są jednak projektowane na ciągły prąd przelotowy rzędu 32~A --- porównywalny przyrząd Elma/PCE EVSE-200 dopuszcza obciążenie podłączone do swojego gniazda wyjściowego jedynie do ok.~10~A, a~producent PM701E nie publikuje znamionowego prądu przelotowego (instrukcja PM701E wciąż nieobecna w~materiałach --- otwarty punkt). Przewody pomiarowe z~wtykami bananowymi 4~mm znoszą 32~A jedynie krótkotrwale; test wygrzewania (soak) trwa kilkanaście--kilkadziesiąt minut.
+
+\textbf{Rozwiązanie --- topologia ,,przelot mocy z~odczepem sterującym''} (rozdz.~\ref{sec:architektura}): urządzenie otrzymuje własne gniazdo pojazdowe Type~2 32~A~3F i~wewnętrzny tor mocy o~przekroju 6~mm$^2$, a~PM701E zostaje podłączony na krótkim odczepie zakończonym wtykiem Type~2. PM701E nadal steruje stanami złącza (decyzja Q1 --- serwa --- pozostaje w~mocy bez zmian), jego gniazda bananowe pozostają dostępne dla przyrządów pomiarowych, natomiast prąd obciążenia przez niego \emph{nie płynie}. Topologia jest elektrycznie równoważna (odczep i~magistrala to ten sam węzeł), a~usuwa jedyne twarde ryzyko sprzętowe pierwotnego układu.
+
+\subsection{Korekta 2: rozdzielenie funkcji ,,testowanie RCD typu B'' od ,,detekcja prądu różnicowego''}
+\label{sec:korekta2}
+
+Pkt~4.6 pliku informacyjnego opisywał pokrycie RCD typu~B wyłącznie przez pryzmat czujnika (fluxgate/zero-flux). Do \emph{przetestowania} zabezpieczenia RDC-DD ładowarki (próg 6~mA~DC wg IEC~62955) potrzebny jest przede wszystkim \textbf{generator} --- sterowane źródło prądu upływu L$\rightarrow$PE, zadające rampę gładkiego prądu stałego i~mierzące prąd oraz czas zadziałania. Prąd generowany przez własne źródło mierzy się bezpośrednio, bocznikiem w~szeregu --- czujnik fluxgate nie jest do tego konieczny. Czujnik fluxgate (LEM CDSR) wchodzi do koncepcji w~drugiej roli: jako niezależny monitor prądu różnicowego własnych torów urządzenia (funkcja RCM --- bezpieczeństwo operatora) i~weryfikacja krzyżowa generatora. Rozdzielenie obu funkcji upraszcza najtrudniejszy blok analogowy projektu i~czyni go realnie wykonalnym (rozdz.~\ref{sec:b5}).
+
+\subsection{Korekta 3: pomiar uziomu fizycznie poza torem Type 2}
+\label{sec:korekta3}
+
+Pomiar rezystancji uziemienia metodą techniczną 3-elektrodową odbywa się szpilkami w~gruncie w~odległości ok.~20~m od uziomu --- nie przechodzi przez złącze Type~2 ani przez adapter. Urządzenie pokrywa go zaciskami serwisowymi E/S/H na panelu (przewidzianymi już wcześniej) oraz --- w~etapie~1 --- przyrządem UT522 z~planu pomostowego; wynik jest wprowadzany do wspólnego protokołu. Wewnętrzny moduł pomiaru uziomu pozostaje opcją etapu rozszerzenia (rozdz.~\ref{sec:etapy}).
+
+\subsection{Wnioski przejęte bez zmian}
+
+Pozostają w~mocy: zasilanie modułu obciążenia wyłącznie z~badanej ładowarki (bez osobnego przyłącza wysokoprądowego dla load banku), moce testowe do 7,4~kW 1F / $\sim$11~kW 3F z~marginesem projektowym do 3$\times$32~A, weryfikacja pozycji serw przez odczyt CP, spójność prądu deklarowanego w~CP z~prądem faktycznie pobieranym, pomiar izolacji jako bramka na początku sekwencji, niezależny od MCU obwód bezpieczeństwa, detekcja przegrzania wtyczki (MLX90640) z~procedurą soak, zasilanie logiki niezależne od badanego urządzenia.
+
+\section{Architektura systemu}
+\label{sec:architektura}
+
+\subsection{Podział na dwa moduły}
+
+Przy 7,4--11~kW ciągłej mocy traconej w~cieple urządzenie jednoobudowe byłoby ciężkie, gorące i~niewygodne. Koncepcja przewiduje \textbf{architekturę dwumodułową}:
+
+\begin{itemize}
+\item \textbf{Moduł A --- jednostka sterująco-pomiarowa.} Obudowa w~stylu rozdzielnicy przenośnej IP54 z~uchylną przezroczystą pokrywą (inspiracja: posiadana obudowa referencyjna). Zawiera: gniazdo pojazdowe Type~2, odczep PM701E z~serwomechanizmami, magistralę mocy ze stycznikiem głównym, wszystkie bloki pomiarowe i~logikę, panel HMI, gniazda pomocnicze. Masa i~gabaryt umożliwiają przenoszenie przez jedną--dwie osoby.
+\item \textbf{Moduł B --- moduł obciążenia (load bank).} Oddzielna, otwarta konstrukcja typu kanał wentylacyjny z~grzałkami żebrowanymi i~wentylatorami, na kółkach lub w~drugiej skrzyni. Łączy się z~modułem A przewodem 5$\times$6~mm$^2$ zakończonym złączem CEE 32~A~5p. Pracuje w~przewiewnym miejscu; gorące powietrze wylotowe nie ogrzewa elektroniki pomiarowej.
+\end{itemize}
+
+Podział rozstrzyga też część otwartego punktu ,,gniazda na obudowie'': gniazdo CEE 32~A na panelu modułu A jest \emph{interfejsem modułu obciążenia}, nie ozdobą.
+
+\subsection{Topologia połączeń --- tor mocy i tor sterowania}
+\label{sec:topologia}
+
+Opis tekstowy (docelowo schemat blokowy, rozdz.~\ref{sec:dokumentacja}):
+
+\begin{enumerate}
+\item Badana ładowarka (DUT) --- zasilana normalnie ze swojej instalacji --- wpina wtyk Type~2 swojego kabla w~\textbf{gniazdo pojazdowe Type~2 32~A~3F} modułu A (dla ładowarek z~gniazdem: przewód Type~2--Type~2; dla Type~1: posiadana przejściówka).
+\item Z~gniazda pojazdowego wychodzą dwa tory:
+  \begin{itemize}
+  \item \textbf{tor mocy}: L1/L2/L3/N/PE przewodami 6~mm$^2$ przez czujnik różnicowy CDSR (okno: L1+L2+L3+N), przekładniki prądowe i~stycznik główny do gniazda CEE 32~A (interfejs modułu B);
+  \item \textbf{tor sterująco-pomiarowy (odczep)}: krótki przewód zakończony wtykiem Type~2 wpiętym w~PM701E; przenosi CP, PP, PE oraz L/N dla własnych potrzeb PM701E (pobór własny przyrządu jest pomijalny). PM701E pozostaje nienaruszony i~steruje stanami złącza pokrętłami obracanymi serwomechanizmami.
+  \end{itemize}
+\item Gniazda bananowe L1/N/PE/L2/L3 PM701E pozostają dostępne z~zewnątrz jako \textbf{punkt przyłączenia przyrządów protokołowych} (UT595) --- elektrycznie to ten sam węzeł co magistrala.
+\item Para SIGNAL OUTPUT (CP + masa) PM701E biegnie do toru akwizycji CP mikrokontrolera (dzielnik + ogranicznik diodowy, rozdz.~\ref{sec:b6}) --- służy do weryfikacji pozycji serw i~logowania parametrów CP.
+\item Bloki własne urządzenia (generator upływu, metering, termowizja) podłączone są do magistrali przez \textbf{przekaźniki separujące}: w~,,trybie izolacji'' cała elektronika własna i~moduł B są galwanicznie odłączane od L/N/PE, aby próba izolacji 250/500~V~DC nie uszkodziła elektroniki ani nie zafałszowała wyniku.
+\item Zasilanie logiki: własny przewód z~wtykiem Schuko do gniazda instalacji zakładu/obiektu (zasilacz 230~V$\rightarrow$24~V + przetwornice 5/3,3~V). Logika nigdy nie jest zasilana z~badanej ładowarki.
+\end{enumerate}
+
+\subsection{Funkcja dodatkowa: stanowisko bench-test z własnym zasilaniem DUT}
+\label{sec:benchtest}
+
+Propozycja rozstrzygnięcia pozostałej części otwartego punktu ,,gniazda na obudowie'': gniazda \textbf{CEE 32~A~5p, CEE 16~A~5p i~Schuko na panelu modułu A jako wyjścia zasilania badanych ładowarek} w~pracy warsztatowej. Ładowarkę przenośną/przewoźną (np. mode~2 z~wtyczką Schuko, przewoźne EVSE z~wtykiem CEE) zasila się wtedy \emph{z~panelu urządzenia}, a~jej wtyk Type~2 wpina w~gniazdo pojazdowe --- powstaje kompletne stanowisko: urządzenie zasila DUT (przez mierzalny, zabezpieczony tor z~monitoringiem RCM i~pomiarem energii) i~jednocześnie udaje pojazd. Wymaga to doprowadzenia zasilania stanowiska osobnym przewodem z~wtykiem CEE 32~A~5p do modułu A oraz zabezpieczeń (rozłącznik, B32/B16, RCD 30~mA typ~A dla toru Schuko). Funkcja jest opcjonalna sprzętowo (sekcja dająca się pominąć w~etapie~1) --- \textbf{punkt do zatwierdzenia Z3}.
+
+\subsection{Poziomy automatyzacji}
+
+\begin{itemize}
+\item \textbf{Automatyczne} (bez operatora): stany złącza (serwa + weryfikacja CP), załączanie stopni obciążenia, soak test z~logowaniem, test RDC-DD 6~mA~DC (generator + pomiar czasu zadziałania), termowizja, monitoring RCM, zapis wyników.
+\item \textbf{Półautomatyczne} (prowadzone przez sekwencer, wykonywane przyrządem wzorcowanym): izolacja, ciągłość PE, pętla Zs, RCD typ~A --- UT595 podłączany do gniazd bananowych PM701E wg instrukcji na ekranie HMI; wynik wpisywany ręcznie (UT595 nie ma interfejsu komunikacyjnego). Pomiar uziomu --- UT522 na zaciskach E/S/H.
+\item \textbf{Ręczne} (doraźne): przyciski CP~Error~,,E'' i~PE~Error na PM701E (automatyzacja aktuatorami --- opcja etapu rozszerzenia), oględziny, wkrętak dynamometryczny.
+\end{itemize}
+
+\section{Bloki funkcjonalne}
+\label{sec:bloki}
+
+\subsection{B1 --- wejście DUT i magistrala mocy}
+\label{sec:b1}
+
+\begin{itemize}
+\item \textbf{Gniazdo pojazdowe Type~2 32~A~3F} (wlot jak w~pojeździe; rynkowo 250--650~zł, np. DGN FEAC-S-032A, Duosida; wersje z~blokadą elektromagnesową --- blokada wtyku na czas testu pod napięciem jest pożądana i~sterowalna z~MCU).
+\item \textbf{Odczep sterujący}: przewód 5$\times$1,5~mm$^2$ + CP/PP, zakończony wtykiem Type~2 (150--250~zł) wpiętym w~PM701E; długość $\le$1~m, prowadzony wewnątrz obudowy do półki PM701E.
+\item \textbf{Magistrala}: L1/L2/L3/N 6~mm$^2$, PE 6~mm$^2$; szyny/listwy rozdzielcze; bezpieczniki topikowe gG~32~A na fazach.
+\item \textbf{Stycznik główny} 4P 40~A (AC-1), cewka 24~V w~łańcuchu bezpieczeństwa (rozdz.~\ref{sec:b9}); za nim gniazdo CEE 32~A~5p do modułu B.
+\item \textbf{Rozłącznik izolacyjny} główny na panelu (odcięcie całości toru mocy do prac przyłączeniowych).
+\end{itemize}
+
+\subsection{B2 --- sterowanie stanami złącza: PM701E + serwomechanizmy (decyzja Q1)}
+\label{sec:b2}
+
+\begin{itemize}
+\item Dwa serwomechanizmy modelarskie klasy \textbf{DS3218 (20~kg$\cdot$cm, metalowa przekładnia)} lub MG996R --- moment pokręteł przełączników obrotowych wynosi typowo 1--3~kg$\cdot$cm, zapas $\ge$5$\times$. Sterowanie PWM z~MCU.
+\item \textbf{Rama montażowa nieinwazyjna}: PM701E leży w~dedykowanej półce/gnieździe modułu A; nad panelem rama (druk 3D / blacha gięta) z~serwami nad osiami obu pokręteł. Sprzęgnięcie przez \textbf{drukowany adapter nasadzany na pokrętło + sprzęgło Oldham} (kompensacja niewspółosiowości --- chroni mechanizm przełącznika przed siłami promieniowymi).
+\item \textbf{Kalibracja}: pięć pozycji pokrętła stanu (BB/C/A/B/D) i~pięć pokrętła prądu (NC/13/20/32/63~A) zapisane jako kąty serwa; procedura kalibracyjna w~firmware (najazd, potwierdzenie odczytem CP).
+\item \textbf{Weryfikacja sprzężeniem zwrotnym}: po każdej komendzie zmiany stanu MCU potwierdza przez tor CP (poziom napięcia stanu, duty cycle deklarowanego prądu); brak potwierdzenia $\rightarrow$ przerwanie sekwencji i~rozpad łańcucha zezwolenia.
+\item \textbf{Do weryfikacji na sprzęcie} (ryzyko R2): swoboda obrotu pokręteł zewnętrznym momentem, trwałość przełącznika przy zautomatyzowanych cyklach.
+\item Przyciski Touch / PE Pre-Test / CP Error / PE Error: w~etapie~1 ręczne; aktuatory (mikroserwa/elektromagnesy naciskowe) --- etap rozszerzenia. Funkcje Touch i~PE Pre-Test do potwierdzenia instrukcją PM701E (wg materiałów producenta seria PM701 wykonuje pre-test PE i~symulację błędów CP/PE).
+\end{itemize}
+
+\subsection{B3 --- moduł obciążenia 1F/3F (decyzja Q3)}
+\label{sec:b3}
+
+\begin{itemize}
+\item \textbf{Elementy grzejne}: grzałki żebrowane 230~V (dostępne 500--2000~W, 40--150~zł/szt.) w~kanale blaszanym z~wymuszonym przepływem. Na fazę cztery stopnie o~mocach ok. \textbf{1,0 / 1,5 / 2,0 / 3,0~kW} (ostatni jako 2$\times$1,5~kW równolegle), łącznie $\sim$7,5~kW/fazę, czyli $\sim$32,5~A przy 230~V. Kombinacje stopni dają prądy ok. 4,3--32~A z~krokiem $\le$2~A --- wystarczające do odwzorowania progów 6/10/13/16/20/25/32~A. Trzy identyczne banki (L1/L2/L3) $\rightarrow$ test 1-fazowy (tylko L1) i~3-fazowy symetryczny do 3$\times$32~A (margines; wymóg Q11 to 3$\times$16~A~$\approx$~11~kW).
+\item \textbf{Łączenie stopni}: styczniki modułowe 25~A 1NO (50--100~zł/szt., 12~szt.), cewki 24~V przez drivery z~optoizolacją. Wybrano styczniki zamiast SSR: separacja galwaniczna, odporność na przepięcia, brak radiatorów; rozdzielczość skokowa jest wystarczająca, a~ewentualna modulacja duty-cycle (sekundowa) też jest możliwa stycznikami przy umiarkowanej liczbie cykli.
+\item \textbf{Zasada spójności CP$\leftrightarrow$pobór}: sekwencer załącza wyłącznie kombinacje o~prądzie $\le$ prądowi deklarowanemu aktualnie przez CP (pozycja pokrętła prądu PM701E); prąd faktyczny mierzony na bieżąco (B7) i~porównywany z~zadanym.
+\item \textbf{Chłodzenie}: 2 wentylatory kanałowe 230~V po $\sim$500~m$^3$/h (łącznie $\sim$1000~m$^3$/h) --- przy 11~kW przyrost temperatury powietrza $\sim$33~K; przy pełnym marginesie 22~kW praca wyłącznie krótkotrwała lub z~ograniczeniem duty-cycle. Potwierdzenie pracy wentylatorów (przekaźnik prądowy lub presostat różnicowy) jest warunkiem w~łańcuchu zezwolenia.
+\item \textbf{Zabezpieczenia sprzętowe} (niezależne od MCU): wyłączniki termiczne bimetalowe KSD301 ($\sim$90~$^\circ$C) na każdej sekcji, połączone szeregowo w~łańcuchu bezpieczeństwa; bezpieczniki na stopniach; termik zadziała $\rightarrow$ rozpad stycznika głównego w~module A.
+\item \textbf{Złącze}: wtyk CEE 32~A~5p + przewód gumowy 5$\times$6~mm$^2$ (H07RN-F) do modułu A.
+\end{itemize}
+
+\subsection{B4 --- pomiar parametrów sieci (metering)}
+\label{sec:b4}
+
+\begin{itemize}
+\item Dedykowany układ pomiaru energii 3F klasy \textbf{ATM90E36A} (SPI) lub równoważny (ADE7758): napięcia fazowe przez dzielniki rezystancyjne z~izolacją, prądy przez 3 przekładniki prądowe 40~A/1V na torze mocy. Daje: U/I/P/Q/cos$\varphi$/częstotliwość per faza, asymetrię, rejestrację przebiegu obciążenia w~czasie soak testu.
+\item Kolejność faz i~obecność napięcia: detekcja z~metering AFE + niezależne optotransoptory obecności L1/L2/L3 (wejście binarne do MCU --- służą też do pomiaru czasu zadziałania zabezpieczeń, rozdz.~\ref{sec:b5}).
+\item Posiadane UT210E/UT890C pozostają przyrządami ręcznymi do weryfikacji krzyżowej.
+\end{itemize}
+
+\subsection{B5 --- blok testu RCD/RDC-DD (decyzja Q4)}
+\label{sec:b5}
+
+Dwie odrębne funkcje (korekta~2, rozdz.~\ref{sec:korekta2}):
+
+\textbf{(a) Generator prądu upływu} --- testuje zabezpieczenia badanej ładowarki:
+\begin{itemize}
+\item \emph{Gładki DC (RDC-DD, IEC~62955)}: źródło prądowe L1$\rightarrow$PE --- prostownik z~filtrem, tranzystor MOSFET w~konfiguracji źródła prądowego sterowanego wzmacniaczem operacyjnym, zadawanie rampy 0--20~mA przez DAC (MCP4725) z~izolacją cyfrową; pomiar prądu bocznikiem + wzmacniacz izolowany (AMC1301). Procedura: rampa narastająca (np. 0,1~mA/s w~okolicy progu), rejestracja prądu zadziałania (oczekiwane $\le$6~mA) i~czasu odcięcia (detekcja zaniku L przez optotransoptory B4, znacznik czasu w~MCU).
+\item \emph{AC i~pulsujący DC (RCD typ~A ładowarki)}: rezystorowe wymuszenie z~kluczem triakowym/przekaźnikowym (prądy 15/30/150~mA dla RCD 30~mA), pomiar czasu zadziałania jak wyżej. W~etapie~1 test protokołowy RCD wykonuje UT595 (wzorcowany, mierzy też U$_B$); generator własny służy do testów przesiewowych i~automatycznych --- \textbf{punkt do zatwierdzenia Z4}.
+\item Po każdym zadziałaniu zabezpieczenia sekwencja przewiduje krok ,,reset ładowarki'' (operator lub auto-reklozacja DUT) i~powrót do stanu~C.
+\end{itemize}
+
+\textbf{(b) Czujnik różnicowy własny (RCM)} --- bezpieczeństwo i~weryfikacja:
+\begin{itemize}
+\item \textbf{LEM CDSR 0.07-TP}: czujnik fluxgate AC/DC, zakres $\pm$70~mA (rozdzielczość $\sim$0,5~mA przy 6~mA), zasilanie 3,3~V, wyjście SPI + analogowe --- bezpośrednia integracja z~MCU. Okno czujnika obejmuje wiązkę L1+L2+L3+N magistrali; wykrycie prądu różnicowego powyżej progu (np. 20~mA AC / 5~mA DC nieoczekiwanego pochodzenia) $\rightarrow$ rozpad zezwolenia.
+\item Alternatywy rynkowe (do decyzji przy zamówieniach): Western Automation \textbf{RCM14-04} (moduł 6~mA~DC/30~mA~AC wg IEC~62752/62955, apertura 14~mm), Bender \textbf{RCMB104} + przekładnik CTBC17 (status produkcji do sprawdzenia --- wg dostępnych informacji wycofywany). Dobór finalny = etap zamówień (ryzyko R3).
+\item Czujnik pełni też rolę weryfikacji krzyżowej generatora (a): prąd zadawany bocznikiem musi zgadzać się z~odczytem CDSR.
+\end{itemize}
+
+\subsection{B6 --- akwizycja CP/PP}
+\label{sec:b6}
+
+\begin{itemize}
+\item Wejście z~gniazd SIGNAL OUTPUT PM701E (CP + masa): dzielnik rezystancyjny (CP $\approx\pm$12~V $\rightarrow$ 0--3,3~V), bufor operacyjny rail-to-rail, ograniczniki diodowe; pomiar poziomów stanów przez ADC oraz duty cycle 1~kHz przez komparator na wejście przechwytujące MCU (pomiar deklarowanego prądu).
+\item PP (koding obciążalności kabla): odczyt rezystancji na odczepie --- wejście pomocnicze ADC.
+\item Tor służy do: weryfikacji pozycji serw (B2), zapisu parametrów CP do protokołu (poziomy, duty, częstotliwość), wykrywania błędów CP zgłaszanych przez ładowarkę. Mikrooscyloskop pozostaje niezależnym podglądem ręcznym przebiegu CP.
+\end{itemize}
+
+\subsection{B7 --- termowizja i pomiary temperatur}
+\label{sec:b7}
+
+\begin{itemize}
+\item \textbf{MLX90640} (matryca 32$\times$24, I2C, FOV 55$^\circ$, moduł 250--350~zł) nad zatoką gniazda pojazdowego --- obserwuje wtyk Type~2 DUT i~odcinek kabla przy wtyku; detekcja hot-spotów (klasa usterki U-001 z~katalogu usterek).
+\item 1--2$\times$ \textbf{MLX90614} (pirometr punktowy, I2C) celowane w~korpus wtyku z~drugiej strony / dławik kablowy.
+\item Czujniki kontaktowe (DS18B20/NTC): szyny i~stycznik główny w~module A, komora grzałek modułu B (4~szt.), temperatura otoczenia (odniesienie $\Delta T$).
+\item \textbf{Procedura soak}: przy zadanym prądzie rejestracja $\Delta T$ wtyku względem otoczenia i~tempa narastania; progi (np. $\Delta T$ graniczne, d$T$/d$t$ anomalne) do wyznaczenia empirycznie na etapie prototypu --- posiadana kamera UTi120S służy jako wzorzec kalibracyjny progów.
+\end{itemize}
+
+\subsection{B8 --- rdzeń przetwarzający, HMI, rejestracja}
+\label{sec:b8}
+
+\begin{itemize}
+\item \textbf{ESP32-S3-WROOM} (dwurdzeniowy, 45 GPIO, USB OTG, WiFi) na płytce własnej lub module dev; ekspandery I/O MCP23017 (I2C) $\rightarrow$ drivery ULN2803 z~optoizolacją $\rightarrow$ cewki styczników/przekaźników; RTC DS3231; karta microSD (protokoły, logi CSV/JSON).
+\item \textbf{HMI}: wyświetlacz \textbf{DWIN 7$''$ UART} --- zakład ma już narzędzia i~doświadczenie z~ekranami DWIN (wątek ,,chińskie zabawki''), co skraca wdrożenie UI. Dodatkowo kolumna LED czerwony/żółty/zielony + buzzer (stan: napięcie na magistrali / test w~toku / gotowość) i~przycisk START (fizyczny, w~łańcuchu samopodtrzymania).
+\item \textbf{Komunikacja}: WiFi + MQTT $\rightarrow$ integracja z~Home Assistant zakładu (podgląd testów, archiwizacja) --- spójne z~wątkiem integracji Tuya/HA. Generowanie protokołu PDF na PC z~danych CSV/JSON (poza urządzeniem).
+\item \textbf{Firmware --- funkcje}: sekwencer stanów z~bramkami, kalibracja serw, akwizycja (CP, metering, temperatury, CDSR), sterowanie generatorem upływu, logika spójności CP$\leftrightarrow$obciążenie, watchdog sprzętowy (rozdz.~\ref{sec:b9}), tryb izolacji (separacja), tryb serwisowy ręczny.
+\end{itemize}
+
+\subsection{B9 --- obwód bezpieczeństwa (sprzętowy, niezależny od MCU)}
+\label{sec:b9}
+
+Łańcuch szeregowy 24~V zasilający cewkę stycznika głównego:
+\begin{enumerate}
+\item przycisk \textbf{E-STOP} (grzybek, styki NC) na panelu modułu A;
+\item \textbf{termiki KSD301} wszystkich sekcji grzałek (NC, szeregowo, okablowane w~module B, prowadzone w~przewodzie sterowniczym obok toru mocy);
+\item \textbf{krańcówka pokrywy} sekcji mocy modułu A (NC);
+\item \textbf{potwierdzenie wentylatorów} modułu B (przekaźnik prądowy/presostat);
+\item \textbf{przekaźnik bezpieczeństwa} z~mechanicznie wymuszonymi stykami, z~samopodtrzymaniem zawiązywanym fizycznym przyciskiem START --- po każdym rozpadzie łańcucha ponowne załączenie wymaga świadomej akcji operatora;
+\item styk \textbf{zezwolenia MCU} w~szeregu --- firmware może rozłączyć, ale nie może zmostkować żadnego elementu łańcucha;
+\item \textbf{watchdog sprzętowy}: człon podtrzymywany ciągiem impulsów z~MCU (układ ładowania kondensatora); zawieszenie firmware $\rightarrow$ zanik impulsów $\rightarrow$ rozpad zezwolenia.
+\end{enumerate}
+Uzupełniająco: czujnik CDSR jako RCM z~progiem awaryjnym (rozdz.~\ref{sec:b5}b), bezpieczniki topikowe na fazach i~stopniach, rozłącznik główny, blokada elektromagnesowa wtyku Type~2 na czas testu pod napięciem. Pełnowartościowy przekaźnik bezpieczeństwa klasy PNOZ jest droższą alternatywą (600--900~zł) --- do decyzji przy doborze finalnym.
+
+\subsection{B10 --- zaciski i gniazda pomocnicze}
+
+\begin{itemize}
+\item Zaciski serwisowe \textbf{E/S/H} (pomiar uziomu przyrządem UT522, korekta~3);
+\item gniazda bananowe pomiarowe panelu (równoległe do magistrali, przez rozłączalne mostki) --- alternatywny punkt dla UT595, gdy dostęp do gniazd PM701E jest niewygodny;
+\item sekcja bench-test (rozdz.~\ref{sec:benchtest}): wejście CEE 32~A + gniazda wyjściowe CEE 32~A / CEE 16~A / Schuko z~zabezpieczeniami --- \textbf{opcjonalna, punkt Z3};
+\item port USB (serwis/aktualizacja), gniazdo karty SD.
+\end{itemize}
+
+\section{Sekwencja pomiarowa}
+\label{sec:sekwencja}
+
+\begin{enumerate}
+\item \textbf{Self-test}: ciągłość łańcucha bezpieczeństwa, próba wentylatorów, odczyt czujników, najazd kalibracyjny serw (pozycja spoczynkowa BB/NC), test komunikacji z~CDSR/metering/HMI.
+\item \textbf{Tryb izolacji}: przekaźniki separujące odłączają elektronikę własną i~moduł B od magistrali; HMI prowadzi operatora: UT595 na gniazdach bananowych PM701E, żyły czynne zwarte, pomiar względem PE (250~V dla obwodów z~elektroniką); wynik $\ge$1~M\ohm{} wpisany na HMI = bramka otwarta.
+\item \textbf{Ciągłość PE} ($\ge$200~mA, UT595 przez wyjście PE): wynik wpisany = bramka.
+\item \textbf{Stan B} (serwo stanu $\rightarrow$ B, potwierdzenie CP); pre-testy PM701E.
+\item \textbf{Stan C}: serwo $\rightarrow$ C, potwierdzenie CP; ładowarka zamyka stycznik; weryfikacja napięć i~kolejności faz (B4); blokada wtyku.
+\item \textbf{Testy zabezpieczeń}: RCD typ~A protokołowo (UT595: I$_{\Delta n}$/2, I$_{\Delta n}$, 5I$_{\Delta n}$, czasy, U$_B$) oraz \textbf{RDC-DD 6~mA~DC automatycznie} (generator B5a: rampa, prąd i~czas zadziałania). Po każdym zadziałaniu: prowadzony reset i~powrót do stanu~C.
+\item \textbf{Pętla Zs} (UT595 przez gniazda bananowe; warunek Zs$\cdot$Ia $\le$ U$_0$, czasy wg TN/TT): wynik wpisany.
+\item \textbf{Test obciążenia i~soak}: serwo prądu $\rightarrow$ deklaracja (np. 32~A 1F / 16~A 3F); stycznik główny (łańcuch zamknięty, START); stopnie obciążenia schodkowo 25/50/75/100\% deklaracji; soak 15--30~min: rejestracja U/I/P per faza, asymetrii, $\Delta T$ wtyku, temperatur wewnętrznych; kryteria pass/fail (spadki napięcia, stabilność, $\Delta T$).
+\item \textbf{Testy błędów}: CP Error ,,E'', PE Error (przyciski PM701E, w~etapie~1 ręcznie) --- pomiar czasu reakcji ładowarki (odcięcie napięcia).
+\item \textbf{Pomiar uziomu} (niezależny czasowo): UT522 na E/S/H, metoda 3-elektrodowa; wynik do protokołu.
+\item \textbf{Raport}: zapis kompletu (CSV/JSON na SD, MQTT do HA), oznaczenie DUT, data, operator; protokół PDF generowany na PC.
+\end{enumerate}
+
+Sekwencer wymusza kolejność (izolacja przed podaniem stanów B/C, obciążenie tylko w~C przy zgodności deklaracji) i~przerywa przy każdej anomalii (CP niezgodne z~komendą, RCM, termika, zanik potwierdzenia wentylatorów).
+
+\section{Obudowa i panel}
+\label{sec:obudowa}
+
+\textbf{Moduł A}: rozdzielnica przenośna IP54 (orientacyjnie 600$\times$400$\times$250~mm) z~uchylną przezroczystą pokrywą; wewnątrz trzy strefy oddzielone przegrodami: (1)~strefa mocy (magistrala, stycznik, zabezpieczenia --- izolacja robocza CAT~III~300/600~V, dostęp za osłoną z~krańcówką), (2)~strefa pomiarowo-analogowa (CDSR, metering, generator upływu --- bariery izolacyjne do strefy logiki), (3)~strefa logiki (ESP32, zasilacz 24/5/3,3~V, HMI w~pokrywie). Półka/gniazdo PM701E z~ramą serw --- dostępna po otwarciu pokrywy, gniazda bananowe PM701E wyprowadzone do krawędzi (dostęp przyrządów bez demontażu). Panel zewnętrzny: gniazdo pojazdowe Type~2, gniazdo CEE 32~A (interfejs modułu B), E-STOP, START, rozłącznik, kolumna LED, zaciski E/S/H, gniazda bananowe pomiarowe, sekcja bench-test (opcja), przepust zasilania logiki.
+
+\textbf{Moduł B}: kanał blaszany z~grzałkami żebrowanymi w~trzech sekcjach fazowych, wentylatory na wlocie, żaluzje wylotowe, termiki na sekcjach, skrzynka styczników; konstrukcja na kółkach; przewód 5$\times$6~mm$^2$ z~wtykiem CEE do modułu A + przewód sterowniczy (cewki, termiki, potwierdzenie wentylatorów) ze złączem wielostykowym przemysłowym (np. Harting/Weipu).
+
+Masa szacunkowa: moduł A 15--25~kg, moduł B 25--40~kg --- potwierdza słuszność podziału.
+
+\section{Kosztorys orientacyjny (BOM zbiorczy)}
+\label{sec:kosztorys}
+
+Ceny orientacyjne (rynek PL, lipiec 2026, bez robocizny i~bez przyrządów planu pomostowego). Dokładność $\pm$30\%; pozycje krytyczne cenowo oznaczono do potwierdzenia ofertami.
+
+\begin{longtable}{@{}p{0.42\textwidth}p{0.36\textwidth}r@{}}
+\toprule
+\textbf{Pozycja} & \textbf{Przykładowe komponenty} & \textbf{zł} \\
+\midrule
+\endhead
+Gniazdo pojazdowe Type~2 32~A~3F (z~blokadą) & DGN/Duosida/Mida & 250--650 \\
+Wtyk Type~2 + odczep sterujący & wtyk + przewód & 150--250 \\
+Magistrala mocy, szyny, bezpieczniki, rozłącznik & 6~mm$^2$, gG32, rozłącznik 40~A & 300--550 \\
+Stycznik główny + łańcuch bezpieczeństwa & 4P~40~A, E-STOP, krańcówki, przekaźnik z~wymuszonymi stykami & 500--900 \\
+Load bank: grzałki (15~szt.) & żebrowane 1000--2000~W/230~V & 1200--2200 \\
+Load bank: styczniki stopni (12~szt.) & modułowe 25~A, cewki 24~V & 700--1200 \\
+Load bank: kanał, wentylatory, termiki, złącza & 2$\times$500~m$^3$/h, KSD301, CEE, Harting & 700--1200 \\
+Czujnik różnicowy AC/DC & LEM CDSR 0.07-TP / WA RCM14-04 & 200--500 \\
+Generator prądu upływu & MOSFET, AMC1301, MCP4725, elementy & 150--300 \\
+Serwa + rama + sprzęgła & 2$\times$DS3218, druk 3D, Oldham & 150--300 \\
+Termowizja i~temperatury & MLX90640, 2$\times$MLX90614, DS18B20 & 400--600 \\
+Metering 3F & ATM90E36A, 3$\times$CT, dzielniki & 150--300 \\
+Logika & ESP32-S3, MCP23017, ULN2803, opto, DS3231, SD, zasilacz 24~V + przetwornice & 250--450 \\
+HMI i~sygnalizacja & DWIN 7$''$, kolumna LED, buzzer, START & 300--500 \\
+Obudowa modułu A & rozdzielnica IP54 + przegrody & 500--900 \\
+PCB, złącza, drobnica, przewody & 2--3 płytki (JLC), listwy, dławiki & 400--800 \\
+Sekcja bench-test (\textbf{opcja}, Z3) & wejście CEE, B32/B16, RCD 30~mA, gniazda & 400--700 \\
+\midrule
+\textbf{Razem (bez opcji)} & & \textbf{$\sim$6300--11600} \\
+\textbf{Razem (z~opcją bench-test)} & & \textbf{$\sim$6700--12300} \\
+\bottomrule
+\end{longtable}
+
+Dla porządku: plan pomostowy (UT595 + UT210E + UT522, $\sim$2800--3400~zł) jest odrębnym wydatkiem i~pozostaje zasadny niezależnie od budowy urządzenia --- w~koncepcji przyrządy te są docelowo \emph{częścią systemu} (pomiary protokołowe, rozdz.~\ref{sec:analiza}).
+
+\section{Ryzyka i punkty krytycznej weryfikacji}
+\label{sec:ryzyka}
+
+\begin{enumerate}[label=\textbf{R\arabic*.}]
+\item \textbf{Praca PM701E na odczepie} --- topologia usuwa problem prądu przelotowego, ale wymaga potwierdzenia, że PM701E poprawnie wykonuje pre-testy i~symulacje na krótkim odczepie (wpływ PP, długości przewodu). Test na sprzęcie w~etapie~0. Wraz z~tym: pozyskać instrukcję PM701E (funkcje Touch/PE Pre-Test, znamionowy prąd gniazd bananowych --- istotny dla pomiarów Zs dużym prądem).
+\item \textbf{Mechanika serw} --- swoboda obrotu pokręteł PM701E zewnętrznym momentem, trwałość przełącznika, powtarzalność pozycji. Test na sprzęcie w~etapie~0; w~razie problemów fallback: własny front-end stanów CP (sieć rezystorów 2,7~k\ohm/882~\ohm{} + dioda, klucze przekaźnikowe --- standardowy obwód pojazdu wg IEC~61851), z~PM701E pozostającym przyrządem ręcznym.
+\item \textbf{Dostępność czujnika AC/DC} --- CDSR 0.07-TP (cena/dostępność u~dystrybutorów), RCMB104 prawdopodobnie wycofywany, RCM14 jako alternatywa. Zamówić próbkę najwcześniej, jak to możliwe (najdłuższy lead time ryzyka).
+\item \textbf{Cieplne} --- 11~kW ciągłe w~module B: rzeczywista skuteczność przepływu, praca latem, temperatura wylotu. Prototyp jednej sekcji fazowej z~pomiarem $\Delta T$ przed budową całości.
+\item \textbf{Bezpieczeństwo generatora upływu} --- wymuszanie prądu L$\rightarrow$PE podnosi potencjał PE lokalnie w~granicach normy testów RCD (jak w~przyrządach fabrycznych); tor musi mieć ograniczenie prądowe sprzętowe (rezystor mocy w~szeregu) i~rozłączenie przy braku zezwolenia.
+\item \textbf{Wzorcowanie} --- bloki własne nie zastępują przyrządów wzorcowanych w~protokołach urzędowych; strategia z~rozdz.~\ref{sec:analiza} (UT595/UT522 w~pętli) jest świadomym obejściem tego ograniczenia. Ewentualne wzorcowanie bloków własnych (metering, generator) w~laboratorium --- opcja późniejsza.
+\item \textbf{Zgodność formalna} --- urządzenie własnej konstrukcji do użytku wewnętrznego zakładu; wymagania IEC~61010 (bezpieczeństwo przyrządów, kategorie CAT), IEC~61851 (interfejs), dobra praktyka SEP; pomiary wykonują osoby z~uprawnieniami E/D. Do przeglądu przed etapem~2.
+\item \textbf{Spójność CP$\leftrightarrow$pobór} --- błędna kombinacja stopni przy niższej deklaracji CP może wywołać zabezpieczenie DUT; logika blokad + pomiar bieżący (B4) + testy graniczne w~firmware.
+\end{enumerate}
+
+\section{Etapy realizacji}
+\label{sec:etapy}
+
+\begin{description}[style=nextline]
+\item[Etap 0 --- prototyp stołowy (weryfikacyjny).] ESP32 + tor akwizycji CP + serwa na ramie nad PM701E (kalibracja, trwałość, R1/R2) + zamówienie próbki czujnika CDSR/RCM14 (R3) + prototyp jednej sekcji grzałkowej z~pomiarem cieplnym (R4). Wynik: potwierdzenie wykonalności czterech głównych ryzyk przed wydatkami na całość.
+\item[Etap 1 --- urządzenie użyteczne 1F.] Moduł A kompletny (magistrala, bezpieczeństwo, metering, CP, termowizja, generator RDC-DD, HMI, rejestracja) + moduł B z~jednym bankiem fazowym. Pokrywa: pełny test ładowarek 1-fazowych (P/B) do 32~A/7,4~kW + pomiary protokołowe UT595/UT522 w~sekwencji prowadzonej.
+\item[Etap 2 --- rozbudowa 3F.] Dwa kolejne banki fazowe (Q11: 3$\times$16~A/11~kW, margines do 3$\times$32~A), testy asymetrii, automatyzacja przycisków błędów (aktuatory), sekcja bench-test (jeśli zatwierdzona --- Z3).
+\item[Etap 3 --- rozszerzenia (opcjonalne).] Wewnętrzne front-endy pomiarowe (izolacja 250/500~V, ciągłość 200~mA, RCD AC/A, Zs, uziom E/S/H) do testów przesiewowych; ewentualne wzorcowanie; pełna automatyzacja protokołu.
+\end{description}
+
+Po zatwierdzeniu koncepcji kolejność prac projektowych: schematy ideowe (blokowy + sekwencji) $\rightarrow$ dobór finalny komponentów i~zamówienia etapu~0 $\rightarrow$ testy etapu~0 $\rightarrow$ szczegółowy schemat elektryczny (EPLAN --- po zweryfikowaniu wersji ,,EPLAN dla AI'') $\rightarrow$ dokumentacja projektowa \texttt{.tex}/\texttt{.pdf}.
+
+\section{Punkty do zatwierdzenia}
+\label{sec:zatwierdzenie}
+
+\begin{enumerate}[label=\textbf{Z\arabic*.}]
+\item \textbf{Topologia ,,przelot mocy z~odczepem sterującym''} (rozdz.~\ref{sec:korekta1}, \ref{sec:topologia}): własne gniazdo pojazdowe Type~2 + PM701E na odczepie; prąd obciążenia nie płynie przez PM701E. \emph{Rekomendacja: tak --- usuwa ryzyko sprzętowe, zachowuje decyzję Q1 (serwa) bez zmian.}
+\item \textbf{Architektura dwumodułowa} (moduł A sterująco-pomiarowy + moduł B obciążenia na przewodzie CEE 32~A). \emph{Rekomendacja: tak --- masa, ciepło, ergonomia.}
+\item \textbf{Mapowanie gniazd panelu}: CEE 32~A = interfejs modułu B; sekcja bench-test (CEE 32~A/16~A/Schuko jako zasilanie badanych ładowarek przenośnych) jako opcja etapu~2; Schuko-przewód = zasilanie logiki. \emph{Propozycja rozstrzygnięcia otwartego punktu ,,gniazda''; sekcja bench-test do decyzji.}
+\item \textbf{Strategia pomiarów protokołowych}: UT595/UT522 (wzorcowane) w~sekwencji prowadzonej przez urządzenie; bloki własne = RDC-DD, obciążenie, termika, CP, automatyzacja; front-endy własne dla pozostałych pomiarów dopiero w~etapie~3 jako przesiewowe. \emph{Rekomendacja: tak --- wiarygodność protokołów przy realnym nakładzie pracy.}
+\item \textbf{Etapowanie 0$\rightarrow$1$\rightarrow$2$\rightarrow$3} (rozdz.~\ref{sec:etapy}) z~etapem~0 jako bramką wydatkową. \emph{Rekomendacja: tak.}
+\item \textbf{Budżet materiałowy} rzędu 6,3--11,6~tys.~zł (bez opcji bench-test; rozdz.~\ref{sec:kosztorys}). \emph{Do akceptacji kierunkowej przed doborem finalnym.}
+\end{enumerate}
+
+\section{Dokumentacja następcza (po zatwierdzeniu)}
+\label{sec:dokumentacja}
+
+Zgodnie z~wcześniejszymi ustaleniami schematy nie są częścią niniejszej koncepcji. Wymagany zakres dokumentacji po zatwierdzeniu:
+\begin{itemize}
+\item \textbf{Schemat blokowy całości}: DUT $\rightarrow$ gniazdo Type~2 $\rightarrow$ (tor mocy: CDSR/CT/stycznik $\rightarrow$ CEE $\rightarrow$ moduł B) + (odczep $\rightarrow$ PM701E + serwa $\rightarrow$ SIGNAL OUTPUT $\rightarrow$ MCU) + bloki B4--B10 z~interfejsami (SPI/I2C/UART/24~V).
+\item \textbf{Schemat sekwencji pomiarowej} (rozdz.~\ref{sec:sekwencja}) z~bramkami i~ścieżkami błędów.
+\item \textbf{Schemat łańcucha bezpieczeństwa} (rozdz.~\ref{sec:b9}) --- osobny arkusz, priorytetowy.
+\item \textbf{Szczegółowy schemat elektryczny} wszystkich połączeń --- docelowo EPLAN (weryfikacja wersji przed rozpoczęciem).
+\item \textbf{Pełna dokumentacja projektowa} \texttt{.tex}/\texttt{.pdf}: architektura z~uzasadnieniami, BOM finalny, procedury testowe, wymagania bezpieczeństwa, rejestr ryzyk.
+\end{itemize}
+
+\section{Źródła (research komponentów, 2026-07-03)}
+
+\begin{itemize}\small
+\item LEM CDSR --- czujnik prądu różnicowego AC/DC dla EV: \url{https://www.lem.com/en/cdsr}
+\item Western Automation RCM14-04 (IEC~62752/62955): \url{https://www.westernautomation.com/wp-content/uploads/2021/05/WA-DS-016-RCM14-04-Rev-C.pdf}
+\item Bender RCMB104: \url{https://www.bender.de/en/products/residual-current-monitoring/rcmb104/}
+\item IEC~62955 / RDC-DD 6~mA~DC --- omówienie: \url{https://viox.com/ev-charger-rcd-selection-type-b-vs-type-f-vs-type-ev-iec-62955-iec-62423/}
+\item PeakMeter --- seria PM701 (funkcje testera): \url{https://www.peak-meter.com/china-pm701_series_evse_adapter_advanced_charging_station_tester_with_pe_pre_testing_and_ip54_for_all_char-47751292.html}
+\item Elma/PCE EVSE-200 --- limit obciążenia przelotowego adaptera ($\sim$10~A): \url{https://manuals.plus/pce/evse-200-ev-tester-test-adapter-for-electric-vehicle-charging-stations-manual}
+\item Gniazdo pojazdowe Type~2 32~A (rynek PL): \url{https://shop.diagprog.com/product-pol-695-Gniazdo-zenskie-EV-Typu-2-32A-3-faza.html}
+\item Pomiary prądu resztkowego w~ładowaniu EV (DigiKey): \url{https://www.digikey.com/en/articles/how-to-use-residual-current-monitors-to-ensure-electrical-safety-when-charging-electric-vehicles}
+\end{itemize}
+
+\end{document}

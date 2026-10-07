@@ -1,0 +1,114 @@
+13:54:36 D hos_http_server.cpp:754 0x3fcc5774: Switching to WebSockets
+13:54:36 I shelly_debug.cpp:245    Streaming logs to 192.168.0.57:63778
+13:54:37 D shos_wifi_sta.cpp:524   State 8 ev -1 timeout 1
+13:54:37 D shos_wifi_sta.cpp:813   Avg RSSI -57, ok
+13:54:38 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2063 MC 3773 ctr 16/105 ping 0 num_act 0
+13:54:38 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:54:40 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2068 MC 3778 ctr 16/105 ping 0 num_act 0
+13:54:40 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:54:40 D shos_http_base.cpp:443  0x3fcc4f9c: Send WS ping
+13:54:40 D shos_http_base.cpp:555  0x3fcc4f9c: Recd WS pong
+13:54:42 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2076 MC 3784 ctr 16/105 ping 0 num_act 0
+13:54:42 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:54:44 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2080 MC 3795 ctr 16/105 ping 0 num_act 0
+13:54:44 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:54:45 D shelly_tmcu.cpp:598     RX: 0x24 v=3 [] (state Ready)
+13:54:45 D shelly_tmcu.cpp:927     Process 1 commands
+13:54:45 D shelly_tmcu.cpp:890     TX: 0x24 v=3 [c8] (Ready)
+13:54:46 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2086 MC 3803 ctr 16/105 ping 0 num_act 0
+13:54:46 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:54:48 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2090 MC 3808 ctr 16/105 ping 0 num_act 0
+13:54:48 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:54:48 D shelly_tmcu.cpp:927     Process 1 commands
+13:54:48 D shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Ready)
+13:54:48 D shelly_tmcu.cpp:598     RX: 0x00 v=3 [01] (state Ready)
+13:54:48 D shelly_tmcu.cpp:79      Tmcu Event 1 (0x3fca0e40)
+13:54:50 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2098 MC 3815 ctr 16/105 ping 0 num_act 0
+13:54:50 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:54:52 D shos_wifi_sta.cpp:524   State 8 ev -1 timeout 1
+13:54:52 D shos_wifi_sta.cpp:813   Avg RSSI -57, ok
+13:54:52 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2104 MC 3821 ctr 16/105 ping 0 num_act 0
+13:54:52 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:54:53 D shelly_tmcu.cpp:993     wifi report state is SendRealState
+13:54:53 D shelly_tmcu.cpp:520     Sending WiFi status 4
+13:54:53 D shelly_tmcu.cpp:927     Process 1 commands
+13:54:53 D shelly_tmcu.cpp:890     TX: 0x03 v=3 [04] (Ready)
+13:54:53 D shelly_tmcu.cpp:598     RX: 0x03 v=3 [] (state Ready)
+13:54:54 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2112 MC 3826 ctr 16/105 ping 0 num_act 0
+13:54:54 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 96796
+13:54:55 D shos_http_base.cpp:550  0x3fcc5130: Recd WS ping
+13:54:56 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2121 MC 3831 ctr 16/105 ping 0 num_act 0
+13:54:56 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:54:58 D shelly_tmcu.cpp:598     RX: 0x1c v=3 [] (state Ready)
+13:54:58 D shelly_tmcu.cpp:927     Process 1 commands
+13:54:58 D shelly_tmcu.cpp:890     TX: 0x1c v=3 [011a09190d370005] (Ready)
+13:54:58 D shelly_tmcu.cpp:598     RX: 0x24 v=3 [] (state Ready)
+13:54:58 D shelly_tmcu.cpp:927     Process 1 commands
+13:54:58 D shelly_tmcu.cpp:890     TX: 0x24 v=3 [c8] (Ready)
+13:54:58 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2129 MC 3836 ctr 16/105 ping 0 num_act 0
+13:54:58 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:55:00 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2133 MC 3845 ctr 16/105 ping 0 num_act 0
+13:55:00 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:55:02 D shos_vfs.c:622          lseek 256 0 0 => 0x3fca5bc0:0 => 0
+13:55:02 D shos_vfs.c:622          lseek 256 0 0 => 0x3fca5bc0:0 => 0
+13:55:02 D shos_vfs.c:622          lseek 256 3027 0 => 0x3fca5bc0:0 => 3027
+13:55:02 D shos_vfs.c:622          lseek 256 0 0 => 0x3fca5bc0:0 => 0
+13:55:02 D shos_vfs.c:622          lseek 256 0 0 => 0x3fca5bc0:0 => 0
+13:55:02 D shos_vfs.c:622          lseek 256 803 0 => 0x3fca5bc0:0 => 803
+13:55:02 I shelly_script.cpp:204   service:0 0.2% CPU utilization
+13:55:02 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2139 MC 3850 ctr 16/105 ping 0 num_act 0
+13:55:02 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:55:03 D shelly_tmcu.cpp:927     Process 1 commands
+13:55:03 D shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Ready)
+13:55:03 D shelly_tmcu.cpp:598     RX: 0x00 v=3 [01] (state Ready)
+13:55:03 D shelly_tmcu.cpp:79      Tmcu Event 1 (0x3fca0e40)
+13:55:04 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2147 MC 3859 ctr 16/105 ping 0 num_act 0
+13:55:04 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:55:06 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2153 MC 3867 ctr 16/105 ping 0 num_act 0
+13:55:06 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98552
+13:55:07 D shos_wifi_sta.cpp:524   State 8 ev -1 timeout 1
+13:55:07 D shos_wifi_sta.cpp:813   Avg RSSI -57, ok
+13:55:07 D shos_http_base.cpp:443  0x3fcc5774: Send WS ping
+13:55:07 D shos_http_base.cpp:555  0x3fcc5774: Recd WS pong
+13:55:08 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2163 MC 3872 ctr 16/105 ping 0 num_act 0
+13:55:08 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98524
+13:55:10 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2168 MC 3879 ctr 16/105 ping 0 num_act 0
+13:55:10 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98564
+13:55:11 D shos_http_base.cpp:443  0x3fcc4f9c: Send WS ping
+13:55:11 D shos_http_base.cpp:555  0x3fcc4f9c: Recd WS pong
+13:55:12 D shos_http_base.cpp:626  0x3fcc4f9c: Connection error: -14
+13:55:12 D hos_http_server.cpp:523 0x3fcc4f9c: Connection closed prematurely: -1: Connection error: -14
+13:55:12 D shos_http_base.cpp:134  0x3fcc4f9c: Deleted
+13:55:12 I shelly_debug.cpp:143    Stopped streaming logs to 192.168.0.57:53945
+13:55:12 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2179 MC 3883 ctr 16/105 ping 0 num_act 0
+13:55:12 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 100252
+13:55:14 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2181 MC 3890 ctr 16/105 ping 0 num_act 0
+13:55:14 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 100236
+13:55:15 D shos_http_base.cpp:550  0x3fcc5130: Recd WS ping
+13:55:16 D shelly_tmcu.cpp:598     RX: 0x1c v=3 [] (state Ready)
+13:55:16 D shelly_tmcu.cpp:927     Process 1 commands
+13:55:16 D shelly_tmcu.cpp:890     TX: 0x1c v=3 [011a09190d371205] (Ready)
+13:55:16 D shelly_tmcu.cpp:598     RX: 0x24 v=3 [] (state Ready)
+13:55:16 D shelly_tmcu.cpp:927     Process 1 commands
+13:55:16 D shelly_tmcu.cpp:890     TX: 0x24 v=3 [c8] (Ready)
+13:55:16 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2188 MC 3895 ctr 16/105 ping 0 num_act 0
+13:55:16 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 100236
+13:55:18 D shelly_tmcu.cpp:927     Process 1 commands
+13:55:18 D shelly_tmcu.cpp:890     TX: 0x00 v=3 [] (Ready)
+13:55:18 D shelly_tmcu.cpp:598     RX: 0x00 v=3 [01] (state Ready)
+13:55:18 D shelly_tmcu.cpp:79      Tmcu Event 1 (0x3fca0e40)
+13:55:18 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2191 MC 3900 ctr 16/105 ping 0 num_act 0
+13:55:18 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 98688
+13:55:20 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2193 MC 3904 ctr 16/105 ping 0 num_act 0
+13:55:20 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 100236
+13:55:22 D shos_wifi_sta.cpp:524   State 8 ev -1 timeout 1
+13:55:22 D shos_wifi_sta.cpp:813   Avg RSSI -56, ok
+13:55:22 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2196 MC 3910 ctr 16/105 ping 0 num_act 0
+13:55:22 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 100236
+13:55:23 D shelly_tmcu.cpp:993     wifi report state is SendRealState
+13:55:23 D shelly_tmcu.cpp:520     Sending WiFi status 4
+13:55:23 D shelly_tmcu.cpp:927     Process 1 commands
+13:55:23 D shelly_tmcu.cpp:890     TX: 0x03 v=3 [04] (Ready)
+13:55:23 D shelly_tmcu.cpp:598     RX: 0x03 v=3 [] (state Ready)
+13:55:24 D esp32xx_wifi_if.cpp:234 PK check: link 1 gw 1 UC 2201 MC 3918 ctr 16/105 ping 0 num_act 0
+13:55:24 D hos_lwip_eth_if.cpp:513 ws(0x3fcbf698): Status: server 0 oper_up 1 link_up 1/1 hf 100236

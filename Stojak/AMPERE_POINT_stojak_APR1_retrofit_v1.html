@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>AP-R1 — zestaw doposażenia istniejących słupków (szkic v1)</title>
+<style>
+:root{--navy:#102a54;--red:#c81e28;--soft:#f4f6f9;--line:#d8dee6;--warn:#b26a00;--ok:#1a7f4b}
+body{font-family:"Segoe UI",system-ui,Arial,sans-serif;margin:0;color:#1b2430;font-size:14px;line-height:1.5}
+.wrap{max-width:980px;margin:0 auto;padding:26px 32px 60px}
+h1{color:var(--navy);font-size:22px;margin:0 0 4px}
+h1 .b{color:var(--red)}
+.sub{color:#555;font-size:13px;margin-bottom:14px}
+h2{color:var(--navy);font-size:16px;border-bottom:2px solid var(--line);padding-bottom:4px;margin:22px 0 8px}
+table{border-collapse:collapse;width:100%;font-size:12.8px;margin:8px 0}
+th{background:var(--navy);color:#fff;padding:5px 8px;text-align:left}
+td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+tr:nth-child(even) td{background:var(--soft)}
+.box{background:var(--soft);border-left:4px solid var(--navy);padding:10px 14px;margin:12px 0;border-radius:0 5px 5px 0;font-size:13px}
+.box.warn{border-left-color:var(--warn)}
+.fig{margin:16px 0;text-align:center;background:#fbfcfe;border:1px solid var(--line);border-radius:8px;padding:14px 8px 8px}
+.fig .cap{font-size:12.5px;color:#333;margin-top:8px;text-align:left;padding:0 12px}
+svg text{font-family:"Segoe UI",Arial,sans-serif}
+.price{white-space:nowrap;font-variant-numeric:tabular-nums}
+.foot{color:#888;font-size:11px;margin-top:16px;border-top:1px solid var(--line);padding-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1><span class="b">AMPERE POINT</span> AP-R1 — zestaw doposażenia istniejących słupków (szkic v1)</h1>
+<div class="sub">Retrofit dla słupków już sprzedanych/ustawionych (profil zamknięty 60–100 mm, jak na zdjęciach z showroomu) • zero wierceń w profilu — wszystko na obejmach • spójny wizualnie z rodziną AP-T</div>
+
+<div class="box"><b>Po co AP-R1:</b> baza istniejących słupków (showroom + klienci) ma trzy bolączki ze zdjęć: kable owinięte wokół profilu, gniazdo przenośne przykręcone na szczycie i zero osłony od deszczu/słońca. AP-R1 rozwiązuje je za ~10% ceny nowego słupka i jest naturalnym „upgrade'em" przed decyzją o pełnym AP-T. Sprzedażowo: pozycja „zrób porządek na słupku" w sklepie + oferta serwisowa przy wizytach.</div>
+
+<h2>Skład zestawu</h2>
+<table>
+<tr><th>Element</th><th>Wykonanie</th><th>Funkcja</th></tr>
+<tr><td><b>2× obejma nośna</b></td><td>płaskownik alu/stal ocynk 40×5, śruby M8 A2, wkładka EPDM; zakres profili 60–100 mm (2 rozmiary: S 60–80, M 80–100)</td><td>niosą cały zestaw bez jednego otworu w profilu; wkładka chroni lakier</td></tr>
+<tr><td><b>Daszek 350×300</b></td><td>blacha alu 2 mm, RAL 9006, spadek 10°</td><td>osłona ładowarki/gniazda i wpiętego wtyku — funkcja mocy jak w AP-T</td></tr>
+<tr><td><b>Płyta osprzętowa 200×300</b></td><td>blacha alu 3 mm RAL 9005, raster otworów M6 co 25 mm (standard paneli AP-T!)</td><td>nośnik gniazda CEE skośnego (PCE 415-6/425-6), Schuko lub holstera — osprzęt przykręcany jak w AP-T, wymienny</td></tr>
+<tr><td><b>Maskownica kablowa</b></td><td>ceownik 60×40×1,5, dł. 1200 mm, RAL 9005, klipsy na obejmach</td><td>kabel z ziemi biegnie za maskownicą — koniec pętli wokół słupka i UV na izolacji</td></tr>
+<tr><td><b>Hak kablowy AP</b></td><td>jak w AP-T: ramię 150 mm, promień 80, nośność 15 kg — mocowany do obejmy</td><td>zwój 5–7,5 m kabla T2 nad ziemią</td></tr>
+<tr><td>Drobnica</td><td>śruby A2, zaślepki, linka wyrównawcza z zaciskiem obejmowym</td><td>ciągłość PE od osprzętu do przewodu ochronnego</td></tr>
+</table>
+
+<div class="fig">
+<svg viewBox="0 0 900 640" width="100%" style="max-width:860px">
+<defs>
+<pattern id="gr" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0,12 L12,0" stroke="#9aa4ae" stroke-width="1.2"/></pattern>
+<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker>
+</defs>
+<text x="30" y="26" font-size="14" fill="#102a54" font-weight="bold">AP-R1 na istniejącym słupku — widok z przodu (wymiary w mm; skala 0,38 px/mm)</text>
+<!-- grunt y=600; skala 0.38 ; słupek istn. 80mm=30px, wys 1200=456 -> top y=144 ; oś x=380 -->
+<rect x="40" y="600" width="820" height="22" fill="url(#gr)"/>
+<line x1="40" y1="600" x2="860" y2="600" stroke="#333" stroke-width="2"/>
+<!-- płyta podstawy istniejąca -->
+<rect x="330" y="593" width="100" height="7" fill="#2b2f36"/>
+<!-- profil istniejący -->
+<rect x="365" y="144" width="30" height="456" fill="#23272e" stroke="#111"/>
+<text x="380" y="480" font-size="9.5" fill="#9aa2ab" text-anchor="middle" transform="rotate(-90 380 480)">istniejący profil 60–100</text>
+<!-- obejma dolna 700mm -> y=334 ; obejma górna 1150 -> y=163 -->
+<g fill="#31435e" stroke="#1b2a40">
+<rect x="356" y="327" width="48" height="14" rx="3"/>
+<rect x="356" y="156" width="48" height="14" rx="3"/>
+</g>
+<circle cx="360" cy="334" r="2.5" fill="#7d8794"/><circle cx="400" cy="334" r="2.5" fill="#7d8794"/>
+<circle cx="360" cy="163" r="2.5" fill="#7d8794"/><circle cx="400" cy="163" r="2.5" fill="#7d8794"/>
+<!-- daszek na górnej obejmie: 350mm=133px, wysunięcie w przód/prawo -->
+<polygon points="330,128 470,116 470,128 330,140" fill="#8f979f" stroke="#5c646d"/>
+<rect x="352" y="140" width="14" height="16" fill="#4a515b"/>
+<text x="480" y="122" font-size="10.5" fill="#555">daszek 350×300, spadek 10°</text>
+<!-- maskownica kablowa po lewej: od 600 do 1135 (y 600->168) szer 60mm=23px -->
+<rect x="336" y="168" width="23" height="432" fill="#171a1f" stroke="#000"/>
+<text x="347" y="420" font-size="9" fill="#7d8794" text-anchor="middle" transform="rotate(-90 347 420)">maskownica 60×40</text>
+<!-- kabel z ziemi za maskownicą (dash) -->
+<path d="M347 615 V 604" stroke="#c81e28" stroke-width="3" stroke-dasharray="5 4"/>
+<text x="300" y="628" font-size="9.5" fill="#c81e28" text-anchor="end">kabel z ziemi (za maskownicą)</text>
+<!-- płyta osprzętowa po prawej między obejmami: 200 szer=76px, wys 300=114px, środek na ~950 (y=239) -->
+<rect x="404" y="182" width="12" height="152" fill="#3a3f47"/>
+<rect x="416" y="182" width="76" height="152" rx="4" fill="#23272e" stroke="#0c0e11"/>
+<g fill="#565e68">
+<circle cx="428" cy="196" r="1.6"/><circle cx="480" cy="196" r="1.6"/>
+<circle cx="428" cy="215" r="1.6"/><circle cx="480" cy="215" r="1.6"/>
+<circle cx="428" cy="234" r="1.6"/><circle cx="480" cy="234" r="1.6"/>
+<circle cx="428" cy="253" r="1.6"/><circle cx="480" cy="253" r="1.6"/>
+<circle cx="428" cy="272" r="1.6"/><circle cx="480" cy="272" r="1.6"/>
+<circle cx="428" cy="291" r="1.6"/><circle cx="480" cy="291" r="1.6"/>
+<circle cx="428" cy="310" r="1.6"/><circle cx="480" cy="310" r="1.6"/>
+</g>
+<!-- CEE skośne na płycie, oś ~950mm => y=239 -->
+<g transform="rotate(14 454 239)"><rect x="436" y="222" width="36" height="30" rx="5" fill="#3a3f47" stroke="#14171c"/></g>
+<circle cx="454" cy="238" r="13" fill="#c81e28" stroke="#7d1218" stroke-width="1.8"/>
+<circle cx="454" cy="238" r="7.5" fill="#e8e8e8"/>
+<!-- holster na płycie niżej -->
+<ellipse cx="454" cy="300" rx="9" ry="11" fill="#0f1216" transform="rotate(-12 454 300)"/>
+<text x="500" y="242" font-size="10.5" fill="#333">CEE 16/32 A skośne (raster M6 co 25)</text>
+<line x1="497" y1="238" x2="470" y2="238" stroke="#999" stroke-width="1"/>
+<text x="500" y="304" font-size="10.5" fill="#333">holster T2 / Schuko (opcje)</text>
+<line x1="497" y1="300" x2="466" y2="300" stroke="#999" stroke-width="1"/>
+<!-- hak na dolnej obejmie w prawo -->
+<path d="M404 334 h34 q9 0 9 9 v5" stroke="#2b2f36" stroke-width="8" fill="none" stroke-linecap="round"/>
+<circle cx="447" cy="404" r="48" fill="none" stroke="#111" stroke-width="8"/>
+<circle cx="447" cy="404" r="48" fill="none" stroke="#2b3036" stroke-width="5"/>
+<text x="447" y="472" font-size="9.5" fill="#555" text-anchor="middle">zwój T2 na haku AP</text>
+<!-- wymiary -->
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="300" y1="600" x2="300" y2="334" marker-start="url(#arr)" marker-end="url(#arr)"/>
+<line x1="356" y1="334" x2="292" y2="334" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="292" y="470" font-size="10.5" fill="#111" text-anchor="end">700 — obejma dolna</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="252" y1="600" x2="252" y2="163" marker-start="url(#arr)" marker-end="url(#arr)"/>
+<line x1="356" y1="163" x2="244" y2="163" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="244" y="380" font-size="10.5" fill="#111" text-anchor="end">1150 — obejma górna</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="560" y1="600" x2="560" y2="168" marker-start="url(#arr)" marker-end="url(#arr)"/>
+<line x1="359" y1="168" x2="568" y2="168" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="568" y="390" font-size="10.5" fill="#111">1200 — maskownica kablowa</text>
+<g stroke="#333" stroke-width="1" fill="none">
+<line x1="620" y1="600" x2="620" y2="239" marker-start="url(#arr)" marker-end="url(#arr)"/>
+<line x1="468" y1="239" x2="628" y2="239" stroke-dasharray="3 3" stroke="#999"/>
+</g>
+<text x="628" y="430" font-size="10.5" fill="#111">~950 — oś gniazda (jak AP-T)</text>
+</svg>
+<div class="cap"><b>Rys.</b> Dwie obejmy niosą wszystko: górna — daszek i szczyt maskownicy, obie — płytę osprzętową (standardowy raster AP-T: te same gniazda, holstery i haki co w dużym słupku), dolna — hak kablowy. Kabel zasilający biegnie z ziemi za maskownicą. Zero wierceń, montaż kluczem imbusowym i nasadką 13, ~30 minut.</div>
+</div>
+
+<h2>Czego AP-R1 świadomie NIE robi (uczciwa granica produktu)</h2>
+<table>
+<tr><td>Brak komory aparatowej — zabezpieczenia (RCD/MCB) pozostają w rozdzielnicy budynku; przy gniazdach dodatkowych wymagany osobny obwód z RCD po stronie zasilania</td></tr>
+<tr><td>Brak wewnętrznej trasy kabla — prowadzenie za maskownicą (osłona UV/mechaniczna), nie w profilu</td></tr>
+<tr><td>Brak strefy zapasu — zapas kabla w puszce/studzience przy fundamencie istniejącego słupka</td></tr>
+<tr><td><b>Wniosek sprzedażowy:</b> klient, który pyta o zabezpieczenia przy stanowisku albo o drugi punkt — to lead na AP-T, nie na AP-R1</td></tr>
+</table>
+
+<h2>BOM i cena (szacunek do wyceny z blacharnią — te same zapytania co AP-T)</h2>
+<table>
+<tr><th>Pozycja</th><th>Koszt @50 kpl. (netto)</th></tr>
+<tr><td>2× obejma z wkładkami + śruby A2</td><td class="price">40–60 zł</td></tr>
+<tr><td>Daszek 350×300 (2 mm, gięty, proszek 9006)</td><td class="price">30–50 zł</td></tr>
+<tr><td>Płyta osprzętowa 200×300 z rastrem (3 mm, proszek 9005)</td><td class="price">20–35 zł</td></tr>
+<tr><td>Maskownica 1200 mm + klipsy</td><td class="price">25–40 zł</td></tr>
+<tr><td>Hak AP + drobnica + linka PE</td><td class="price">30–45 zł</td></tr>
+<tr><td>Pakowanie/instrukcja</td><td class="price">10–15 zł</td></tr>
+<tr><td><b>Razem koszt wytworzenia</b></td><td class="price"><b>155–245 zł</b></td></tr>
+<tr><td>Osprzęt wg wyboru klienta (CEE 415-6/425-6 ~32 zł, Schuko, holster)</td><td class="price">30–170 zł</td></tr>
+<tr><td><b>Cena detaliczna zestawu (bez osprzętu)</b></td><td class="price"><b>349–449 zł netto</b> (marża 45–55%)</td></tr>
+</table>
+
+<div class="box warn"><b>Przed uruchomieniem:</b> ① zmierzyć rzeczywiste przekroje profili obecnych słupków (min./max — decyduje o rozmiarach S/M obejm); ② 1 komplet prototypowy przetestować na słupku w showroomie (zdjęcia przed/po = gotowy materiał marketingowy „zrobiliśmy porządek"); ③ dodać AP-R1 do zapytania nr 1 (blacharnia) jako pozycję dodatkową — wspólna wycena obniży koszt.</div>
+
+<div class="foot">AP-R1 szkic v1 • 25.07.2026 • rozwinięcie pomysłu z AP-S1 v2 w standardach AP-T (raster M6/25, hak 150/R80, gniazda skośne, wysokość osi gniazda ~950) • dokumenty powiązane: koncepcja AP-T v1 (panele/osprzęt), zapytania ofertowe v1 (blacharnia).</div>
+</div>
+</body>
+</html>

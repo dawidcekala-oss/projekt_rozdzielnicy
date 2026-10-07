@@ -1,0 +1,194 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\newcommand{\DOCFOOT}{AMPERE POINT · Opis przypadku: wallbox + DLB-A1 · 26 września 2026}
+\input{ap_report_preamble.tex}
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\renewcommand{\Hyp}{\textcolor{apwarn}{\textbf{[hipoteza]}}}
+\renewcommand{\figurename}{Rys.}
+\hypersetup{pdftitle={Opis przypadku: wallbox z kontrolerem DLB-A1},pdfauthor={AMPERE POINT Serwis}}
+\begin{document}
+
+\apheader{Opis przypadku: wallbox z kontrolerem DLB-A1}%
+{Prąd ładowania przekracza nastawę wallboxa, zadziałanie ochrony przed przeciążeniem, brak wznowienia ładowania po pauzie DLB}%
+{AMPERE POINT — Serwis · zgłoszenie do producenta\\26 września 2026\\Sprawa: wallbox \texttt{bfe26d78713489f8a6ulsj} + DLB-A1}
+
+\section{Streszczenie}
+
+{\sloppy Wallbox AmperePoint 11~kW, trójfazowy (ID urządzenia Tuya \texttt{bfe26d78713489f8a6ulsj}, firmware \texttt{(V8.0.7)F1.3.6}) pracował u klienta poprawnie. Po dołożeniu do instalacji kontrolera dynamicznego zarządzania mocą DLB-A1 pojawiły się dwa problemy. 26 września 2026 instalatorzy stwierdzili oba problemy na miejscu i udokumentowali je nagraniem wideo. Te same zdarzenia widać w logu urządzenia na platformie Tuya. Wszystkie fakty w tym raporcie pochodzą z tej dokumentacji wideo i z odpowiadających jej wpisów w logu urządzenia.\par}
+
+\begin{apredb}[Problem 1 — absolutny priorytet: w trybie DLB wallbox nie respektuje własnej nastawy prądu]
+Przy nastawie wallboxa \textbf{16~A} i kontrolerze DLB ustawionym na \textbf{18~A} wallbox ładował prądem \textbf{16,9~A} (7,3~kW). Po obniżeniu nastawy wallboxa do \textbf{9~A} w trakcie ładowania wallbox przez kilka sekund ładował dalej prądem \textbf{16,6~A / 7,1~kW}, po czym wyświetlił \emph{„Ochrona przed przeciążeniem prądu — Automatyczne przełączenie na ładowanie niskim prądem”}; zamiast przełączyć się na niski prąd, przestał ładować w ogóle. \textbf{Problem 1 wywołał awarię ładowarki pokładowej w samochodzie trójfazowym: samochód przestał reagować i do przywrócenia go do pracy potrzebny był mechanik.}
+\end{apredb}
+
+\begin{apwarnb}[Problem 2: po pauzie DLB wallbox nie wznawia ładowania]
+Gdy dodatkowe obciążenie domu sprawia, że DLB obniża prąd wallboxa poniżej 6~A, wallbox przestaje ładować — poprawnie. Po odłączeniu obciążenia ładowanie \textbf{nie} wznawia się, nawet po 5 minutach. Wznawia się dopiero po odłączeniu i ponownym podłączeniu samochodu.
+\end{apwarnb}
+
+Przed dołożeniem DLB wallbox pracował poprawnie na tej samej instalacji i tym samym gnieździe, więc instalacja jest wykluczona. Testy wykonano na dwóch samochodach — jednym z dwufazową i jednym z trójfazową ładowarką pokładową — więc samochód jest wykluczony. Użyto dwóch niezależnych zestawów kontrolerów DLB z akcesoriami i problemy wystąpiły na obu. To jest zatem problem zestawu wallbox / DLB. Prosimy o analizę i poprawione oprogramowanie. Poniżej dowody, fragmenty logu i konkretne pytania.
+
+\section{Sprzęt}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{12.9cm}}
+\toprule
+\rowcolor{aphead}\textbf{Element} & \textbf{Szczegóły} \\
+\midrule\endhead
+\bottomrule\endfoot
+Wallbox & Wallbox AmperePoint, 11~kW, trójfazowy, maksymalnie 16~A. ID urządzenia Tuya \texttt{bfe26d78713489f8a6ulsj}, ID produktu \texttt{gbmxngploofmhbjc}, firmware \texttt{(V8.0.7)F1.3.6}, informacja o urządzeniu \emph{„Type~B, AC~30mA + DC~6mA”}, wariant produktu 3 (dane raportowane przez urządzenie w logu Tuya). \\
+Kontroler DLB & DLB-A1. Użyto \textbf{dwóch niezależnych zestawów} (kontroler z akcesoriami) — problemy wystąpiły na obu. \\
+Samochody & \textbf{Samochód A}: dwufazowa ładowarka pokładowa (ładuje tylko na L1 i L2) — Problem 1. \textbf{Samochód B}: trójfazowa ładowarka pokładowa — Problem 2; jego ładowarka pokładowa uległa awarii wskutek Problemu 1. Gniazda ładowania obu samochodów: Rys.~\ref{fig:cars}. \\
+\end{longtable}
+
+\begin{apbox}[Co wykluczono]
+\begin{itemize}
+\item \textbf{Instalacja:} przed dołożeniem DLB wallbox ładował poprawnie na tej samej instalacji i tym samym gnieździe.
+\item \textbf{Wadliwy wallbox:} ten sam wallbox bez DLB działa poprawnie.
+\item \textbf{Samochód:} przetestowano na dwóch różnych samochodach (dwufazowa i trójfazowa ładowarka pokładowa).
+\item \textbf{Wadliwy egzemplarz DLB albo przekładnik prądowy:} użyto dwóch pełnych, niezależnych zestawów DLB-A1 (kontroler ze wszystkimi akcesoriami, w tym przekładnikami) — problemy wystąpiły na obu.
+\end{itemize}
+\end{apbox}
+
+\section{Problem 1 — prąd powyżej nastawy wallboxa, zadziałanie ochrony przed przeciążeniem, zatrzymanie ładowania}
+
+\subsection{Udokumentowane na nagraniu (26 września 2026, 12:27–12:32 czasu lokalnego)}
+
+Samochód A (dwufazowy). Ustawienia: kontroler DLB \textbf{18~A} (wyświetlacz DLB \emph{018}, Rys.~\ref{fig:p1}), nastawa wallboxa \textbf{16~A}.
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \kroknum{1} Trwa ładowanie. Wyświetlacz wallboxa: \textbf{DLB 16,9~A}, 7,3~kW, 225~V, nastawa 16~A. Pomimo nastawy 16~A na wallboxie DLB ogranicza prąd do 16,9~A — nawet z uwzględnieniem pewnej tolerancji jest to powyżej nastawy.
+\item \kroknum{2} Nastawa prądu ładowania zostaje obniżona na wallboxie z 16~A do \textbf{9~A} w trakcie ładowania. Wyświetlacz: DLB 16,9~A, 7,3~kW, nastawa 9~A.
+\item \kroknum{3} Wallbox nie zmniejsza mocy ładowania: przez kilka sekund ładuje dalej prądem \textbf{16,6~A / 7,1~kW} przy nastawie 9~A.
+\item \kroknum{4} Po kilku sekundach pojawia się komunikat ochrony przed przeciążeniem: \emph{„Ochrona przed przeciążeniem prądu — Automatyczne przełączenie na ładowanie niskim prądem”}. Wyświetlacz: DLB 0,0~A, 226~V, nastawa już \textbf{8~A}. Wallbox nie przełączył się na ładowanie niskim prądem — przestał ładować w ogóle.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\shot{0.19\textwidth}{p1_step1.png}{\kroknum{1} 16,9~A, 7,3~kW, nastawa 16~A}\hfill
+\shot{0.19\textwidth}{p1_step2.png}{\kroknum{2} nastawa obniżona do 9~A — nadal 16,9~A}\hfill
+\shot{0.19\textwidth}{p1_step3.png}{\kroknum{3} kilka sekund później: 16,6~A, 7,1~kW przy 9~A}\hfill
+\shot{0.19\textwidth}{p1_step4.png}{\kroknum{4} ochrona przed przeciążeniem, nastawa 8~A, ładowanie zatrzymane}\hfill
+\shot{0.19\textwidth}{p1_dlb018_rot.png}{Wyświetlacz DLB: SEt = 018 (18~A); klatka obrócona o 180° dla czytelności}
+\caption{Problem 1 — klatki z nagrania instalatorów.}
+\label{fig:p1}
+\end{figure}
+
+\subsection{Te same minuty w logu urządzenia (platforma Tuya)}
+
+Czasy lokalne (UTC+2). Nazwy punktów danych cytowane tak, jak występują w logu Tuya.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{14.1cm}}
+\toprule
+\rowcolor{aphead}\textbf{Czas} & \textbf{Zdarzenie} \\
+\midrule\endhead
+\bottomrule\endfoot
+12:27:14 & Wallbox online po włączeniu zasilania; \dpn{设置充电电流} (nastawa prądu) = 16; 12:27:20 \dpn{工作状态} (stan pracy) = 300 (ładowanie) \\
+12:29:11 – 12:31:10 & \dpn{指标信息} (pomiary): \textbf{L1 17,0~A, L2 15,3~A, L3 0~A, 7,3~kW} — stabilnie \\
+12:31:57 – 12:31:59 & \dpn{设置充电电流} zgłaszane przez urządzenie (nie przez aplikację): 6 → 7 → 8 → \textbf{9}; stan pracy nadal 300 (ładowanie) \\
+12:32:09 & \dpn{报警信息} (alarm) \texttt{\{"t":"2026-09-26 12:32:05","v":400\}}; \dpn{工作状态} = \textbf{400}; \dpn{调试用工作状态} = \dpn{发生故障} (błąd); \dpn{设置充电电流} = \textbf{8}; pomiary 0~A \\
+12:32:30 & \dpn{充电记录} (rekord sesji): 12:27–12:32, 287~s \\
+\end{longtable}
+
+Log zgadza się z nagraniem: 7,3~kW przy nastawie 16~A, nastawa obniżona do 9~A na urządzeniu w trakcie ładowania, brak obniżenia prądu, potem alarm 400 ok. 10~s po ostatniej zmianie nastawy, nastawa obniżona do 8~A i ładowanie zatrzymane. Pomiar prądu przez wallbox w logu (17,0~A na L1) zgadza się z wartością w polu DLB na wyświetlaczu (16,9~A).
+
+\begin{apredb}[Skutek]
+Problem 1 wywołał awarię ładowarki pokładowej w samochodzie trójfazowym. Samochód przestał reagować i do przywrócenia go do życia potrzebny był mechanik. Naprawa Problemu 1 jest zatem absolutnym priorytetem.
+\end{apredb}
+
+\section{Problem 2 — brak automatycznego wznowienia po pauzie DLB}
+
+\subsection{Udokumentowane na nagraniu (26 września 2026, 12:36–12:44 czasu lokalnego)}
+
+Samochód B (trójfazowy). Ustawienia: kontroler DLB \textbf{celowo ustawiony na mniejszy prąd}, aby wywołać przypadek wystąpienia błędu, co daje mniejszy maksymalny prąd wallboxa; nastawa wallboxa 16~A.
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \kroknum{1} Ładowanie przy \textbf{DLB 10,8~A}, 7,4~kW, 226~V, nastawa 16~A.
+\item \kroknum{2} Podłączony zostaje czajnik, aby zasymulować dodatkowe obciążenie instalacji. DLB działa tak, jak powinien, i obniża prąd wallboxa; prąd spada poniżej 6~A i wallbox \textbf{poprawnie przestaje ładować}. Wyświetlacz: DLB 0,0~A, 0,0~kW, 228~V, nastawa 16~A, samochód nadal podłączony.
+\item \kroknum{3} Czajnik zostaje odłączony. \textbf{Wallbox nie zaczyna ładować ponownie.} Instalatorzy odczekali 5 minut — nadal brak ładowania.
+\item \kroknum{4} Ładowanie wznawia się dopiero po \textbf{odłączeniu i ponownym podłączeniu samochodu}.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\shot{0.26\textwidth}{p2_step1.png}{\kroknum{1} ładowanie przy DLB 10,8~A, 7,4~kW, nastawa 16~A}\hspace{1.5cm}
+\shot{0.26\textwidth}{p2_step2.png}{\kroknum{2} zatrzymanie po podłączeniu czajnika: DLB 0,0~A, 0,0~kW, samochód podłączony — i tak zostaje}
+\caption{Problem 2 — klatki z nagrania instalatorów.}
+\label{fig:p2}
+\end{figure}
+
+\subsection{Te same minuty w logu urządzenia (platforma Tuya)}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{14.1cm}}
+\toprule
+\rowcolor{aphead}\textbf{Czas} & \textbf{Zdarzenie} \\
+\midrule\endhead
+\bottomrule\endfoot
+12:35:51 & Wallbox online po restarcie zasilania; trwa ładowanie (pomiary prądu od 12:35:54) \\
+12:36:13 – 12:37:34 & \dpn{指标信息}: \textbf{10,5–10,8 / 10,7–11,0 / 11,1–11,6~A, 7,4~kW}, 225–226~V — stabilnie \\
+12:37:53 & \dpn{工作状态} = \textbf{200} (samochód podłączony, nie ładuje) — pauza \\
+12:37:53 – 12:44:21 & Brak zgłoszenia stanu ładowania i prądu; wallbox pozostaje w stanie 200 \\
+12:44:21 & Wallbox przechodzi w tryb offline (\emph{keepalive\_timeout}) \\
+\end{longtable}
+
+Instrukcja DLB-A1 Quick User Manual (sekcja 6.2, \emph{Paused}) mówi: \emph{„Recovery is automatic when headroom returns.”} (wznowienie następuje automatycznie po powrocie zapasu mocy). To nie następuje.
+
+\section{Zachowanie zaobserwowane a udokumentowane}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.0cm}>{\raggedright\arraybackslash}p{5.1cm}>{\raggedright\arraybackslash}p{5.8cm}}
+\toprule
+\rowcolor{aphead}\textbf{Funkcja} & \textbf{Udokumentowane (DLB-A1 Quick User Manual, Rev.~20251109) albo wyświetlane} & \textbf{Zaobserwowane} \\
+\midrule\endhead
+\bottomrule\endfoot
+Górna granica prądu ładowania & „each wall box is capped by its own requested current” (każdy wallbox jest ograniczony do własnego żądanego prądu) & Prąd przekracza nastawę wallboxa: 16,9~A przy nastawie 16~A; 16,6~A przy nastawie 9~A \\
+Limit użyteczny & „90\,\% of the Configured Supply Limit (10\,\% buffer)” (90\,\% skonfigurowanego limitu, 10\,\% bufora) & Przy DLB ustawionym na 18~A wallbox ładował prądem 16,9~A, powyżej 90\,\% $\times$ 18~A = 16,2~A \\
+Redukcja przy spadku zapasu, pauza poniżej 6~A & redukuje, utrzymuje $\geq$6~A gdzie to możliwe, inaczej pauza & Działa (Problem 2, krok 2) \\
+Wznowienie po pauzie & „Recovery is automatic when headroom returns” (wznowienie automatyczne po powrocie zapasu) & Brak wznowienia, nawet po 5~min; konieczne ponowne podłączenie samochodu \\
+Komunikat ochrony przed przeciążeniem & Komunikat wallboxa: „Automatyczne przełączenie na ładowanie niskim prądem” & Ładowanie staje całkowicie; nastawa obniżona z 9~A na 8~A \\
+\end{longtable}
+
+\section{Nasze odczytanie dowodów}
+
+Poniżej nasze odczytanie dowodów; prosimy o jego potwierdzenie albo skorygowanie.
+
+\begin{enumerate}
+\item W trybie DLB pozwolenie prądowe sygnalizowane samochodowi na Control Pilot wynika, jak się wydaje, wyłącznie z przydziału DLB i \textbf{nie jest ograniczane własną nastawą wallboxa}: 16,9~A przy nastawie 16~A, 16,6~A przy nastawie 9~A. Przy DLB ustawionym na 18~A pozwolenie było też powyżej 90\,\% tej nastawy, co wskazuje, że 10-procentowy bufor bezpieczeństwa nie jest stosowany.
+\item Gdy nastawa jest obniżana w trakcie ładowania, nowa wartość jest, jak się wydaje, od razu stosowana w ochronie przed przeciążeniem, a pozwolenie na CP zostaje na wartości z DLB. Samochód nigdy nie dostaje polecenia obniżenia prądu, a ok. 10~s później ochrona zadziała, obniża nastawę o 1~A i zatrzymuje ładowanie.
+\item Problem 2 jest osobny: po pauzie spowodowanej przydziałem poniżej 6~A wallbox (albo DLB) nie wznawia ładowania po odłączeniu dodatkowego obciążenia.
+\end{enumerate}
+
+Oczekiwane zachowanie: pozwolenie na CP = min(nastawa wallboxa, przydział DLB); zmiana nastawy w trakcie ładowania najpierw obniża wypełnienie PWM i daje samochodowi standardowy czas na dostosowanie się, zanim jakakolwiek ochrona zostanie oceniona; automatyczne wznowienie po pauzie.
+
+\section{Prośby i pytania}
+
+\begin{enumerate}
+\item \textbf{Przede wszystkim: prosimy o naprawienie obu problemów, tak aby nie występowały w kolejnych egzemplarzach.} Prosimy o poprawione oprogramowanie wallboxa (obecnie \texttt{(V8.0.7)F1.3.6}) i/lub DLB-A1 oraz o informację, których wersji oprogramowania i partii produkcyjnych to dotyczy, abyśmy mogli poinformować pozostałych klientów.
+\item Czy w trybie DLB pozwolenie na CP jest liczone jako \textbf{min(nastawa wallboxa, przydział DLB)}? Nasze obserwacje wskazują, że nie.
+\item Jaki wzór przydziału faktycznie realizuje DLB-A1? Instrukcja podaje 90\,\% $\times$ skonfigurowany limit zasilania minus najwyższy prąd fazowy zmierzony przez CT; przy DLB ustawionym na 18~A zaobserwowaliśmy 16,9~A.
+\item Jaki jest warunek zadziałania ochrony przed przeciążeniem (alarm 400) i co dokładnie robi „automatyczne przełączenie na ładowanie niskim prądem”? Zaobserwowaliśmy: ładowanie staje całkowicie, a nastawa jest obniżana o 1~A.
+\item Czy przy zmianie nastawy w trakcie ładowania wallbox najpierw obniża pozwolenie na CP i czeka, aż samochód się dostosuje, zanim oceni ochronę?
+\item Dlaczego wallbox nie wznawia ładowania po pauzie DLB, gdy dodatkowe obciążenie zostaje odłączone? Czy ponowne podłączenie samochodu jest wymagane z założenia?
+\item Na potrzeby diagnostyki: czy przydział DLB (prąd docelowy wysyłany do wallboxa) mógłby być raportowany jako punkt danych w logu Tuya? Obecnie log nie zawiera żadnego punktu danych związanego z DLB.
+\end{enumerate}
+
+\needspace{6\baselineskip}
+\begin{apgreenb}[Rozwiązanie tymczasowe, które przekazujemy klientom]
+Do czasu poprawionego oprogramowania: praca wallboxa bez DLB — bez niego wallbox działa poprawnie.
+\end{apgreenb}
+
+\section{Załączniki i dostępne materiały}
+
+\begin{itemize}
+\item Klatki z nagrania instalatorów z 26 września 2026 (Problem 1 i Problem 2): Rys.~\ref{fig:p1} i Rys.~\ref{fig:p2}.
+\item Zdjęcia gniazd ładowania obu samochodów (Rys.~\ref{fig:cars}).
+\item Log urządzenia \texttt{bfe26d78713489f8a6ulsj} z 26 września 2026 na platformie Tuya — cytowane wyżej zdarzenia można tam odnaleźć po tym ID urządzenia. Wszystkie czasy w tym raporcie są lokalne (UTC+2); sam log jest zapisany w UTC.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\shotsm{0.24\textwidth}{car2ph.png}{Samochód A — dwufazowa ładowarka pokładowa}\hspace{1.2cm}
+\shotsm{0.24\textwidth}{car3ph.png}{Samochód B — trójfazowa ładowarka pokładowa}
+\caption{Samochody użyte w testach.}
+\label{fig:cars}
+\end{figure}
+
+{\color{apmuted}\small AMPERE POINT — Serwis · www.amperepoint.pl · +48 666 612 044 · raport sporządzony 26 września 2026 na podstawie nagrania instalatorów i logu urządzenia Tuya.}
+
+\end{document}

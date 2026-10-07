@@ -1,0 +1,595 @@
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.92]
+\setsansfont{DejaVu Sans}[Scale=0.92]
+\setmonofont{DejaVu Sans Mono}[Scale=0.84]
+\usepackage{amssymb}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+
+\definecolor{navy}{RGB}{19,40,82}
+\definecolor{rulegrey}{RGB}{180,190,205}
+\definecolor{accent}{RGB}{0,110,90}
+\definecolor{warnred}{RGB}{150,30,30}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=accent,citecolor=navy}
+
+\emergencystretch=3em
+\hbadness=3000
+
+\titleformat{\section}{\large\bfseries\sffamily\color{navy}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily\color{navy}}{\thesubsection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.1em}{0.35em}
+\titlespacing*{\subsection}{0pt}{0.8em}{0.2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlist[itemize]{leftmargin=1.2em,itemsep=0.1em,topsep=0.15em}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.1em,topsep=0.15em}
+\newcommand{\key}[1]{\textbf{\color{navy}#1}}
+\newcommand{\warn}[1]{\textbf{\color{warnred}#1}}
+\newcommand{\pyt}[1]{\par\vspace{2pt}{\small\sffamily\color{navy}\textbf{Pytanie rozstrzygające:} #1}\par}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{rulegrey}\leaders\hrule height \footrulewidth\hfill}}
+\fancyfoot[L]{\footnotesize\sffamily\color{rulegrey}AMPERE POINT — diagnostyka zdalna ładowarka–instalacja, v1}
+\fancyfoot[R]{\footnotesize\sffamily\color{rulegrey}\thepage}
+
+\renewcommand{\contentsname}{Spis treści}
+\begin{document}
+{\sffamily\bfseries\color{navy}\LARGE AMPERE POINT — przewodnik diagnostyki zdalnej}\\[3pt]
+{\sffamily\large\color{navy} Problemy na styku ładowarka AC — instalacja elektryczna klienta. Diagnoza przez telefon}\\[6pt]
+{\color{rulegrey}\hrule height 1pt}\vspace{4pt}
+{\footnotesize\sffamily Wersja v1 \quad•\quad data: 2026-07-06 \quad•\quad podstawa: katalog usterek (U-001, U-002), czat „Charger technical diagnostics'', „Przewodnik w zakresie wykonywania pomiarów elektrycznych stacji ładowania'' (Warszawa 2024), Metrel „Guide for Testing and Verification of LV Installations'', manuale Q-series i wallbox, IEC 61851-1, PN-HD 60364-7-722}\\[2pt]
+
+{\small\setcounter{tocdepth}{1}\tableofcontents}
+\clearpage
+
+\section{Cel dokumentu i jak go używać}
+Przewodnik służy do \key{diagnozowania przez telefon} problemów z ładowarkami AC (przenośne Q/Q~PRO/P/B, wallboxy PRIME/HM), których wspólnym mianownikiem jest schemat: \key{„u klienta nie działa, u nas w serwisie działa''}. W praktyce serwisowej to najczęstsza i najdroższa kategoria zgłoszeń — urządzenie jeździ tam i z powrotem, testy niczego nie wykrywają, klient traci zaufanie. W zdecydowanej większości takich przypadków przyczyną nie jest ładowarka, lecz \key{instalacja elektryczna klienta, akcesoria (przedłużacz, adapter, gniazdo), otoczenie albo pojazd} — czyli to wszystko, co \emph{nie przyjeżdża} do serwisu razem z urządzeniem.
+
+Kolejność pracy w trakcie rozmowy telefonicznej:
+\begin{enumerate}
+\item \key{Wywiad} — sekcja~\ref{sec:wywiad} (checklista pytań; notuj od razu do karty zgłoszenia, sekcja~\ref{sec:karta}).
+\item \key{Odczyty z ładowarki} — sekcja~\ref{sec:odczyty} (wyświetlacz/aplikacja: napięcie, prąd, temperatura, status uziemienia, kod błędu).
+\item \key{Dopasowanie objawu} — tabela szybkiej diagnozy (sekcja~\ref{sec:szybka}) $\rightarrow$ właściwy punkt katalogu objawów (sekcja~\ref{sec:katalog}).
+\item \key{Testy zdalne} — sekcja~\ref{sec:testy} (bezpieczne próby, które klient wykona sam, bez uprawnień).
+\item \key{Decyzja} — sekcja~\ref{sec:decyzja}: elektryk na miejsce / urządzenie do serwisu (z akcesoriami!) / porada i zamknięcie. Wynik wpisać do katalogu usterek (U-xxx) w \texttt{AMPERE\_\allowbreak POINT\_\allowbreak porownanie\_\allowbreak ladowarek\_\allowbreak v2.html}.
+\end{enumerate}
+
+\section{Zasada nadrzędna: szukaj różnicy, nie usterki}\label{sec:zasada}
+Jeżeli \key{ten sam egzemplarz} działa w serwisie, a nie działał u klienta, to urządzenie niemal na pewno jest sprawne, a zadziałało któreś z jego \key{zabezpieczeń — poprawnie} — w reakcji na warunki zewnętrzne (za niskie/za wysokie napięcie, przegrzanie, brak PE, upływ). Q-series ma wbudowane ochrony: nadnapięciową, podnapięciową, przeciążeniową, zwarciową, upływową (RDC-DD 6~mA DC), nadtemperaturową, przepięciową i kontrolę uziemienia. Wyłączenie się ładowarki to \emph{informacja diagnostyczna}, nie wada.
+
+Diagnoza polega więc na znalezieniu \key{różnicy między stanowiskiem serwisowym a miejscem u klienta}. Typowe różnice:
+
+\begin{tabularx}{\textwidth}{@{}p{3.4cm}YY@{}}
+\toprule
+\textbf{\sffamily Element} & \textbf{\sffamily W serwisie} & \textbf{\sffamily U klienta (typowo)}\\
+\midrule
+Zasilanie & mocna instalacja warsztatowa, krótkie trasy, duże przekroje, dokręcone zaciski & obwód współdzielony, długa trasa, stare gniazdo, luźne zaciski, przedłużacz\\
+Gniazdo & przemysłowe CEE / świeże Schuko & wysłużone Schuko z osłabionymi stykami, gniazdo ogrodowe, przejściówki\\
+Napięcie & stabilne $\sim$230~V & spadki pod obciążeniem, wahania sieci (wieś, PV, wieczorny szczyt)\\
+Zabezpieczenia & dobrane, RCD typ A & RCD typ AC, wspólna różnicówka na pół domu, stare korki\\
+Ułożenie kabla & rozwinięty, luźno & zwinięty w pętlę, na bębnie, przyciśnięty, na słońcu\\
+Otoczenie & hala, temperatura umiarkowana & pełne słońce, nagrzana elewacja, wnęka bez wentylacji, deszcz, mróz\\
+Pojazd & auto testowe zakładu & inne auto, inne nastawy, harmonogramy, inny stan baterii\\
+Czas testu & 30--60 min & wiele godzin, pod rząd, codziennie\\
+Akcesoria & bez przedłużaczy & przedłużacz, adapter, listwa — \warn{zwykle zostają u klienta, nie trafiają do serwisu}\\
+\bottomrule
+\end{tabularx}
+
+\key{Wniosek praktyczny nr 1:} przy przyjęciu do serwisu zawsze proś o \key{cały tor zasilania}: ładowarkę \emph{razem z} przedłużaczem, adapterem, przejściówką — wszystkim, przez co była podłączona. Połowa „niewykrywalnych'' usterek siedzi w akcesorium, które zostało w garażu klienta.
+
+\key{Wniosek praktyczny nr 2 (lekcja z U-002):} test serwisowy, który nie odtwarza warunków klienta (ułożenie kabla, prąd, czas, temperatura, jakość zasilania), \emph{nie obala} zgłoszenia klienta. Brak awarii na teście $\neq$ brak usterki. Procedura odtwarzania — sekcja~\ref{sec:odtwarzanie}.
+
+\section{Bezpieczeństwo rozmowy: co wolno klientowi}\label{sec:bezpieczenstwo}
+Klient zwykle nie ma uprawnień ani wiedzy. Przez telefon wolno mu zlecić \key{wyłącznie} czynności bezpieczne:
+\begin{itemize}
+\item odczyty z wyświetlacza ładowarki i aplikacji, zdjęcia i filmy (gniazdo, rozdzielnica z zewnątrz, miejsce ładowania, ekran błędu);
+\item wkładanie/wyjmowanie wtyczek, przełączanie dźwigni wyłączników w rozdzielnicy (bez zdejmowania osłon!), przycisk TEST na różnicówce;
+\item dotknięcie \emph{obudowy} wtyczki i gniazda \key{po odłączeniu zasilania} (nigdy styków), ocena zapachu i przebarwień;
+\item zmianę nastaw prądu w ładowarce/aplikacji, zmianę gniazda na inne, rozwinięcie kabla, podłączenie czajnika.
+\end{itemize}
+\warn{Nigdy przez telefon:} zdejmowanie osłon rozdzielnicy lub gniazd, pomiary multimetrem w instalacji, „poprawianie'' przewodów, mostkowanie N--PE, ingerencja w licznik/ZK. Te czynności wykonuje \key{wyłącznie elektryk z uprawnieniami} (SEP E, pomiary wg sekcji~\ref{sec:pomiary}). Jeżeli klient zgłasza swąd spalenizny, iskrzenie, topiące się tworzywo lub gorące elementy instalacji — polecenie natychmiastowe: \warn{przerwać ładowanie, wyłączyć obwód w rozdzielnicy, nie używać do czasu wizyty elektryka} (ryzyko pożarowe, por. U-001).
+
+\section{Łańcuch zasilania — gdzie co pęka}\label{sec:lancuch}
+Każdy problem „ładowarka--instalacja'' siedzi w którymś ogniwie łańcucha. W rozmowie ustal, jak ten łańcuch wygląda u klienta i które ogniwo jest podejrzane:
+
+\begin{tabularx}{\textwidth}{@{}p{4.2cm}Y@{}}
+\toprule
+\textbf{\sffamily Ogniwo} & \textbf{\sffamily Typowe wady i objawy}\\
+\midrule
+1. Sieć OSD / przyłącze & za niskie/za wysokie napięcie (wieś, końcówka linii, PV w okolicy), zanik fazy, wahania w szczycie wieczornym; objawy widoczne w całym domu\\
+2. ZK / zabezpieczenie główne & za mała moc umowna — wybija „główny'' przy jednoczesnym poborze domu i ładowarki; przepalona wkładka jednej fazy (3f)\\
+3. Licznik / taryfa & styki licznika (rzadko), ograniczniki mocy w nowych licznikach OSD\\
+4. Rozdzielnica & luźne zaciski (grzanie, spadki U), zły typ RCD (AC zamiast A), wspólna różnicówka na wiele obwodów, za słaby/stary wyłącznik nadprądowy, brak SPD\\
+5. Okablowanie obwodu & za mały przekrój, za długa trasa (spadek U), stare aluminium, uszkodzona/nadwerężona żyła, brak PE, TN-C (PEN), puszki z „skrętkami''\\
+6. Gniazdo (Schuko/CEE) & wyrobione styki (Schuko po latach), niedokręcone zaciski, korozja, gniazdo nieprzystosowane do poboru ciągłego, brak bolca PE\\
+7. Przedłużacz / adapter & za cienki przewód, zwinięty na bębnie (przegrzew), tanie złącza, brak PE, złącza na trawie/w deszczu\\
+8. Ładowarka + kabel & zwinięty kabel (U-002), uszkodzenie mechaniczne, zabrudzone styki Type~2, realna usterka elektroniki (najrzadsza!)\\
+9. Wtyczka Type 2 / port auta & brudne, mokre lub nadpalone piny, uszkodzony CP, zatrzask, adapter Type~1$\leftrightarrow$2\\
+10. Pojazd & limity i harmonogramy ładowania, OBC 1-fazowy, zimna/pełna bateria, usterka OBC, upływ DC po stronie auta\\
+11. Otoczenie & słońce, upał, wnęka bez wentylacji, deszcz/kondensacja, mróz, gryzonie/owady\\
+12. Warstwa smart (WiFi/Tuya) & brak zasięgu 2,4~GHz, router, chmura — myli się z usterką ładowania, choć ładowanie działa bez sieci\\
+\bottomrule
+\end{tabularx}
+
+Ogniwa 1--7, 9--12 \key{nie przyjeżdżają do serwisu}. Dlatego test „u nas działa'' sprawdza wyłącznie ogniwo 8 — czyli to, które statystycznie zawodzi najrzadziej.
+
+\section{Wywiad telefoniczny — checklista pytań}\label{sec:wywiad}
+Zadawaj w tej kolejności; odpowiedzi notuj do karty zgłoszenia (sekcja~\ref{sec:karta}). Pytania 1--8 są obowiązkowe zawsze, dalsze — zależnie od objawu.
+
+\subsection{Urządzenie i zasilanie}
+\begin{enumerate}
+\item Jaki \key{model} (Q37/Q74/Q11/P/B/wallbox), jaka wtyczka zasilająca (Schuko / CEE16 / CEE32 / na stałe)? Numer seryjny.
+\item \key{Do czego dokładnie jest podłączona?} Gniazdo domowe czy siłowe? Bezpośrednio czy przez \key{przedłużacz, bęben, adapter, listwę}? Jaki przedłużacz (długość, czy rozwinięty, jaki przekrój — zdjęcie etykiety)?
+\item Czy obwód jest \key{dedykowany} dla ładowarki, czy dzieli go z czymś (lodówka w garażu, brama, oświetlenie)?
+\item Jaka \key{nastawa prądu} w ładowarce (6--32~A)? Kto i kiedy ją zmieniał?
+\item Jak daleko (na oko) od rozdzielnicy jest gniazdo? Garaż w bryle domu / wolnostojący / na zewnątrz?
+\end{enumerate}
+
+\subsection{Objaw i historia}
+\begin{enumerate}\setcounter{enumi}{5}
+\item \key{Co dokładnie się dzieje?} Nie startuje / przerywa po X minutach / wybija bezpiecznik / wybija różnicówkę / grzeje się / ładuje wolno / błąd na ekranie? (Doprecyzuj: „wybija'' = która dźwignia w rozdzielnicy opada?)
+\item \key{Od kiedy?} Od pierwszego użycia, czy działało i przestało? Co się zmieniło tuż przed (burza, remont, nowe urządzenie, nowe auto, zmiana ustawień, zmiana pory roku)?
+\item \key{Kiedy występuje?} Zawsze / losowo / po określonym czasie / o określonych porach (wieczór, słoneczne południe) / przy upale / po deszczu?
+\item Po ilu minutach od startu? Czy po przerwie wznawia samo, czy trzeba coś zresetować?
+\item Czy podczas startu ładowania \key{przygasają światła} w domu? Czy inne duże odbiorniki (czajnik, indukcja, bojler) działają bez zarzutu na tym samym obwodzie/gnieździe?
+\end{enumerate}
+
+\subsection{Pojazd i otoczenie}
+\begin{enumerate}\setcounter{enumi}{10}
+\item Jakie \key{auto} (marka, model, rocznik)? Czy w aucie ustawiono limit prądu/procentu lub \key{harmonogram ładowania}? Czy auto ładuje się normalnie na stacjach publicznych / u znajomych?
+\item Czy problem występuje też z \key{innym autem} lub inną ładowarką? (Jeśli jest możliwość sprawdzenia.)
+\item Gdzie stoi ładowarka podczas pracy: słońce/cień, ściana południowa, zamknięta skrzynka/wnęka? \key{Jak leży kabel — rozwinięty czy zwinięty w pętlę/na wieszaku?} Poproś o \key{zdjęcie miejsca ładowania w trakcie ładowania}.
+\item Czy w domu jest \key{fotowoltaika} (fal. hybrydowy? magazyn?), pompa ciepła, studnia głębinowa, warsztat (spawarka, kompresor)? Czy zasilanie bywa z \key{agregatu}?
+\item Wiek instalacji / ostatni przegląd? Bezpieczniki automatyczne czy stare „korki''? Czy gniazdo ma bolec uziemiający? Jaka \key{moc umowna} (z umowy/faktury OSD) i jakie zabezpieczenie główne (A)?
+\end{enumerate}
+
+\section{Co ładowarka mówi sama o sobie — odczyty zdalne}\label{sec:odczyty}
+Zanim cokolwiek zlecisz, wyciśnij maksimum z samego urządzenia — klient czyta, Ty interpretujesz.
+
+\subsection{Wyświetlacz / aplikacja Tuya}
+Zależnie od wersji dostępne są: \key{napięcie [V]}, \key{prąd [A]}, moc, energia sesji, \key{temperatura ładowarki}, \key{status uziemienia}, status WiFi, nastawa prądu, opóźnienie startu, czas ładowania. Poproś o \key{zrzuty ekranu/zdjęcia w trzech chwilach}: (a) wtyczka w gnieździe, ale bez auta; (b) tuż po starcie ładowania; (c) w chwili/tuż przed wystąpieniem problemu. Interpretacja:
+\begin{itemize}
+\item \key{U przed startem $\sim$225--235~V, po starcie spada o wiele woltów} (np. poniżej 207~V, a w skrajnych przypadkach do wartości rzędu kilkudziesięciu V) — duża rezystancja szeregowa w torze zasilania: styk, przedłużacz, przekrój, patrz O-1.
+\item \key{U wysokie ($>$253~V)} zwłaszcza w słoneczne południe — sieć/PV, patrz O-2.
+\item \key{I niższy niż nastawa} — ogranicza pojazd albo ładowarka (derating termiczny, adapter Schuko); patrz O-9.
+\item \key{Temperatura ładowarki rośnie szybko} przy umiarkowanym otoczeniu — grzanie od prądu (styk, zwinięty kabel), patrz O-7.
+\item \key{Status uziemienia: błąd} — patrz O-10; ładowarka celowo odmawia pracy.
+\item \key{Kod błędu / komunikat} — spisz dosłownie; wg manuali: „Unable to charge — protection circuit activated'' $\rightarrow$ sprawdź, która ochrona (U za niskie/za wysokie, upływ, temperatura, uziemienie); „Persistent fault'' $\rightarrow$ odłączyć, sprawdzić instalację, kontakt z serwisem.
+\end{itemize}
+
+\subsection{Stany złącza (IEC 61851-1) — do interpretacji zachowania}
+Ładowarka i auto „rozmawiają'' napięciem na żyle CP: stan A (+12~V) — kabel wolny; B (+9~V) — auto podłączone, nie ładuje; C (+6~V) — ładowanie (stycznik zamknięty); D (+3~V) — ładowanie z wentylacją; E/F (0/--12~V) — błąd. Prąd oferowany autu koduje wypełnienie PWM 1~kHz: $I=\mathrm{duty}\times0{,}6$~A/\%. Praktyczne wnioski telefoniczne:
+\begin{itemize}
+\item „Auto podłączone, ładowarka gotowa, ale nic się nie dzieje'' = utknięcie w B: decyzję o starcie podejmuje \key{auto} (harmonogramy, pełna bateria, limit) — patrz O-3e i O-12.
+\item „Ładowanie rusza i natychmiast pada'' = przejście C$\rightarrow$B/E: zadziałała ochrona ładowarki (napięcie, upływ) albo auto przerwało — dopytaj o odczyty z pkt.~6.1.
+\item Zakłócenia na CP (brudne/mokre styki, przełamana żyła przy wtyczce) dają błędy „komunikacji z pojazdem'' — patrz O-12.
+\end{itemize}
+
+\section{Testy zdalne — bezpieczne próby dla klienta}\label{sec:testy}
+Osiem testów, które klient wykona sam. Każdy rozstrzyga inną klasę przyczyn. Wybieraj wg objawu (odwołania w katalogu, sekcja~\ref{sec:katalog}).
+
+\begin{enumerate}[label=\textbf{T\arabic*.},leftmargin=2.6em]
+\item \key{Napięcie bez obciążenia vs pod obciążeniem.} Odczyt U z wyświetlacza przed startem i 1--2 min po starcie ładowania. Spadek $>$10--15~V przy 16~A (lub proporcjonalnie przy innym prądzie) = nadmierna impedancja toru; spadek do wartości dwucyfrowych = poważna wada styku/przewodu (O-1). To najcenniejszy pojedynczy test zdalny.
+\item \key{Test niskiego prądu.} Ustaw 6--8~A i ładuj $\geq$1~h. Jeśli przy 6~A pracuje stabilnie, a przy 16/32~A pada — przyczyna skaluje się z prądem: spadek napięcia lub grzanie styku/przewodu, czyli \key{instalacja}, nie elektronika. (Elektronika uszkodzona zwykle nie działa wcale albo pada niezależnie od prądu.)
+\item \key{Inne gniazdo / inny obwód.} Najlepiej gniazdo blisko rozdzielnicy (np. w kuchni/pralni, chwilowo, pod nadzorem). Problem znika = wada pierwotnego gniazda/obwodu; problem zostaje = szukaj wyżej (rozdzielnica, zasilanie, auto, ładowarka).
+\item \key{Test czajnikiem.} Czajnik 2~kW do podejrzanego gniazda: przygasanie światła, ciepła wtyczka po 5 min gotowania, „mruczenie'' — obwód ma za dużą impedancję (O-1/O-7). Uwaga: czajnik pobiera $\sim$9~A przez 3--5 min; brak objawów z czajnikiem \emph{nie} oczyszcza obwodu dla 16--32~A ciągłych, ale objawy z czajnikiem są mocnym dowodem winy instalacji.
+\item \key{Dotyk i oględziny po odłączeniu.} Po przerwaniu ładowania i \key{wyjęciu wtyczki}: dotknąć trzonu wtyczki zasilającej, obudowy gniazda, wtyczki Type~2 (nie styków). Wyraźnie gorące? Przebarwienia, nadtopienia, swąd? Zdjęcia z bliska (piny wtyczki, wnętrze otworów gniazda o ile widoczne).
+\item \key{Zdjęcia i film.} Rozdzielnica (opisy pól, symbole na różnicówce — litera A w prostokącie / sinusoida = typ), gniazdo, trasa i \key{ułożenie kabla podczas ładowania}, ekran/aplikacja z błędem, tabliczka przedłużacza. Film: moment startu ładowania (słychać klik stycznika? co pokazuje ekran? co robi światło?).
+\item \key{Inne auto / stacja publiczna.} Ładowarka z innym autem działa + auto klienta na publicznej stacji działa = konflikt pary auto--warunki (nastawy auta, upływ DC auta na tej instalacji). Auto klienta nie ładuje się nigdzie = problem auta.
+\item \key{Rozdzielenie „nie ładuje'' od „nie widzę''.} Jeśli zgłoszenie dotyczy aplikacji: czy dioda/ekran ładowarki wskazuje ładowanie i licznik energii rośnie mimo braku podglądu w telefonie? Tak = problem tylko WiFi/Tuya (O-13), ładowanie sprawne.
+\end{enumerate}
+
+\section{Katalog objawów}\label{sec:katalog}
+Struktura każdego wpisu: możliwe przyczyny (od najbardziej prawdopodobnej), weryfikacja przez telefon, rozwiązanie, werdykt „instalacja czy ładowarka''.
+
+\subsection{O-1. Za niskie napięcie pod obciążeniem (np. wskazanie 70~V); błąd podnapięciowy}\label{o1}
+Fizyka: napięcie na ładowarce $U = U_{\mathrm{sieci}} - I\cdot R_{\mathrm{toru}}$. Przy 16~A wskazanie 70~V oznacza $R_{\mathrm{toru}}\approx10~\Omega$ — to nie jest „słaba sieć'', tylko konkretna wada rezystancyjna w torze (sieć miałaby ułamki oma). \warn{Uwaga bezpieczeństwa:} cała ta rezystancja grzeje się mocą $P=I^2R$ w jednym punkcie — wada tej klasy to realne ryzyko pożarowe i priorytet pilny.
+
+Możliwe przyczyny:
+\begin{itemize}
+\item \key{Połączenie o podwyższonej rezystancji} (najczęstsze; por. U-001): luźny/niedokręcony zacisk w gnieździe, puszce lub rozdzielnicy, wyrobione styki starego Schuko, źle zarobiona tulejka, utlenione aluminium, nadpalone styki po wcześniejszym iskrzeniu.
+\item \key{Przedłużacz/bęben}: przekrój 1,0--1,5~mm\textsuperscript{2}, duża długość, zwinięty na bębnie, tanie złącza — sam potrafi „zjeść'' kilkadziesiąt woltów przy 16~A.
+\item \key{Częściowo przerwana żyła} (L lub N): przewód nadwerężony mechanicznie (przytrzaśnięty, zgnieciony, nadcięty) przewodzi przez kilka drucików — duża rezystancja lokalna.
+\item \key{Luźny/przerwany przewód neutralny}: w obwodzie 1-fazowym objawia się jak wyżej; w instalacji 3-fazowej ze wspólnym N przesuwa punkt gwiazdowy — część odbiorników widzi napięcie zaniżone (np. 70--180~V), inne \emph{zawyżone} (nawet $>$300~V) — patrz też O-2.
+\item \key{Za mały przekrój / za długa trasa obwodu stałego} — spadek proporcjonalny do prądu i długości; typowo objawia się przy 32~A (Q74) na trasach $>$15--20~m przy 6~mm\textsuperscript{2} lub mniejszych przekrojach.
+\item \key{Słabe przyłącze / końcówka linii wiejskiej}: napięcie siada w całym domu (światła przygasają przy każdym większym odbiorniku), szczyt wieczorny pogarsza.
+\end{itemize}
+
+Weryfikacja przez telefon: T1 (kluczowy — U bez obciążenia vs pod obciążeniem), T2 (przy 6~A napięcie spada dużo mniej: spadek $\sim$proporcjonalny do prądu potwierdza rezystancję szeregową), T4, T5 (ciepła wtyczka/gniazdo wskazują miejsce wady), T3 (inne gniazdo — spadek znika = wada za rozgałęzieniem, w obwodzie/gnieździe pierwotnym). \key{Dlaczego „inne urządzenia działają normalnie'' niczego nie dowodzi:} żarówka LED pobiera 0,05~A, telewizor 0,5~A — na rezystancji 10~$\Omega$ tracą 0,5--5~V, czego nikt nie widzi. Dopiero pobór ciągły kilkunastu amperów (ładowarka, czajnik, piekarnik) ujawnia wadę. Ładowarka jest najczulszym „miernikiem'' w domu klienta, bo jako jedyna pobiera duży prąd \emph{ciągle} i \emph{mierzy przy tym napięcie}.
+
+Rozwiązanie: elektryk — pomiar napięcia w gnieździe pod obciążeniem, spadków na odcinkach, dokręcenie zacisków (moment!), wymiana gniazda, likwidacja przedłużacza, ew. nowy obwód dedykowany o właściwym przekroju; przy podejrzeniu sieci/przyłącza — reklamacja jakości napięcia do OSD (norma PN-EN 50160: 230~V $\pm$10\%, tj. 207--253~V).
+
+Werdykt: \key{praktycznie zawsze instalacja/akcesoria}. Ładowarka, która w serwisie trzyma $\sim$230~V pod pełnym prądem, jest sprawna; jej ochrona podnapięciowa zadziałała poprawnie i chroniła dom klienta.
+\pyt{„Ile pokazuje woltów zanim ruszy ładowanie, a ile 2 minuty po starcie?''}
+
+\subsection{O-2. Za wysokie napięcie / błąd przepięciowy}\label{o2}
+Możliwe przyczyny:
+\begin{itemize}
+\item \key{Fotowoltaika} (u klienta lub sąsiadów): w słoneczne godziny falowniki podnoszą napięcie w słabej sieci — 250--260~V to na wsiach codzienność; ochrona nadnapięciowa ładowarki przerywa.
+\item \key{Sieć}: zła regulacja transformatora, mała obciążalność linii, skoki po odłączeniu dużych odbiorników.
+\item \key{Przerwany/luźny N w układzie 3-fazowym} (asymetria — druga twarz O-1): niektóre fazy $>$260--300~V. \warn{Groźne dla całego domu — pilnie elektryk/OSD.}
+\end{itemize}
+Weryfikacja: o jakich porach występuje (słoneczne południe?); odczyty U z ładowarki o różnych porach dnia (poproś o 3--4 zrzuty); czy falownik PV raportuje wyłączenia od nadnapięcia; czy u sąsiadów podobnie; czy inne urządzenia „dziwnie jasno świecą''/padają (podejrzenie N!).
+Rozwiązanie: reklamacja do OSD (PN-EN 50160), przestawienie trybu/nastaw falownika PV, elektryk przy podejrzeniu N. Ładowanie w godzinach niższego napięcia do czasu naprawy.
+Werdykt: \key{sieć/instalacja}; ochrona ładowarki działa poprawnie (chroni też elektronikę auta).
+\pyt{„Czy problem występuje głównie w słoneczne dni w środku dnia?''}
+
+\subsection{O-3. Ładowarka w ogóle nie startuje / brak reakcji}\label{o3}
+Możliwe przyczyny (od banalnych — sprawdzaj po kolei):
+\begin{itemize}
+\item \key{Brak napięcia w gnieździe}: wybity wyłącznik/różnicówka, przepalona wkładka, uszkodzone gniazdo, wyłączony obwód (np. „wyłącznik garażu'').
+\item \key{Wtyczka niedociśnięta} / luźny adapter / bęben z termikiem, który zadziałał.
+\item \key{Błąd uziemienia/polaryzacji} — ładowarka celowo odmawia (patrz O-10); na ekranie status uziemienia.
+\item \key{Opóźnienie startu / harmonogram} w aplikacji ładowarki \emph{albo w aucie} (bardzo częste: auto ustawione „ładuj od 22:00'' albo limit 80\% osiągnięty — ładowarka czeka w stanie B i to jest poprawne).
+\item \key{Auto}: pełna/prawie pełna bateria, limit procentowy, bateria bardzo zimna (auto czeka na podgrzanie), kabel niezatrzaśnięty w porcie.
+\item \key{Awaria ładowarki} (zasilacz, elektronika) — dopiero gdy powyższe wykluczone.
+\end{itemize}
+Weryfikacja: świeci cokolwiek (ekran/LED)? Nie świeci $\rightarrow$ T4/T3 (czajnik w to samo gniazdo: działa? $\rightarrow$ gniazdo OK, problem w ładowarce lub jej wtyczce; nie działa $\rightarrow$ instalacja) + zdjęcie rozdzielnicy (opadnięte dźwignie?). Świeci $\rightarrow$ odczyty (sekcja~\ref{sec:odczyty}), status uziemienia, komunikaty; sprawdzić harmonogramy w aplikacji i \key{w aucie}; T7.
+Rozwiązanie: wg znalezionej gałęzi — od skasowania harmonogramu, przez elektryka (gniazdo/obwód/PE), po serwis (gdy ładowarka martwa mimo sprawnego gniazda).
+Werdykt: 50/50 — jedyny objaw, przy którym awaria samej ładowarki jest częsta; ale najpierw wyklucz banały (zasilanie, harmonogramy).
+\pyt{„Czy na ładowarce cokolwiek się świeci, a jeśli tak — co dokładnie pokazuje ekran?''}
+
+\subsection{O-4. Wybija wyłącznik nadprądowy (B/C, „bezpiecznik obwodu'')}\label{o4}
+Możliwe przyczyny:
+\begin{itemize}
+\item \key{Nastawa prądu ładowarki wyższa niż prąd znamionowy wyłącznika} (np. nastawa 16~A na obwodzie z B10/B13, nastawa 32~A na B25) — wyłącznik po kilku--kilkudziesięciu minutach wyłącza termicznie. Klasyka po zmianie nastawy „żeby ładowało szybciej''.
+\item \key{Obwód współdzielony}: ładowarka 16~A + lodówka + brama + oświetlenie na wspólnym B16 — sumaryczny prąd przekracza znamionowy.
+\item \key{Stary/wysłużony wyłącznik} lub stare wkładki topikowe — wyłączają poniżej znamionowego.
+\item \key{Zwarcie / poważne uszkodzenie} — wyłącznik pada \emph{natychmiast, z hukiem}, przy każdej próbie: przebita izolacja, woda w puszce, uszkodzone gniazdo. \warn{Nie ponawiać prób — elektryk.}
+\end{itemize}
+Weryfikacja: \key{po jakim czasie wybija?} Natychmiast = zwarcie; po minutach = przeciążenie termiczne. Zdjęcie rozdzielnicy: oznaczenie wyłącznika (B16? B25?) vs nastawa ładowarki. Co jeszcze jest na tym obwodzie (wyłączyć inne odbiorniki i spróbować ponownie)? T2 (przy 6--10~A nie wybija = przeciążenie potwierdzone).
+Rozwiązanie: nastawa $\leq$ prąd wyłącznika i brak innych odbiorników na obwodzie; docelowo dedykowany obwód (Q37: B16, 3$\times$2,5~mm\textsuperscript{2}; Q74: B32, 3$\times$6~mm\textsuperscript{2}; charakterystyka B wystarcza — EVSE nie ma prądu rozruchowego jak silniki). Przy podejrzeniu zwarcia — wyłącznie elektryk.
+Werdykt: \key{instalacja/konfiguracja}; ładowarka pobiera dokładnie tyle, ile ustawiono.
+\pyt{„Wybija od razu z trzaskiem, czy dopiero po kilkunastu minutach ładowania?''}
+
+\subsection{O-5. Wybija wyłącznik różnicowoprądowy (RCD)}\label{o5}
+Możliwe przyczyny:
+\begin{itemize}
+\item \key{Budżet upływu wyczerpany}: jedna różnicówka 30~mA na pół domu; każdy sprzęt (pralka, zmywarka, falownik, filtry) dokłada upływ, ładowarka+auto dokładają typowo 2,5--3,5~mA — suma przekracza próg wyzwolenia (RCD może zadziałać już od 15~mA). Objaw: wybija „czasem'', częściej gdy pracuje dużo sprzętów lub w wilgotne dni.
+\item \key{Wilgoć}: gniazdo zewnętrzne bez klapki, złącze przedłużacza na trawie/deszczu, kondensacja w puszce — wybija po deszczu/rano, latem znika.
+\item \key{Zły typ RCD}: typ AC (sama sinusoida na symbolu) nie jest przewidziany do prądów pulsujących/składowej DC występujących przy ładowaniu EV — możliwe zarówno fałszywe wyzwolenia, jak i (gorzej) \emph{oślepienie} przez składową DC. Dla obwodu EV wymagany \key{typ A} (symbol z sinusoidą i impulsami); składową gładką DC 6~mA wykrywa \key{RDC-DD wbudowany w każdą naszą ładowarkę} (wg IEC 62955), więc RCD typu B nie jest wymagany (IEC 61851-1, PN-HD 60364-7-722).
+\item \key{Upływ po stronie pojazdu} (OBC/okablowanie auta) — ujawnia się tylko z tym autem.
+\item \key{Uszkodzony przewód} (przetarta izolacja kabla ładowarki lub przedłużacza, przygryzienia gryzoni) albo zwarcie N--PE w instalacji za różnicówką.
+\item \key{Stary/nadwrażliwy RCD} — wyzwala od zakłóceń łączeniowych.
+\end{itemize}
+Weryfikacja: wybija tylko przy ładowaniu, czy też bez ładowarki? W którym momencie (wpięcie wtyczki / klik stycznika przy starcie / losowo po czasie / po deszczu)? Zdjęcie różnicówki (typ AC/A, prąd 30~mA, co obejmuje). T3 (obwód pod inną różnicówką), T7 (inne auto — upływ auta), T2 (upływ nie zależy od prądu ładowania: jeśli przy 6~A wybija tak samo jak przy 16~A, to upływ/wilgoć, nie przeciążenie).
+Rozwiązanie: elektryk — pomiar prądu upływu, test RCD (czasy/prądy zadziałania), rozdzielenie obwodów, \key{dedykowany RCD typ A 30~mA dla obwodu ładowania}; osuszenie/wymiana gniazd zewnętrznych (IP44+), eliminacja przedłużaczy leżących na gruncie.
+Werdykt: \key{instalacja} (typ/budżet upływu/wilgoć) albo \key{pojazd}; sama ładowarka rzadko — jej tor upływowy jest testowany fabrycznie i przez nas.
+\pyt{„Czy różnicówka wybija też, gdy ładowarka jest zupełnie odłączona — i czy na jej obudowie jest litera A z falką, czy sama falka?''}
+
+\subsection{O-6. Wybija zabezpieczenie główne / przedlicznikowe (ZK)}\label{o6}
+Mechanizm: suma poboru domu + ładowarka przekracza zabezpieczenie główne/moc umowną. Przykład z praktyki: ZK 32~A, obwód EV 25~A $\rightarrow$ na resztę domu zostaje $\sim$7~A; wieczorem (indukcja+bojler+pralka) wybija \emph{główny}, nie obwód EV.
+Weryfikacja: \key{która dźwignia opada} — w rozdzielnicy mieszkaniowej czy przy liczniku/w ZK? O jakich porach? Co wtedy pracuje w domu? Jaka moc umowna (faktura OSD) i zabezpieczenie przedlicznikowe?
+Rozwiązanie: obniżyć nastawę prądu (ładowarka 6--32~A co 1~A — policz: moc umowna [kW] $\approx$ prąd [A] $\times$ 0,23 przy 1f), ładować nocą/harmonogramem, docelowo wniosek do OSD o zwiększenie mocy umownej; w wallboxach dodatkowo DLB (dynamiczne zarządzanie obciążeniem do 4 stacji).
+Werdykt: \key{umowa/instalacja} — parametr przyłącza, nie usterka czegokolwiek.
+\pyt{„Opada bezpiecznik w skrzynce z licznikiem, czy w rozdzielnicy w domu — i co jeszcze wtedy działa (piekarnik, bojler)?''}
+
+\subsection{O-7. Przegrzewanie: obudowa, wtyczka, kabel; wyłączenia termiczne}\label{o7}
+Lokalizacja ciepła wskazuje przyczynę — to pierwsze pytanie:
+\begin{itemize}
+\item \key{Gorąca wtyczka zasilająca / gniazdo} $\rightarrow$ zły styk (wyrobione Schuko, luźny zacisk — por. U-001) albo gniazdo nieprzystosowane do poboru ciągłego. Schuko znamionowo ma 16~A, ale \emph{ciągłe} 16~A godzinami to dla niego praca graniczna — bezpieczna praktyka: nastawa $\leq$10--13~A na Schuko, pełne 16~A tylko na sprawdzonym, dedykowanym gnieździe; 32~A wyłącznie CEE (IEC 60309-1).
+\item \key{Gorący kabel na całej długości lub w zwoju} $\rightarrow$ prąd znamionowy + \key{zwinięty kabel/bęben} (por. U-002): zwoje grzeją się nawzajem i tracą powierzchnię chłodzenia; żyła może przekroczyć dopuszczalne 90~°C (kabel H07BZ5-F) mimo poprawnego prądu. Bęben przedłużacza zwinięty = grzejnik.
+\item \key{Gorąca obudowa ładowarki} $\rightarrow$ otoczenie: pełne słońce (nagrzew powierzchniowy — 60~°C obudowy na słońcu przy pracy ciągłej bywa normalne), nagrzana elewacja, wnęka/skrzynka bez wentylacji; obudowa IP66 nie ma wentylatora — oddaje ciepło całą powierzchnią i potrzebuje przepływu powietrza.
+\item \key{Gorąca wtyczka Type~2} $\rightarrow$ nadpalone/zabrudzone piny, zużyte gniazdo w aucie, adapter.
+\item \key{Wyłączenia termiczne przy Q~PRO}: czujnik temperatury we wtyczce zasilającej — wyłączenie oznacza, że \emph{gniazdo klienta grzeje wtyczkę}; urządzenie chroni instalację klienta zgodnie z przeznaczeniem.
+\end{itemize}
+Weryfikacja: „\key{co dokładnie jest gorące?}'' + T5 (dotyk po odłączeniu: wtyczka? gniazdo? który odcinek kabla?), T6 (zdjęcie ułożenia kabla podczas ładowania — pętla? bęben? słońce?), T2 (przy 6--8~A nie grzeje = zjawisko $I^2R$, wina toru prądowego/układu, nie elektroniki), odczyt temperatury z ekranu w czasie.
+Rozwiązanie: rozwinąć kabel całkowicie (bęben zawsze!), zapewnić cień/wentylację, wymienić wyrobione gniazdo (najlepiej na CEE), dokręcić zaciski (elektryk), obniżyć nastawę przy ładowaniu z Schuko, usunąć przejściówki.
+Werdykt: \key{instalacja/akcesoria/otoczenie}; ochrona nadtemperaturowa ładowarki działa prawidłowo. Serwis: odtworzyć ułożenie kabla i warunki (sekcja~\ref{sec:odtwarzanie}) zanim orzekniesz „u nas działa''.
+\pyt{„Co konkretnie było gorące — wtyczka w gnieździe, kabel (gdzie), czy obudowa — i jak leżał kabel (proszę o zdjęcie)?''}
+
+\subsection{O-8. Ładowanie przerywa się losowo / restarty}\label{o8}
+Możliwe przyczyny:
+\begin{itemize}
+\item \key{Zapady napięcia}: rozruch pompy studni/pompy ciepła/kompresora, spawarka u sąsiada, wieczorne przeciążenie linii wiejskiej — ochrona podnapięciowa przerywa; ładowarka ponawia (auto-retry), więc klient widzi „restarty''.
+\item \key{Zły styk — stadium wczesne} (por. U-001, etap 1): iskrzące połączenie chwilowo zrywa napięcie; \emph{losowe wyłączenia to często zapowiedź późniejszego grzania}. Traktuj poważnie.
+\item \key{Harmonogramy/limity} w aplikacji albo w aucie (auto kończy przy 80\%, taryfa nocna, klimatyzacja wstępna zmienia plan ładowania).
+\item \key{Cykl termiczny}: przegrzew $\rightarrow$ wyłączenie $\rightarrow$ ostygnięcie $\rightarrow$ powrót (patrz O-7); charakterystyczny stały okres (np. co 20--30 min).
+\item \key{Zdalne komendy/chmura}: ktoś domowy ma aplikację; automatyzacje Tuya/smart home wyłączają gniazdo/scenę.
+\item \key{RCD/wyłącznik „miękko'' wyzwalany}: uwaga — wyłącznik w rozdzielnicy \emph{nie wraca sam}; jeśli ładowanie wraca samo, to przerwała ochrona wewnętrzna ładowarki albo auto, nie rozdzielnica.
+\end{itemize}
+Weryfikacja: czy wraca samo (po jakim czasie — stały okres?) czy wymaga resetu? O stałych porach? Co startuje w domu w tych momentach (pompa, bojler)? T1 w chwili zdarzenia (spadek U), odczyt temperatury, historia sesji w aplikacji (zrzuty), T2 (przy 6~A stabilnie = zależne od prądu $\rightarrow$ tor zasilania).
+Rozwiązanie: wg gałęzi — elektryk (styk/zapady), OSD (jakość napięcia), porządek w harmonogramach (ładowarka \emph{i} auto), warunki termiczne.
+Werdykt: najczęściej \key{instalacja/sieć albo konfiguracja}; elektronika rzadko.
+\pyt{„Czy ładowanie wraca samo po kilku(nastu) minutach, czy trzeba coś ręcznie włączyć — i czy przerwy mają stały rytm?''}
+
+\subsection{O-9. Ładuje wolno / moc niższa niż oczekiwana}\label{o9}
+Możliwe przyczyny:
+\begin{itemize}
+\item \key{Nastawa prądu}: 6~A $\times$ 230~V $\approx$ 1,4~kW; 10~A $\approx$ 2,3~kW; 16~A $\approx$ 3,7~kW; 32~A $\approx$ 7,4~kW (1f). Ktoś obniżył (albo nigdy nie podniósł po pierwszym uruchomieniu).
+\item \key{Ogranicza pojazd}: OBC auta 1-fazowy lub 2-fazowy przy ładowarce 3-fazowej (Q11 „11~kW'' $\rightarrow$ realnie 3,7~kW przy aucie 1f — to \emph{auto} jest wąskim gardłem); limit prądu ustawiony w aucie; zimna bateria (zima!), bateria prawie pełna (końcówka zawsze wolniejsza), balansowanie.
+\item \key{Niskie napięcie}: moc $=U\times I$; przy 200~V zamiast 230~V z 16~A robi się 3,2~kW zamiast 3,7~kW — patrz O-1.
+\item \key{Brak jednej fazy} (3f): 11~kW $\rightarrow$ 7,3/3,7~kW; patrz O-11.
+\item \key{Derating termiczny}: upał/słońce — ładowarka lub auto redukują prąd zamiast się wyłączyć.
+\item \key{Adapter Schuko$\rightarrow$CEE}: przy ładowaniu przez adapter obowiązuje ręczne ograniczenie prądu (zgodnie z instrukcją) — 7,4~kW z Schuko nie istnieje.
+\end{itemize}
+Weryfikacja: zrzut ekranu — \key{ile V i ile A pokazuje ładowarka} vs nastawa: $I$ niższy od nastawy = ogranicza auto/derating; $U$ niskie = instalacja (O-1). Co pokazuje auto (kW na desce)? T7 (inne auto bierze pełny prąd = wąskie gardło w aucie klienta).
+Rozwiązanie: korekta nastaw, edukacja („to auto decyduje ile weźmie''), naprawa napięcia wg O-1, komplet faz wg O-11.
+Werdykt: \key{konfiguracja/pojazd/instalacja} — niemal nigdy ładowarka.
+\pyt{„Ile amperów jest ustawione w ładowarce, a ile amperów i woltów realnie pokazuje ekran podczas ładowania?''}
+
+\subsection{O-10. Błąd uziemienia / statusu PE („grounding''); ładowarka odmawia startu}\label{o10}
+Ładowarka kontroluje obecność i jakość PE — bez sprawnego uziemienia \emph{celowo} nie ruszy (przy uszkodzeniu izolacji w aucie obudowa mogłaby znaleźć się pod napięciem). Możliwe przyczyny:
+\begin{itemize}
+\item \key{Brak PE w gnieździe}: stare instalacje dwużyłowe (dom sprzed modernizacji), gniazdo bez bolca, \key{przedłużacz bez żyły PE} (płaskie „ogrodowe''!), złamany bolec.
+\item \key{PE przerwane lub o dużej rezystancji}: przerwa w puszce, skorodowany zacisk, „zerowanie'' wykonane na dziko.
+\item \key{Zamiana L i N} w gnieździe (część wersji sygnalizuje błąd polaryzacji).
+\item \key{Układ TT ze słabym uziomem} albo TN-C ze wspólnym PEN — podwyższone napięcie N--PE; ładowarka może to odrzucać.
+\item \key{Agregat/instalacja wyspowa} bez punktu odniesienia N--PE (patrz O-16).
+\end{itemize}
+Weryfikacja: T3 (inne, nowsze gniazdo — działa? = wada PE tamtego punktu), T6 (zdjęcie gniazda: jest bolec? wiek instalacji?), pytanie o przedłużacz (czy ma bolec z obu stron!), wiek domu/ostatni przegląd.
+Rozwiązanie: elektryk — pomiar ciągłości PE ($\geq$200~mA prądu probierczego wg przewodnika pomiarów), N--PE, pętli zwarcia; doprowadzenie PE / modernizacja obwodu. \warn{Kategorycznie zabronić „mostkowania'' N--PE w gnieździe} — ładowarka może to wykryć, a przy przerwie N robi się śmiertelnie niebezpiecznie.
+Werdykt: \key{instalacja — zawsze}, to funkcja ochronna. Ładowarka odmawiająca pracy bez PE ratuje zdrowie ludzi.
+\pyt{„Czy gniazdo (i każdy przedłużacz po drodze) ma bolec uziemiający — i czy dom był kiedyś modernizowany elektrycznie?''}
+
+\subsection{O-11. Modele 3-fazowe: brak fazy, kolejność, asymetria}\label{o11}
+Możliwe przyczyny:
+\begin{itemize}
+\item \key{Zanik jednej fazy}: przepalona wkładka w ZK/rozdzielnicy, luźny zacisk jednej fazy — reszta domu (1-fazowa) działa normalnie, więc klient nie wie; ładowarka 3f zgłasza błąd albo ładuje 1/3 mocy.
+\item \key{Kolejność faz}: po pracach elektrycznych zamieniona sekwencja — część urządzeń 3f wymaga poprawnej; objaw „od wizyty elektryka nie działa''.
+\item \key{Asymetria napięć}: nierównomierne obciążenie domu, słaba sieć — jedna faza zaniżona; ładowarka może redukować/przerywać.
+\item \key{Luźny N przy 3f}: patrz O-1/O-2 — \warn{pilne}.
+\end{itemize}
+Weryfikacja: czy piekarnik/indukcja/inne 3f działają pełną mocą? Czy coś się działo w instalacji ostatnio? Odczyty napięć z ładowarki (jeśli wersja pokazuje per fazę); T3 niemożliwy dla CEE 5p — od razu elektryk.
+Rozwiązanie: elektryk — pomiar 3 faz pod obciążeniem, kolejność (miernik sekwencji), zaciski; OSD przy wadzie przyłącza.
+Werdykt: \key{instalacja/sieć}.
+\pyt{„Czy w domu są inne urządzenia trójfazowe i czy działają pełną mocą?''}
+
+\subsection{O-12. Problemy komunikacji z autem (CP); auto „nie widzi'' ładowarki}\label{o12}
+Możliwe przyczyny:
+\begin{itemize}
+\item \key{Styki Type~2}: brud, wilgoć, sól/błoto zimą, nadpalenia; CP to drobny pin — wrażliwy na zanieczyszczenie.
+\item \key{Przełamana żyła CP przy wtyczce} (od wielokrotnego zwijania/wyrywania za kabel): objaw — ładowanie przerywa przy poruszeniu kabla.
+\item \key{Kabel niezatrzaśnięty} w porcie auta / zużyty zatrzask / klapka portu naciska wtyk.
+\item \key{Adapter Type~1$\leftrightarrow$2} — dodatkowe styki, dodatkowe ryzyko.
+\item \key{Software auta}: zawieszony moduł ładowania — restart auta (procedura wg marki) naprawia zaskakująco często; aktualizacje zmieniają zachowanie.
+\item \key{Auto śpi / autoryzacja}: niektóre auta wymagają odblokowania, profilu, karty.
+\end{itemize}
+Weryfikacja: T7 (inne auto/stacja), oględziny pinów wtyczki Type~2 (zdjęcie makro), test „poruszenia kablem'' przy wtyczce podczas ładowania (przerywa = uszkodzona żyła — do serwisu z całym kablem), restart auta.
+Rozwiązanie: czyszczenie styków (sucha szmatka, odłączone!), wymiana kabla/wtyczki w serwisie, restart/aktualizacja auta, eliminacja adaptera.
+Werdykt: \key{kabel/wtyk albo pojazd}; elektronika ładowarki rzadko. To jedyna kategoria, gdzie fizyczna wada \emph{przyjeżdża} do serwisu razem z urządzeniem — łatwa do potwierdzenia (oględziny + tester złącza / PM701E).
+\pyt{„Czy problem pojawia się/znika przy poruszaniu wtyczką lub kablem?''}
+
+\subsection{O-13. Aplikacja / WiFi / Tuya nie działa}\label{o13}
+Najpierw rozdziel: \key{„nie ładuje''} czy \key{„nie widzę w telefonie''} (T8). Ładowanie jest w pełni autonomiczne — działa bez WiFi i bez chmury.
+Możliwe przyczyny: sieć 5~GHz zamiast 2,4~GHz (Tuya wymaga 2,4), brak zasięgu w garażu (gruba ściana, blacha), zmiana hasła/routera, izolacja klientów AP, pełna pula DHCP, awaria chmury Tuya, stary firmware aplikacji, konto/uprawnienia (urządzenie sparowane z kontem domownika).
+Weryfikacja: dioda WiFi na ładowarce; telefon w garażu widzi sieć 2,4~GHz? Router restartowany? Czy działało i przestało po zmianie internetu?
+Rozwiązanie: wydzielić SSID 2,4~GHz, repeater do garażu, ponowne parowanie wg instrukcji; edukacja: brak podglądu $\neq$ brak ładowania.
+Werdykt: \key{infrastruktura sieciowa klienta / chmura}; nie ruszaj ładowarki.
+\pyt{„Czy licznik energii na ekranie ładowarki rośnie, mimo że aplikacja nic nie pokazuje?''}
+
+\subsection{O-14. Po burzy / przepięciu}\label{o14}
+Objawy: ładowarka nie włącza się / błędy po nocnej burzy; czasem pada też router (co maskuje O-13). Możliwe: uszkodzenie zasilacza/elektroniki przepięciem (mimo wbudowanej ochrony przepięciowej — ona ogranicza, nie gwarantuje przy bliskim wyładowaniu), zadziałany/zużyty SPD w rozdzielnicy (wskaźnik okienka!), przepalone wkładki, uszkodzone gniazdo.
+Weryfikacja: kiedy była burza; co jeszcze ucierpiało (router, bramofon, piec — typowe ofiary); zdjęcie SPD (kolor wskaźnika); T3/T4.
+Rozwiązanie: serwis (elektronika po przepięciu = wymiana modułów); zalecenie dla klienta: SPD typ 2 w rozdzielnicy, nie ładować podczas burzy (zalecenie z manuala).
+Werdykt: \key{zdarzenie zewnętrzne}; uszkodzenie ładowarki wtórne — do naprawy u nas, ale profilaktyka po stronie instalacji.
+\pyt{„Czy w nocy/ostatnich dniach była burza i czy coś jeszcze w domu przestało działać?''}
+
+\subsection{O-15. Wilgoć i warunki atmosferyczne}\label{o15}
+Objawy-sygnatury: RCD wybija \key{po deszczu}; błędy \key{rano} znikające w ciągu dnia (kondensacja); problemy tylko \key{zimą} (mróz: sztywny kabel, lód na stykach, bateria auta zimna — wolne ładowanie to O-9, nie usterka).
+Możliwe: woda w gnieździe zewnętrznym (brak klapki IP44), złącze przedłużacza na gruncie, kondensacja w puszkach/przedłużaczu przechowywanym na mrozie i wniesionym do ciepła, gniazdo ogrodowe zarośnięte/zalane, owady (skorki!) i gryzonie w puszkach.
+Weryfikacja: korelacja z pogodą (poprosić o dziennik 3--4 zdarzeń z datami), T6 (zdjęcia gniazda zewnętrznego), T3 (gniazdo wewnątrz — działa?).
+Rozwiązanie: gniazda zewnętrzne min. IP44 z klapką, złącza przedłużaczy nad gruntem/zadaszone, wymiana zalanych elementów (elektryk), osuszenie.
+Werdykt: \key{instalacja/eksploatacja}. Ładowarka IP65/66 znosi deszcz — jej złącza rozłączne i gniazda klienta niekoniecznie.
+\pyt{„Czy awarie dało się powiązać z deszczem, poranną rosą albo mrozem?''}
+
+\subsection{O-16. Agregat, zasilanie wyspowe, budowa, UPS}\label{o16}
+Objawy: na placu budowy / z agregatu / z przenośnego magazynu energii ładowarka zgłasza błąd uziemienia albo pracuje niestabilnie.
+Przyczyny: agregat pływający (brak połączenia N--PE i uziomu $\rightarrow$ kontrola uziemienia odrzuca — poprawnie!), napięcie/częstotliwość agregatu niestabilne pod zmiennym obciążeniem, przebiegi odkształcone (tania elektronika agregatu), za mała moc agregatu (zapady przy starcie), rozdzielnice budowlane z RCD 30~mA wspólnym dla wszystkiego.
+Weryfikacja: skąd zasilanie? Typ/moc agregatu; czy N--PE połączone i uziemione (pytanie do elektryka budowy).
+Rozwiązanie: agregat z poprawnie wykonanym punktem N--PE + uziom (wykonuje elektryk), moc agregatu $\geq$1,5$\times$ moc ładowania, nastawa prądu w dół; ewentualnie ładowanie tylko z sieci.
+Werdykt: \key{źródło zasilania}; wymagania ładowarki = sieć o parametrach publicznych.
+\pyt{„Z czego dokładnie zasilana jest ładowarka — sieć, agregat, magazyn energii?''}
+
+\section{Tabela szybkiej diagnozy}\label{sec:szybka}
+{\small
+\begin{tabularx}{\textwidth}{@{}p{3.5cm}p{4.6cm}Yc@{}}
+\toprule
+\textbf{\sffamily Objaw} & \textbf{\sffamily Top-3 przyczyny} & \textbf{\sffamily Pierwsze pytanie} & \textbf{\sffamily Pkt}\\
+\midrule
+Niskie napięcie / błąd podnapięciowy & zły styk; przedłużacz/bęben; przekrój/trasa & U bez obciążenia vs pod obciążeniem? & \ref{o1}\\
+\addlinespace[2pt]
+Wysokie napięcie & PV w okolicy; sieć; luźny N (3f) & Występuje w słoneczne południe? & \ref{o2}\\
+\addlinespace[2pt]
+Nie startuje & brak U w gnieździe; harmonogram (auto!); błąd PE & Czy ekran/LED w ogóle świeci? & \ref{o3}\\
+\addlinespace[2pt]
+Wybija nadprądowy (B/C) & nastawa $>$ wyłącznik; obwód współdzielony; zwarcie & Od razu z trzaskiem czy po minutach? & \ref{o4}\\
+\addlinespace[2pt]
+Wybija różnicówkę & suma upływów; wilgoć; typ AC zamiast A & Wybija też bez ładowarki? Typ na zdjęciu? & \ref{o5}\\
+\addlinespace[2pt]
+Wybija główny/ZK & moc umowna; jednoczesność; za mały główny & Która dźwignia opada i co wtedy działa? & \ref{o6}\\
+\addlinespace[2pt]
+Grzeje się / wyłącza z temperatury & zwinięty kabel; zły styk/gniazdo; słońce/wnęka & Co dokładnie gorące? Jak leżał kabel? & \ref{o7}\\
+\addlinespace[2pt]
+Przerywa losowo & zapady U; zły styk; harmonogramy & Wraca samo? Stały rytm przerw? & \ref{o8}\\
+\addlinespace[2pt]
+Ładuje wolno & nastawa; auto (OBC 1f, zimna bateria); niskie U & Ile A/V pokazuje ekran vs nastawa? & \ref{o9}\\
+\addlinespace[2pt]
+Błąd uziemienia & brak PE; przedłużacz bez PE; L/N zamienione & Gniazdo i przedłużacz mają bolec? & \ref{o10}\\
+\addlinespace[2pt]
+3f: błąd fazy / 1/3 mocy & zanik fazy; kolejność; asymetria & Inne urządzenia 3f działają pełną mocą? & \ref{o11}\\
+\addlinespace[2pt]
+Auto nie widzi ładowarki & styki Type~2; żyła CP; software auta & Zmienia się przy poruszaniu kablem? & \ref{o12}\\
+\addlinespace[2pt]
+Aplikacja nie działa & WiFi 2,4~GHz; zasięg; chmura & Licznik energii rośnie mimo braku podglądu? & \ref{o13}\\
+\addlinespace[2pt]
+Padła po burzy & przepięcie; SPD zużyty; wkładki & Co jeszcze w domu ucierpiało? & \ref{o14}\\
+\addlinespace[2pt]
+Awarie po deszczu/rano & woda w gnieździe; złącze na gruncie; kondensacja & Koreluje z pogodą? & \ref{o15}\\
+\addlinespace[2pt]
+Z agregatu nie działa & pływający N--PE; parametry agregatu & Skąd dokładnie zasilanie? & \ref{o16}\\
+\bottomrule
+\end{tabularx}
+}
+
+\section{Drzewa decyzyjne}\label{sec:drzewa}
+\subsection{D1: „Ładowarka nie startuje''}
+\begin{enumerate}
+\item Ekran/LED świeci? \key{NIE} $\rightarrow$ czajnik w to samo gniazdo (T4): działa? \key{NIE} $\rightarrow$ instalacja: rozdzielnica/gniazdo (zdjęcie, elektryk). \key{TAK} $\rightarrow$ wtyczka/zasilacz ładowarki $\rightarrow$ przyjęcie do serwisu \emph{z kompletem akcesoriów}.
+\item Świeci $\rightarrow$ jest kod błędu / status uziemienia? \key{TAK} $\rightarrow$ O-10 (PE), O-1/O-2 (napięcie), O-5 (upływ) wg treści komunikatu.
+\item Bez błędu, stan „podłączono, czekam'' $\rightarrow$ harmonogram/opóźnienie w \key{ładowarce}? w \key{aucie}? limit \% osiągnięty? $\rightarrow$ skasować, próba.
+\item Nadal nic $\rightarrow$ T7 (inne auto): ładuje? \key{TAK} $\rightarrow$ pojazd (nastawy/OBC). \key{NIE} $\rightarrow$ T3 (inne gniazdo/obwód): działa? \key{TAK} $\rightarrow$ obwód pierwotny (elektryk). \key{NIE} $\rightarrow$ serwis.
+\end{enumerate}
+
+\subsection{D2: „Wyłącza się w trakcie ładowania''}
+\begin{enumerate}
+\item Co opada/wyłącza? \key{Dźwignia w rozdzielnicy}: nadprądowy $\rightarrow$ O-4; różnicówka $\rightarrow$ O-5; główny/ZK $\rightarrow$ O-6. \key{Nic nie opada} (ładowarka sama przerywa) $\rightarrow$ pkt 2.
+\item Odczyt w chwili zdarzenia (T1/aplikacja): \key{U niskie} $\rightarrow$ O-1; \key{U wysokie} $\rightarrow$ O-2; \key{temperatura wysoka} $\rightarrow$ O-7; \key{bez anomalii} $\rightarrow$ pkt 3.
+\item Wraca samo w stałym rytmie? \key{TAK} $\rightarrow$ cykl termiczny (O-7) albo zapady o stałej przyczynie (O-8). \key{NIE / losowo} $\rightarrow$ O-8: styk (T5: coś ciepłego?), zapady (co startuje w domu?), harmonogramy auta.
+\item Koreluje z pogodą? deszcz/rano $\rightarrow$ O-15; upał/słońce $\rightarrow$ O-7; burza wcześniej $\rightarrow$ O-14.
+\item Nic nie pasuje $\rightarrow$ T2 na 24--48~h: przy 6~A stabilnie? \key{TAK} $\rightarrow$ wada zależna od prądu = tor zasilania (elektryk z pomiarami, sekcja~\ref{sec:pomiary}). \key{NIE} $\rightarrow$ przyjęcie do serwisu z akcesoriami + odtworzenie warunków (sekcja~\ref{sec:odtwarzanie}).
+\end{enumerate}
+
+\subsection{D3: „Za mała moc / niskie napięcie''}
+\begin{enumerate}
+\item Ekran: $I$ = nastawa? \key{NIE} ($I$ niższy) $\rightarrow$ auto ogranicza (O-9): OBC 1f? zimno? limit w aucie? $\rightarrow$ T7.
+\item $I$ = nastawa, ale $U$ niskie $\rightarrow$ O-1: T1 (spadek pod obciążeniem?) $\rightarrow$ \key{TAK} $\rightarrow$ T3/T4/T5 lokalizują (gniazdo? przedłużacz? cały dom?) $\rightarrow$ elektryk.
+\item $U$ w normie, $I$ = nastawa, a moc „mała'' $\rightarrow$ oczekiwania: policz z klientem $P=U\times I$ (1f) lub $3\times U \times I$ (3f); Q11 z autem 1f = 3,7~kW — poprawne.
+\item 3f i moc $\approx$1/3 lub 2/3 nominalnej $\rightarrow$ O-11 (zanik fazy) $\rightarrow$ elektryk.
+\end{enumerate}
+
+\section{Pomiary zlecane elektrykowi na miejscu}\label{sec:pomiary}
+Gdy testy zdalne wskazują instalację, klient zamawia elektryka (SEP~E + pomiarowe). Podaj mu telefonicznie/mailem konkretną listę — poniżej zakres i kryteria (wg „Przewodnika pomiarów stacji ładowania'' 2024, Metrel LV Handbook i PN-HD 60364-6). Nasz serwis wyjazdowy wykonuje to samo zestawem: PM701E (wymusza stan C bez auta, daje dostęp do L/N/PE), UT595 (wielofunkcyjny), UT210E (cęgi), UT890C, UTi120S (termowizja).
+
+{\small
+\begin{tabularx}{\textwidth}{@{}p{4.6cm}Yp{3.9cm}@{}}
+\toprule
+\textbf{\sffamily Pomiar} & \textbf{\sffamily Po co (który objaw)} & \textbf{\sffamily Kryterium}\\
+\midrule
+Napięcie w gnieździe bez obciążenia i \key{pod obciążeniem znamionowym} & O-1, O-8, O-9 — wykrywa rezystancję szeregową & 207--253~V (PN-EN 50160); spadek w instalacji odbiorczej zwyczajowo $\leq$4\% ($\approx$9~V); większy = szukać przyczyny\\
+Spadek napięcia na odcinkach toru (rozdzielnica $\rightarrow$ gniazdo $\rightarrow$ wtyczka) pod obciążeniem & lokalizacja złego styku (U-001) & zdrowe połączenie traci miliwolty; wolty na jednym styku = wada\\
+Termowizja zacisków, gniazda, wtyczki pod obciążeniem $\geq$20~min & O-1, O-7 — hot-spot & brak punktów wyraźnie cieplejszych od reszty toru; $\Delta$T kilkadziesiąt K = wada\\
+Ciągłość PE (prąd probierczy $\geq$200~mA) & O-10 & niska rezystancja, stabilna przy poruszaniu przewodem\\
+Rezystancja izolacji (500~V DC; 250~V przy elektronice) & O-5 (upływ), stan przewodów & $\geq$1~M$\Omega$\\
+Impedancja pętli zwarcia $Z_s$ & skuteczność ochrony; pośrednio jakość toru & $Z_s \leq U_0/I_a$: B16 $\leq$2,87~$\Omega$; B32 $\leq$1,44~$\Omega$; wysokie $Z_s$ koreluje ze spadkami U\\
+Test RCD (typ, $I_{\Delta n}$, czasy) & O-5 & typ A dla obwodu EV; zadziałanie $\leq$300~ms przy $I_{\Delta n}$, $\leq$40~ms przy 5$\times I_{\Delta n}$; pomiar realnego prądu upływu tła\\
+Napięcie N--PE & O-1, O-2, O-10 (PEN/N) & typowo pojedyncze wolty; kilkanaście+ = podejrzenie N/PEN\\
+Kolejność i komplet faz, symetria (3f) & O-11 & 3 fazy obecne, poprawna sekwencja, napięcia zbliżone\\
+Rezystancja uziomu (metoda 3-elektrodowa, jeśli TT/uziom własny) & O-10 & wg projektu instalacji (TT: warunek $R_A \cdot I_{\Delta n} \leq 50$~V)\\
+Dokręcenie zacisków momentem & O-1, O-7, O-8 & wg specyfikacji aparatów; oględziny przebarwień\\
+\bottomrule
+\end{tabularx}
+}
+
+Wynik pomiarów wpisz do karty zgłoszenia i katalogu usterek — nawet „bez uwag'' ma wartość (eliminuje gałęzie).
+
+\section{Odtwarzanie warunków klienta w serwisie}\label{sec:odtwarzanie}
+Lekcja z U-002: test „byle jak'' nie obala zgłoszenia. Zanim orzekniesz „u nas działa — brak usterki'', odtwórz:
+\begin{enumerate}
+\item \key{Tor zasilania klienta}: ten sam przedłużacz/adapter/bęben (poproś przy przyjęciu!), podobne gniazdo (mamy: Schuko zużyte testowe warto mieć na stanie obok CEE), ta sama nastawa prądu.
+\item \key{Ułożenie kabla}: dokładnie jak na zdjęciu od klienta (zwinięty w pętlę? na wieszaku? w pełnym słońcu na kostce?).
+\item \key{Czas}: minimum 1,5$\times$ czas do awarii u klienta (klient: 15--20 min $\rightarrow$ test $\geq$30--40 min), najlepiej pełna sesja.
+\item \key{Warunki termiczne}: słońce/nagrzewnica/komora; logować temperaturę obudowy i kabla (UTi120S) co 5 min + odczyt temperatury z ekranu.
+\item \key{Jakość zasilania}: symulacja słabej instalacji — autotransformator (zaniżenie do 190--200~V) i/lub szeregowa rezystancja testowa w L (drut oporowy 0,5--2~$\Omega$ na stanowisku, pod nadzorem) — sprawdzamy progi ochrony podnapięciowej i zachowanie przy spadkach; docelowo funkcje te przejmie projektowany custom device (load bank + rejestracja).
+\item \key{Pojazd}: to samo auto jeśli możliwe; inaczej PM701E + obciążenie (uwaga: inne auto = inny OBC, inny upływ, inne limity — wynik nie w pełni porównywalny).
+\item \key{Rejestracja}: U, I, T w czasie (aplikacja + cęgi UT210E + termowizja); wynik i warunki wpisz do katalogu usterek (pola „warunki'', „historia'').
+\end{enumerate}
+Jeżeli po odtworzeniu warunków awaria \emph{nadal} nie występuje — dopiero wtedy uprawniony jest wniosek „przyczyna poza urządzeniem, w środowisku klienta'' i zlecenie pomiarów u klienta (sekcja~\ref{sec:pomiary}).
+
+\section{Decyzja: elektryk, serwis czy porada}\label{sec:decyzja}
+\begin{itemize}
+\item \key{Porada + zamknięcie (bez wysyłki)}: przyczyna konfiguracyjna potwierdzona zdalnie — nastawy, harmonogramy (ładowarka/auto), przedłużacz/bęben, zwinięty kabel, WiFi, oczekiwania co do mocy (O-9). Po wdrożeniu zalecenia poproś o potwierdzenie po 2--3 sesjach.
+\item \key{Elektryk klienta na miejsce (z listą z sekcji~\ref{sec:pomiary})}: objawy wskazujące instalację — O-1, O-2, O-4, O-5, O-6, O-10, O-11, O-15, O-16; zwłaszcza gdy T1/T2/T4 dały wynik dodatni. \warn{Natychmiast, gdy: swąd, nadtopienia, gorące gniazdo/wtyczka, wskazania rzędu kilkudziesięciu V pod obciążeniem} — ryzyko pożarowe (por. O-1, U-001).
+\item \key{Nasz serwis wyjazdowy (PM701E + UT595 + termowizja)}: klient bez elektryka / sporne przypadki / flota; wykonujemy pomiary z sekcji~\ref{sec:pomiary} + test stanu C bez auta.
+\item \key{Urządzenie do serwisu}: podejrzenie wady kabla/wtyku (O-12 — test poruszenia dodatni), uszkodzenia po przepięciu (O-14), martwa elektronika przy sprawnym gnieździe (D1), albo wynik testów zdalnych jednoznacznie obciąża urządzenie. \key{Zawsze z kompletem akcesoriów} (przedłużacz, adapter) i \key{ze zdjęciem miejsca ładowania} — inaczej test serwisowy nie odtworzy warunków i wróci „brak usterki''.
+\end{itemize}
+
+\section{Karta zgłoszenia telefonicznego}\label{sec:karta}
+Wypełniaj w trakcie rozmowy; treść przenosi się 1:1 do wpisu U-xxx w katalogu usterek.
+
+{\small
+\begin{tabularx}{\textwidth}{@{}p{4.6cm}Y@{}}
+\toprule
+\textbf{\sffamily Pole} & \textbf{\sffamily Wartość / notatka}\\
+\midrule
+Data, klient, kontakt & \\
+Model, nr seryjny, wtyczka & \\
+Zasilanie (gniazdo, przedłużacz, obwód, nastawa A) & \\
+Objaw (dosłownie, słowami klienta) & \\
+Od kiedy / co się zmieniło & \\
+Kiedy występuje (pora, pogoda, czas od startu) & \\
+Pojazd (model, harmonogramy, limity) & \\
+Odczyty: U bez obc. / U pod obc. / I / T / status PE / kod błędu & \\
+Testy zdalne wykonane (T1--T8) i wyniki & \\
+Zdjęcia otrzymane (gniazdo, rozdzielnica, kabel, ekran) & \\
+Hipoteza robocza (punkt katalogu O-x) & \\
+Decyzja (porada / elektryk / serwis wyjazdowy / przyjęcie) & \\
+Akcesoria do dostarczenia z urządzeniem & \\
+Następny kontakt / status & \\
+\bottomrule
+\end{tabularx}
+}
+
+\section{Studia przypadków}\label{sec:przypadki}
+\subsection{U-001 — P72: kabel zasilania 80~°C przy 13~A, wcześniej losowe wyłączenia}
+Sekwencja: losowe przerwy w ładowaniu $\rightarrow$ interwencja $\rightarrow$ przerwy ustały, pojawiło się grzanie kabla przy mufie zasilania do $\sim$80~°C + zapach tworzywa. Diagnoza: \key{połączenie o podwyższonej rezystancji} po stronie zasilania (luźny zacisk / zła zaróbka); losowe wyłączenia i grzanie to \emph{jeden problem u źródła} — najpierw iskrzący styk zrywał napięcie (ochrona podnapięciowa), po „poprawieniu'' styk dalej ma rezystancję i grzeje ($P=I^2R$: kilkaset m$\Omega$ przy 13~A = kilka W w punkcie). Lekcje: (1)~losowe wyłączenia traktuj jako wczesne ostrzeżenie wady styku; (2)~czujnik temperatury ładowarki nie widzi hot-spotu po stronie zasilania — ochrona go nie obejmie; (3)~pomiar rozstrzygający: spadek napięcia na złączu pod obciążeniem + termowizja.
+
+\subsection{U-002 — Q37: wyłączenia u klienta po 15--20 min, na teście 40 min bez awarii}
+Ten sam egzemplarz, podobne słońce, test \emph{dłuższy} niż czas awarii u klienta — a awarii brak (obudowa 63~°C, kabel 54~°C, limit żyły 90~°C). Wniosek: skoro sprzęt identyczny, różnica leży w środowisku; jedyna nieodtworzona zmienna = \key{ułożenie kabla} (u klienta prawdopodobnie zwinięty nadmiar przy wtyczce — zwoje grzeją się nawzajem). Lekcje: (1)~test bez odtworzenia warunków nie obala zgłoszenia; (2)~zawsze proś o \key{zdjęcie miejsca ładowania w trakcie pracy}; (3)~„brak zapisanego kodu błędu'' nie znaczy „nic się nie stało'' — ochrona termiczna mogła zadziałać poprawnie.
+
+\subsection{C-070 — wskazanie $\sim$70~V u klienta; w serwisie napięcie prawidłowe}
+Zgłoszenie: ładowarka u klienta pokazuje zaniżone napięcie rzędu 70~V (błąd podnapięciowy), \emph{inne urządzenia domowe działają prawidłowo}; w serwisie egzemplarz trzyma $\sim$230~V pod pełnym obciążeniem. Analiza wg O-1: 230~V jest w gnieździe „na pusto'', ale tor ma dużą rezystancję szeregową — przy poborze kilkunastu A napięcie na ładowarce się załamuje; kandydaci: wyrobione/niedokręcone gniazdo, przedłużacz (zwłaszcza bęben), częściowo przerwana żyła, luźny N (w 3f: asymetria — wtedy część domu ma napięcie \emph{zawyżone}). „Inne urządzenia działają'' niczego nie wyklucza — pobierają za mały prąd, by ujawnić wadę (na 10~$\Omega$ telewizor traci 0,5~V, ładowarka 16~A — 160~V). Postępowanie: T1 (U przed/po starcie), T2 (6~A: spadek proporcjonalnie mniejszy $\Rightarrow$ rezystancja szeregowa potwierdzona), T4+T5 (czajnik + dotyk: lokalizacja), $\rightarrow$ elektryk: napięcie pod obciążeniem, spadki na odcinkach, zaciski, N--PE. \warn{Priorytet pilny: miejsce spadku napięcia wydziela ciepło — ryzyko pożarowe.} Werdykt: instalacja; ochrona podnapięciowa ładowarki zadziałała prawidłowo.
+
+\section{Wymagania instalacyjne — ściąga per model}\label{sec:wymagania}
+Wartości referencyjne do rozmów (finalny dobór zawsze przez elektryka na miejscu — metoda ułożenia, długość trasy, temperatura; PN-HD 60364-5-52):
+
+{\small
+\begin{tabularx}{\textwidth}{@{}p{3.1cm}p{2.5cm}p{2.9cm}p{2.6cm}Y@{}}
+\toprule
+\textbf{\sffamily Model} & \textbf{\sffamily Zasilanie} & \textbf{\sffamily Gniazdo} & \textbf{\sffamily Przewód (min.)} & \textbf{\sffamily Zabezpieczenia}\\
+\midrule
+Q37 / P (3,7 kW, 16 A, 1f) & 230 V, obwód dedykowany & Schuko dobrej jakości (ciągle: lepiej 10--13~A) lub CEE 16 A & 3$\times$2,5 mm\textsuperscript{2} Cu & B16 + RCD typ A 30 mA (RDC-DD w ładowarce)\\
+\addlinespace[2pt]
+Q74 / P72 (7,4 kW, 32 A, 1f) & 230 V, obwód dedykowany & \key{CEE 32 A} (IEC 60309-1); Schuko tylko przez adapter z ograniczeniem prądu, dorywczo & 3$\times$6 mm\textsuperscript{2} Cu; trasa $>$15--20 m: sprawdzić spadek U & B32 + RCD typ A 30 mA; sprawdzić moc umowną!\\
+\addlinespace[2pt]
+Q11 (11 kW, 3$\times$16 A) & 400 V 3f & CEE 16 A 5p & 5$\times$2,5 mm\textsuperscript{2} Cu & B16 3f + RCD typ A 30 mA; komplet i kolejność faz\\
+\addlinespace[2pt]
+Wallbox PRIME/HM 11 kW & 400 V 3f, na stałe & — & 5$\times$2,5 mm\textsuperscript{2} Cu & B16 3f + RCD typ A 30 mA; DLB opcjonalnie\\
+\addlinespace[2pt]
+Wallbox PRIME/HM 22 kW & 400 V 3f, na stałe & — & 5$\times$6 mm\textsuperscript{2} Cu & B32 3f + RCD typ A 30 mA; moc umowna, DLB\\
+\bottomrule
+\end{tabularx}
+}
+
+Wspólne: sprawny PE (obowiązkowo), RCD typ B \emph{niewymagany} (RDC-DD 6~mA DC wbudowany — IEC 62955 / IEC 61851-1 / PN-HD 60364-7-722), charakterystyka B wystarcza (brak prądu rozruchowego), zalecany SPD typ 2, gniazda zewnętrzne min. IP44, zakres pracy $-30$...$+50$~°C, bez przedłużaczy w pracy ciągłej (a bęben zawsze w pełni rozwinięty).
+
+\section{Źródła}\label{sec:zrodla}
+\subsection{W folderze projektowym}
+\begin{itemize}
+\item „Przewodnik w zakresie wykonywania pomiarów elektrycznych stacji ładowania oraz sposoby ich dokumentowania'', Warszawa 2024, v1.1 — \texttt{Przewodnik\_\allowbreak pomiary\_\allowbreak stacji\_\allowbreak ladowania.pdf} (5 pomiarów obowiązkowych, kryteria, protokoły).
+\item Metrel, „Guide for Testing and Verification of Low Voltage Installations'' — \texttt{diagnostyka/\allowbreak Metrel-handboek...pdf} (układy TT/TN/IT, metodyka pomiarów Zs/RCD/izolacji/uziomu — podręcznik dla elektryka i serwisu wyjazdowego).
+\item Norma IEC 61851-1 — \texttt{KONTEKST/iec-61851-1\_\allowbreak compress.pdf} (stany CP, wymagania EVSE).
+\item Manual Q-series — \texttt{Q11\_\allowbreak architektura/QSeries\_\allowbreak ...docx} (ochrony wbudowane, zakresy pracy, troubleshooting); WALLBOX MANUAL 3.0 — \texttt{wallbox\_\allowbreak 22kw\_\allowbreak kabel11kw/}.
+\item Katalog usterek U-xxx — \texttt{AMPERE\_\allowbreak POINT\_\allowbreak porownanie\_\allowbreak ladowarek\_\allowbreak v2.html}; przyrządy — \texttt{AMPERE\_\allowbreak POINT\_\allowbreak przyrzady\_\allowbreak pomiarowe\_\allowbreak v1.pdf}, \texttt{aparatura\_\allowbreak pomiarowa/}, \texttt{custom\_\allowbreak device/}.
+\item Karta kabla H07BZ5-F — \texttt{zlacza\_\allowbreak dokumentacja/karta\_\allowbreak katalogowa\_\allowbreak kabel\_\allowbreak H07BZ5-F\_\allowbreak Zhonghui.pdf} (żyła do 90~°C).
+\end{itemize}
+\subsection{Normy}
+IEC 61851-1 (system ładowania przewodowego, stany CP); IEC 62752 (IC-CPD — ładowarki przenośne tryb 2); IEC 62955 (RDC-DD 6 mA DC); PN-HD 60364-7-722 (instalacje zasilania EV); PN-HD 60364-5-52 (obciążalność przewodów); PN-HD 60364-6 (sprawdzenia odbiorcze i okresowe); PN-EN 50160 (parametry napięcia: 230 V $\pm$10\%); IEC 60309-1 (gniazda CEE); IEC 60884-1 (gniazda domowe); IEC 62893 / EN 50620 (kable ładowania EV).
+\subsection{Internet — do pogłębienia tematów}
+\begin{itemize}
+\item Spadki napięcia i diagnoza toru: \url{https://electricvehiclegeek.com/ev-charger-voltage-drop/}; \url{https://www.elec-mate.com/guides/voltage-too-high-or-low}
+\item Przerwany N / PEN-fault: \url{https://www.contactelectrician.co.uk/blog/why-is-my-ev-charger-showing-a-pen-fault-voltage-drop-issues/}; \url{https://elintacharge.com/glossary/neutral-loss-protection/}
+\item Wahania sieci a przerywanie ładowania: \url{https://www.sinalda.com/why-does-ev-charger-keep-dropping-out/}
+\item RCD przy EV (typ A vs B, upływy DC, oślepianie): \url{https://professional-electrician.com/technical/is-a-ok/}; \url{https://www.evmotion.eu/blog/when-it-comes-to-ev-charging-rcd-selection--is--type-a--good-enough/}
+\item Wyzwalanie różnicówki — diagnostyka (PL): \url{https://el12.com/pl/poradniki/dlaczego-wybija-roznicowka-270}; \url{https://elektroninstal.pl/blog/jak-sprawdzic-co-wybija-roznicowke-kompletny-przewodnik-po-diagnostyce-i-przyczynach-awarii/}
+\item Wybijanie wyłącznika przy EV: \url{https://electricvehiclegeek.com/ev-charger-circuit-breaker-keeps-tripping/}
+\item Ładowanie z gniazda domowego — ograniczenia (PL): \url{https://electricmobility.store/ladowanie-samochodu-elektrycznego-w-zwyklym-gniazdku-za-i-przeciw/}; montaż stacji (PL): \url{https://evolucja.pro/jak-zamontowac-stacje-ladowania/}; \url{https://3ev.pl/wp-content/uploads/2021/11/Jak-zamontowac-stacje-ladowania-samochodow-elektrycznych.pdf}
+\item Nasze poradniki: \url{https://www.amperepoint.pl/blogs/poradniki/ev-hybrid-charging-from-a-to-z-complete-guide-to-plugs-sockets-and-connectors} oraz karty produktów na \url{https://www.amperepoint.pl}
+\end{itemize}
+
+\vspace{6pt}
+{\color{rulegrey}\hrule height 1pt}\vspace{4pt}
+{\footnotesize\sffamily Dokument wewnętrzny AMPERE POINT. Wartości normowe i kryteria podano orientacyjnie do rozmowy telefonicznej — decyzje wykonawcze podejmuje elektryk z uprawnieniami na podstawie pomiarów na miejscu. Wersjonowanie: kolejne wydania jako \_\allowbreak v2, \_\allowbreak v3 (starych nie kasować).}
+
+\end{document}

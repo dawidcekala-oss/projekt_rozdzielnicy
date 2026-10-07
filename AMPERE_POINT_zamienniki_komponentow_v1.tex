@@ -1,0 +1,122 @@
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.92]
+\setsansfont{DejaVu Sans}[Scale=0.92]
+\setmonofont{DejaVu Sans Mono}[Scale=0.84]
+\usepackage{amssymb}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xltabular}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+
+\definecolor{navy}{RGB}{19,40,82}
+\definecolor{rulegrey}{RGB}{180,190,205}
+\definecolor{accent}{RGB}{0,110,90}
+\definecolor{good}{RGB}{20,120,70}
+\definecolor{watch}{RGB}{170,110,10}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=accent,citecolor=navy}
+
+\emergencystretch=3em
+\hbadness=3000
+
+\titleformat{\section}{\large\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{1.1em}{0.35em}
+\titlespacing*{\subsection}{0pt}{0.7em}{0.2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlist[itemize]{leftmargin=1.2em,itemsep=0.1em,topsep=0.15em}
+\newcommand{\key}[1]{\textbf{\color{navy}#1}}
+\newcommand{\ok}[1]{\textbf{\color{good}#1}}
+\newcommand{\watch}[1]{\textbf{\color{watch}#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{rulegrey}\leaders\hrule height \footrulewidth\hfill}}
+\fancyfoot[L]{\footnotesize\sffamily\color{rulegrey}AMPERE POINT — zamienniki komponentów dostępne w Polsce, v1}
+\fancyfoot[R]{\footnotesize\sffamily\color{rulegrey}\thepage}
+
+\begin{document}
+{\sffamily\bfseries\color{navy}\LARGE AMPERE POINT — zamienniki komponentów dostępne w Polsce}\\[3pt]
+{\sffamily\large\color{navy} Gdzie kupić w kraju oryginały lub uzasadnione podstawienia dla elementów P72/P00}\\[6pt]
+{\color{rulegrey}\hrule height 1pt}\vspace{4pt}
+{\footnotesize\sffamily Wersja v1 \quad•\quad data: 2026-07-03 \quad•\quad podstawa: lista elementów z \texttt{p72\_komponenty.txt} / \texttt{p00\_komponenty.txt}, dane katalogowe TME.eu, karty katalogowe producentów}\\[2pt]
+
+\section{Pytanie wyjściowe: ST VIPer22A}
+\ok{Tak — jest dostępny wprost, bez potrzeby szukania zamiennika.} Wariant \key{VIPER22ADIP-E} (obudowa DIP8, THT) jest w ofercie \href{https://www.tme.eu/en/details/viper22adip-e/voltage-regulators-pwm-circuits/stmicroelectronics/}{TME.eu} — stan magazynowy 278 szt., cena 1,42 USD/szt.\ (1 szt.) schodząca do 0,93 USD/szt.\ przy 25+ szt. To oryginalny element od STMicroelectronics, więc parametry są identyczne z tym, co jest na płytce — nie jest to podstawienie tylko normalny zakup.
+
+\section{Zasada doboru zamienników}
+Dla pozostałych elementów (z dokumentacji P72/P00) chińscy dostawcy — Zeming Langxi, ZHT, Fanhar — nie mają dystrybucji w Polsce/UE, więc \key{nie da się kupić dokładnie tych samych numerów katalogowych}. Zamienniki dobrano wg trzech kryteriów: (1) ten sam typ elementu i zasada działania, (2) zgodna klasa parametrów kluczowych (przekładnia, prąd, napięcie, sposób montażu PCB), (3) realna dostępność u polskiego dystrybutora — w praktyce niemal wszystko poniżej wskazuje na \key{TME} (Transfer Multisort Elektronik, Łódź), bo to jedyny dystrybutor w kraju z wystarczająco szeroką ofertą przekładników i przekaźników mocy tej klasy. Tam, gdzie dopasowanie nie jest pewne, jest to jawnie oznaczone — zgodnie z zasadą projektu: żadnych twierdzeń bez podstawy.
+
+\section{Tabela zamienników}
+\footnotesize
+\begin{xltabular}{\linewidth}{@{}p{2.6cm} p{2.5cm} Y p{2.6cm}@{}}
+\toprule
+\textbf{Oryginał (model)} & \textbf{Rola w ładowarce} & \textbf{Zamiennik w Polsce} & \textbf{Status} \\
+\midrule
+\endhead
+
+ZMCT430 \newline \footnotesize (Zeming Langxi) — P72+P00 &
+Pomiar prądu ładowania / licznik energii &
+\key{Talema AP-1000} lub \key{AP-2000} (PCB, przekładnia 1000:1 / 2000:1) — \href{https://www.tme.com/us/en-us/katalog/current-transformers_112516/p,talema_346/}{TME, seria Talema}. Przekładnia rodzinna ZMCT to wg dokumentacji projektu też 1000:1/2000:1 — to najbliższe udokumentowane dopasowanie. &
+\ok{Dobry kandydat} — przed zamówieniem większej ilości zweryfikuj prąd znamionowy pierwotny i rozstaw pinów względem śladu na płytce. \\
+\addlinespace
+
+ZMCT236C \newline \footnotesize (Zeming Langxi) — P72 &
+Drugi przekładnik prądowy — rola niepotwierdzona na schemacie (prawdopodobnie tor upływu) &
+Jak wyżej: \key{Talema AP-1000/AP-2000}. Jeśli rola to faktycznie detekcja upływu, patrz zamiennik ZHT501A poniżej. &
+\watch{Zależne od nierozstrzygniętego pytania} w dokumentacji P72 — dobierz zamiennik dopiero po potwierdzeniu funkcji na schemacie. \\
+\addlinespace
+
+ZHT501A 5A/2,5mA \newline \footnotesize (ZHT) — P00 &
+Detekcja różnicowa prądu upływu (RCD) &
+\key{Talema/Nuvotem seria MD} (np.\ MD0630T01A / MD0630T41A) — czujniki RCM zaprojektowane specjalnie do ładowarek EV wg IEC 62752/IEC 62955, czułe na AC 30\,mA i DC 6\,mA. Ten sam dystrybutor (Nuvotem/Talema) co przekładniki wyżej — \href{https://www.nuvotem.com/en/products/part_number_cross_reference_tme.shtml}{potwierdzona współpraca z TME}. &
+\ok{Obiecujący, potencjalnie lepszy} niż oryginał (jeśli ZHT501A wykrywa tylko składową AC) — ale sprawdź dokładnie interfejs wyjściowy (typ sygnału, wyprowadzenia) względem układu detekcji na płytce P00 przed zamianą. \\
+\addlinespace
+
+ZMPT107-1 / ZHTP107 \newline \footnotesize (Zeming/ZHT) — P72/P00 &
+Pomiar napięcia sieci &
+Nie znaleziono bezpośredniego odpowiednika w ofercie TME w tej sesji. &
+\watch{Otwarte} — wymaga dalszego sprawdzenia (np.\ mała transformatorowa sonda napięciowa lub izolowany dzielnik rezystancyjny, zależnie od faktycznego układu pomiaru na schemacie). Nie zgaduj zamiennika bez tego kroku. \\
+\addlinespace
+
+HF165F-50 (12-HT) \newline \footnotesize (Hongfa) — P72, 2$\times$ &
+Rozłączanie L+N — dwa przekaźniki SPST 50\,A/250\,VAC, niezatrzaskowe &
+\key{Ten sam element, ten sam producent.} TME jest oficjalnym dystrybutorem marki Hongfa Relay (osobne kategorie Power/Automotive/Miniature Electromagnetic Relays na \href{https://www.tme.eu/en/katalog/relays_40/p,hongfa-relay_575/}{tme.eu}). &
+\watch{Bardzo prawdopodobne, ale niepotwierdzone} — nie udało się w tej sesji wywołać bezpośrednio strony produktu HF165F-50-12-HT na tme.eu; sprawdź dokładny wariant (napięcie cewki) i dostępność przed zamówieniem. \\
+\addlinespace
+
+FANHAR FH35L-40-2AT-L2 \newline \footnotesize (Zhejiang Fanhar) — P00 &
+Rozłączanie obu biegunów jednym elementem — 2$\times$40\,A, zatrzaskowy magnetycznie &
+Fanhar nie ma dystrybucji w PL/UE. Najbliższy sensowny zamiennik: przekaźnik zatrzaskowy \key{Hongfa serii HFE39} (np.\ HFE39-40, 40\,A, zatrzaskowy) — ten sam producent co przekaźnik z P72, jeden dystrybutor (TME) na oba elementy. &
+\watch{Zamiennik funkcjonalny, nie 1:1} — dobierz dokładny wariant z dwoma stykami (odpowiednik „2AT'' u Fanhar), napięciem cewki i rozstawem pinów pod istniejący ślad PCB. \\
+
+\bottomrule
+\end{xltabular}
+\normalsize
+
+\section{Uwagi praktyczne}
+\begin{itemize}
+\item \key{TME jako jeden dystrybutor.} Prawie wszystkie zamienniki wyżej (Talema, Hongfa, ST) są dostępne w jednym miejscu — upraszcza to zamówienie i logistykę serwisu w porównaniu z sprowadzaniem oryginałów z Chin.
+\item \key{Ceny orientacyjne, w USD z widoku międzynarodowego TME} (nie byłem zalogowany na wersję PLN) — przed zamówieniem sprawdź aktualną cenę i dostępność w PLN bezpośrednio na tme.eu.
+\item \key{Zamienniki elektryczne $\neq$ zamienniki mechaniczne.} Dopasowanie parametrów elektrycznych (przekładnia, prąd, napięcie) nie gwarantuje zgodności rozstawu pinów/footprintu na istniejącej płytce P72/P00 — dla każdej pozycji oznaczonej \watch{do potwierdzenia} zrób realne porównanie z fizycznym śladem na płytce (lub licz się z przeróbką) przed zakupem większej partii.
+\item \key{ZMPT107-1/ZHTP107 to jedyna pozycja bez żadnego kandydata} — zamiast zgadywać, warto to potraktować jako osobne pytanie do rozstrzygnięcia (ewentualnie do listy pytań do producenta, o ile ta ścieżka zostanie ponownie otwarta).
+\end{itemize}
+
+\section{Źródła i karty katalogowe}
+\footnotesize
+\begin{itemize}
+\item VIPer22A-E — \href{https://www.st.com/resource/en/datasheet/viper22a-e.pdf}{karta katalogowa ST}, \href{https://www.tme.eu/en/details/viper22adip-e/voltage-regulators-pwm-circuits/stmicroelectronics/}{oferta TME}
+\item Hongfa Relay w TME — \href{https://www.tme.eu/en/katalog/relays_40/p,hongfa-relay_575/}{katalog}; HF165F-50 — \href{https://www.hongfa.com/product/power-relay/HF165F-50}{strona produktu Hongfa}; HFE39-40 — \href{https://www.hongfa.com/product/latching-relay/HFE39-40}{strona produktu Hongfa}
+\item Talema/Nuvotem przekładniki prądowe w TME — \href{https://www.tme.com/us/en-us/katalog/current-transformers_112516/p,talema_346/}{katalog TME}; seria MD (RCM do EV) — \href{https://talema.com/product-tag/sensor/}{strona produktowa Talema}, \href{https://www.nuvotem.com/en/products/part_number_cross_reference_tme.shtml}{cross-reference Nuvotem$\leftrightarrow$TME}
+\end{itemize}
+
+\end{document}

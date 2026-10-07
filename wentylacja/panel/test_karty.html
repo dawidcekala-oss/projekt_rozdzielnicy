@@ -1,0 +1,23 @@
+<!doctype html><meta charset="utf-8"><title>test karty</title>
+<body style="background:#16181d;color:#eee;font:13px monospace;padding:16px">
+<pre id="wynik">uruchamiam...</pre><div id="miejsce"></div>
+<script type="module">
+const log = [];
+function p(t){ log.push(String(t)); document.getElementById('wynik').textContent = log.join('\n'); }
+window.addEventListener('error', e => p('BLAD GLOBALNY: ' + e.message));
+try {
+  await import('./biuro-panel.js');
+  p('1. import modulu: OK');
+} catch (e) { p('1. import modulu: BLAD -> ' + e.message); }
+p('2. element zarejestrowany: ' + !!customElements.get('biuro-panel'));
+const cfg = {"type": "custom:biuro-panel", "jednostki": [{"slot": "k1", "nazwa": "Hala — płd.-zach.", "encje": {"pracuje": "binary_sensor.klimatyzacja_biuro_pracuje", "online": "binary_sensor.klimatyzacja_biuro_sonda_online", "alarm": "binary_sensor.klimatyzacja_biuro_sterowanie_nieskuteczne", "klapy": "binary_sensor.klimatyzacja_biuro_klapy", "bieg": "sensor.klimatyzacja_biuro_wentylator", "temperatura": "sensor.klimatyzacja_biuro_temperatura", "wymiennik": "sensor.klimatyzacja_biuro_wymiennik", "potwierdzenie": "sensor.klimatyzacja_biuro_potwierdzenie", "wlacznik": "switch.klimatyzacja_biuro", "nastawa": "number.klimatyzacja_biuro_nastawa", "tryb": "select.klimatyzacja_biuro_tryb", "bieg_zadany": "select.klimatyzacja_biuro_bieg"}}, {"slot": "k2", "nazwa": "Hala — płn.-zach."}, {"slot": "k3", "nazwa": "Hala — północ"}, {"slot": "k4", "nazwa": "Akwarium"}, {"slot": "j1", "nazwa": "Open space — lewa"}, {"slot": "j2", "nazwa": "Open space — prawa"}, {"slot": "j3", "nazwa": "Sala 1"}, {"slot": "j4", "nazwa": "Sala 2"}, {"slot": "j5", "nazwa": "Sala 3"}]};
+try {
+  const el = document.createElement('biuro-panel');
+  el.setConfig(cfg);
+  p('3. setConfig: OK');
+  el.hass = { states: {}, callService(){} };
+  p('4. set hass przy pustych encjach: OK');
+  document.getElementById('miejsce').appendChild(el);
+  p('5. wstawienie do strony: OK, znacznikow: ' + el.shadowRoot.querySelectorAll('.jedn').length);
+} catch (e) { p('BLAD RUNTIME: ' + e.message); p(String(e.stack).slice(0, 400)); }
+</script></body>

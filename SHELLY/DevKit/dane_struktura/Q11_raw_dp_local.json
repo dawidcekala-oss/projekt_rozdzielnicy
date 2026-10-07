@@ -1,0 +1,691 @@
+{
+  "home_assistant": {
+    "arch": "x86_64",
+    "dev": false,
+    "docker": true,
+    "hassio": false,
+    "installation_type": "Home Assistant Container",
+    "os_name": "Linux",
+    "os_version": "6.18.33.2-microsoft-standard-WSL2",
+    "python_version": "3.14.5",
+    "timezone": "Europe/Warsaw",
+    "version": "2026.6.4",
+    "virtualenv": false,
+    "container_arch": "amd64",
+    "run_as_root": true
+  },
+  "custom_components": {
+    "hacs": {
+      "documentation": "https://hacs.xyz/docs/use/",
+      "version": "2.0.5",
+      "requirements": [
+        "aiogithubapi>=22.10.1"
+      ]
+    },
+    "tuyaextend_amperepoint": {
+      "documentation": "https://github.com/amperepoint/tuyaextend-amperepoint",
+      "version": "0.6.0",
+      "requirements": []
+    },
+    "tuya_local": {
+      "documentation": "https://github.com/make-all/tuya-local",
+      "version": "2026.7.2",
+      "requirements": [
+        "tinytuya==1.20.0",
+        "tuya-device-sharing-sdk~=0.2.4"
+      ]
+    }
+  },
+  "integration_manifest": {
+    "domain": "tuyaextend_amperepoint",
+    "name": "AmperePoint",
+    "after_dependencies": [
+      "frontend",
+      "lovelace",
+      "tuya"
+    ],
+    "codeowners": [],
+    "config_flow": true,
+    "documentation": "https://github.com/amperepoint/tuyaextend-amperepoint",
+    "integration_type": "device",
+    "iot_class": "calculated",
+    "issue_tracker": "https://github.com/amperepoint/tuyaextend-amperepoint/issues",
+    "requirements": [],
+    "version": "0.6.0",
+    "is_built_in": false,
+    "overwrites_built_in": false
+  },
+  "setup_times": {
+    "null": {
+      "setup": 0.008399544000001313
+    },
+    "01M0AAZQ8VEXFMNSGMK9NJ4TYA": {
+      "wait_import_platforms": -0.09351324499999869,
+      "config_entry_setup": 0.14325872300000064
+    },
+    "01KYVNPQBDHVDSKK71PRT9AYDG": {
+      "wait_import_platforms": -0.08574713600000017,
+      "config_entry_setup": 0.14791469600000084
+    },
+    "01M14AP82NNKA6TGH7M6MEJC6V": {
+      "wait_import_platforms": -0.08582215200000043,
+      "config_entry_setup": 0.1416807010000003
+    },
+    "01KZNXA8XBTPAJNQ340DZ9H7JJ": {
+      "wait_import_platforms": -0.08487414500000057,
+      "config_entry_setup": 0.14524371100000089
+    }
+  },
+  "data": {
+    "entry": {
+      "title": "timer_test",
+      "data": {
+        "auto_discovered": true,
+        "model": "q_series",
+        "name": "timer_test",
+        "session_energy_mode": "total_delta",
+        "source_charge_switch": "**REDACTED**",
+        "source_device_id": "80e9a5ed591b072a7d0c44c7d58d22f2",
+        "source_integration": "tuya",
+        "source_name": "timer_test",
+        "source_physical_ids": [
+          "bfa1efdb234e79915f6sfs"
+        ]
+      },
+      "options": {}
+    },
+    "last_data": {
+      "model": "AmperePoint Q Series (auto)",
+      "status": "Gotowy",
+      "vehicle_connected": false,
+      "charging": false,
+      "switch_enabled": true,
+      "charging_complete": false,
+      "power_kw": 0.0,
+      "session_energy_kwh": 0.0,
+      "total_energy_kwh": 63.8,
+      "last_session_energy_kwh": 0.01,
+      "session_cost": 0.0,
+      "tariff": 1.2,
+      "currency": "PLN",
+      "phase_count": 0,
+      "error": "Brak bledu",
+      "current_limit_a": 16.0,
+      "temperature_c": 23.0,
+      "cp_voltage_v": null,
+      "session_duration_s": null,
+      "session_duration_min": null,
+      "voltage_l1": null,
+      "voltage_l2": null,
+      "voltage_l3": null,
+      "current_l1": null,
+      "current_l2": null,
+      "current_l3": null,
+      "power_l1": null,
+      "power_l2": null,
+      "power_l3": null,
+      "work_mode": "charge_now",
+      "target_energy_kwh": 1.0,
+      "schedule_start_time": {
+        "__type": "<class 'datetime.time'>",
+        "isoformat": "00:00:00"
+      },
+      "schedule_end_time": {
+        "__type": "<class 'datetime.time'>",
+        "isoformat": "00:00:00"
+      },
+      "system_version": "V1",
+      "raw_dp_count": 17,
+      "raw_dp": {
+        "forward_energy_total": 6380,
+        "work_state": "charger_free",
+        "charge_cur_set": 16,
+        "phase_a": "AAAAAAAAAA==",
+        "phase_b": "AAAAAAAAAA==",
+        "phase_c": "AAAAAAAAAA==",
+        "power_total": 0,
+        "fault": 0,
+        "connection_state": "controlpi_12v",
+        "work_mode": "charge_now",
+        "energy_charge": 1,
+        "switch": true,
+        "local_timer": "AAA=",
+        "system_version": "V1",
+        "temp_current": 23,
+        "charge_energy_once": 1,
+        "mode_set": ""
+      },
+      "dp_metadata": {
+        "charge_cur_set": {
+          "dp_id": 4,
+          "type": "Integer",
+          "unit": "A",
+          "scale": 0,
+          "min": 6,
+          "max": 32,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "charge_energy_once": {
+          "dp_id": 25,
+          "type": "Integer",
+          "unit": "kW\u00b7h",
+          "scale": 2,
+          "min": 1,
+          "max": 999999,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "connection_state": {
+          "dp_id": 13,
+          "type": "Enum",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": [
+            "controlpi_12v",
+            "controlpi_12v_pwm",
+            "controlpi_9v",
+            "controlpi_9v_pwm",
+            "controlpi_6v",
+            "controlpi_6v_pwm",
+            "controlpi_error"
+          ],
+          "labels": null,
+          "writable": false
+        },
+        "energy_charge": {
+          "dp_id": 17,
+          "type": "Integer",
+          "unit": "kW\u00b7h",
+          "scale": 0,
+          "min": 1,
+          "max": 200,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "fault": {
+          "dp_id": 10,
+          "type": "Bitmap",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": [
+            "ov_cr",
+            "ov2_cr_fault",
+            "ov_vol",
+            "undervoltage_alarm",
+            "contactor_adhesion",
+            "contactor_fault",
+            "earth_fault",
+            "meter_hardware_alarm",
+            "scram_fault",
+            "cp_fault",
+            "meter_commu_fault",
+            "card_reader_fault",
+            "cir_short_fault",
+            "adhesion_fault",
+            "self_test_alarm",
+            "leakagecurr_alarm",
+            "ov_Temp_fault"
+          ],
+          "writable": false
+        },
+        "forward_energy_total": {
+          "dp_id": 1,
+          "type": "Integer",
+          "unit": "kW\u00b7h",
+          "scale": 2,
+          "min": 0,
+          "max": 99999999,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "local_timer": {
+          "dp_id": 19,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "mode_set": {
+          "dp_id": 33,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "phase_a": {
+          "dp_id": 6,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "phase_b": {
+          "dp_id": 7,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "phase_c": {
+          "dp_id": 8,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "power_total": {
+          "dp_id": 9,
+          "type": "Integer",
+          "unit": "kW",
+          "scale": 3,
+          "min": 0,
+          "max": 99999999,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "switch": {
+          "dp_id": 18,
+          "type": "Boolean",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "system_version": {
+          "dp_id": 23,
+          "type": "String",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "temp_current": {
+          "dp_id": 24,
+          "type": "Integer",
+          "unit": "\u2103",
+          "scale": 0,
+          "min": -40,
+          "max": 200,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "work_mode": {
+          "dp_id": 14,
+          "type": "Enum",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": [
+            "charge_now",
+            "charge_energy",
+            "charge_schedule"
+          ],
+          "labels": null,
+          "writable": true
+        },
+        "work_state": {
+          "dp_id": 3,
+          "type": "Enum",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": [
+            "charger_free",
+            "charger_insert",
+            "charger_free_fault",
+            "charger_wait",
+            "charger_charging",
+            "charger_pause",
+            "charger_end",
+            "charger_fault"
+          ],
+          "labels": null,
+          "writable": false
+        }
+      },
+      "source_type": "native_tuya",
+      "source_online": true,
+      "pv_power_w": null,
+      "grid_power_w": null,
+      "house_power_w": null,
+      "battery_power_w": null,
+      "battery_soc": null,
+      "surplus_mode": "off",
+      "surplus_state": "disabled",
+      "surplus_available_w": 0,
+      "surplus_current_a": null,
+      "surplus_charging": false,
+      "surplus_reason": "mode_off",
+      "session_pv_energy_kwh": 0.0,
+      "session_pv_share_pct": null,
+      "daily_pv_energy_kwh": 0.0
+    },
+    "native_tuya": {
+      "available": true,
+      "category": "qccdz",
+      "product_id": "jhlyzpk5nfk28nrh",
+      "status": {
+        "forward_energy_total": 6380,
+        "work_state": "charger_free",
+        "charge_cur_set": 16,
+        "phase_a": "AAAAAAAAAA==",
+        "phase_b": "AAAAAAAAAA==",
+        "phase_c": "AAAAAAAAAA==",
+        "power_total": 0,
+        "fault": 0,
+        "connection_state": "controlpi_12v",
+        "work_mode": "charge_now",
+        "energy_charge": 1,
+        "switch": true,
+        "local_timer": "AAA=",
+        "system_version": "V1",
+        "temp_current": 23,
+        "charge_energy_once": 1,
+        "mode_set": ""
+      },
+      "definitions": {
+        "charge_cur_set": {
+          "dp_id": 4,
+          "type": "Integer",
+          "unit": "A",
+          "scale": 0,
+          "min": 6,
+          "max": 32,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "charge_energy_once": {
+          "dp_id": 25,
+          "type": "Integer",
+          "unit": "kW\u00b7h",
+          "scale": 2,
+          "min": 1,
+          "max": 999999,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "connection_state": {
+          "dp_id": 13,
+          "type": "Enum",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": [
+            "controlpi_12v",
+            "controlpi_12v_pwm",
+            "controlpi_9v",
+            "controlpi_9v_pwm",
+            "controlpi_6v",
+            "controlpi_6v_pwm",
+            "controlpi_error"
+          ],
+          "labels": null,
+          "writable": false
+        },
+        "energy_charge": {
+          "dp_id": 17,
+          "type": "Integer",
+          "unit": "kW\u00b7h",
+          "scale": 0,
+          "min": 1,
+          "max": 200,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "fault": {
+          "dp_id": 10,
+          "type": "Bitmap",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": [
+            "ov_cr",
+            "ov2_cr_fault",
+            "ov_vol",
+            "undervoltage_alarm",
+            "contactor_adhesion",
+            "contactor_fault",
+            "earth_fault",
+            "meter_hardware_alarm",
+            "scram_fault",
+            "cp_fault",
+            "meter_commu_fault",
+            "card_reader_fault",
+            "cir_short_fault",
+            "adhesion_fault",
+            "self_test_alarm",
+            "leakagecurr_alarm",
+            "ov_Temp_fault"
+          ],
+          "writable": false
+        },
+        "forward_energy_total": {
+          "dp_id": 1,
+          "type": "Integer",
+          "unit": "kW\u00b7h",
+          "scale": 2,
+          "min": 0,
+          "max": 99999999,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "local_timer": {
+          "dp_id": 19,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "mode_set": {
+          "dp_id": 33,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "phase_a": {
+          "dp_id": 6,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "phase_b": {
+          "dp_id": 7,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "phase_c": {
+          "dp_id": 8,
+          "type": "Raw",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "power_total": {
+          "dp_id": 9,
+          "type": "Integer",
+          "unit": "kW",
+          "scale": 3,
+          "min": 0,
+          "max": 99999999,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "switch": {
+          "dp_id": 18,
+          "type": "Boolean",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": true
+        },
+        "system_version": {
+          "dp_id": 23,
+          "type": "String",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "temp_current": {
+          "dp_id": 24,
+          "type": "Integer",
+          "unit": "\u2103",
+          "scale": 0,
+          "min": -40,
+          "max": 200,
+          "step": 1,
+          "range": null,
+          "labels": null,
+          "writable": false
+        },
+        "work_mode": {
+          "dp_id": 14,
+          "type": "Enum",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": [
+            "charge_now",
+            "charge_energy",
+            "charge_schedule"
+          ],
+          "labels": null,
+          "writable": true
+        },
+        "work_state": {
+          "dp_id": 3,
+          "type": "Enum",
+          "unit": null,
+          "scale": 0,
+          "min": null,
+          "max": null,
+          "step": null,
+          "range": [
+            "charger_free",
+            "charger_insert",
+            "charger_free_fault",
+            "charger_wait",
+            "charger_charging",
+            "charger_pause",
+            "charger_end",
+            "charger_fault"
+          ],
+          "labels": null,
+          "writable": false
+        }
+      }
+    }
+  },
+  "issues": []
+}

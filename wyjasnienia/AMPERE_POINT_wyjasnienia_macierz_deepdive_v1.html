@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMPERE POINT — „Sęk w macierzy”: analiza dogłębna (miernik izolacji)</title>
+<style>
+  :root{
+    --navy:#16315c; --navy2:#1f4a86; --ink:#1c2430; --muted:#5b6675;
+    --line:#e2e7ef; --bg:#f5f7fb; --card:#ffffff;
+    --good:#1f8a4c; --good-bg:#e7f5ec;
+    --watch:#b9791b; --watch-bg:#fbf1de;
+    --bad:#b3261e; --bad-bg:#fbe9e7;
+    --info:#566173; --info-bg:#eef1f5;
+    --shadow:0 1px 2px rgba(20,40,80,.06),0 6px 20px rgba(20,40,80,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"DejaVu Sans",sans-serif;
+    color:var(--ink); background:var(--bg); line-height:1.6; font-size:16px}
+  a{color:var(--navy2); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1020px; margin:0 auto; padding:0 20px}
+  header.top{background:linear-gradient(135deg,#16315c,#23508f); color:#fff; padding:30px 0 22px; border-bottom:4px solid #0e2447}
+  header.top h1{margin:0; font-size:24px}
+  header.top p{margin:6px 0 0; color:#d6e2f5; font-size:14.5px; max-width:760px}
+  nav.toc{position:sticky; top:0; z-index:20; background:#fff; border-bottom:1px solid var(--line)}
+  nav.toc .wrap{display:flex; gap:2px; flex-wrap:wrap}
+  nav.toc a{font-size:13.5px; font-weight:600; color:var(--muted); padding:12px 9px; white-space:nowrap}
+  nav.toc a:hover{color:var(--navy); text-decoration:none}
+  main{padding:26px 0 70px}
+  h2.sec{font-size:21px; color:var(--navy); margin:34px 0 4px; padding-top:8px}
+  h3.sub{font-size:16.5px; color:var(--navy); margin:20px 0 6px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px 22px; margin:14px 0}
+  .quote{background:var(--info-bg); border-left:4px solid var(--navy2); border-radius:8px; padding:10px 14px; font-style:italic; color:#36404e; font-size:14.5px; margin:10px 0}
+  .badge{display:inline-block; font-size:12px; font-weight:700; padding:2px 10px; border-radius:999px; margin-right:6px; vertical-align:middle}
+  .b-warn{background:var(--watch-bg); color:var(--watch)}
+  .b-bad{background:var(--bad-bg); color:var(--bad)}
+  .b-good{background:var(--good-bg); color:var(--good)}
+  .b-info{background:var(--info-bg); color:var(--info)}
+  table{border-collapse:collapse; width:100%; margin:12px 0; font-size:14.5px}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  th{background:#eef2f8; color:var(--navy)}
+  ul,ol{margin:8px 0; padding-left:22px}
+  li{margin:4px 0}
+  .src{background:#f8fafc; border:1px dashed var(--line); border-radius:10px; padding:10px 16px; font-size:14px; margin-top:14px}
+  .src b{color:var(--navy)}
+  code{background:#eef1f5; border-radius:5px; padding:1px 6px; font-size:.92em}
+  .practice{background:var(--good-bg); border-left:4px solid var(--good); border-radius:8px; padding:10px 14px; font-size:14.5px; margin:12px 0}
+  .alert{background:var(--bad-bg); border-left:4px solid var(--bad); border-radius:8px; padding:10px 14px; font-size:14.5px; margin:12px 0}
+  .note{background:var(--watch-bg); border-left:4px solid var(--watch); border-radius:8px; padding:10px 14px; font-size:14.5px; margin:12px 0}
+  figure{margin:14px 0; text-align:center}
+  figure img{max-width:100%; border:1px solid var(--line); border-radius:10px; background:#fff}
+  figcaption{font-size:13px; color:var(--muted); margin-top:6px}
+  .svgbox{background:#fff; border:1px solid var(--line); border-radius:10px; padding:8px}
+  footer{color:var(--muted); font-size:13px; padding:20px 0 40px; border-top:1px solid var(--line)}
+  .kbd{font-size:.9em; background:#eef1f5; border:1px solid #d6dde8; border-bottom-width:2px; border-radius:5px; padding:0 6px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1>„Sęk w macierzy” — analiza dogłębna matrycy komutacyjnej miernika izolacji</h1>
+    <p>Dotyczy projektu <code>Modul\miernik-izolacji</code> (dokumentacja <code>projekt.pdf</code>, v0.4, 55 stron).
+    Analiza obejmuje: architekturę matrycy, historię doboru elementów (D6→D8), klasy napięć probierczych,
+    pełny model ścieżek pasożytniczych (z uściśleniem względem rozdz. 6.1.1) oraz listę luk i rekomendacji.
+    Wersja v1 · 2026-07-15.</p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#s1">1. Czym jest ta macierz</a>
+    <a href="#s2">2. Historia „sęka” (D6→D8)</a>
+    <a href="#s3">3. 250 V i klasy par</a>
+    <a href="#s4">4. Model upływów + uściślenie</a>
+    <a href="#s5">5. Test przekaźników „macierzowo”</a>
+    <a href="#s6">6. Luki i rekomendacje</a>
+    <a href="#s7">Źródła</a>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+<div class="quote">Notatka z rozmowy: „sęk w macierzy • 250 V – rezystancja między pinami • to w miarę proste •
+główny problem to sprawdzenie, jak będą działały przekaźniki macierzowo”</div>
+
+<!-- ============ 1 ============ -->
+<h2 class="sec" id="s1">1. Czym jest ta macierz naprawdę</h2>
+<div class="card">
+  <p>Miernik bada rezystancję izolacji <b>między każdą parą styków</b> złączy ładowarki: Schuko (3 styki → 3 pary),
+  CEE 16/32 A (5 styków → 10 par), wtyk Type 2 (7 styków → 21 par). Pełna matryca „każdy z każdym”
+  wymagałaby przekaźnika na parę — dla 12 sieci to 66 punktów. Projekt używa architektury
+  <b>dwóch szyn pomiarowych (A i B)</b>: każda z 13 sieci (5 strony zasilania + 7 strony pojazdu + EXT)
+  ma dwa przekaźniki — K<sub>Ai</sub> do szyny probierczej A i K<sub>Bi</sub> do szyny powrotnej B.
+  Wybór pary X–Y = zamknięcie dokładnie K<sub>A,X</sub> i K<sub>B,Y</sub>. To redukcja liczby łączników
+  z O(n²) do O(2n): <b>26 przekaźników zamiast 66</b>, a każda z 66+ kombinacji par (także międzystronnych) pozostaje osiągalna.</p>
+  <figure>
+    <img src="A3_matryca_podglad.png" alt="Arkusz A3 — matryca komutacyjna i gniazda pomiarowe">
+    <figcaption>Arkusz A3 projektu: 13 sieci × (K<sub>A</sub>, K<sub>B</sub>), szyny A/B, gniazda X2–X5.
+    Kopia podglądu z <code>Modul\miernik-izolacji\podglad\</code>.</figcaption>
+  </figure>
+  <h3 class="sub">Trzy właściwości, które odróżniają tę macierz od „podręcznikowej”</h3>
+  <ul>
+    <li><span class="badge b-good">DC, µA</span> Macierz przełącza <b>napięcie stałe i prądy mikroamperowe</b>.
+      Klasyczne zmartwienia macierzy testowych — rezystancja styków (mΩ), stuby dla szybkich sygnałów —
+      są tu <b>bez znaczenia</b> (µA × 100 mΩ = nanowolty; sygnał to czyste DC). Liczy się coś odwrotnego:
+      <b>rezystancja izolacji OTWARTEJ przerwy</b>, bo otwarte zestyki wiszą równolegle do mierzonych megaomów.</li>
+    <li><span class="badge b-good">ZIMNA KOMUTACJA</span> Przekaźniki nigdy nie łączą ani nie przerywają prądu:
+      para zamykana przy wyłączonym źródle, źródło załącza osobny K25, a przed rozłączeniem obiekt jest
+      rozładowany (K26/R20, próg 25 V). Parametr „napięcie łączeniowe DC” przekaźnika <b>przestaje być ograniczeniem</b> —
+      istotna jest tylko statyczna wytrzymałość przerwy.</li>
+    <li><span class="badge b-warn">SNEAK ≠ ZWARCIE</span> Przy dwóch szynach klasyczna ścieżka pasożytnicza
+      (przypadkowe zestawienie cudzego toru) wymaga <b>sklejenia</b> przekaźnika — poprawny sterownik zamyka
+      zawsze tylko 1×K<sub>A</sub> + 1×K<sub>B</sub>. Sneak paths istnieją natomiast <b>rezystancyjnie</b>:
+      przez skończoną izolację otwartych przerw (sekcja 4). To jest właściwy „sęk”.</li>
+  </ul>
+</div>
+
+<!-- ============ 2 ============ -->
+<h2 class="sec" id="s2">2. Historia „sęka”: dobór elementu komutacyjnego (D6 → D8)</h2>
+<div class="card">
+  <p>To dokładnie ten fragment projektu, który w rozmowie nazwano „sękiem”. Chronologia z rejestru decyzji:</p>
+  <table>
+    <tr><th>Krok</th><th>Element</th><th>Co się okazało</th></tr>
+    <tr><td><b>D6</b> (it. 1)</td><td>kontaktron Standex-Meder <b>SIL12-1A72-71D</b></td>
+      <td>Założono „1000 V DC przy komutacji bezprądowej”. Weryfikacja kartą (TME): napięcie łączeniowe
+      <b>200 V DC</b>, wytrzymałość przerwy <b>500 V DC</b> — zero marginesu przy probierczym 500 V. <span class="badge b-bad">ODRZUCONY</span></td></tr>
+    <tr><td>D8 war. 1</td><td>kontaktron HV Sensata/Cynergy3 <b>DAT71210</b> (7 kV, styk wolframowy)</td>
+      <td>Technicznie właściwy; w TME 0 szt., ~80–150 zł/szt. → 26 szt. = 2000–4000 zł, poza budżetem
+      (cały przyrząd: 1197 zł). <span class="badge b-bad">NIEDOSTĘPNY</span></td></tr>
+    <tr><td>D8 war. 3</td><td>obniżenie probierczego do 250 V</td>
+      <td>Rezygnacja z wartości normowej 500 V dla obwodów 230/400 V (IEC 60364-6). <span class="badge b-bad">ODRZUCONE</span></td></tr>
+    <tr><td><b>D8 wybór</b></td><td>RELPOL <b>RM84-2012-35-1012</b> (DPDT 8 A, cewka 12 V/360 Ω)</td>
+      <td>Oba zestyki zwierne <b>połączone szeregowo = podwójna przerwa</b>; probiercze przerwy 2×1000 V AC,
+      cewka–styki 5 kV, odstępy ≥10 mm; ~6–8 zł/szt., dostępny masowo. <span class="badge b-good">WYBRANY (30 szt.)</span></td></tr>
+  </table>
+  <h3 class="sub">Dlaczego podwójna przerwa działa (i jaki ma haczyk)</h3>
+  <ul>
+    <li><b>Wytrzymałość statyczna:</b> nawet gdyby podział napięcia między dwie przerwy był skrajnie nierówny
+      (dzieli się według rezystancji upływu przerw, których nikt nie gwarantuje), pojedyncza przerwa RM84
+      wytrzymuje probierczo 1000 V AC — samo 500 V DC na jednej przerwie mieści się z zapasem. Druga przerwa to margines, nie warunek.</li>
+    <li><b>Redundancja na sklejenie:</b> żeby punkt komutacyjny zamknął się trwale, skleić musiałyby się
+      <b>oba</b> zestyki tego samego przekaźnika. Przy zimnej komutacji (brak łuku, brak prądu) sklejenie jest
+      i tak mało prawdopodobne — podwójna przerwa czyni je praktycznie podwójnie mało prawdopodobnym.</li>
+    <li><span class="badge b-warn">HACZYK</span> <b>Rezystancja izolacji otwartej przerwy nie jest parametrem
+      z karty katalogowej.</b> Przyjęto typowe 10⁹ Ω/przerwę — od tej liczby zależy cały budżet błędu i zakres
+      100 MΩ (sekcja 4). To jest „główny problem do sprawdzenia” z notatki — patrz sekcja 5.</li>
+    <li><b>Ekonomia decyzji:</b> komutacja 26 punktów za ~200 zł zamiast 2000–4000 zł, kosztem dwóch rzeczy:
+      niegwarantowanej R<sub>izo</sub> przerwy (ryzyko mierzalne w prototypie) i większych cewek (33 mA/szt. —
+      ale jednocześnie pracują tylko 3–4 cewki: K<sub>A</sub>+K<sub>B</sub>+K25+HL1 ≈ 130 mA z zasilacza 15 W).</li>
+  </ul>
+</div>
+
+<!-- ============ 3 ============ -->
+<h2 class="sec" id="s3">3. „250 V — rezystancja między pinami”: klasy par pomiarowych</h2>
+<div class="card">
+  <p>Fraza z notatki opisuje sedno rozdziału „Macierz par pomiarowych”: <b>nie każdą parę pinów wolno
+  mierzyć pełnym napięciem</b>, bo sprawna ładowarka ma między niektórymi pinami własną elektronikę.
+  Projekt przypisuje każdej parze klasę (D3):</p>
+  <table>
+    <tr><th>Klasa</th><th>Napięcie</th><th>Które pary</th><th>Dlaczego / co znaczy wynik</th></tr>
+    <tr><td><b>I</b></td><td>500 V DC</td><td>siłowe↔PE, fazy między sobą (obie strony)</td>
+      <td>czysta izolacja; kryterium normowe R ≥ 1 MΩ (IEC 60364-6)</td></tr>
+    <tr><td><b>Z</b></td><td><b>250 V DC</b></td><td>L–N strony zasilania</td>
+      <td>równolegle pracuje zasilacz ładowarki z warystorami; 250 V leży <b>poniżej progu przewodzenia
+      warystora 275 V AC (~430 V DC)</b> — pomiar pokazuje rezystory rozładowujące zasilacza (0,5–2 MΩ);
+      wynik interpretowany, nie kwalifikowany progiem</td></tr>
+    <tr><td><b>E</b></td><td>50 V DC, ≤1 mA</td><td>wszystko z CP lub PP</td>
+      <td>elektronika małego napięcia (generator CP ±12 V przez 1 kΩ; rezystor kodujący PP–PE:
+      220 Ω dla 32 A / 680 Ω dla 20 A / 1,5 kΩ dla 13 A); diagnostyka porównaniem z odczytem oczekiwanym</td></tr>
+  </table>
+  <p>Stąd „250 V — rezystancja między pinami”: dla par z zasilaczem mierzy się rezystancję <b>obniżonym</b>
+  napięciem 250 V, świadomie — nie po to, by wyszło „ładniej”, tylko żeby nie otworzyć warystorów
+  (co dałoby fałszywy wynik „zła izolacja”) i niczego nie uszkodzić. Wynik takiej pary czyta się inaczej:
+  ~1 MΩ to <b>norma konstrukcyjna</b> (rezystory rozładowujące), a podejrzane są wartości wyraźnie niższe.</p>
+  <p>Warto wiedzieć, że firmware wyznacza klasę pary regułą (<code>pary.h → klasaPary()</code>):
+  para z CP/PP → E; para (L*, N) po stronie zasilania → Z; reszta → I. Liczby par: Schuko 3+21=24,
+  CEE 10+21=31 (<code>MAKS_PAR=31</code>) — zgodnie z C(n,2) = 3/10/21. Notatka kierownika „około 8 par”
+  dla złącza 5-stykowego była zaniżona — poprawnie 10.</p>
+</div>
+
+<!-- ============ 4 ============ -->
+<h2 class="sec" id="s4">4. Fizyka macierzy: pełny model ścieżek pasożytniczych (+ uściślenie)</h2>
+<div class="card">
+  <p>Podczas pomiaru pary X–Y wszystkie pozostałe punkty komutacyjne są otwarte, ale „otwarty” znaczy
+  ~2×10⁹ Ω (dwie przerwy po ~10⁹ Ω), a nie nieskończoność. Sieć upływów wygląda tak:</p>
+
+  <div class="svgbox">
+  <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI,Arial" font-size="13">
+    <!-- buses -->
+    <line x1="120" y1="40" x2="120" y2="290" stroke="#b3261e" stroke-width="3"/>
+    <text x="112" y="30" fill="#b3261e" font-weight="700">SZYNA A</text>
+    <line x1="760" y1="40" x2="760" y2="290" stroke="#b3261e" stroke-width="3"/>
+    <text x="752" y="30" fill="#b3261e" font-weight="700">SZYNA B</text>
+    <!-- source -->
+    <text x="10" y="70" fill="#1c2430">źródło 500 V</text>
+    <line x1="20" y1="80" x2="120" y2="80" stroke="#b3261e" stroke-width="2"/>
+    <text x="52" y="97" fill="#566173" font-size="11">K25 + 440 kΩ</text>
+    <!-- shunt -->
+    <line x1="760" y1="290" x2="850" y2="290" stroke="#b3261e" stroke-width="2"/>
+    <text x="790" y="283" fill="#566173" font-size="11">bocznik 1 kΩ → ADC</text>
+    <!-- object path -->
+    <line x1="120" y1="80" x2="330" y2="80" stroke="#1f8a4c" stroke-width="2.4"/>
+    <text x="180" y="72" fill="#1f8a4c" font-weight="600">K_A,X (zamknięty)</text>
+    <rect x="330" y="62" width="120" height="36" rx="7" fill="#e7f5ec" stroke="#1f8a4c"/>
+    <text x="341" y="84" fill="#1f8a4c" font-weight="700">sieć X → obiekt</text>
+    <line x1="450" y1="80" x2="560" y2="80" stroke="#1f8a4c" stroke-width="2.4"/>
+    <rect x="560" y="62" width="86" height="36" rx="7" fill="#e7f5ec" stroke="#1f8a4c"/>
+    <text x="572" y="84" fill="#1f8a4c" font-weight="700">sieć Y</text>
+    <line x1="646" y1="80" x2="760" y2="80" stroke="#1f8a4c" stroke-width="2.4"/>
+    <text x="656" y="72" fill="#1f8a4c" font-weight="600">K_B,Y (zamknięty)</text>
+    <text x="470" y="70" fill="#1c2430" font-weight="700">R_izo?</text>
+    <!-- pair-dependent leaks -->
+    <line x1="390" y1="98" x2="390" y2="160" stroke="#b9791b" stroke-width="2" stroke-dasharray="6 4"/>
+    <line x1="390" y1="160" x2="760" y2="160" stroke="#b9791b" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="398" y="152" fill="#b9791b">otwarta przerwa K_B,X ≈ 2·10⁹ Ω  (równolegle z obiektem)</text>
+    <line x1="120" y1="190" x2="600" y2="190" stroke="#b9791b" stroke-width="2" stroke-dasharray="6 4"/>
+    <line x1="600" y1="190" x2="600" y2="98" stroke="#b9791b" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="128" y="182" fill="#b9791b">otwarta przerwa K_A,Y ≈ 2·10⁹ Ω  (równolegle z obiektem)</text>
+    <!-- fixed leaks -->
+    <line x1="120" y1="240" x2="380" y2="240" stroke="#566173" stroke-width="2" stroke-dasharray="3 5"/>
+    <rect x="380" y="224" width="130" height="32" rx="7" fill="#eef1f5" stroke="#566173"/>
+    <text x="388" y="245" fill="#566173">sieć pływająca z</text>
+    <line x1="510" y1="240" x2="760" y2="240" stroke="#566173" stroke-width="2" stroke-dasharray="3 5"/>
+    <text x="150" y="232" fill="#566173">K_A,z 2·10⁹</text>
+    <text x="620" y="232" fill="#566173">K_B,z 2·10⁹</text>
+    <text x="128" y="270" fill="#566173">× 11 sieci nieużywanych (+ gałęzie K26/K28/K29) — rodzina „stała”, mierzona pomiarem zerowym</text>
+  </svg>
+  </div>
+
+  <h3 class="sub">Dwie rodziny ścieżek i co z nimi robi firmware</h3>
+  <ul>
+    <li><b>Rodzina stała</b> — z szyny A przez otwarte K<sub>A,z</sub> do sieci pływających i przez otwarte
+      K<sub>B,z</sub> do szyny B (po 4×10⁹ Ω na sieć; 13 sieci → ~3,1×10⁸ Ω, prąd ~1,6 µA przy 500 V).
+      Dochodzą stałe gałęzie K26 (rozładowanie), K28/K29 (wzorce) — także objęte zerem.
+      Firmware mierzy to <b>pomiarem zerowym</b> (wszystko otwarte, źródło załączone; osobno dla 50/250/500 V,
+      <code>pomiar.h → pomiarZerowy()</code>) i odejmuje od każdego wyniku.</li>
+    <li><b>Rodzina zależna od pary</b> — otwarte przerwy K<sub>B,X</sub> i K<sub>A,Y</sub> leżą wprost
+      równolegle z obiektem: ~10⁹ Ω łącznie. Dokumentacja (6.1.1) traktuje ten składnik jako nieusuwalny
+      w całości → deklaruje błąd −1 % @ 10 MΩ, −5 % @ 50 MΩ, −10 % @ 100 MΩ i stąd kres zakresu 100 MΩ.</li>
+  </ul>
+
+  <h3 class="sub">Uściślenie modelu (rachunek sprawdzony numerycznie)</h3>
+  <p>Model 6.1.1 pomija subtelność, która działa <b>na korzyść</b> przyrządu: sieci X i Y <b>uczestniczyły
+  w pomiarze zerowym</b> (wnosiły po 4×10⁹ Ω), a podczas pomiaru pary ich wkład zmienia się na po 2×10⁹ Ω
+  (jedna przerwa zamiast dwóch). Odejmowane zero zawiera więc już połowę konduktancji ścieżek „nieusuwalnych”.
+  Rezydualny upływ po korekcie zera to dokładnie ΔG = 2×(1/4−1/2)×10⁻⁹ S… czyli <b>+0,5 nS ≡ 2×10⁹ Ω</b>,
+  a nie 10⁹ Ω:</p>
+  <table>
+    <tr><th>R obiektu</th><th>model dok. (rezyd. 1 GΩ)</th><th>model uściślony, obiekt „czysty” (rezyd. 2 GΩ)</th><th>obiekt wiąże 4 sieci (rezyd. ~0,67 GΩ)</th></tr>
+    <tr><td>10 MΩ</td><td>−1,0 %</td><td>−0,5 %</td><td>−1,5 %</td></tr>
+    <tr><td>50 MΩ</td><td>−4,8 %</td><td>−2,4 %</td><td>−7 %</td></tr>
+    <tr><td>100 MΩ</td><td>−9,1 %</td><td>−4,8 %</td><td>−13 %</td></tr>
+  </table>
+  <p>Skąd trzecia kolumna: <b>ładowarka sama „ożywia” sieci pływające</b>. Sprawny egzemplarz łączy galwanicznie:
+  P_PP↔P_PE (rezystor kodujący 220 Ω–1,5 kΩ), P_CP↔P_PE (obwód pilota), N_L↔N_N (rezystory zasilacza ~1 MΩ),
+  N_PE↔P_PE (ciągłość PE) — wszystko ≪ 2 GΩ, więc z punktu widzenia upływów te sieci przestają być pływające
+  i każda związana sieć dodaje ~0,25 nS przez swoją drugą przerwę. Przy pomiarze np. N_L1–N_PE w ładowarce CEE
+  związane są typowo 4 sieci → rezydualnie ~0,67 GΩ. <b>Wniosek: deklaracja −10 % @ 100 MΩ z dokumentacji jest
+  w praktyce trafna, ale z innego powodu, niż podaje</b> — mechanizm kompensacji przez zero i mechanizm wiązania
+  sieci przez obiekt mniej więcej się znoszą. (Miła własność przy okazji: pomiar zerowy jest niezależny od tego,
+  czy sieci są powiązane w „wyspy” — m sieci związanych daje tę samą konduktancję zera co m osobnych.)</p>
+  <div class="practice"><b>Możliwa poprawka w firmware (P3):</b> odejmować nie całe zero, lecz
+  <code>pradZerowy × 11/13</code> (wkład tylko sieci nieużywanych) i osobno modelować przerwy pary — albo
+  zostawić jak jest i po prostu wiedzieć, że budżet błędu ma zapas przy obiekcie „czystym”, a wyczerpuje się
+  przy obiekcie wiążącym sieci. Przy R<sub>o</sub> innym niż 10⁹ Ω wszystkie kolumny skalują się odwrotnie
+  proporcjonalnie — patrz sekcja 5.</div>
+</div>
+
+<!-- ============ 5 ============ -->
+<h2 class="sec" id="s5">5. „Jak będą działały przekaźniki macierzowo” — co konkretnie sprawdzić</h2>
+<div class="card">
+  <p>Główny problem z notatki to w istocie <b>jedna niewiadoma i dwa testy</b>.</p>
+  <h3 class="sub">Niewiadoma: R<sub>o</sub> otwartej przerwy RM84</h3>
+  <p>Karta katalogowa gwarantuje wytrzymałość przerwy, ale <b>nie</b> jej rezystancję izolacji.
+  Cały zakres pomiarowy wisi na przyjętym 10⁹ Ω/przerwę:</p>
+  <table>
+    <tr><th>R<sub>o</sub> przerwy (rzeczywiste)</th><th>Rezydualny upływ pary</th><th>Sensowny kres zakresu (błąd ≤ ~10 %)</th></tr>
+    <tr><td>10¹⁰ Ω (suchy, czysty montaż)</td><td>~20 GΩ / ~7 GΩ z obiektem</td><td>≥ 100 MΩ z dużym zapasem <span class="badge b-good">OK</span></td></tr>
+    <tr><td>10⁹ Ω (założenie projektu)</td><td>~2 GΩ / ~0,7 GΩ</td><td>100 MΩ — na styk, zgodnie z 6.1.1 <span class="badge b-warn">OK z ryzykiem</span></td></tr>
+    <tr><td>10⁸ Ω (wilgoć, topnik, brud)</td><td>~0,2 GΩ / ~0,07 GΩ</td><td>~10 MΩ — zakres załamany <span class="badge b-bad">PROBLEM</span></td></tr>
+  </table>
+  <p>O R<sub>o</sub> w praktyce decyduje nie sam przekaźnik, lecz <b>montaż</b>: resztki topnika, wilgoć,
+  odległości ścieżek. Zalecenia konstrukcyjne: mycie płytki po lutowaniu, odstępy toru HV (w projekcie ≥8 mm),
+  krótkie szyny A/B, lakier ochronny dopiero po pomiarze R<sub>o</sub> (lakier bywa gorszy niż czyste FR-4).</p>
+
+  <h3 class="sub">Test 1 — prototypowy pomiar R<sub>o</sub> (przewidziany w rozdz. „Wyzwania”)</h3>
+  <div class="practice">Jedna zaślepka: RM84 wlutowany na docelowym laminacie, zestyki szeregowo jak w projekcie,
+  megaomomierz 500 V między „wejściem” a „wyjściem” punktu komutacyjnego (cewka niezasilona). Odczyt po 60 s
+  (absorpcja dielektryczna), w warunkach zbliżonych do warsztatowych (wilgotność!). Wynik &lt;10⁹ Ω na punkt →
+  selekcja przekaźników, poprawa montażu albo obniżenie kresu zakresu. Warto zmierzyć też 2–3 szt. dla rozrzutu.</div>
+
+  <h3 class="sub">Test 2 — autotest matrycy w firmware (rekomendacja, obecnie brak)</h3>
+  <p>Obecny autotest (zero + wzorce K28/K29) sprawdza <b>tor</b>, ale nie wykrywa wprost
+  <b>sklejonego lub niedomykającego pojedynczego przekaźnika matrycy</b>. Sklejony K<sub>A,z</sub> podnosi zero
+  ledwie o ~0,1 µA (0,25→0,5 nS dla tej sieci) — poniżej progu wykrywalności, a skutkiem jest fałszywe
+  równoległe dołączenie sieci z do każdego pomiaru. Proponowany skan (czas ~1–2 min, bez zmian sprzętu,
+  wykonywany przy <b>odłączonej</b> ładowarce):</p>
+  <ol>
+    <li><b>Sklejenia K<sub>B</sub>:</b> dla każdej sieci z: zamknij tylko K<sub>A,z</sub>, załącz źródło 500 V,
+      zmierz prąd. Oczekiwane: ~prąd zerowy. Prąd bliski ograniczenia (~1,1 mA) ⇒ sklejony K<sub>B,z</sub>
+      (albo zwarcie sieci z do szyny B). 13 kroków.</li>
+    <li><b>Sklejenia K<sub>A</sub>:</b> symetrycznie — zamknij tylko K<sub>B,z</sub>, źródło na A: prąd duży ⇒
+      sklejony K<sub>A,z</sub>. 13 kroków.</li>
+    <li><b>Domykanie (czy przekaźnik w ogóle łączy):</b> dla każdej sieci z: zamknij K<sub>A,z</sub> <b>i</b>
+      K<sub>B,z</sub> (ta sama sieć!) — szyny zwarte przez sieć z: odczyt ~0 Ω (prąd = ograniczenie).
+      Brak prądu ⇒ któryś przekaźnik nie domyka / przerwa w okablowaniu sieci. 13 kroków.
+      <i>Uwaga: to legalne tylko przy odłączonej ładowarce i jest jedyny przypadek celowego „zwarcia” A–B —
+      prąd i tak ogranicza 440 kΩ.</i></li>
+  </ol>
+  <p>Krok 3 to dokładnie „sprawdzenie, jak działają przekaźniki macierzowo”, którego nie zastąpi żaden pomiar
+  pojedynczego przekaźnika na stole: weryfikuje przekaźnik + gniazdo + wiązkę + adresację cewek
+  (błąd w mapie <code>KAN_KA/KAN_KB</code> objawi się jako „nie ta sieć zwiera”). Po każdej wymianie
+  przekaźnika lub ingerencji w wiązkę — skan obowiązkowy.</p>
+</div>
+
+<!-- ============ 6 ============ -->
+<h2 class="sec" id="s6">6. Luki i rekomendacje (znalezione podczas analizy)</h2>
+<div class="card">
+  <table>
+    <tr><th>#</th><th>Obserwacja</th><th>Waga</th><th>Rekomendacja</th></tr>
+    <tr><td>1</td>
+      <td><b>Firmware nie mierzy ciągłości PE</b> (para N_PE–P_PE). <code>zbudujPary()</code> generuje tylko pary
+      wewnątrz stron (3/10 + 21); dokumentacja wspomina pary międzystronne jako „tryb rozszerzony”, ale kod go
+      nie implementuje. Ciągłość PE to test bezpieczeństwa nr 1 każdego przewodu ładowarki — przyrząd ma pełną
+      architekturę, by go wykonać (zamknąć K<sub>A5</sub>+K<sub>B10</sub>), a go nie wykonuje.</td>
+      <td><span class="badge b-bad">WYSOKA</span></td>
+      <td>Dodać do sekwencji parę PE–PE z logiką odwróconą (oczekiwane ~0 Ω = OK; megaomy = PRZERWA PE — wynik
+      krytyczny). Napięcie: wystarczy 50 V (klasa E-podobna), nie 500 V.</td></tr>
+    <tr><td>2</td>
+      <td><b>Test przerwy stycznika</b> (L1–vL1, L2–vL2, L3–vL3, N–vN przez otwarte przekaźniki ładowarki) —
+      też opisany w dokumentacji jako tryb rozszerzony, nieobecny w firmware. Wykrywa sklejony stycznik
+      ładowarki — usterkę realnie groźną (napięcie na wtyku bez sesji ładowania).</td>
+      <td><span class="badge b-warn">ŚREDNIA</span></td>
+      <td>Dodać 4 pary międzystronne. <b>Uwaga:</b> rozważyć 250 V zamiast 500 V — po stronie wtyku ładowarki
+      może wisieć układ detekcji sklejenia stycznika / pomiaru napięcia (dzielnik do elektroniki), którego
+      wytrzymałości nie znamy.</td></tr>
+    <tr><td>3</td>
+      <td><b>Pary fazowe klasy I (500 V) a warystory L–L.</b> D3 zakłada warystory tylko L–N, ale część ładowarek
+      trójfazowych ma ograniczniki także L–L i L–PE. 500 V DC &gt; ~430 V DC progu warystora 275 V AC →
+      warystor się otworzy i pomiar pokaże fałszywie niską „izolację” (uszkodzenia nie będzie — prąd ograniczony
+      do 1,1 mA).</td>
+      <td><span class="badge b-warn">ŚREDNIA</span></td>
+      <td>Sprawdzić topologię ochrony przepięciowej w ładowarkach AP (schemat/oględziny). Jeśli L–L MOV
+      występuje: pary fazowe strony zasilania przenieść do klasy Z (250 V) albo dodać interpretację
+      „niski odczyt + kształt prądu = warystor”.</td></tr>
+    <tr><td>4</td>
+      <td><b>Zero a pary — model upływów</b> (sekcja 4): dokumentacja liczy składnik pary jako w całości
+      nieusuwalny, faktycznie zero kompensuje jego połowę; z drugiej strony obiekt wiążący sieci psuje zero.
+      Netto deklaracje trafne, mechanizm opisany niedokładnie.</td>
+      <td><span class="badge b-info">NISKA</span></td>
+      <td>Skorygować 6.1.1 (ścisły model) albo zostawić z komentarzem; opcjonalnie korekta
+      <code>×11/13</code> w firmware.</td></tr>
+    <tr><td>5</td>
+      <td><b>Autotest nie wykrywa sklejonych przekaźników matrycy</b> (podniesienie zera o ~0,1 µA jest
+      niediagnostyczne).</td>
+      <td><span class="badge b-warn">ŚREDNIA</span></td>
+      <td>Skan matrycy 3×13 kroków z sekcji 5 (tylko software), uruchamiany na żądanie i po serwisie.</td></tr>
+    <tr><td>6</td>
+      <td><b>Drobiazg dokumentacyjny:</b> D6 deklaruje „30 kanałów, zapas 2 z 32”; po dodaniu HL1 zajęte
+      jest 31 z 32 kanałów ekspanderów (zapas 1). Mapa w <code>pary.h</code> się zgadza (KA:13, KB:13,
+      K25/K26/K28/K29/HL1 na U3 GPB2–6).</td>
+      <td><span class="badge b-info">NISKA</span></td>
+      <td>Poprawić liczbę w D6/dokumentacji; przy rozbudowie (moduł EXT) pamiętać, że wolny został 1 kanał.</td></tr>
+    <tr><td>7</td>
+      <td><b>EXT jak tor HV:</b> otwarte K<sub>A13</sub>/K<sub>B13</sub> wiszą na szynach zawsze — brud/wilgoć na
+      złączu rozszerzeń obniża R<sub>o</sub> całej matrycy, a podczas pomiaru na EXT może pojawić się pełne 500 V.</td>
+      <td><span class="badge b-info">NISKA</span></td>
+      <td>Zaślepka na X6 na co dzień; EXT objęty pomiarem zerowym automatycznie (jest 13. siecią) — nic więcej nie trzeba.</td></tr>
+  </table>
+  <div class="note"><b>Ocena całości:</b> architektura 2-szynowa z zimną komutacją i podwójną przerwą jest dla
+  tego zastosowania <b>poprawna i tania</b>; jej jedyna miękka noga to niegwarantowana rezystancja przerwy
+  (test prototypowy zaplanowany). Największa realna luka nie jest sprzętowa, lecz programowa: brak pary PE–PE
+  (poz. 1) — architektura już to umie, brakuje ~20 linii kodu i logiki raportu.</div>
+</div>
+
+<!-- ============ 7 ============ -->
+<h2 class="sec" id="s7">Źródła</h2>
+<div class="card">
+  <h3 class="sub">Pliki projektu (lokalnie, folder <code>Modul</code> na pulpicie)</h3>
+  <ul>
+    <li><a href="../../Modul/miernik-izolacji/dokumentacja/projekt.pdf">dokumentacja/projekt.pdf</a> — rozdz. 2 (macierz par), 5 (architektura i przebieg), 6.1 (dobór komutacji i upływy — 6.1.1), 7/A3 (schemat matrycy), 15 (wyzwania)</li>
+    <li><a href="../../Modul/miernik-izolacji/DECYZJE.md">DECYZJE.md</a> — D1 (dwie szyny), D3 (klasy napięć), D6→D8 (kontaktron → RM84 podwójna przerwa)</li>
+    <li><a href="../../Modul/miernik-izolacji/WERYFIKACJA.md">WERYFIKACJA.md</a> — karty katalogowe: SIL12 (negatywna), DAT71210, RM84/RM85</li>
+    <li><a href="../../Modul/miernik-izolacji/firmware/miernik/pary.h">firmware/miernik/pary.h</a> i <a href="../../Modul/miernik-izolacji/firmware/miernik/pomiar.h">pomiar.h</a> — mapa cewek, klasy par, pomiar zerowy, sekwencja</li>
+  </ul>
+  <h3 class="sub">Karty katalogowe i dystrybucja</h3>
+  <ul>
+    <li><a href="https://www.montersi.pl/instrukcje/rm85-karta.pdf">RELPOL RM84/RM85 — karta katalogowa (PDF)</a> — probiercze przerwy 1000 V AC, cewka–styki 5 kV</li>
+    <li><a href="https://www.tme.eu/pl/details/rm84-2012-35-1012/przekazniki-elektromagnetyczne-miniaturowe/relpol/">TME — RM84-2012-35-1012</a></li>
+    <li><a href="https://www.tme.com/us/en-us/details/sil12-1a72-71d/reed-electromagnetic-relays/meder/">TME — Standex-Meder SIL12-1A72-71D</a> (parametry, które obaliły D6)</li>
+    <li><a href="https://www.tme.eu/pl/details/dat71210/przekazniki-elektromagnetyczne-kontaktronowe/sensata-cynergy3/">TME — Sensata/Cynergy3 DAT71210</a> (kontaktron 7 kV — wariant odrzucony)</li>
+  </ul>
+  <h3 class="sub">Wiedza ogólna: macierze, pomiary małych prądów, izolacja</h3>
+  <ul>
+    <li><a href="https://www.pickeringtest.com/en-us/kb/hardware-topics/switching-architectures/pole-switched-matrices">Pickering Interfaces — Switching Architectures KB</a> (architektury macierzy, ograniczenia ścieżek)</li>
+    <li><a href="https://www.tek.com/en/documents/product-article/keithley-low-level-measurements-handbook---7th-edition">Keithley „Low Level Measurements Handbook”</a> — biblia pomiarów wysokich rezystancji: upływy, guarding, absorpcja dielektryczna, wpływ wilgoci i topnika</li>
+    <li><a href="https://www.merserwis.pl/blog/artykul/pomiar-rezystancji-izolacji-instalacji-elektrycznej">Merserwis — pomiar rezystancji izolacji wg PN-HD 60364-6</a> (napięcia probiercze 250/500/1000 V, progi 0,5/1 MΩ)</li>
+    <li><a href="https://www.electrical-installation.org/enwiki/EV_charging_-_electrical_installation_design">Schneider Electrical Installation Guide — EV charging</a> (kontekst: co siedzi w torze ładowarki)</li>
+  </ul>
+  <p class="src"><b>Normy:</b> IEC 60364-6 (napięcie probiercze i progi), IEC 61557-2 (wymagania dla mierników
+  rezystancji izolacji — warto docelowo porównać przyrząd z tą normą), IEC 61851-1 (obwód CP), IEC 62196-2
+  (styki Type 2, kodowanie PP).</p>
+</div>
+
+<footer>
+  <div class="wrap">AMPERE POINT — materiał wewnętrzny. Analiza wątku „sęk w macierzy” z rozmowy kierownik↔klient,
+  na podstawie repo <code>Modul\miernik-izolacji</code> (dokument v0.4, stan po iteracji 8). Rachunki modelu upływów
+  zweryfikowane numerycznie. Wersja v1 · 2026-07-15.</div>
+</footer>
+
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,474 @@
+\documentclass[10pt,a4paper,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.7cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta}
+\usepackage{parskip}
+\usepackage{booktabs}
+\pagestyle{empty}
+\renewcommand{\familydefault}{\sfdefault}
+
+% ================= MAKRA SYMBOLI (IEC 60617, konwencja EPLAN) =================
+\tikzset{every picture/.style={line width=0.55pt}, lbl/.style={font=\tiny, inner sep=0.5pt, fill=white},
+tag/.style={font=\scriptsize\bfseries, inner sep=1pt}, zn/.style={font=\tiny, inner sep=0.5pt},
+ods/.style={font=\tiny\itshape, inner sep=0.5pt}}
+
+% zestyk zwierny pionowy; dolny zacisk (#1,#2), gorny (#1,#2+1.2)
+\newcommand{\ZNO}[2]{\draw (#1,#2) -- (#1,{#2+0.35}) ({#1},{#2+0.35}) -- ({#1-0.3},{#2+1.02}) (#1,{#2+1.02}) -- (#1,{#2+1.2});}
+% zestyk rozwierny pionowy
+\newcommand{\ZNC}[2]{\draw (#1,#2) -- (#1,{#2+0.35}) ({#1},{#2+0.35}) -- ({#1-0.32},{#2+1.06}) (#1,{#2+0.78}) -- ({#1-0.22},{#2+0.78}) (#1,{#2+0.78}) -- (#1,{#2+1.2});}
+% rozlacznik (zwierny + poprzeczka odlacznika na gornym zacisku)
+\newcommand{\ROZL}[2]{\ZNO{#1}{#2}\draw ({#1-0.18},{#2+1.02}) -- ({#1+0.18},{#2+1.02});}
+% bezpiecznik pionowy
+\newcommand{\FUZ}[2]{\draw (#1,#2) -- (#1,{#2+1.2}) ({#1-0.18},{#2+0.22}) rectangle ({#1+0.18},{#2+0.98});}
+% bezpiecznik poziomy: lewy zacisk (#1,#2), prawy (#1+1.2,#2)
+\newcommand{\FUZH}[2]{\draw (#1,#2) -- ({#1+1.2},#2) ({#1+0.22},{#2-0.18}) rectangle ({#1+0.98},{#2+0.18});}
+% zestyk zwierny poziomy: lewy zacisk (#1,#2), prawy (#1+1.2,#2)
+\newcommand{\ZNOH}[2]{\draw (#1,#2) -- ({#1+0.18},#2) ({#1+0.18},#2) -- ({#1+0.85},{#2+0.3}) ({#1+0.85},#2) -- ({#1+1.2},#2);}
+% cewka pionowa: dolny zacisk (#1,#2), gorny (#1,#2+1.4)
+\newcommand{\COILV}[2]{\draw (#1,#2) -- (#1,{#2+0.42}) ({#1-0.42},{#2+0.42}) rectangle ({#1+0.42},{#2+0.98}) (#1,{#2+0.98}) -- (#1,{#2+1.4});}
+% przekladnik pradowy: okrag na pionowym przewodzie, centrum (#1,#2)
+\newcommand{\CTs}[2]{\draw (#1,#2) circle (0.3); \draw ({#1+0.3},#2) -- ({#1+0.72},#2);}
+% zacisk
+\newcommand{\TERM}[2]{\draw[fill=white] (#1,#2) circle (0.07);}
+% gniazdo (kielich otwarty w gore) + pin z gory
+\newcommand{\SOCKup}[2]{\draw ({#1-0.22},{#2+0.1}) arc (180:360:0.22); \draw (#1,{#2+0.55}) -- (#1,{#2+0.06});}
+% gniazdo (kielich otwarty w dol) + pin w dol
+\newcommand{\SOCKdn}[2]{\draw ({#1-0.22},{#2-0.1}) arc (180:0:0.22); \draw (#1,{#2-0.55}) -- (#1,{#2-0.06});}
+% naped E-STOP (grzybek) po lewej zestyku na wys. blade
+\newcommand{\ESTOP}[2]{\draw[dashed] ({#1-0.16},{#2+0.7}) -- ({#1-0.6},{#2+0.7}); \draw ({#1-0.6},{#2+0.7}) -- ({#1-0.6},{#2+0.9}) ({#1-0.85},{#2+0.9}) -- ({#1-0.35},{#2+0.9}) ({#1-0.85},{#2+0.9}) arc (180:0:0.25);}
+% naped krancowki (rolka)
+\newcommand{\ROLL}[2]{\draw[dashed] ({#1-0.16},{#2+0.7}) -- ({#1-0.55},{#2+0.7}); \draw ({#1-0.55},{#2+0.55}) -- ({#1-0.55},{#2+0.85}); \draw ({#1-0.55},{#2+0.55}) circle (0.09);}
+% naped termiczny theta
+\newcommand{\THETA}[2]{\draw[dashed] ({#1-0.17},{#2+0.7}) -- ({#1-0.5},{#2+0.7}); \node[zn, left] at ({#1-0.5},{#2+0.7}) {$\theta$};}
+% przycisk NO (START)
+\newcommand{\PUSH}[2]{\draw[dashed] ({#1-0.16},{#2+0.7}) -- ({#1-0.55},{#2+0.7}); \draw ({#1-0.55},{#2+0.55}) -- ({#1-0.55},{#2+0.85}) ({#1-0.8},{#2+0.55}) -- ({#1-0.8},{#2+0.85}) ({#1-0.8},{#2+0.7}) -- ({#1-0.95},{#2+0.7});}
+% silnik: kolo M, centrum, podpis
+\newcommand{\MOT}[3]{\draw (#1,#2) circle (0.42); \node[font=\scriptsize] at (#1,{#2+0.08}) {M}; \node[font=\tiny] at (#1,{#2-0.16}) {#3};}
+% strzalka potencjalu w prawo
+\newcommand{\POTR}[2]{\draw (#1,#2) -- ({#1+0.35},{#2+0.12}) -- ({#1+0.35},{#2-0.12}) -- cycle;}
+
+% ================= RAMA ARKUSZA EPLAN =================
+% #1 oznaczenie strony, #2 opis strony, #3 nr strony, #4 liczba stron
+\newcommand{\ramkaE}[4]{%
+\draw[line width=0.8pt] (0,0) rectangle (28.0,18.8);
+\draw[line width=0.5pt] (0.5,0.5) rectangle (27.5,18.3);
+\foreach \i in {1,...,10}{
+  \draw ({0.5+(\i-1)*2.7},18.3) -- ({0.5+(\i-1)*2.7},18.8) ({0.5+(\i-1)*2.7},0.0) -- ({0.5+(\i-1)*2.7},0.5);
+  \node[font=\scriptsize] at ({0.5+(\i-1)*2.7+1.35},18.55) {\i};
+  \node[font=\scriptsize] at ({0.5+(\i-1)*2.7+1.35},0.25) {\i};}
+\foreach \i/\l in {0/A,1/B,2/C,3/D,4/E,5/F}{
+  \draw (0.0,{18.3-\i*2.966}) -- (0.5,{18.3-\i*2.966}) (27.5,{18.3-\i*2.966}) -- (28.0,{18.3-\i*2.966});
+  \node[font=\scriptsize] at (0.25,{18.3-\i*2.966-1.48}) {\l};
+  \node[font=\scriptsize] at (27.75,{18.3-\i*2.966-1.48}) {\l};}
+\draw[line width=0.5pt] (14.0,0.5) rectangle (27.5,2.6);
+\draw (14.0,1.9) -- (27.5,1.9) (14.0,1.2) -- (23.2,1.2) (18.6,0.5) -- (18.6,2.6) (23.2,0.5) -- (23.2,2.6) (25.6,1.2) -- (25.6,1.9);
+\node[font=\tiny, anchor=north west] at (14.05,2.55) {firma};
+\node[font=\small\bfseries] at (16.3,2.1) {AMPERE POINT};
+\node[font=\tiny, anchor=north west] at (14.05,1.85) {projekt};
+\node[font=\scriptsize] at (16.3,1.45) {AMPERE\_POINT\_custom\_device};
+\node[font=\tiny, anchor=north west] at (14.05,1.15) {nr projektu};
+\node[font=\scriptsize] at (16.3,0.75) {AP-CD-001};
+\node[font=\tiny, anchor=north west] at (18.65,2.55) {opis strony};
+\node[font=\scriptsize, align=left, anchor=west] at (18.75,2.1) {#2};
+\node[font=\tiny, anchor=north west] at (18.65,1.85) {data / edytor};
+\node[font=\scriptsize, anchor=west] at (18.75,1.45) {07.07.2026 \; / \; D.~Cekała};
+\node[font=\tiny, anchor=north west] at (18.65,1.15) {stan: wersja 4 (moduł B: rekuperacja energii)};
+\node[font=\tiny, anchor=north west] at (23.25,2.55) {oznaczenie strony};
+\node[font=\small\bfseries] at (24.4,2.1) {#1};
+\node[font=\tiny, anchor=north west] at (23.25,1.85) {norma};
+\node[font=\scriptsize] at (24.4,1.45) {IEC 60617};
+\node[font=\tiny, anchor=north west] at (25.65,1.85) {strona};
+\node[font=\scriptsize] at (26.55,1.45) {#3 / #4};
+\node[font=\scriptsize\bfseries, anchor=west] at (23.3,0.85) {custom device --- stacja testowa EVSE};
+}
+
+\begin{document}
+
+% ============ STRONA TYTULOWA ============
+\begin{center}
+\vspace*{1.2cm}
+{\LARGE\bfseries AMPERE POINT --- custom device}\\[6pt]
+{\Large Schemat elektryczny --- wersja 4 (styl EPLAN, moduł B: rekuperacja energii)}\\[10pt]
+{\normalsize 7 lipca 2026}\\[12pt]
+\begin{minipage}{0.88\textwidth}\small
+Wersja 4 $=$ wersja 3 z przebudowanym arkuszem E3: rezystancyjny bank grzałek zastąpiony
+\textbf{szafą rekuperacji energii} wg koncepcji v2 (punkty Z7--Z10): prostowniki PFC 48~V sterowane
+po CAN, szyna DC z zabezpieczeniami, bateria LiFePO4 z BMS, falownik hybrydowy oddający energię do
+instalacji zakładu (tryb ESS/UPS) ze zrzutem nadmiaru do zasobnika CWU. Arkusze E1/E2 --- topologia
+bez zmian (drobne aktualizacje opisów i odsyłaczy). Wartości i typy aparatów robocze --- do
+potwierdzenia po etapie 0.\\[6pt]
+\textbf{E1} --- tor mocy 3F: X1 $\to$ Q0 $\to$ F1--F3 $\to$ B1 $\to$ T1--T3 $\to$ K1 $\to$ X2; odczep X3 (7 żył) z -K4 w linii CP.\\
+\textbf{E2} --- łańcuch bezpieczeństwa 24 V (bez zmian; termiki -F11.x na radiatorach przetwornic).\\
+\textbf{E3} --- szafa rekuperacji: -K11..-K14 $\to$ -PR1..-PR6 (PFC, CAN) $\to$ DC 48 V (-F13, -Q1, -KB)
+$\to$ -GB1 LiFePO4 $\to$ -INV $\to$ rozdzielnia zakładu; sterowanie -A1 (nowy port CAN/TWAI).
+\end{minipage}\\[10pt]
+{\small\textbf{Zmiany w wersji 4 względem wersji 3}}\\[3pt]
+{\scriptsize
+\begin{tabular}{clp{11.6cm}}
+\toprule
+\# & Arkusz & Zmiana\\
+\midrule
+1 & E3 & bank grzałek (-K11..-K22, -F12.1..12, -E1..-E12) usunięty; w to miejsce 3 pary prostowników PFC \textbf{-PR1..-PR6} (2$\times$3 kW/fazę, prąd zadawany po CAN)\\
+2 & E3 & styczniki sekcji faz \textbf{-K11..-K13} + \textbf{-K14} (przełączenie L2$\to$L1 dla testu 1F 32 A)\\
+3 & E3 & strona DC 48 V: bezpieczniki \textbf{-F13.1/-F13.2}, rozłącznik \textbf{-Q1}, kontaktor BMS \textbf{-KB}, bateria \textbf{-GB1} LiFePO4 10--14 kWh\\
+4 & E3 & falownik hybrydowy \textbf{-INV} (5--12 kW) $\to$ rozdzielnia zakładu; zrzut nadmiaru: \textbf{-K5} $\to$ grzałka -E13 w zasobniku CWU\\
+5 & E3 & magistrala \textbf{CAN} (TWAI -A1, transceiver izolowany) $\to$ -PR1..6, BMS, -INV; nowy wiersz CAN na płycie -A1\\
+6 & E2/E3 & termiki -F11.1..8 przeniesione na radiatory przetwornic (tor łańcucha bez zmian); wentylatory strat -M3/-M4 z -F5/-K3/-K2 (mniejsze)\\
+7 & E1 & bez zmian topologii; aktualizacja opisów (moduł B v2, odczep -A3 $\to$ /E3.2)\\
+\bottomrule
+\end{tabular}}
+\end{center}
+\newpage
+% ============ ARKUSZ E1 — TOR MOCY ============
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\ramkaE{=CA1+EAA/2}{E1 --- tor mocy 3F}{2}{4}
+% ---- X1 gniazdo pojazdowe ----
+\foreach \x/\n/\z in {5.0/L1/1, 7.2/L2/2, 9.4/L3/3, 11.6/N/4, 13.8/PE/5, 15.4/CP/6, 16.2/PP/7}{
+  \draw (\x,17.65) -- (\x,17.25);
+  \SOCKup{\x}{16.7}
+  \node[zn] at (\x,17.85) {\n};
+  \node[zn, right] at ({\x+0.1},16.55) {\z};
+  \draw (\x,16.6) -- (\x,16.3);}
+\draw[dashed] (4.3,16.25) rectangle (16.9,17.45);
+\node[tag, left] at (4.25,17.3) {-X1};
+\node[lbl, align=left] at (2.3,16.6) {gniazdo pojazdowe\\ Type 2 32 A 3F\\ (wtyk kabla DUT)};
+\node[lbl, align=left] at (2.3,15.5) {blokada wtyku\\ -Y1 $\to$ /E3.3};
+% ---- piony ----
+\draw (5.0,16.3) -- (5.0,14.8) (7.2,16.3) -- (7.2,14.8) (9.4,16.3) -- (9.4,14.8) (11.6,16.3) -- (11.6,14.8);
+\draw (13.8,16.3) -- (13.8,6.0); % PE
+\node[lbl] at (14.15,9.0) {PE};
+% ---- odczep X3 (7 zyl) ----
+\draw[fill] (5.0,16.0) circle (0.06); \draw (5.0,16.0) -- (17.0,16.0);
+\draw[fill] (7.2,15.7) circle (0.06); \draw (7.2,15.7) -- (17.0,15.7);
+\draw[fill] (9.4,15.4) circle (0.06); \draw (9.4,15.4) -- (17.0,15.4);
+\draw[fill] (11.6,15.1) circle (0.06); \draw (11.6,15.1) -- (17.0,15.1);
+\draw[fill] (13.8,14.8) circle (0.06); \draw (13.8,14.8) -- (17.0,14.8);
+% CP przez zestyk -K4
+\draw (15.4,16.3) -- (15.4,15.75);
+\ZNO{15.4}{14.55}
+\node[tag, left] at (15.05,15.3) {-K4};
+\node[ods, left] at (15.05,14.95) {/E2.6};
+\draw (15.4,14.55) -- (15.4,14.5) -- (17.0,14.5);
+% PP
+\draw (16.2,16.3) -- (16.2,14.2) -- (17.0,14.2);
+\foreach \y/\z in {16.0/1, 15.7/2, 15.4/3, 15.1/4, 14.8/5, 14.5/6, 14.2/7}{\TERM{17.0}{\y}\node[zn, right] at (17.1,\y) {\z};}
+\draw[dashed] (16.75,13.95) rectangle (17.75,16.25);
+\node[tag] at (17.25,16.5) {-X3};
+\node[lbl, align=left, anchor=west] at (18.0,15.75) {odczep Type 2 $\to$ PM701E (7 żył, $\le$1 m)\\ 1=L1, 2=L2, 3=L3, 4=N, 5=PE, 6=CP, 7=PP};
+\node[ods, anchor=west] at (18.0,15.05) {SIGNAL OUTPUT (CP) $\to$ /E3.3};
+\node[ods, anchor=west] at (18.0,14.65) {gniazda bananowe PM701E = przyłącze UT595};
+\node[ods, anchor=west] at (18.0,14.25) {mostek serwisowy CP (obejście -K4) na listwie -X3};
+% ---- Q0 rozlacznik 4P ----
+\ROZL{5.0}{13.6}\ROZL{7.2}{13.6}\ROZL{9.4}{13.6}\ROZL{11.6}{13.6}
+\draw[dashed] (4.55,14.25) -- (11.45,14.25);
+\node[tag, left] at (4.2,14.2) {-Q0};
+\node[lbl, left] at (4.2,13.8) {rozłącznik 40 A};
+\foreach \x/\a/\b in {5.0/1/2, 7.2/3/4, 9.4/5/6, 11.6/7/8}{
+  \node[zn, right] at ({\x+0.08},14.72) {\a}; \node[zn, right] at ({\x+0.08},13.7) {\b};}
+% ---- F1-F3 ----
+\draw (5.0,13.6) -- (5.0,13.1) (7.2,13.6) -- (7.2,13.1) (9.4,13.6) -- (9.4,13.1);
+\draw (11.6,13.6) -- (11.6,11.4);
+\FUZ{5.0}{11.9}\FUZ{7.2}{11.9}\FUZ{9.4}{11.9}
+\node[tag, left] at (4.55,12.5) {-F1};\node[tag, left] at (6.75,12.5) {-F2};\node[tag, left] at (8.95,12.5) {-F3};
+\node[lbl, left] at (4.2,12.05) {gG 32 A};
+% ---- B1 okno CDSR ----
+\draw (5.0,11.9) -- (5.0,9.9) (7.2,11.9) -- (7.2,9.9) (9.4,11.9) -- (9.4,9.9);
+\draw (11.6,11.4) -- (11.6,9.9);
+\draw[line width=1.0pt] (4.3,10.6) rectangle (12.3,11.35);
+\node[tag, left] at (4.2,11.0) {-B1};
+\node[lbl] at (8.3,10.32) {czujnik różnicowy AC/DC (CDSR 0.07-TP), okno L1+L2+L3+N};
+\draw[-{Stealth}] (12.3,11.0) -- (13.1,11.0); \node[ods, right] at (13.1,11.0) {SPI /E3.3};
+% ---- odczep L1 do generatora A3 (za oknem B1) ----
+\draw[fill] (5.0,10.05) circle (0.06);
+\draw[-{Stealth}] (5.0,10.05) -- (3.6,10.05);
+\node[ods, align=right, anchor=east] at (3.55,10.05) {$\to$ -A3 /E3.2\\ (przez -K30)};
+% ---- T1-T3 ----
+\draw (5.0,9.9) -- (5.0,8.8) (7.2,9.9) -- (7.2,8.8) (9.4,9.9) -- (9.4,8.8) (11.6,9.9) -- (11.6,8.8);
+\CTs{5.0}{9.35}\CTs{7.2}{9.35}\CTs{9.4}{9.35}
+\node[tag, left] at (4.55,9.35) {-T1};\node[tag, left] at (6.75,9.35) {-T2};\node[tag, left] at (8.95,9.35) {-T3};
+\node[ods] at (6.1,8.85) {/E3.3};\node[ods] at (8.3,8.85) {/E3.3};\node[ods] at (10.5,8.85) {/E3.3};
+\node[lbl, left] at (4.2,9.0) {40 A / 1 V};
+% ---- K1 stycznik glowny ----
+\ZNO{5.0}{7.6}\ZNO{7.2}{7.6}\ZNO{9.4}{7.6}\ZNO{11.6}{7.6}
+\draw[dashed] (4.55,8.25) -- (11.45,8.25);
+\node[tag, left] at (4.2,8.35) {-K1};
+\node[ods, left] at (4.2,7.95) {/E2.5};
+\foreach \x/\a/\b in {5.0/1/2, 7.2/3/4, 9.4/5/6, 11.6/7/8}{
+  \node[zn, right] at ({\x+0.08},8.72) {\a}; \node[zn, right] at ({\x+0.08},7.7) {\b};}
+% ---- zejscie do X2 ----
+\draw (5.0,7.6) -- (5.0,6.0) (7.2,7.6) -- (7.2,6.0) (9.4,7.6) -- (9.4,6.0) (11.6,7.6) -- (11.6,6.0);
+\foreach \x/\n/\z in {5.0/L1/1, 7.2/L2/2, 9.4/L3/3, 11.6/N/4, 13.8/PE/5}{
+  \SOCKdn{\x}{5.9}
+  \draw (\x,5.35) -- (\x,5.0);
+  \node[zn, right] at ({\x+0.1},6.05) {\z};
+  \node[zn] at (\x,4.82) {\n};}
+\draw[dashed] (4.3,5.15) rectangle (14.6,6.3);
+\node[tag, left] at (4.25,6.15) {-X2};
+\node[lbl, align=left] at (2.4,5.7) {gniazdo CEE 32 A 5p\\ $\to$ moduł B v2 /E3.3};
+\node[lbl] at (8.3,4.4) {przewód 5$\times$6 mm$^2$ H07RN-F};
+\node[lbl, left] at (4.6,7.0) {6 mm$^2$};
+% ---- uwagi ----
+\node[lbl, align=left, anchor=north west] at (18.6,13.6) {\textbf{Uwagi:}\\ N bez zabezpieczenia --- rozłączany\\ czterobiegunowo (Q0, K1)\\ PE nieprzerwane od X1 do X2\\ B1: pomiar RCM, próg awaryjny $\to$ /E3.3\\ T1--T3: pomiar prądów $\to$ U2 /E3.3\\ K1: cewka i lustro styków $\to$ /E2.5};
+\node[lbl, align=left, anchor=north west] at (18.6,10.7) {\textbf{Ostrzeżenie (v3):} -Q0 nie odłącza odczepu\\ -X3/PM701E --- gniazda bananowe mogą być\\ pod napięciem w stanie C niezależnie od\\ -Q0 i -K1 $\to$ tabliczka ostrzegawcza na panelu.};
+\node[lbl, align=left, anchor=north west] at (18.6,8.9) {\textbf{-K4 (v3):} zestyk w linii CP odczepu;\\ E-STOP / zanik 24 V $\to$ przerwanie CP $\to$\\ DUT widzi stan A i otwiera swój stycznik\\ (magistrala beznapięciowa). Cewka: /E2.6.};
+\end{tikzpicture}
+\end{center}
+\newpage
+% ============ ARKUSZ E2 — LANCUCH BEZPIECZENSTWA ============
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\ramkaE{=CA1+EAA/3}{E2 --- łańcuch bezp. 24 V}{3}{4}
+% ---- szyny ----
+\draw (1.4,16.9) -- (16.0,16.9); \node[tag, left] at (1.35,16.9) {+24 V};
+\POTR{16.0}{16.9} \node[ods, right] at (16.4,16.9) {z G1 /E3.5};
+\draw (1.4,3.6) -- (16.0,3.6); \node[tag, left] at (1.35,3.6) {0 V};
+\POTR{16.0}{3.6} \node[ods, right] at (16.4,3.6) {G1 /E3.5};
+% ================= sciezka 1 (kol.1): S0 -> termiki -> S1 =================
+\draw[fill] (3.0,16.9) circle (0.06);
+\draw (3.0,16.9) -- (3.0,16.5);
+\ZNC{3.0}{15.3}\ESTOP{3.0}{15.3}
+\node[tag, right] at (3.2,15.9) {-S0};
+\node[zn, right] at (3.08,16.35) {11}; \node[zn, right] at (3.08,15.4) {12};
+\node[lbl, right] at (3.2,15.55) {E-STOP (panel A)};
+\draw (3.0,15.3) -- (3.0,14.8);
+\ZNC{3.0}{13.6}\THETA{3.0}{13.6}
+\node[tag, right] at (3.2,14.2) {-F11.1};
+\draw (3.0,13.6) -- (3.0,13.35);
+\node[font=\scriptsize] at (3.0,13.05) {$\vdots$};
+\draw (3.0,12.75) -- (3.0,12.7);
+\ZNC{3.0}{11.5}\THETA{3.0}{11.5}
+\node[tag, right] at (3.2,12.1) {-F11.12};
+\draw[dashed] (1.95,11.25) rectangle (4.75,14.95);
+\node[lbl, align=left, anchor=north west] at (1.95,11.1) {termiki KSD301 radiatorów przetwornic,\\ NC szeregowo; moduł B, złącze -X5 /E3.6};
+\draw (3.0,11.5) -- (3.0,10.9);
+\ZNC{3.0}{9.7}\ROLL{3.0}{9.7}
+\node[tag, right] at (3.2,10.3) {-S1};
+\node[lbl, right] at (3.2,9.95) {krańcówka pokrywy};
+\node[zn, right] at (3.08,10.75) {11}; \node[zn, right] at (3.08,9.8) {12};
+\draw (3.0,9.7) -- (3.0,8.9);
+\draw[fill] (3.0,8.9) -- (2.85,8.55) -- (3.15,8.55) -- cycle;
+\node[ods] at (3.0,8.25) {/E2.3};
+% ================= sciezka 3 (kol.3): K2 -> K10 -> A2 -> [S2||RB] -> cewka RB =================
+\draw[fill] (8.4,16.4) -- (8.25,16.05) -- (8.55,16.05) -- cycle;
+\node[ods] at (8.4,16.6) {/E2.1};
+\draw (8.4,16.05) -- (8.4,15.6);
+\ZNO{8.4}{14.4}
+\node[tag, left] at (8.1,15.0) {-K2};
+\node[ods, left] at (8.1,14.6) {/E3.8};
+\node[lbl, right] at (8.6,15.0) {potwierdzenie wentylatorów};
+\node[zn, right] at (8.48,15.5) {13}; \node[zn, right] at (8.48,14.5) {14};
+\draw (8.4,14.4) -- (8.4,13.9);
+\ZNO{8.4}{12.7}
+\node[tag, left] at (8.1,13.3) {-K10};
+\node[ods, left] at (8.1,12.9) {/E3.5};
+\node[lbl, right] at (8.6,13.3) {zezwolenie MCU};
+\node[zn, right] at (8.48,13.8) {13}; \node[zn, right] at (8.48,12.8) {14};
+\draw (8.4,12.7) -- (8.4,12.2);
+\ZNO{8.4}{11.0}
+\node[tag, left] at (8.1,11.6) {-A2};
+\node[ods, left] at (8.1,11.2) {/E3.5};
+\node[lbl, right] at (8.6,11.6) {watchdog impulsowy};
+\draw (8.4,11.0) -- (8.4,10.5);
+% galaz rownolegla
+\draw[fill] (8.4,10.5) circle (0.06);
+\draw (8.4,10.5) -- (10.6,10.5);
+\PUSH{8.4}{8.9}\ZNO{8.4}{8.9}
+\node[tag, anchor=east] at (7.3,10.15) {-S2};
+\node[lbl, anchor=east] at (7.3,9.8) {START};
+\node[zn, right] at (8.48,10.0) {13}; \node[zn, right] at (8.48,9.0) {14};
+\draw (10.6,10.5) -- (10.6,10.1);
+\ZNO{10.6}{8.9}
+\node[tag, right] at (10.8,9.5) {-RB};
+\node[ods, right] at (10.8,9.15) {13-14 \; /E2.4};
+\draw (10.6,8.9) -- (10.6,8.5) -- (8.4,8.5);
+\draw[fill] (8.4,8.5) circle (0.06);
+\node[lbl, right] at (10.8,8.7) {samopodtrzymanie};
+\draw (8.4,8.9) -- (8.4,8.0);
+\COILV{8.4}{6.6}
+\node[tag, left] at (7.9,7.3) {-RB};
+\node[zn, right] at (8.48,7.85) {A1}; \node[zn, right] at (8.48,6.75) {A2};
+\node[lbl, left] at (7.9,6.9) {przekaźnik bezpieczeństwa};
+\draw (8.4,6.6) -- (8.4,3.6);
+\draw[fill] (8.4,3.6) circle (0.06);
+% lustro stykow RB
+\node[ods, align=left, anchor=north west] at (8.7,6.1) {\textbf{-RB}\\ 13-14 \; /E2.4\\ 23-24 \; /E2.5};
+% ================= sciezka 5 (kol.5): RB:23-24 -> cewka K1 =================
+\draw[fill] (13.0,16.9) circle (0.06);
+\draw (13.0,16.9) -- (13.0,15.8);
+\ZNO{13.0}{14.6}
+\node[tag, left] at (12.7,15.2) {-RB};
+\node[ods, left] at (12.7,14.8) {/E2.3};
+\node[zn, right] at (13.08,15.7) {23}; \node[zn, right] at (13.08,14.7) {24};
+\node[lbl, right] at (13.2,15.15) {styk wymuszony};
+\draw (13.0,14.6) -- (13.0,13.2);
+\COILV{13.0}{11.8}
+\node[tag, left] at (12.5,12.5) {-K1};
+\node[zn, right] at (13.08,13.05) {A1}; \node[zn, right] at (13.08,11.95) {A2};
+\node[lbl, right] at (13.5,12.5) {stycznik główny /E1};
+\draw (13.0,11.8) -- (13.0,3.6);
+\draw[fill] (13.0,3.6) circle (0.06);
+% lustro stykow K1
+\node[ods, align=left, anchor=north west] at (13.3,10.9) {\textbf{-K1}\\ 1-2 \; /E1.2\\ 3-4 \; /E1.3\\ 5-6 \; /E1.4\\ 7-8 \; /E1.5};
+% ================= sciezka 6 (kol.6): S0:21-22 -> cewka K4 (v3) =================
+\draw[fill] (15.6,16.9) circle (0.06);
+\draw (15.6,16.9) -- (15.6,15.8);
+\ZNC{15.6}{14.6}
+\node[tag, left] at (15.3,15.2) {-S0};
+\node[ods, left] at (15.3,14.85) {/E2.1};
+\node[zn, right] at (15.68,15.7) {21}; \node[zn, right] at (15.68,14.7) {22};
+\node[lbl, right] at (15.85,15.45) {E-STOP, tor 2};
+\draw (15.6,14.6) -- (15.6,12.4);
+\COILV{15.6}{11.0}
+\node[tag, left] at (15.1,11.7) {-K4};
+\node[zn, right] at (15.68,12.25) {A1}; \node[zn, right] at (15.68,11.15) {A2};
+\node[lbl, right] at (16.1,11.7) {przerwanie CP (v3)};
+\draw (15.6,11.0) -- (15.6,3.6);
+\draw[fill] (15.6,3.6) circle (0.06);
+% lustro stykow K4
+\node[ods, align=left, anchor=north west] at (15.9,10.6) {\textbf{-K4}\\ styk CP \; /E1.6};
+% ---- adnotacje ----
+\node[lbl, align=left, anchor=north west] at (17.6,14.0) {\textbf{Zasada:} tor 24 V cewki -K1 przechodzi wyłącznie\\ przez styki sprzętowe. Awaria członu, zanik 24 V,\\ zawieszenie firmware (zanik impulsów -A2)\\ lub E-STOP $\Rightarrow$ -RB odpada $\Rightarrow$ -K1 otwiera\\ tor mocy (/E1). Ponowne załączenie tylko -S2.};
+\node[lbl, align=left, anchor=north west] at (17.6,11.1) {\textbf{-K4 (v3):} cewka wprost z 24 V przez -S0:21-22\\ (poza łańcuchem RB) --- podtrzymuje ciągłość CP;\\ E-STOP lub zanik 24 V $\Rightarrow$ przerwanie CP /E1.6\\ $\Rightarrow$ DUT sam zdejmuje napięcie z magistrali.};
+\node[lbl, align=left, anchor=north west] at (17.6,8.6) {\textbf{Odczyty diagnostyczne (optoizolacja):}\\ stan -S0, -F11.x, -S1, -K2 $\to$ A1 /E3.4\\ (nie ingerują w tor łańcucha)};
+\node[lbl, align=left, anchor=north west] at (17.6,7.0) {\textbf{Poza łańcuchem:} B1 (RCM) $\to$ zdjęcie -K10 /E3.5;\\ bezpieczniki gG /E1.2; rozłącznik -Q0 /E1.2;\\ blokada -Y1 wtyku Type 2 w stanie C /E3.3};
+\end{tikzpicture}
+\end{center}
+\newpage
+% ============ ARKUSZ E3 — SZAFA REKUPERACJI + STEROWANIE ============
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\ramkaE{=CA1+EAA/4}{E3 --- rekuperacja i sterowanie}{4}{4}
+\draw[dashed] (7.5,8.1) rectangle (27.0,17.7);
+\node[tag, anchor=south west] at (7.6,17.75) {MODUŁ B v2 --- szafa rekuperacji (zasilanie z -X2 /E1.2--5, złącze sterownicze -X5)};
+\foreach \x/\f/\k/\p in {9.2/{L1 /E1.2}/-K11/{-PR1/-PR2}, 12.6/{L2 /E1.3}/-K12/{-PR3/-PR4}, 16.0/{L3 /E1.4}/-K13/{-PR5/-PR6}}{
+  \node[ods] at (\x,17.35) {\f};
+  \draw (\x,17.2) -- (\x,16.6);
+  \ZNO{\x}{15.4}
+  \node[tag, left] at ({\x-0.35},16.05) {\k};
+  \node[ods, left] at ({\x-0.35},15.65) {/E3.6};
+  \draw (\x,15.4) -- (\x,15.0);
+  \draw ({\x-1.5},13.3) rectangle ({\x+1.5},15.0);
+  \node[zn] at (\x,14.65) {\p};
+  \node[zn] at (\x,14.3) {2$\times$ prostownik PFC 3 kW};
+  \node[zn] at (\x,13.95) {48 V DC, sterowanie CAN};
+  \draw ({\x-0.9},13.3) -- ({\x-0.9},12.85);
+  \draw[fill] ({\x-0.9},12.85) circle (0.05);
+  \draw ({\x+0.9},13.3) -- ({\x+0.9},11.9);
+  \draw[fill] ({\x+0.9},11.9) circle (0.05);
+  \draw ({\x+0.3},13.3) -- ({\x+0.3},11.45);
+  \draw[fill] ({\x+0.3},11.45) circle (0.05);}
+\node[lbl] at (10.9,15.18) {-K14: L2$\to$L1 dla 1F 32 A (cewka /E3.7)};
+\POTR{7.7}{12.85}\draw (8.05,12.85) -- (17.6,12.85); \node[ods, left] at (7.65,12.85) {N /E1.5};
+\draw (8.2,11.9) -- (22.8,11.9); \node[zn, left] at (8.15,11.9) {+48 V};
+\draw (8.2,11.45) -- (22.6,11.45); \node[zn, left] at (8.15,11.45) {0 V};
+\draw[fill] (18.0,11.9) circle (0.05);
+\draw (18.0,11.9) -- (18.0,11.0);
+\FUZH{18.0}{11.0}
+\node[tag] at (18.6,11.3) {-F13.1};
+\ZNOH{19.3}{11.0}
+\node[tag] at (19.9,11.35) {-KB};
+\node[ods] at (19.9,10.7) {kontaktor BMS};
+\draw (20.5,11.0) -- (21.2,11.0);
+\ROZL{21.2}{9.8}
+\node[tag, right] at (21.4,10.5) {-Q1};
+\node[ods, right] at (21.4,10.15) {rozłącznik DC};
+\draw (20.2,8.4) rectangle (23.6,9.8);
+\node[zn] at (22.4,9.35) {-GB1 LiFePO4 48 V};
+\node[zn] at (22.4,9.0) {10--14 kWh, BMS (CAN/RS485 $\to$ -A1)};
+\node[zn] at (22.4,8.65) {temperatury: -B5.x (1-Wire)};
+\draw[fill] (19.0,11.45) circle (0.05);
+\draw (19.0,11.45) -- (19.0,10.8);
+\FUZ{19.0}{9.6}
+\node[tag, left] at (18.8,10.2) {-F13.2};
+\draw (19.0,9.6) -- (19.0,8.15) -- (20.9,8.15) -- (20.9,8.4);
+\draw[fill] (22.8,11.9) circle (0.05);
+\draw (22.8,11.9) -- (22.8,13.4) -- (23.2,13.4);
+\draw[fill] (22.6,11.45) circle (0.05);
+\draw (22.6,11.45) -- (22.6,12.9) -- (23.2,12.9);
+\draw (23.2,12.6) rectangle (26.8,15.8);
+\node[zn] at (25.0,15.45) {\textbf{-INV} --- falownik hybrydowy};
+\node[zn] at (25.0,15.1) {48 V $\to$ 230/400 V, 5--12 kW};
+\node[zn] at (25.0,14.75) {tryb ESS/UPS, CAN $\to$ -A1};
+\draw[-{Stealth}] (26.2,15.8) -- (26.2,16.7);
+\node[ods, right] at (25.0,16.95) {$\to$ rozdzielnia zakładu};
+\node[ods] at (24.7,12.3) {zrzut nadmiaru: -K5 /E3.8 $\to$ grzałka -E13 (CWU)};
+\MOT{18.2}{16.9}{1$\sim$}
+\node[ods, anchor=west] at (18.75,17.1) {wentylatory strat -M3/-M4 ($\sim$0,5--1,2 kW ciepła):};
+\node[ods, anchor=west] at (18.75,16.7) {X4:L $\to$ -F5 $\to$ styk -K3 /E3.8 $\to$ czujnik -K2 (I$>$) $\to$ /E2.3};
+\node[ods, anchor=west] at (18.75,16.3) {termiki $\theta$ -F11.1..8 na radiatorach -PR1..6 i -INV $\to$ /E2.1 (-X5)};
+\node[ods, left] at (1.3,10.0) {X4:1 (L)};
+\node[ods, left] at (1.3,9.6) {X4:2 (N)};
+\node[ods, left] at (1.3,9.2) {X4:3 (PE)};
+\foreach \y in {10.0,9.6,9.2}{\TERM{1.45}{\y}}
+\draw (1.52,10.0) -- (1.6,10.0);
+\FUZH{1.6}{10.0}
+\node[tag] at (2.2,10.35) {-F4};
+\node[zn] at (2.2,9.78) {T2A};
+\draw (1.52,9.6) -- (2.9,9.6);
+\draw (1.52,9.2) -- (2.9,9.2);
+\draw (2.8,10.0) -- (2.9,10.0);
+\draw (2.9,8.9) rectangle (5.5,10.3);
+\node[font=\scriptsize\bfseries, align=center] at (4.2,9.85) {-G1};
+\node[zn, align=center] at (4.2,9.35) {zasilacz\\ 24 / 5 / 3,3 V};
+\draw[-{Stealth}] (5.5,9.95) -- (6.1,9.95); \node[ods, right, align=left] at (6.1,10.1) {24 V $\to$ /E2.1,\\ cewki, -Y1, -K4};
+\draw[-{Stealth}] (5.5,9.25) -- (6.1,9.25); \node[ods, right] at (6.1,9.25) {5 / 3,3 V $\to$ -A1};
+\node[lbl, align=left, anchor=north west] at (2.9,8.6) {zasilanie logiki z przewodu Schuko\\ (nie z badanej ładowarki)};
+\draw (1.0,11.4) rectangle (6.4,13.1);
+\node[font=\scriptsize\bfseries] at (3.7,12.75) {-A3 --- generator upływu};
+\node[zn, align=left, anchor=north west] at (1.15,12.5) {DC 0--20 mA / AC (rampa z DAC);\\ pomiar: bocznik + AMC1301 $\to$ -A1;\\ przyłącza: L1 za -B1 (/E1.2, przez -K30), PE};
+\node[ods, anchor=north west] at (1.15,11.35) {test RDC-DD 6 mA DC i RCD ładowarki};
+\draw (1.5,3.4) rectangle (7.0,7.6);
+\node[font=\scriptsize\bfseries] at (4.25,7.3) {-A1 \; ESP32-S3 --- płyta logiki};
+\foreach \y/\p/\t in {6.85/SPI/{-B1 /E1.3; -U2 ATM90E36A $\leftarrow$ -T1\ldots-T3 /E1.3},
+                      6.35/CAN/{TWAI + transceiver izol.: -PR1..-PR6, BMS, -INV /E3.4},
+                      5.85/I2C/{-B2 MLX90640; -B3, -B4 MLX90614; -U3 MCP23017},
+                      5.35/UART/{-P1 HMI DWIN 7'' (START, LED, buzzer)},
+                      4.85/{1-W}/{-B5.1\ldots8 DS18B20 (szyny, -K1, bateria, otoczenie)},
+                      4.35/ADC/{CP, PP z -X3 /E1.6 (dzielnik + ograniczniki)},
+                      3.85/DI/{odczyty łańcucha (opto) /E2.1: -S0, -F11.x, -S1, -K2}}{
+  \TERM{7.0}{\y}
+  \node[zn, left] at (6.9,\y) {\p};
+  \draw (7.07,\y) -- (7.6,\y);
+  \node[ods, right, align=left] at (7.6,\y) {\t};}
+\draw[densely dashed, -{Stealth}] (8.6,6.35) -- (8.6,13.3);
+\node[lbl, rotate=90] at (8.35,10.2) {CAN (izolowany)};
+\node[zn] at (3.2,3.55) {DO1};
+\node[zn] at (4.0,3.55) {DO2};
+\node[zn] at (4.8,3.55) {DO3};
+\TERM{3.2}{3.4}\TERM{4.0}{3.4}\TERM{4.8}{3.4}
+\draw (3.2,3.33) -- (3.2,2.9) -- (12.4,2.9) -- (12.4,3.3);
+\draw (4.0,3.33) -- (4.0,2.55) -- (13.65,2.55) -- (13.65,3.3);
+\draw (4.8,3.33) -- (4.8,2.2) -- (8.2,2.2) -- (8.2,2.3);
+\COILV{12.4}{3.3}
+\node[tag, right] at (12.9,4.35) {-K10};
+\node[ods, right] at (12.9,4.0) {styk /E2.3};
+\draw (12.4,4.7) -- (12.4,4.95); \node[ods, above] at (12.4,4.95) {24 V};
+\draw (13.25,3.3) rectangle (14.05,4.1); \node[zn, align=center] at (13.65,3.7) {-A2\\ WDT};
+\node[ods, anchor=east] at (13.2,2.95) {styk /E2.3};
+\draw (13.65,4.1) -- (13.65,4.35); \node[ods, anchor=east] at (13.55,4.55) {24 V};
+\COILV{8.2}{2.3}
+\node[tag, right] at (8.7,3.3) {-Y1};
+\node[ods, right] at (8.7,2.95) {blokada wtyku -X1 /E1.6};
+\draw (8.2,3.7) -- (8.2,3.85); \node[ods, anchor=west] at (8.3,3.8) {24 V};
+\node[lbl] at (6.2,1.9) {DO1--DO3 (opto, low-side): zezwolenie / impulsy watchdog / blokada};
+\draw (14.4,6.4) -- (22.4,6.4); \node[ods, left] at (14.35,6.4) {24 V};
+\foreach \i/\x in {11/14.9, 12/15.6, 13/16.3, 14/17.0, 30/17.9, 31/18.6, 32/19.3, 33/20.0, 3/20.9, 5/21.6}{
+  \draw[fill] (\x,6.4) circle (0.05);
+  \draw (\x,6.4) -- (\x,6.15);
+  \draw ({\x-0.28},5.55) rectangle ({\x+0.28},6.15);
+  \draw (\x,5.55) -- (\x,5.3);
+  \node[zn, rotate=90, anchor=east] at (\x,5.2) {-K\i};}
+\draw (14.4,4.35) -- (22.4,4.35); \node[ods, left] at (14.35,4.35) {0 V};
+\foreach \x in {14.9,15.6,16.3,17.0,17.9,18.6,19.3,20.0,20.9,21.6}{
+  \draw (\x,5.3) -- (\x,4.35); \draw[fill] (\x,4.35) circle (0.05);}
+\draw (13.0,6.9) rectangle (17.4,7.7); \node[zn, align=center] at (15.2,7.3) {-U5 ULN2803 $\leftarrow$ -U3 (I2C -A1)};
+\draw[-{Stealth}] (15.2,6.9) -- (15.2,6.55);
+\node[lbl, align=left, anchor=north west] at (14.4,3.95) {styki: -K11..-K13 /E3.4--6 (sekcje faz); -K14 konfiguracja 1F 32 A; -K30..-K33 separacja -A3/-U2 (tryb izolacji /E1.3);\\ -K3 wentylatory i -K5 zrzut CWU --- góra arkusza /E3.8};
+\end{tikzpicture}
+\end{center}
+
+\end{document}

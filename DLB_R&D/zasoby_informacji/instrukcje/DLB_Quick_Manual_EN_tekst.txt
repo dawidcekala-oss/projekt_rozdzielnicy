@@ -1,0 +1,321 @@
+               Quick User Manual
+
+   DLB Controller for Mode 3 Wall Box Charger
+
+                            Model Number: DLB-A1
+Applies to the household/small commercial DLB controller. This concise
+manual summarizes funcons, safety, installaon, pairing and operaon,
+indicators, and typical current allocaon examples for 1-3 wall box chargers.
+Appendices include a DIP quick lookup and 433 MHz antenna
+recommendaons & coverage test method.
+
+                                                                                                        Rev. 20251109
+1. Scope & Safety
+
+   · Install and set up only by qualified electricians.
+   · Isolate power before wiring; lock-out/tag-out where applicable.
+   · Current Transformer (CT) orientation must be correct; never energize
+
+        with CT secondary open-circuited.
+   · Set the Configured Supply Limit (CSL) according to incoming cable size,
+
+        breaker rating, and local codes.
+   · Install inside a dry, dust-free, ventilated distribution board; this device is
+
+        not weatherproof.
+   · Keep the wireless antenna away from strong EMI sources; ensure proper
+
+        strain relief on cables.
+
+2. Description & Operating Principle
+
+   The DLB monitors the household's total current (single/three-phase) and
+   allocates optimal charging current to 1-3 wall boxes in real time, so that the
+   site limit is never exceeded.
+
+   · Dynamic Load Balancing: per-EV optimization to use every available amp
+        without exceeding the limit.
+
+   · Safety Buffer: default usable ceiling is 90% of the Configured Supply Limit
+        (10% buffer).
+
+   · Communications: 433 MHz wireless (SMA antenna) or RS485; target
+        current is delivered to wall box in real time.
+
+   · Fairness & Constraints: each wall box is capped by its own requested
+        current; any branch < minimum sustaining current is paused.
+
+3. Parts & I/O (Refer to Photo)
+
+   · Antenna (Gold-plated SMA): 433 MHz wireless.
+   · Power input: AC 100-240 V, 50/60 Hz, L / N / PE.
+   · CT inputs: L1 / L2 / L3 Current Transformers.
+   · Pairing button: Hold 5 s to enter pairing mode (clears all existing links);
+
+        press once to finish early (otherwise times out after ~2 min).
+   · Link LEDs: link status for up to three wall boxes.
+   · 8-way DIP switch: sets Configured Supply Limit (1-255 A).
+
+                                              2
+  Antenna                       Power
+Connector                       Connector
+
+DIP Switches                    L1, L2, L3, and
+for Configured                  Set CSL Display
+Supply Limit
+
+CT for Line 1   Pairing Button  LED indicators
+CT for Line 2                   for Wall boxes
+CT for Line 3
+
+            Figure: DLB controller -- external connectors and indicators.
+
+4. Installation
+
+   · Mount inside the main distribution board for short CT runs and
+        convenient power/RS485 wiring.
+
+   · CTs: Clamp on the incoming L1/L2/L3, upstream of all branch breakers
+        (not on branches). Arrow toward load; on three-phase, monitor all phases
+        and limit by the heaviest phase.
+
+   · 433 MHz antenna (default): keep vertical, ideally outside metal
+        enclosures. Where site conditions--e.g., walls or large metal structures--
+        impede wireless connectivity, select RS485.
+
+   · RS485: use either 433 MHz or RS485 -- not both. Switching to RS485
+        requires opening the wall box and moving the internal selector to
+        "RS485" before installation. Wire A/B correctly.
+
+                                              3
+5. Settings
+
+   5.1 Configured Supply Limit (DIP 1-255 A)
+
+      Use the 8-way DIP (weights 128/64/32/16/8/4/2/1 A). Toggle ON to sum to
+      the desired amperage. The DLB applies 90% of this value as the usable
+      ceiling (10% safety buffer).
+
+      Examples: 75 A = 64+8+2+1; 62 A = 32+16+8+4+2; 50 A = 32+16+2.
+
+   5.2 Minimum Sustaining Current
+
+      Recommended 6 A. If a branch would receive <6 A, that wall box is paused
+      until headroom returns.
+
+6. Pairing & Operation
+
+   6.1 Pairing
+
+      · Warning: entering pairing mode clears all existing links; please re-pair
+           ALL wall boxes (1-3) simultaneously.
+
+      · DLB: hold the Pairing Button for 5 s until all three link LEDs flash; the
+           pairing mode times out after 2 min.
+
+      · Wall box: while not charging, press and hold A + C for 5 s  Settings 
+           DLB Pairing  On  Confirm  Home. Blue DLB icon (flashing)
+           indicates pairing mode.
+
+      · Success: corresponding DLB link LED turns solid; wall box DLB icon
+           becomes green. Press the Pairing Button once to finish pairing early.
+
+   6.2 Operation
+
+      · Full Current Charging (Green DLB icon and white current color):
+           sufficient headroom; each wall box charges at its requested current.
+
+      · Reduced Current Charging (Orange DLB icon and current color):
+           headroom drops; DLB reduces and optimizes currents while keeping
+           each branch 6 A where possible. Otherwise, that branch is paused.
+
+      · Paused (Red DLB icon and current color): This wall box is paused due to
+           severe current shortage. Recovery is automatic when headroom returns.
+
+                                              4
+7. Indicators                                                    Wall Box Charger
+
+                   Mode                DLB LED             DLB icon      Real-time Current
+
+      Not Paired/offline                  Off              Grey          White
+      Pairing                          Flashing
+      Paired/online                    Solid On          Flashing blue   White
+      Full Current Charging         Slow Flashing
+      Reduced Current Charging      Slow Flashing          Green         White
+      Charging Paused               Quick Flashing
+                                                           Green         White
+
+                                                           Orange        Orange
+
+                                                           Red                     Red
+
+8. Typical Allocation Examples
+
+Assumptions:
+
+  Configured Supply Limit set to 74 A  DLB usable limit = 66 A (90%);
+  Usable Total Current = 66A - CT-measured current of house load(non-EV)
+  each wall box requests up to 32 A;
+  minimum sustaining current = 6 A; integer-amp allocations.
+
+8.1 One Wall Box
+
+Scenario Usable Total WB1 DLB Icon Current                               Notes
+          (A)                       (A)                    Color
+
+Full      56                        32           Green     White Capped by wall box
+Current
+                                                                         max 32 A.
+
+Reduced   21.3                      21           Orange Orange           Limited by
+
+Current                                                                  household load.
+
+Paused    0-5                       0               Red    Red           Below 6 A 
+
+                                                                         paused.
+
+8.2 Two Wall Boxes
+
+Scenario Usable WB1                      WB2 DLB Icons Current               Notes
+              Total (A) (A)              (A)                     Colors
+                                                                         All requests
+Full      56                    32       16 Green / White /              satisfied; no
+Current
+                                                    Green        White     derating.
+                                                                         Proportional
+Reduced 26.5                    17       9 Orange / Orange /              reduction.
+Current                                            Orange Orange
+                                                                         WB2 <6 A 
+Critical  9.6                   9        0 Orange / Orange /             pause WB2.
+                                                    Red            Red
+
+                                              5
+8.3 Three Wall Boxes
+
+Scenario Usable WB1 WB2 WB3 DLB Icons Current              Notes
+Total (A) (A)              (A)        (A)          Colors
+
+  Full 64                                  Green / White / All requests
+Current
+                       32  16         16 Green / White / satisfied; no
+
+                                           Green White derating.
+
+Reduced 35 18 9                               Orange / Orange / Proportional
+Current                               8 Orange / Orange / reduction.
+
+                                               Orange Orange
+
+                                           Orange / Orange / WB3 <6 A 
+Critical 9.6 9 0 0 Orange / Orange / pause WB3.
+                                           Red     Red
+
+9. Key Specifications
+
+Model Number               DLB-A1
+
+Power Supply               AC 100-240 V, 50/60 Hz
+
+Managed Wall Boxes 1-3
+
+Communications             433 MHz (SMA) or RS485 (one link type at a time)
+
+433 MHz Range              20-30 m indoor (typ.);
+                           80-100 m line-of-sight (open field).
+CT Inputs                  Range is site-dependent (walls, reinforced
+Configured Supply Limit    concrete, metalwork, RF interference ).
+Usable Limit
+Min Sustaining Current     L1 / L2 / L3, 0-100 A (2000:1), Accuracy class: 0.5
+Overcurrent Reaction
+(downshift)                1-100 A, 8-way DIP switch, expandable to 150 /
+Operating Environment      200 / 250 A (with appropriate CT).
+                           90% × Configured Supply Limit minus the highest
+                           CT-measured phase current
+
+                           6 A for each wall box
+
+                           < 1 s (typ.)
+
+                           -20 to +55 °C, 95% RH (non-condensing)
+
+                                   6
+Appendix A --DIP Quick Lookup
+
+DIP weights: 128 / 64 / 32 / 16 / 8 / 4 / 2 / 1 (A). Toggle to ON to sum to the
+target amperage. The device applies a 10% safety buffer to the Configured
+Supply Limit.
+
+Common examples:
+
+  Configured      ON Weights        Binary (1=ON  DIP Switch Settings
+Supply Limit (A)       (A)          from 1281)       (=OFF, =ON)
+                                                             
+25                16+8+1              00011001               
+                                      00011110               
+30                16+8+4+2            00100011               
+                                      00101010               
+35                32+2+1              00110000               
+                                      00110010               
+42                32+8+2              00110111               
+                                      00111110               
+48                32+16               01000001               
+                                      01000100               
+50                32+16+2             01000110               
+                                      01001011        
+55                32+16+4+2+1         01001110               
+                                      01010000               
+62                32+16+8+4+2         01010101               
+                                      01011010               
+65                64+1                01011101               
+                                      01011111               
+68                64+4                01100100
+
+70                64+4+2
+
+75                64+8+2+1
+
+78                64+8+4+2
+
+80                64+16
+
+85                64+16+4+1
+
+90                64+16+8+2
+
+93                64+16+8+4+1
+
+95                64+16+8+4+2+1
+
+100               64+32+4
+
+                                 7
+Appendix B -- 433 MHz Antenna Installation Recommendations
+
+   · Antenna type: 433 MHz ¼ -wave whip with SMA and magnetic base.
+   · Mounting: Install the DLB inside the distribution board for short Power
+
+        and CT runs. Route the antenna cable out of the metal enclosure and
+        mag-mount the base on the exterior metal surface (top or side).
+   · Orientation: Keep the whip vertical. It's omnidirectional--no need to
+        point it at the wall box.
+   · Distance & path: Keep the DLB-wall box distance as short as practical
+        and aim for a clear path with no large metal objects in between.
+   · Height & placement: Prefer the top of the cabinet or another high, open
+        spot; avoid corners, deep recesses, and spots shielded by beams/ducts.
+   · Ground plane: A magnetic metal surface under the base acts as a ground
+        plane--good for performance. Keep the whip a few centimeters away
+        from other metal masses or rails.
+   · Separation: Avoid coiling excess cable near power devices; keep several
+        centimeters of clearance from large metal obstacles.
+   · Cable routing: Stay away from high-current cables/VFDs; if you must
+        cross them, do it at right angles. Provide basic strain relief; avoid sharp
+        bends.
+   · Connectors: Hand-tighten the SMA; check for a firm connection after
+        positioning.
+   · Environment: If mounted where moisture/dust is possible, add basic
+        weather shielding (indoor use only unless otherwise rated).
+   · Regulatory: Follow local ISM-band limits (transmit power/duty cycle).
+
+                                              8
+

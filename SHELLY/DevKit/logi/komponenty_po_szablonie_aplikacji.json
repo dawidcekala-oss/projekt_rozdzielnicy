@@ -1,0 +1,430 @@
+[
+  {
+    "key": "boolean:201",
+    "status": {
+      "value": false,
+      "source": "",
+      "last_update_ts": 0
+    },
+    "config": {
+      "id": 201,
+      "name": "Symulacja: awaria uziemienia",
+      "meta": {
+        "ui": {
+          "view": "toggle",
+          "titles": [
+            "Brak",
+            "Awaria"
+          ]
+        }
+      },
+      "persisted": false,
+      "default_value": false,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "boolean:200",
+    "status": {
+      "value": false,
+      "source": "rpc",
+      "last_update_ts": 1790248404
+    },
+    "config": {
+      "id": 200,
+      "name": "Ładowanie włączone",
+      "meta": {
+        "ui": {
+          "view": "toggle",
+          "titles": [
+            "Wyłączone",
+            "Włączone"
+          ]
+        }
+      },
+      "persisted": true,
+      "default_value": true,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "enum:203",
+    "status": {
+      "value": "A",
+      "source": "rpc",
+      "last_update_ts": 1790247476
+    },
+    "config": {
+      "id": 203,
+      "name": "Symulacja: samochód",
+      "options": [
+        "A",
+        "B",
+        "C"
+      ],
+      "meta": {
+        "ui": {
+          "view": "dropdown",
+          "titles": {
+            "A": "A: odłączony",
+            "B": "B: podłączony, czeka",
+            "C": "C: gotowy do ładowania"
+          }
+        }
+      },
+      "persisted": false,
+      "default_value": "A",
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "enum:202",
+    "status": {
+      "value": "charge_now",
+      "source": "",
+      "last_update_ts": 0
+    },
+    "config": {
+      "id": 202,
+      "name": "Tryb ładowania",
+      "options": [
+        "charge_now",
+        "charge_energy",
+        "charge_schedule"
+      ],
+      "meta": {
+        "ui": {
+          "view": "dropdown",
+          "titles": {
+            "charge_now": "Natychmiast",
+            "charge_energy": "Do zadanej energii",
+            "charge_schedule": "Według harmonogramu"
+          }
+        }
+      },
+      "persisted": true,
+      "default_value": "charge_now",
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "group:200",
+    "status": {
+      "value": [
+        "enum:203",
+        "boolean:201",
+        "boolean:200",
+        "number:200",
+        "enum:202",
+        "number:201",
+        "number:202",
+        "number:203",
+        "text:202",
+        "text:203",
+        "number:204",
+        "number:205",
+        "number:206",
+        "number:207",
+        "text:200",
+        "text:201"
+      ],
+      "source": "rpc",
+      "last_update_ts": 1790247136
+    },
+    "config": {
+      "id": 200,
+      "name": "Ładowarka Q11 (symulacja)",
+      "meta": null,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "number:200",
+    "status": {
+      "value": 16,
+      "source": "",
+      "last_update_ts": 0
+    },
+    "config": {
+      "id": 200,
+      "name": "Limit prądu",
+      "min": 6,
+      "max": 16,
+      "meta": {
+        "ui": {
+          "view": "slider",
+          "unit": "A",
+          "step": 1
+        }
+      },
+      "persisted": true,
+      "default_value": 16,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "number:201",
+    "status": {
+      "value": 10,
+      "source": "",
+      "last_update_ts": 0
+    },
+    "config": {
+      "id": 201,
+      "name": "Energia docelowa",
+      "min": 1,
+      "max": 200,
+      "meta": {
+        "ui": {
+          "view": "field",
+          "unit": "kWh",
+          "step": 1
+        }
+      },
+      "persisted": true,
+      "default_value": 10,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "number:202",
+    "status": {
+      "value": 22,
+      "source": "",
+      "last_update_ts": 0
+    },
+    "config": {
+      "id": 202,
+      "name": "Początek harmonogramu",
+      "min": 0,
+      "max": 23,
+      "meta": {
+        "ui": {
+          "view": "field",
+          "unit": "h",
+          "step": 1
+        }
+      },
+      "persisted": true,
+      "default_value": 22,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "number:203",
+    "status": {
+      "value": 6,
+      "source": "",
+      "last_update_ts": 0
+    },
+    "config": {
+      "id": 203,
+      "name": "Koniec harmonogramu",
+      "min": 0,
+      "max": 23,
+      "meta": {
+        "ui": {
+          "view": "field",
+          "unit": "h",
+          "step": 1
+        }
+      },
+      "persisted": true,
+      "default_value": 6,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "number:204",
+    "status": {
+      "value": 0,
+      "source": "sys",
+      "last_update_ts": 1790247478
+    },
+    "config": {
+      "id": 204,
+      "name": "Moc",
+      "min": 0,
+      "max": 30,
+      "meta": {
+        "ui": {
+          "view": "label",
+          "unit": "kW"
+        }
+      },
+      "persisted": false,
+      "default_value": 0,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "number:205",
+    "status": {
+      "value": 0,
+      "source": "sys",
+      "last_update_ts": 1790247478
+    },
+    "config": {
+      "id": 205,
+      "name": "Energia sesji",
+      "min": 0,
+      "max": 1000,
+      "meta": {
+        "ui": {
+          "view": "label",
+          "unit": "kWh"
+        }
+      },
+      "persisted": false,
+      "default_value": 0,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "number:206",
+    "status": {
+      "value": 1.03,
+      "source": "sys",
+      "last_update_ts": 1790247476
+    },
+    "config": {
+      "id": 206,
+      "name": "Licznik całkowity",
+      "min": 0,
+      "max": 1000000,
+      "meta": {
+        "ui": {
+          "view": "label",
+          "unit": "kWh"
+        }
+      },
+      "persisted": false,
+      "default_value": 0,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "number:207",
+    "status": {
+      "value": 23,
+      "source": "sys",
+      "last_update_ts": 1790247862
+    },
+    "config": {
+      "id": 207,
+      "name": "Temperatura",
+      "min": -40,
+      "max": 200,
+      "meta": {
+        "ui": {
+          "view": "label",
+          "unit": "°C"
+        }
+      },
+      "persisted": false,
+      "default_value": 23,
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "text:202",
+    "status": {
+      "value": "Wolna",
+      "source": "sys",
+      "last_update_ts": 1790247478
+    },
+    "config": {
+      "id": 202,
+      "name": "Stan ładowarki",
+      "max_len": 255,
+      "meta": {
+        "ui": {
+          "view": "label"
+        }
+      },
+      "persisted": false,
+      "default_value": "Wolna",
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "text:203",
+    "status": {
+      "value": "12 V: brak auta",
+      "source": "sys",
+      "last_update_ts": 1790247478
+    },
+    "config": {
+      "id": 203,
+      "name": "Sygnał Control Pilot",
+      "max_len": 255,
+      "meta": {
+        "ui": {
+          "view": "label"
+        }
+      },
+      "persisted": false,
+      "default_value": "12 V: brak auta",
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "text:200",
+    "status": {
+      "value": "L1 230.1 V 0.0 A 0.00 kW | L2 230.7 V 0.0 A 0.00 kW | L3 230.7 V 0.0 A 0.00 kW",
+      "source": "sys",
+      "last_update_ts": 1790248684
+    },
+    "config": {
+      "id": 200,
+      "name": "Fazy L1 / L2 / L3",
+      "max_len": 255,
+      "meta": {
+        "ui": {
+          "view": "label"
+        }
+      },
+      "persisted": false,
+      "default_value": "-",
+      "owner": "",
+      "access": "*"
+    }
+  },
+  {
+    "key": "text:201",
+    "status": {
+      "value": "brak",
+      "source": "",
+      "last_update_ts": 0
+    },
+    "config": {
+      "id": 201,
+      "name": "Błędy",
+      "max_len": 255,
+      "meta": {
+        "ui": {
+          "view": "label"
+        }
+      },
+      "persisted": false,
+      "default_value": "brak",
+      "owner": "",
+      "access": "*"
+    }
+  }
+]

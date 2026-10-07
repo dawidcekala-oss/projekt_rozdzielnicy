@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.92]
+\setsansfont{DejaVu Sans}[Scale=0.92]
+\setmonofont{DejaVu Sans Mono}[Scale=0.84]
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+\definecolor{navy}{RGB}{19,40,82}
+\definecolor{rulegrey}{RGB}{180,190,205}
+\definecolor{accent}{RGB}{0,110,90}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=accent}
+\emergencystretch=3em \hbadness=3000
+\titleformat{\section}{\large\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{1.0em}{0.3em}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.4em}
+\setlist[itemize]{leftmargin=1.2em,itemsep=0.18em,topsep=0.2em}
+\newcommand{\key}[1]{\textbf{\color{navy}#1}}
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{rulegrey}\leaders\hrule height \footrulewidth\hfill}}
+\fancyfoot[L]{\footnotesize\sffamily\color{rulegrey}AMPERE POINT — materiały źródłowe (integracja SUN2000 + HA + seria Q), v1}
+\fancyfoot[R]{\footnotesize\sffamily\color{rulegrey}\thepage}
+\begin{document}
+{\sffamily\bfseries\color{navy}\LARGE Materiały źródłowe}\\[3pt]
+{\sffamily\large\color{navy} Integracja Huawei SUN2000 + Home Assistant + ładowarka AMPERE POINT serii Q}\\[6pt]
+{\color{rulegrey}\hrule height 1pt}\vspace{4pt}
+{\footnotesize\sffamily Wersja v1 \quad•\quad data: 2026-06-29 \quad•\quad rzetelne źródła i karty katalogowe do opracowania sposobu integracji}\\[2pt]
+
+\section{Ładowarka serii Q (Tuya / Home Assistant)}
+\begin{itemize}
+\item \href{https://www.amperepoint.com/blogs/poradniki/integration-of-ampere-point-q-series-charger-with-home-assistant}{AMPERE POINT — Integration of Q Series Charger with Home Assistant} — oficjalny poradnik producenta: metoda \texttt{xtend\_tuya}, alternatywa \texttt{tuya\_local}, lista encji, scenariusz „ładuj tylko nadwyżką PV". \emph{Źródło kluczowe.}
+\item Instrukcja serii Q (folder projektu): \texttt{QSeries\_Ampere\_Point\_manual\_EN\_CONTENT\_REVIEW.docx} — WiFi/Tuya (2,4 GHz), ustawianie prądu, harmonogramy, wzmianka o HACS + \texttt{xtend\_tuya}.
+\item \href{https://github.com/azerty9971/xtend_tuya}{\texttt{xtend\_tuya} (GitHub)} — integracja chmurowa Tuya rozszerzająca obsługę ładowarek EV.
+\item \href{https://github.com/make-all/tuya-local}{\texttt{tuya\_local} (GitHub)} — sterowanie lokalne (bez chmury).
+\item \href{https://github.com/jasonacox/tinytuya}{TinyTuya (GitHub)} — wyłuskanie \emph{device id} i \emph{local key}.
+\item \href{https://hacs.xyz/docs/setup/download/}{HACS — instalacja} — sklep społecznościowy HA.
+\item \href{https://www.home-assistant.io/integrations/tuya/}{Oficjalna integracja Tuya w HA} oraz \href{https://community.home-assistant.io/t/turn-your-tuya-ev-charger-dynamic-load-balancing-or-solar-controlled/854072}{wzorzec sterowania ładowarką Tuya nadwyżką PV (HA Community)}.
+\end{itemize}
+
+\section{Falownik SUN2000 (Huawei / Modbus / Home Assistant)}
+\begin{itemize}
+\item \href{https://github.com/wlcrs/huawei_solar}{\texttt{huawei\_solar} — integracja HA (GitHub)} oraz \href{https://github.com/wlcrs/huawei_solar/wiki}{Wiki (Connecting to the inverter, Changing Active Power Control)}.
+\item Huawei „Solar Inverter Modbus Interface Definitions" (mapa rejestrów): \href{https://support.huawei.com/enterprise/en/doc/EDOC1100480329}{Huawei Support} oraz \href{https://community.symcon.de/uploads/short-url/pqZXWOienoBK2AsEzGD2oH1bcPR.pdf}{kopia V3.0 (PDF)}.
+\item \href{https://github.com/Akulatraxas/ha-modbusproxy}{Modbus Proxy (GitHub)} — gdy z falownika korzysta też EVCC/drugi system (Modbus = jedno połączenie naraz).
+\item \href{https://evcc.io/}{EVCC} — gotowy orkiestrator ładowania (czyta falownik, steruje ładowarką).
+\item \href{https://github.com/olivergregorius/sun2000_modbus}{\texttt{sun2000\_modbus} (biblioteka Python)} — alternatywny odczyt metryk przez Modbus TCP.
+\end{itemize}
+
+\section{Uwaga}
+Rozszerzenia \texttt{xtend\_tuya}, \texttt{tuya\_local} i \texttt{huawei\_solar} są społecznościowe (nieoficjalne) — sprawne, ale bez gwarancji producentów; oficjalne wsparcie Tuya dla ładowarek EV było w toku (stan na 2025 r.). Pełny opis sposobu integracji w dokumencie \texttt{AMPERE\_POINT\_integracja\_SUN2000\_HomeAssistant\_Q\_v1.pdf}.
+\end{document}

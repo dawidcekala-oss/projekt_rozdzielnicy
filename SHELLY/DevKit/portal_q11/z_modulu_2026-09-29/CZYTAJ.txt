@@ -1,0 +1,7 @@
+Pliki uslugi pobrane z DevKitu 2026-09-29 (build 20260925-084316, produkt Q11 DevKit test, 6 pol).
+Pobranie: http://192.168.0.238/rpc/Service.GetFile?id=0&type=ui|code|manifest
+Odpowiedz: {"data": base64(gzip(plik)), "left": 0}.
+- ui_ekran_wygenerowany.js  - skompilowany ekran Svelte (XT1_UI) wygenerowany przez portal; to on rysuje strone
+                              WWW modulu (kafelki Charging, Phase A/B/C, Power, Total Active Energy; blad "N/A A").
+- manifest.svc.json         - manifest z polami i meta.ui (akcje i warunki dla scen w aplikacji).
+- script_skompilowany.js    - skrypt v3 po kompilacji przez portal (babel, ES5).

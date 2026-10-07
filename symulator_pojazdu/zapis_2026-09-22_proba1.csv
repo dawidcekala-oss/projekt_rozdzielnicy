@@ -1,0 +1,44 @@
+# AMPERE POINT - symulator pojazdu, pierwsza proba na zywej ladowarce, 22 IX 2026
+# zasilanie z zasilacza sieciowego USB, laptop odlaczony
+# podlaczone tylko: wejscie pomiarowe pilota + masa wtyczki
+# galaz rezystora pojazdu NIE byla podlaczona -> ladowarka widzi brak pojazdu
+s;pilot_V;wypelnienie_%;oferta_A;stan
+0;12.13;-;-;A brak polaczenia
+1;12.39;-;-;A brak polaczenia
+2;12.23;-;-;A brak polaczenia
+3;12.13;-;-;A brak polaczenia
+4;12.23;-;-;A brak polaczenia
+5;12.19;-;-;A brak polaczenia
+6;12.13;-;-;A brak polaczenia
+7;12.19;-;-;A brak polaczenia
+8;12.16;-;-;A brak polaczenia
+9;12.19;-;-;A brak polaczenia
+10;12.16;-;-;A brak polaczenia
+11;12.36;-;-;A brak polaczenia
+12;12.13;-;-;A brak polaczenia
+13;12.19;-;-;A brak polaczenia
+14;12.13;-;-;A brak polaczenia
+15;12.19;-;-;A brak polaczenia
+16;12.16;-;-;A brak polaczenia
+17;12.23;-;-;A brak polaczenia
+18;12.16;-;-;A brak polaczenia
+19;12.16;-;-;A brak polaczenia
+20;12.26;-;-;A brak polaczenia
+21;12.36;-;-;A brak polaczenia
+22;12.26;-;-;A brak polaczenia
+23;12.16;-;-;A brak polaczenia
+24;12.16;-;-;A brak polaczenia
+25;12.26;-;-;A brak polaczenia
+26;12.32;-;-;A brak polaczenia
+27;12.16;-;-;A brak polaczenia
+28;12.23;-;-;A brak polaczenia
+29;12.16;-;-;A brak polaczenia
+30;12.29;-;-;A brak polaczenia
+31;12.19;-;-;A brak polaczenia
+32;12.23;-;-;A brak polaczenia
+33;12.23;-;-;A brak polaczenia
+34;12.32;-;-;A brak polaczenia
+35;12.16;-;-;A brak polaczenia
+36;12.13;-;-;A brak polaczenia
+37;1.84;-;-;pilot niepodlaczony
+38;1.61;-;-;pilot niepodlaczony

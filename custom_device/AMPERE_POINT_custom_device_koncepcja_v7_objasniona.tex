@@ -1,0 +1,722 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\small\bfseries}{\thesubsubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+% ramka dydaktyczna "po ludzku"
+\newcommand{\why}[1]{\par\smallskip\noindent\colorbox{blue!6}{\parbox{0.965\linewidth}{\small\textbf{Po ludzku:} #1}}\par\smallskip}
+% definicja pojecia w elementarzu
+\newcommand{\poj}[2]{\item \textbf{#1} --- #2}
+
+\title{\textbf{AMPERE POINT --- Wielofunkcyjne urządzenie pomiarowe (custom device)}\\[4pt]
+\large Koncepcja --- wersja 7: PLAN REALIZACJI, WYDANIE OBJAŚNIONE\\
+zautomatyzowana stacja testowa EVSE z budżetowym elektrycznym magazynem energii\\[2pt]
+\normalsize (merytorycznie tożsama z wersją 6 --- liczby, decyzje i plan bez zmian;\\
+dodane objaśnienia tak, by całość dała się zrozumieć czytając po kolei)}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{9 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\section*{Streszczenie wykonawcze}
+Budujemy \textbf{stację testową ładowarek AC (EVSE)}, która wobec badanej ładowarki udaje samochód
+elektryczny: symuluje stany złącza wg IEC~61851-1, pobiera zadany prąd (1F do 32~A, 3F do 16~A)
+i rejestruje wyniki --- bez auta testowego. Energia testów \textbf{nie jest tracona}: trafia przez
+używane prostowniki telekomunikacyjne (6$\times$ Eltek Flatpack2 48/2000~HE, sterowane po CAN) do
+\textbf{baterii 48~V składanej samodzielnie} (16 ogniw LFP 105~Ah, 5,4~kWh, rozbudowa do 10,8~kWh),
+a z niej --- przez falownik zaadaptowany z używanego UPS-a --- zasila wydzielone obwody warsztatu.
+System składa się z \textbf{modułu A} (przenośna jednostka sterująco-pomiarowa z testerem PM701E
+obracanym serwami) i \textbf{szafy B} (magazyn energii). Bezpieczeństwo opiera się na sprzętowym
+łańcuchu 24~V, którego procesor nie może zmostkować. Budżet: \textbf{$\sim$10--18,2~tys.~zł}
+(w tym bateria --- koszt nieredukowalny); praca własna: $\sim$6--10 dni roboczych.
+\why{Zamiast palić energię testową w grzałkach albo wozić auto na testy, budujemy ,,sztuczny
+samochód'': skrzynkę, która rozmawia z ładowarką jak auto i pobiera od niej prąd, ale ten prąd
+ładuje naszą baterię, z której potem zasilamy warsztat. Po drodze skrzynka mierzy wszystko to,
+czego wymagają przepisy i serwis.}
+
+\tableofcontents
+
+\section{Jak czytać ten dokument}
+Dokument jest ułożony tak, żeby czytać go \textbf{od początku do końca}:
+najpierw krótki elementarz pojęć (rozdz.~\ref{sec:elementarz}), potem ,,spacer po systemie''
+(rozdz.~\ref{sec:spacer}), a dopiero potem wymagania, architektura i szczegóły bloków. Tabele
+(kosztorys, ryzyka, decyzje) są na końcu --- przy pierwszym czytaniu można je przejrzeć pobieżnie.
+Ramki \colorbox{blue!6}{\small\textbf{Po ludzku:}} tłumaczą intuicyjnie to, co obok jest zapisane
+technicznie --- można je pomijać, jeśli temat jest znany.
+
+\textbf{Konwencja oznaczeń aparatów} (jak na schemacie elektrycznym v5): każdy element ma
+oznaczenie z myślnikiem, gdzie litera mówi, czym element jest:
+\textbf{-K} stycznik/przekaźnik (np. -K1), \textbf{-F} zabezpieczenie (bezpiecznik, termik),
+\textbf{-Q} rozłącznik, \textbf{-S} łącznik/przycisk, \textbf{-X} złącze/zaciski, \textbf{-A}
+zespół elektroniczny, \textbf{-B} czujnik, \textbf{-G} źródło (zasilacz, bateria), \textbf{-M}
+silnik/serwo, \textbf{-T} przekładnik, \textbf{-U} układ scalony/przemiennik, \textbf{-Y} napęd
+elektromagnetyczny (blokada), \textbf{-P} panel/wyświetlacz. Zapis \texttt{/E2.3} to odsyłacz:
+,,arkusz E2 schematu, kolumna 3''.
+
+\section{Elementarz pojęć (5 minut, potem wszystko czyta się samo)}
+\label{sec:elementarz}
+
+\subsection{Jak ładuje się auto prądem przemiennym}
+\begin{itemize}
+\poj{Ładowarka AC / EVSE / wallbox}{urządzenie, które testujemy (w dokumencie: \textbf{DUT} ---
+device under test). Wbrew nazwie \emph{nie przetwarza} energii: to inteligentny, zabezpieczony
+stycznik, który podaje sieć 230/400~V do auta.}
+\poj{OBC (on-board charger)}{prostownik \emph{w aucie} --- to on zamienia AC na DC i ładuje baterię
+pojazdu. Dlatego nasza stacja, żeby udawać auto, też musi mieć ,,swój OBC'' --- u nas są to
+prostowniki Flatpack2.}
+\poj{CP (Control Pilot)}{jedyna ,,rozmowa'' ładowarki z autem: jedna żyła w złączu. Ładowarka podaje
+na niej $\pm$12~V; auto, dołączając rezystory, obniża napięcie i tym samym zgłasza stan:
+\textbf{A} $+12$~V (brak auta), \textbf{B} $+9$~V (auto podłączone), \textbf{C} $+6$~V (,,ładuj'' ---
+ładowarka zamyka stycznik), \textbf{D} $+3$~V (ładuj z wentylacją), \textbf{E/F} 0/$-12$~V (błąd).}
+\poj{PWM na CP / deklaracja prądu}{ładowarka mówi autu, ile prądu wolno pobrać, wypełnieniem
+przebiegu 1~kHz na CP: I[A] $=$ wypełnienie[\%] $\times$ 0,6 (np. 53\% $\approx$ 32~A). Auto nie
+może pobrać więcej --- nasza stacja też nie (pilnuje tego firmware).}
+\poj{PP (Proximity Pilot)}{druga żyła sygnałowa: rezystor w \emph{wtyczce kabla} koduje, ile kabel
+wytrzymuje (1,5~k\ohm$=$13~A, 680~\ohm$=$20~A, 220~\ohm$=$32~A, 100~\ohm$=$63~A).}
+\poj{Type 2}{standardowe europejskie złącze AC: L1/L2/L3/N/PE + CP + PP.}
+\end{itemize}
+
+\subsection{Pomiary ochronne (po co jest każdy z pięciu)}
+\begin{itemize}
+\poj{Ciągłość przewodu ochronnego PE}{czy żyła ochronna naprawdę łączy obudowę z uziemieniem
+(prąd probierczy $\ge$200~mA, wynik: mała rezystancja). Bez tego reszta ochrony nie istnieje.}
+\poj{Rezystancja izolacji}{megaomomierz podaje napięcie stałe (250/500/1000~V) między żyłami
+a PE i sprawdza, czy izolacja nie przepuszcza ($\ge$1~M\ohm). Dla urządzeń z elektroniką próbuje
+się 250~V i można zewrzeć żyły czynne ze sobą --- żeby nie uszkodzić układów.}
+\poj{Impedancja pętli zwarcia Z$_s$}{,,czy zwarcie L--PE wywali zabezpieczenie wystarczająco
+szybko'': im mniejsza impedancja pętli, tym większy prąd zwarcia I$=$U$_o$/Z$_s$ i tym szybciej
+zadziała wyłącznik. Warunek: Z$_s\cdot$I$_a\le$U$_o$.}
+\poj{RCD (różnicówka) i jej typy}{mierzy różnicę prądów L i N --- różnica znaczy, że prąd ucieka
+(np. przez człowieka). Typ \textbf{AC} widzi tylko upływ sinusoidalny, typ \textbf{A} także
+pulsujący DC, typ \textbf{B} również gładki DC. Test: jaki prąd i po jakim czasie powoduje
+zadziałanie; U$_B$ to napięcie dotykowe przy próbie.}
+\poj{RDC-DD (6 mA DC)}{w ładowarkach zamiast drogiego RCD typu B stosuje się moduł wykrywający
+\emph{gładki} prąd stały upływu $\ge$6~mA (IEC~62955). Zwykły przekładnik różnicowy tego nie
+widzi (transformator nie przenosi prądu stałego), więc do pomiaru/testu trzeba innej techniki
+(czujnik fluxgate) --- stąd w stacji czujnik -B1 i generator -A3.}
+\poj{Uziom i metoda 3-elektrodowa (E/S/H)}{gdy stacja ładowania ma własny pręt uziemiający, mierzy
+się jego rezystancję wbijając w grunt dwie elektrody pomocnicze (sonda S i prąd H) w odległości
+$\sim$20~m; przyrząd (UT522) liczy rezystancję uziomu E.}
+\poj{Przyrząd wzorcowany}{miernik ze świadectwem wzorcowania --- tylko takim wolno robić pomiary
+,,urzędowe''. Dlatego stacja \emph{prowadzi} pomiary miernikami UT595/UT522, a sama robi to,
+czego one nie umieją (RDC-DD, obciążenie, termika, automatyka).}
+\end{itemize}
+
+\subsection{Magazyn energii}
+\begin{itemize}
+\poj{Prostownik z PFC}{zamienia AC na DC pobierając prąd \emph{sinusoidalnie}, w fazie z napięciem
+(PF$>$0,99) --- dokładnie tak, jak OBC auta. PFC $=$ power factor correction.}
+\poj{Eltek Flatpack2 48/2000 HE}{telekomunikacyjny moduł prostownika 2~kW, 48~V, sprawność 96,5\%,
+masowo dostępny z demontaży central ($\sim$150--300~zł). Steruje się nim cyfrowo po magistrali CAN:
+zadaje napięcie i limit prądu, odczytuje pomiary. U nas 6 szt. $=$ ,,sztuczny OBC'' 12~kW.}
+\poj{Ogniwo LFP}{akumulator litowo-żelazowo-fosforanowy: nominalnie 3,2~V, zakres roboczy
+$\sim$2,8--3,55~V, chemia stabilna termicznie (bezpieczniejsza niż NMC z aut).}
+\poj{16S / 1P / 2P}{sposób łączenia ogniw: \textbf{16S} $=$ 16 szeregowo $\to$ 16$\times$3,2~V
+$=$ 51,2~V nominalnie (pasuje do systemów ,,48~V''); \textbf{1P/2P} $=$ jedna/dwie takie gałęzie
+równolegle. 105~Ah $\times$ 51,2~V $\approx$ 5,4~kWh na gałąź.}
+\poj{SOC}{state of charge --- procent naładowania baterii. \textbf{Bramka SOC}: przed testem
+z pełną mocą bateria musi mieć zapas miejsca, inaczej nie przyjmie energii.}
+\poj{BMS}{battery management system: mierzy każde ogniwo, wyrównuje je (balans), pilnuje progów
+napięcia i temperatury, a w razie przekroczenia otwiera kontaktor -KB odcinając baterię ---
+niezależnie od całej reszty systemu.}
+\poj{Top-balance}{jednorazowe wyrównanie ogniw \emph{przed} złożeniem pakietu: wszystkie łączy się
+równolegle i ładuje do 3,55--3,60~V, aż prąd spadnie do zera. Dzięki temu po złożeniu w szereg
+wszystkie osiągają ,,górkę'' jednocześnie i BMS ma tylko drobne korekty.}
+\poj{Falownik / UPS on-line}{falownik robi z 48~V DC czyste 230~V AC. UPS on-line (,,podwójna
+konwersja'') ma taki falownik pracujący \emph{ciągle} + szynę baterii 48~V --- używana wieża
+5--6~kVA za 0,5--1,5~tys.~zł to gotowy, tani falownik do adaptacji (wariant \textbf{W2}).}
+\poj{Wyspa (praca wyspowa)}{zasilamy \emph{wydzielone} obwody warsztatu wyłącznie z falownika,
+nigdy równolegle z siecią (przełącznik sieć--0--wyspa z przerwą). Oddawanie energii \emph{do
+sieci} wymagałoby certyfikowanego falownika (NC~RfG / PN-EN~50549-1) i zgłoszenia --- to
+odkładamy jako przyszły wariant W1.}
+\poj{Punkt N--PE wyspy}{w wyspie trzeba raz, przy źródle, połączyć N z PE --- inaczej różnicówka
+wyspy nie ma drogi powrotnej prądu uszkodzeniowego i nie zadziała.}
+\end{itemize}
+
+\subsection{Sterowanie i aparatura}
+\begin{itemize}
+\poj{Stycznik / przekaźnik}{łącznik sterowany elektromagnesem: cewka (zaciski A1/A2) przyciąga
+styki. Styk zwierny \textbf{NO} (numery 13-14, zamyka się po zasileniu cewki), rozwierny
+\textbf{NC} (11-12, otwiera się po zasileniu). Styczniki mocy mają styki główne 1/2\ldots7/8.}
+\poj{Łańcuch bezpieczeństwa (obwód prądu spoczynkowego)}{szeregowe połączenie styków wszystkich
+zabezpieczeń zasilające cewkę stycznika mocy: \emph{cokolwiek} się otworzy (E-STOP, termik,
+zanik zasilania, zawieszony procesor) --- cewka traci prąd i moc się wyłącza. Fizyka, nie
+oprogramowanie.}
+\poj{Watchdog}{układ, który wymaga od procesora ciągłego ,,dowodu życia'' (impulsów). Procesor
+się zawiesił $\to$ impulsy znikają $\to$ styk watchdoga w łańcuchu otwiera się.}
+\poj{Optoizolacja}{sygnał przechodzi przez diodę LED i fototranzystor --- bez połączenia
+galwanicznego; chroni elektronikę logiki od obwodów 24/230~V.}
+\poj{ESP32-S3 (MCU -A1)}{mikrokontroler z WiFi sterujący całością; \textbf{magistrale}:
+SPI/I2C/1-Wire/UART (różne standardy podłączania czujników i wyświetlacza) oraz \textbf{CAN}
+(przemysłowa, odporna na zakłócenia --- nią rozmawiamy z Flatpackami i BMS-em).}
+\poj{Przekładnik prądowy (CT)}{,,transformator prądu'': mierzy prąd w przewodzie bez rozcinania
+obwodu logiki pomiarowej; u nas -T1..-T3 40~A/1~V.}
+\poj{Serwomechanizm}{silniczek ustawiający zadany kąt (sterowanie PWM) --- u nas dwa serwa
+fizycznie obracają pokrętła testera PM701E.}
+\poj{PM701E}{posiadany ręczny tester-adapter EVSE: pokrętłami wybiera się stan (A/B/C/D) i
+deklarację prądu; ma gniazda bananowe z dostępem do żył i wyjście sygnału CP. W stacji pracuje
+nietknięty --- automatyzujemy go z zewnątrz serwami.}
+\end{itemize}
+
+\section{Spacer po systemie --- co się dzieje, gdy testujemy ładowarkę}
+\label{sec:spacer}
+Zanim wejdziemy w wymagania i tabele, jeden pełny przebieg ,,na palcach'':
+\begin{enumerate}
+\item Serwisant wpina wtyk Type~2 badanej ładowarki (DUT) w gniazdo \textbf{-X1} modułu A
+i uruchamia test na ekranie. Stacja robi self-test i sprawdza \textbf{bramkę SOC} --- czy bateria
+ma miejsce na energię z testu.
+\item Najpierw pomiary ,,na zimno'' (ładowarka jeszcze nie podaje mocy): stacja odłącza swoją
+elektronikę od żył (przekaźniki separujące), a serwisant --- prowadzony przez ekran ---
+wykonuje miernikiem UT595 próbę izolacji i ciągłość PE przez gniazda bananowe testera PM701E.
+Wyniki wpisuje; bez nich sekwencja nie pójdzie dalej (bramki).
+\item Stacja przechodzi w stan B, potem C: serwo obraca pokrętło PM701E, a niezależny odczyt
+linii CP potwierdza, że ładowarka naprawdę widzi ,,auto gotowe''. W stanie C ładowarka zamyka
+swój stycznik --- na żyłach pojawia się 230/400~V; blokada -Y1 rygluje wtyk.
+\item Testy zabezpieczeń DUT: generator -A3 podaje rosnący gładki prąd stały L1$\to$PE i stacja
+mierzy, przy ilu miliamperach i po jakim czasie ładowarka się wyłączy (wymóg: $\le$6~mA ---
+RDC-DD); test różnicówki typu A robi się protokołowo UT595-ką. Po każdym zadziałaniu ---
+prowadzony reset i powrót do stanu C.
+\item Pomiar pętli Z$_s$ (UT595, wpis) --- i zaczyna się test mocy: stacja deklaruje przez CP
+np. 32~A, zamyka stycznik -K1 i styczniki sekcji w szafie B, a sekwencer każe Flatpackom
+pobierać prąd narastająco 25/50/75/100\%. Przez 15--30 minut (\emph{soak}) rejestruje napięcia,
+prądy, moce, temperaturę wtyku (kamera IR) i temperatury baterii.
+\item Cała pobrana energia ląduje w pakiecie -GB1. Po teście serwisant dostaje raport
+(PDF/rejestr), a warsztat --- naładowaną baterię: wydzielone gniazda ,,wyspy'' zasila falownik
+z UPS-a. Przy kolejnym teście bramka SOC przypilnuje, żeby najpierw magazyn rozładować.
+\item W każdej sekundzie testu nad wszystkim czuwa sprzętowy łańcuch bezpieczeństwa: E-STOP,
+termiki, krańcówka pokrywy, potwierdzenie wentylatorów, watchdog. Cokolwiek pęknie --- stycznik
+-K1 puszcza, a przekaźnik -K4 przerywa linię CP, więc ładowarka sama też się wyłącza.
+\end{enumerate}
+
+\section{Cel, kontekst i wymagania}
+\subsection{Kontekst}
+Zakład AMPERE POINT importuje, testuje, sprzedaje i serwisuje ładowarki AC do aut elektrycznych
+(wallboxy 11/22~kW serii PRIME/HM, przenośne Q/P/B; Type~2; firmware producenta zamknięty).
+Potrzebne jest stanowisko, które pozwoli: (a) wykonywać \textbf{obowiązkowe pomiary elektryczne}
+stacji ładowania, (b) prowadzić \textbf{testy funkcjonalne pod realnym obciążeniem} (kontrola
+importu, serwis, regresje po nowym firmware) --- obecnie robione autem testowym, które ma przestać
+być potrzebne.
+\why{Dziś, żeby sprawdzić ładowarkę ,,pod prądem'', trzeba podstawić samochód. Auto nie jest
+przyrządem: nie zadeklaruje dowolnego prądu, nie zmierzy czasów zadziałania zabezpieczeń, a jego
+bateria bywa pełna. Stacja robi to samo powtarzalnie i z pomiarami.}
+\subsection{Pięć obowiązkowych pomiarów (podstawa: ,,Przewodnik pomiarów stacji ładowania'', W-wa 2024)}
+Znaczenie każdego pomiaru --- elementarz, rozdz.~\ref{sec:elementarz}.
+\begin{enumerate}
+\item \textbf{Ciągłość przewodów ochronnych} --- prąd $\ge$200~mA, kryterium niskiej rezystancji.
+\item \textbf{Rezystancja izolacji} --- 250/500/1000~V~DC, $\ge$1~M\ohm{} (250~V dla obwodów
+z elektroniką; żyły czynne można zewrzeć i mierzyć względem PE).
+\item \textbf{Rezystancja uziemienia} --- metoda techniczna 3-elektrodowa (E/S/H), gdy stacja ma
+własny uziom.
+\item \textbf{Sprawdzenie RCD} --- typ, prąd i czas zadziałania, napięcie dotykowe U$_B$;
+dodatkowo RDC-DD 6~mA~DC (IEC~62955).
+\item \textbf{Impedancja pętli zwarcia Z$_s$} --- warunek Z$_s\cdot$I$_a\le$U$_o$.
+\end{enumerate}
+Pomiary 1, 2, 4, 5 wymagają wprowadzenia ładowarki w stan ,,ładuje'' i dostępu do żył --- stąd
+w systemie tester-adapter PM701E i własne gniazdo pojazdowe.
+\why{Ładowarka podaje napięcie na wtyk dopiero, gdy ,,widzi auto'' (stan C). Żeby przyłożyć
+miernik do żył, trzeba więc auto udawać i mieć fizyczny dostęp do przewodów --- to robi adapter.}
+\subsection{Minimum teorii: interfejs ładowarka--pojazd (IEC 61851-1)}
+Ładowarka AC to ,,inteligentny stycznik'' --- prostownik jest w aucie (OBC). Jedyna rozmowa odbywa
+się linią \textbf{CP}: ładowarka podaje $\pm$12~V; pojazd rezystorami ustawia stany
+\textbf{A/B/C/D/E--F} ($+12/+9/+6/+3/0\ldots-12$~V). PWM 1~kHz na CP deklaruje prąd:
+I[A] $=$ wypełnienie[\%]$\times$0,6 (np. 53\% $\approx$ 32~A). Linia \textbf{PP} koduje rezystancją
+obciążalność kabla (1,5~k\ohm=13~A, 680~\ohm=20~A, 220~\ohm=32~A, 100~\ohm=63~A). Zabezpieczenie
+\textbf{RDC-DD} musi wykryć gładki prąd stały upływu $\ge$6~mA (RCD typu~A go nie widzi).
+\subsection{Wymagania funkcjonalne stacji}
+\begin{itemize}
+\item symulacja stanów A/B/C/D/E z weryfikacją; deklaracje prądu 13/20/32/63~A (pokrętła PM701E);
+\item pobór prądu: 1F 6--32~A oraz 3F do 16~A/fazę (11~kW), kroki $\le$25\% deklaracji, rampy,
+soak 15--30~min z rejestracją; pobór sinusoidalny (PF$\approx$1) jak prawdziwy OBC;
+\item testy zabezpieczeń: RDC-DD 6~mA~DC automatycznie (rampa, pomiar prądu i czasu zadziałania),
+RCD typ~A protokołowo miernikiem wzorcowanym; pętla, izolacja, ciągłość --- miernikiem wzorcowanym
+w sekwencji prowadzonej;
+\item termowizja wtyku podczas soak ($\Delta$T, hot-spoty); pomiar U/I/P/cos$\varphi$ per faza;
+\item magazynowanie energii testów i jej użycie w zakładzie; brak konieczności bieżącego zużywania;
+\item rejestracja wyników (SD + MQTT$\to$Home Assistant), protokół PDF na PC;
+\item bezpieczeństwo: rozłączanie mocy sprzętowe, niezależne od firmware.
+\end{itemize}
+
+\section{Zasady projektowe}
+\begin{enumerate}
+\item \textbf{Spójność do poziomu złączy i sygnałów} --- architektura przenosi się 1:1 na schemat.
+\item \textbf{Bezpieczeństwo sprzętowe, nie programowe} --- szeregowy łańcuch styków 24~V zasila
+cewkę stycznika mocy; firmware może tylko zezwalać/rozłączać (styk -K10) i musi dowodzić życia
+(watchdog -A2); żadnego członu nie da się zmostkować programowo.
+\item \textbf{Praktyczna wykonalność} --- komponenty z rynku (w tym wtórnego), budowa etapowa,
+każdy etap kończy się czymś użytecznym.
+\item \textbf{Wiarygodność protokołów} --- pomiary urzędowe wykonują przyrządy wzorcowane
+(Uni-T UT595, UT522) prowadzone przez stację; bloki własne robią to, czego przyrządy nie umieją.
+\item \textbf{Tanio przez pracę własną} --- używane Flatpack2 zamiast nowych prostowników, pakiet
+bateryjny składany samodzielnie, falownik z używanego UPS-a, szyny DC z płaskownika, ręczne pole
+przełączeń zamiast stycznika konfiguracyjnego.
+\end{enumerate}
+\why{Dwie zasady wybijają się ponad resztę. Pierwsza: żaden program nie jest barierą
+bezpieczeństwa --- barierą są styki, sprężyny i cewki. Druga: kupujemy ,,inteligencję'' tanio
+z rynku wtórnego (prostowniki, UPS), a wartość dodajemy własną pracą tam, gdzie praca jest tania,
+a sprzęt drogi (pakiet bateryjny, integracja).}
+
+\section{Architektura systemu}
+\subsection{Dwa moduły i przepływ energii}
+\begin{center}\small
+DUT (ładowarka, zasilana z instalacji) $\to$ wtyk Type~2 $\to$ \textbf{MODUŁ A} [gniazdo -X1 $\to$
+rozłącznik -Q0 $\to$ bezpieczniki -F1..3 $\to$ czujnik różnicowy -B1 $\to$ przekładniki -T1..3 $\to$
+stycznik -K1 $\to$ gniazdo CEE -X2] $\to$ przewód 5$\times$6~mm$^2$ $\to$ \textbf{SZAFA B}
+[styczniki -K11..13 $\to$ 6$\times$ Flatpack2 $\to$ szyna DC 48~V (-F13, -KB, -Q1) $\to$ pakiet
+-GB1 $\to$ falownik (UPS) $\to$ wydzielone obwody wyspy].
+\end{center}
+Równolegle z -X1 wychodzi \textbf{odczep sterujący -X3} (7 żył: L1/L2/L3/N/PE/CP/PP, $\le$1~m) do
+testera \textbf{PM701E}, którego pokrętła obracają serwa. Prąd obciążenia NIE płynie przez PM701E
+(adaptery tej klasy nie przenoszą ciągłych 32~A) --- to decyzja topologiczna Z1. Moduł A jest
+przenośny (pomiary terenowe robi sam, z UT595/UT522); szafa B jest warsztatowa.
+\why{Moduł A to ,,głowa'': rozmawia z ładowarką, mierzy i pilnuje bezpieczeństwa. Szafa B to
+,,żołądek'': zjada energię testu i odkłada ją w baterii. Tester PM701E siedzi na cienkim odczepie
+jak słuchawka --- sygnały tak, moc nie.}
+\subsection{Dlaczego prostownik+bateria to najlepsza symulacja auta}
+Pokładowa ładowarka auta (OBC) to prostownik z aktywnym PFC ładujący baterię. Flatpack2 to
+dokładnie taki prostownik: pobór sinusoidalny, PF$>$0,99, THD niskie, prąd zadawany cyfrowo ---
+zachowanie widziane przez DUT jest nieodróżnialne od auta, a regulacja jest płynna (rampy,
+asymetria faz), czego bank rezystorów nie potrafi.
+\why{Rezystor pobiera prąd ,,jak grzałka'' i tylko tyle, ile wynika z napięcia. Prostownik z PFC
+pobiera prąd ,,jak komputer z dobrym zasilaczem'' --- idealną sinusoidę o zadanej wartości.
+Ładowarka testowana przez prostowniki widzi po prostu samochód.}
+\subsection{Konfiguracja mocy}
+\begin{longtable}{@{}p{0.30\textwidth}p{0.40\textwidth}p{0.22\textwidth}@{}}
+\toprule
+\textbf{Tryb} & \textbf{Przydział Flatpack2 (2 kW/szt.)} & \textbf{Pokrycie}\\
+\midrule
+3F symetrycznie do 16 A (11 kW) & po 2 szt. na fazę (4 kW $>$ 3,7 kW/fazę) & pełne\\
+1F do 32 A (7,4 kW) & 4 szt. na L1: 2 własne $+$ 2 przepięte mostkami na polu -X6 & pełne\\
+margines 3$\times$32 A & wymagałby 12 szt. & opcja przyszła\\
+\bottomrule
+\end{longtable}
+Pole przełączeń \textbf{-X6} to ręczne mostki (zamiast stycznika) --- oszczędność; poprawność
+konfiguracji sekwencer weryfikuje pomiarem prądów per faza (-U2) przy 25\% mocy, zanim pozwoli
+na pełny test.
+\why{Test jednofazowy 32~A potrzebuje 7,4~kW na jednej fazie, a na fazie ,,mieszkają'' tylko dwa
+prostowniki (4~kW). Zamiast dokupować styczniki, przy zmianie trybu przekręca się dwie blaszki
+na listwie -X6 --- a stacja i tak sprawdzi pomiarem, czy zrobiono to dobrze, zanim da pełną moc.}
+
+\section{Moduł A --- bloki funkcjonalne}
+Każdy blok opisany schematem: \emph{po co jest} $\to$ \emph{z czego się składa} $\to$
+\emph{jak działa}. Oznaczenia jak na arkuszach E1--E3 schematu v5.
+\subsection{B1: wejście i tor mocy}
+\textbf{-X1} gniazdo pojazdowe Type~2 32~A~3F z blokadą elektromagnesową \textbf{-Y1} (rygluje
+wtyk w stanie C --- nikt nie wyrwie wtyczki pod obciążeniem). \textbf{-X3} odczep 7-żyłowy do
+PM701E; w linii CP zestyk przekaźnika \textbf{-K4}: E-STOP lub zanik 24~V przerywa CP
+$\Rightarrow$ DUT widzi odłączenie pojazdu i sam otwiera swój stycznik (magistrala gaśnie);
+na listwie mostek serwisowy. \textbf{-Q0} rozłącznik 4P (uwaga: nie odłącza odczepu --- tabliczka
+przy gniazdach bananowych). \textbf{-F1..-F3} gG 32~A na fazach (N bez wkładki, rozłączany
+4-biegunowo). \textbf{-B1} czujnik różnicowy AC/DC (fluxgate, np. LEM CDSR: okno L1+L2+L3+N) ---
+monitor RCM własnych torów i weryfikacja generatora upływu; SPI do -A1. \textbf{-T1..-T3}
+przekładniki 40~A/1~V do meteringu. \textbf{-K1} stycznik główny 4P 40~A AC-1 --- jedyny aparat
+podający moc do szafy; cewka zasilana wyłącznie z łańcucha bezpieczeństwa. \textbf{-X2} gniazdo
+CEE 32~A~5p. Przekroje toru 6~mm$^2$; PE nieprzerwane.
+\why{Dlaczego -K4 jest ważny: E-STOP otwiera nasz stycznik -K1, ale żyły od ładowarki do -K1
+nadal byłyby pod napięciem --- bo to ładowarka je zasila. Przerwanie linii CP sprawia, że
+ładowarka myśli ,,auto odjechało'' i sama odcina napięcie u źródła. Dwa niezależne wyłączenia
+jednym grzybkiem.}
+\subsection{B2: symulacja stanów --- PM701E + serwa}
+PM701E (posiadany): pokrętło stanu BB/C/A/B/D i prądu NC/13/20/32/63~A, gniazda bananowe
+L1/N/PE/L2/L3 (punkt przyłączenia UT595), wyjście SIGNAL~OUTPUT (CP). Dwa serwa \textbf{-M1/-M2}
+(DS3218, 20~kg$\cdot$cm) na ramie nieinwazyjnej nad pokrętłami (adapter drukowany + sprzęgło
+Oldham); kalibracja kąt$\leftrightarrow$pozycja (5+5 pozycji); \textbf{każda zmiana potwierdzana
+odczytem CP} --- serwo nie jest zaufane. Przyciski PM701E (Touch, PE Pre-Test, CP~Error,
+PE~Error) w etapie 1 ręczne.
+\why{Nie otwieramy testera i nie lutujemy w nim niczego (gwarancja, kalibracja) --- robot po
+prostu kręci jego gałkami jak człowiek. A że serwo może się omsknąć, stacja po każdej komendzie
+sprawdza na linii CP, czy ładowarka faktycznie widzi nowy stan.}
+\subsection{B4: metering}
+\textbf{-U2} ATM90E36A (front-end klasy licznikowej, SPI): 3 napięcia (dzielniki odłączane
+przekaźnikami separującymi \textbf{-K31..-K33} na czas prób izolacji) + 3 prądy (-T1..3);
+U/I/P/Q/cos$\varphi$/f/THD per faza; rola: weryfikacja faz po wejściu w stan C, kontrola
+zadane-vs-pobrane (niezależnie od CAN), rejestracja soak, weryfikacja konfiguracji -X6.
+Optotransoptory obecności L1/L2/L3 --- pomiar czasów zadziałania zabezpieczeń DUT (znacznik ms).
+\why{To ,,licznik energii'' stacji --- ten sam typ układu co w licznikach domowych. Przekaźniki
+separujące są po to, żeby podczas próby izolacji 250~V miernik nie ,,zobaczył'' naszych
+dzielników --- bo zaniżyłyby wynik i mogłyby ucierpieć.}
+\subsection{B5: generator upływu (test RDC-DD/RCD)}
+\textbf{-A3}: źródło prądowe 0--20~mA (DAC $\to$ wzmacniacz $\to$ MOSFET; pomiar bocznikiem przez
+wzmacniacz izolowany AMC1301), przyłącze L1 \emph{za} oknem -B1 (przez -K30) $\to$ PE. Rampa
+(0,1~mA/s przy progu) $\to$ prąd zadziałania RDC-DD ($\le$6~mA $=$ PASS) i czas odcięcia (z opto
+faz). Tryb AC do testów przesiewowych RCD typu~A; pomiar protokołowy RCD wykonuje UT595.
+\why{Symulujemy ,,człowieka pod prądem'': kontrolowany, rosnący prąd ucieczki z fazy do ziemi.
+Patrzymy, przy jakiej wartości ładowarka się wyłączy. Punkt przyłączenia jest ZA naszym
+czujnikiem -B1 celowo --- -B1 widzi ten sam prąd i mamy kontrolę krzyżową dwóch pomiarów.}
+\subsection{B6: akwizycja CP/PP}
+Z SIGNAL~OUTPUT PM701E: dzielnik ($\pm$12~V$\to$0--3,3~V) + bufor + ograniczniki; ADC mierzy
+poziom stanu, komparator $\to$ wejście przechwytujące mierzy wypełnienie PWM 1~kHz (deklaracja
+prądu). PP: drugi kanał ADC (kod kabla). Funkcje: weryfikacja serw, protokół, wykrywanie błędów.
+\subsection{B7: termika}
+\textbf{-B2} MLX90640 (matryca IR 32$\times$24) nad zatoką -X1: $\Delta$T wtyku i hot-spoty
+podczas soak; \textbf{-B3/-B4} MLX90614 (pirometry punktowe, drugi adres!); DS18B20 (1-Wire):
+szyny, -K1, radiatory Flatpack2, ogniwa pakietu, otoczenie (odniesienie).
+\why{Luźny zacisk grzeje się pod prądem --- to najczęstsza usterka. Mała kamera termowizyjna
+patrzy na wtyk przez cały test i alarmuje, gdy przyrost temperatury jest za duży albo za szybki.}
+\subsection{B8: rdzeń przetwarzający -A1}
+ESP32-S3-WROOM (2 rdzenie, WiFi, 45 GPIO). Interfejsy: \textbf{SPI} (-B1, -U2, microSD),
+\textbf{I2C} (MLX-y, ekspander MCP23017 $\to$ ULN2803 $\to$ cewki, RTC DS3231, DAC -A3 za
+izolatorem), \textbf{1-Wire} (DS18B20), \textbf{UART} (HMI DWIN 7$''$ w pokrywie), \textbf{CAN/TWAI
+przez transceiver izolowany} (Flatpack2 $\times$6 + BMS), \textbf{ADC} (CP, PP, bocznik -A3),
+\textbf{PWM} (serwa), \textbf{DO przez opto} (DO1 zezwolenie -K10, DO2 impulsy watchdog -A2,
+DO3 blokada -Y1), \textbf{DI przez opto} (stan członów łańcucha, opto faz). Zasilanie: -G1
+(230~V z własnego przewodu Schuko -X4, przez -F4): 24~V (łańcuch, cewki), 5/3,3~V (logika, serwa)
+--- nigdy z badanej ładowarki.
+\why{Logika ma własną wtyczkę do ściany. Gdyby żywiła się z badanej ładowarki, każde zadziałanie
+zabezpieczenia gasiłoby też ,,mózg'' stacji --- razem z rejestracją tego, co właśnie się stało.}
+\subsection{B9: łańcuch bezpieczeństwa 24 V (arkusz E2 schematu)}
+Szeregowo od +24~V: \textbf{-S0} E-STOP (drugi zestyk zwalnia -K4/CP) $\to$ \textbf{-F11.1..8}
+termiki KSD301 na radiatorach Flatpack2 i falownika (NC) $\to$ \textbf{-S1} krańcówka pokrywy
+strefy mocy $\to$ \textbf{-K2} potwierdzenie prądowe wentylatorów $\to$ \textbf{-K10} zezwolenie
+MCU $\to$ \textbf{-A2} watchdog impulsowy (zanik impulsów z -A1 $=$ rozpad) $\to$ [\textbf{-S2}
+START $\parallel$ samopodtrzymanie] $\to$ cewka \textbf{-RB} (przekaźnik bezpieczeństwa, styki
+wymuszone); drugi szczebel: styk -RB $\to$ cewka -K1. Każda awaria/przerwa $=$ -K1 otwiera moc;
+powrót wyłącznie przyciskiem START. Strona DC: -F13.1/2 (mega), -Q1 (rozłącznik serwisowy),
+\textbf{-KB} kontaktor sterowany przez BMS (odcięcie baterii niezależne od wszystkiego).
+\why{To jeden szereg ,,bramek'', przez które musi przepłynąć prąd, żeby stycznik mocy trzymał.
+Procesor jest w tym szeregu tylko JEDNĄ z bramek (i drugą --- watchdogiem, który wymusza, by żył).
+Nawet gdyby firmware oszalał i trzymał swoje zezwolenie, każdy inny człon --- grzybek, termik,
+pokrywa, wentylatory --- rozłącza moc czysto fizycznie.}
+\subsection{B10: panel i gniazda pomocnicze}
+E-STOP, START, napęd -Q0, kolumna LED (czerwony: napięcie na magistrali; żółty: test; zielony:
+gotowość), gniazda bananowe pomiarowe L1/L2/L3/N/PE (tabliczka: mogą być pod napięciem w stanie C),
+zaciski E/S/H (uziom, UT522), HMI w pokrywie, przepust Schuko, USB/SD serwisowo.
+
+\section{Szafa B --- budżetowy magazyn energii}
+\subsection{Prostowniki: 6$\times$ Eltek Flatpack2 48/2000 HE (używane)}
+Moduły telekomunikacyjne z demontaży ($\sim$150--300~zł/szt.): 2~kW, wejście 185--275~V~AC,
+wyjście 43,5--57,5~V~DC, sprawność 96,5\%, PF$>$0,99, chłodzenie własnym wentylatorem, złącze
+krawędziowe (kupić z gniazdami lub półką 2--4-slotową). \textbf{Sterowanie CAN} (125~kb/s):
+zadawanie napięcia/limitu prądu i odczyt telemetrii (protokół opisany społecznościowo ---
+weryfikacja w etapie 0; fallback: Huawei R4850G2). Przydział faz przez styczniki \textbf{-K11..-K13}
+(cewki 24~V w torze zezwolenia) i pole mostków \textbf{-X6} dla 1F 32~A. Zakup: 7 szt. (1 zapas),
+sprawdzenie każdej na stole (rozdz.~\ref{sec:plan}).
+\why{Te moduły zasilały stacje bazowe telefonii --- centrale są modernizowane, więc rynek wtórny
+jest ich pełen za ułamek ceny. ,,Protokół opisany społecznościowo'' znaczy: producent nie
+publikuje dokumentacji CAN, ale hobbyści ją rozpracowali i sprawdzili --- dlatego zanim kupimy
+sześć sztuk, w etapie 0 sprawdzamy sterowanie na jednej.}
+\subsection{Szyna DC i zabezpieczenia}
+Płaskownik Cu 20$\times$3~mm na izolatorach; przewody 50~mm$^2$ (przy 11~kW $\to\sim$230~A);
+\textbf{-F13.1/-F13.2} bezpieczniki mega 150--200~A przy pakiecie; \textbf{-Q1} rozłącznik DC
+serwisowy; \textbf{-KB} kontaktor główny sterowany stykiem BMS; wszystkie połączenia na M8
+z kontrolą momentu (wkrętak dynamometryczny --- posiadany).
+\why{Po stronie 48~V płyną prądy jak w spawarce: 11~kW to ok.~230~A. Dlatego grube przewody,
+skręcane momentem połączenia i bezpieczniki tuż przy baterii --- bo to bateria jest tu
+,,elektrownią'' zdolną stopić zwarcie.}
+\subsection{Pakiet bateryjny -GB1: 16S LFP 105 Ah (DIY) --- przepis}
+\label{sec:pakiet}
+\textbf{Wymiarowanie:} soak 30~min@11~kW $=$ 5,5~kWh. Start: 1 gałąź 16S (51,2~V, 5,4~kWh) ---
+pełny soak 1F (3,7~kWh) i 3F przy SOC startowym $\le$25\% lub z równoległym rozładowaniem przez
+falownik; docelowo 2P (10,8~kWh): pełny soak 3F przy SOC $\le$40\%. Ogniwa: LFP 100--105~Ah
+klasy~B (np. EVE LF105) z pomiarami od sprzedawcy.
+\begin{enumerate}
+\item \textbf{Selekcja:} zmierz napięcia (rozrzut $\le$30~mV) i rezystancję wewnętrzną; paruj.
+\emph{(Ogniwa klasy B bywają nierówne --- słabe egzemplarze odrzucamy na starcie.)}
+\item \textbf{Top-balance:} wszystkie ogniwa równolegle, ładowanie CV 3,55--3,60~V do prądu
+$\approx$0 (12--48~h). Źródło: zasilacz lab. albo jeden Flatpack2 (po zbudowaniu 16S: 56,8~V
+dla balansu górnego całej gałęzi).
+\item \textbf{Kompresja:} płyty czołowe + 4 pręty M8, docisk wg noty ($\sim$300~kgf).
+\emph{(Ogniwa pryzmatyczne puchną przy pracy --- docisk wydłuża żywotność, wymaga go nota.)}
+\item \textbf{Połączenia:} busbary fabryczne/płaskownik, momenty M6 4--6~N$\cdot$m; pomiar spadków
+na łączach przy prądzie próbnym. \emph{(Słabe łącze widać jako większy spadek mV --- zanim
+zacznie grzać.)}
+\item \textbf{BMS} 16S 150--200~A z balansem aktywnym (klasy JK): przewody balansera od minusa
+kolejno; progi 2,80/3,55~V, ładowanie 0--45~$^\circ$C, 2$\times$NTC; wyjście BMS $\to$ cewka -KB.
+\item \textbf{Zabezpieczenie gałęzi:} mega 150--200~A przy $+$, przewody 50~mm$^2$.
+\item \textbf{Pierwsze ładowanie nadzorowane} (10--20~A z jednego FP2), obserwacja ogniw w aplikacji.
+\item \textbf{Pomiar pojemności:} rozładowanie znanym obciążeniem przez falownik, zapis do metryki.
+\item \textbf{Zabudowa:} dolny przedział szafy, przegroda od AC, wentylacja grawitacyjna, DS18B20
+na ogniwach, etykieta (pojemność, data, progi).
+\end{enumerate}
+\why{Dlaczego bateria ,,łyka'' 11~kW bez mrugnięcia: 11~kW przy 51~V to $\sim$215~A, czyli
+ok.~2C dla gałęzi 105~Ah --- dużo, ale w specyfikacji LFP; przy 2P prąd na gałąź spada o połowę.
+Bramka SOC pilnuje, żeby w baterii było miejsce: pełnej baterii nie da się ładować, więc pełny
+test wymaga zapasu pojemności.}
+\subsection{Falownik W2: adaptacja używanego UPS on-line --- przepis}
+\label{sec:ups}
+\textbf{Kryteria zakupu} (500--1500~zł): UPS on-line (podwójna konwersja) 5--6~kVA w wieży,
+\textbf{szyna baterii 48~V} (typowe w tej klasie --- potwierdzić w dokumentacji konkretnego
+modelu przed zakupem!), sprawny tor falownika, dostępne złącze baterii zewnętrznej.
+\begin{enumerate}
+\item Test wstępny UPS-a z jego akumulatorami/zasilaczem: wyjście 230~V, przebieg (mikrooscyloskop).
+\item Wyprowadź tor baterii: złącze zewnętrzne $\to$ przewody 25--35~mm$^2$ $\to$ przez -F13/-Q1
+do szyny -GB1 (napięcie pakietu 44--57~V mieści się w oknie UPS 48~V).
+\item Wyłącz/ogranicz ładowarkę wewnętrzną UPS (ładowaniem zarządzają Flatpack2 i BMS).
+\item Skonfiguruj progi rozładowania UPS powyżej progu BMS (np. 44~V), wycisz alarmy.
+\item Wyjście UPS $\to$ rozdzielniczka wyspy: B16 + RCD 30~mA typ~A + gniazda; \textbf{punkt N--PE
+wyspy} przy źródle (inaczej RCD nie zadziała); obwody oznakowane, zasilanie wybierane
+przełącznikiem \textbf{sieć--0--wyspa} (nigdy równolegle z siecią!).
+\item Testy: praca z pakietu 1/2/4~kW, zapady przy udarze silnikowym, 1~h soak z pomiarem
+temperatur; pomiar RCD wyspy (UT595).
+\end{enumerate}
+Alternatywa \textbf{W3} (gdy UPS się nie trafi): własny falownik wyspowy LF 48/230~V, 3--5~kW ---
+kompletny przepis w koncepcji v3, rozdz.~6 (EG8010/EGS002 + most H + toroid); BOM 1,35--2,5~tys.~zł.
+Upgrade przyszłościowy \textbf{W1}: fabryczny falownik hybrydowy ESS --- wtedy dochodzi oddawanie
+do sieci (zgłoszenie mikroinstalacji) bez zmian reszty szafy.
+\why{UPS on-line i tak cały czas robi 230~V ze swojej baterii 48~V --- my tylko podmieniamy jego
+małe, zużyte akumulatory na nasz duży pakiet. Progi ustawiamy tak, żeby UPS ,,poddał się''
+wcześniej niż BMS --- wtedy zwykłe rozładowanie kończy się grzecznym wyłączeniem falownika,
+a twarde odcięcie kontaktorem zostaje na awarie.}
+\subsection{Wentylacja i złącza}
+Straty szafy 0,4--0,9~kW (sprawności FP2/UPS) --- 2 wentylatory szafowe (-M3/-M4, zasilanie z -X4
+przez -F5, załączane -K3, potwierdzane przekaźnikiem prądowym -K2 w łańcuchu). Złącza: CEE (moc),
+\textbf{-X5} (sterowanie: cewki K11--K13, pętla termików, wentylatory), CAN (skrętka
+z transceiverem), DC do UPS-a.
+\why{Cała finezja rekuperacji w jednej liczbie: zamiast wywiewać 11~kW ciepła (grzałki),
+wywiewamy 0,4--0,9~kW strat sprawności. Dlatego wystarczą dwa zwykłe wentylatory.}
+
+\section{Zarządzanie energią (bez zrzutu cieplnego)}
+Tryby: \textbf{TEST} (FP2 ładują pakiet prądem zadanym przez sekwencer; falownik może równolegle
+zasilać wyspę), \textbf{MAGAZYN/UPS} (poza testami wyspa działa z pakietu), \textbf{SERWIS}
+(-Q1 otwarty). \textbf{Bramka SOC} przed soakiem: 3F pełny --- SOC$\le$40\% (2P) / $\le$25\% (1P);
+1F --- $\le$60\%; przy przekroczeniu HMI: ,,rozładuj magazyn'' (włącz odbiory wyspy). Telemetria:
+BMS (SOC, napięcia ogniw, temperatury) po RS485/CAN; FP2 (U/I/T) po CAN; -U2 liczy energię pobraną
+z DUT --- bilans i sprawność w raporcie. Plan C (nieobowiązkowy, $\sim$100~zł): rezystor 2~kW
+załączany ręcznie do szybkiego zrzutu.
+\why{Przykład liczbowy: pełny soak 3F to $\sim$5,5~kWh. Gałąź 1P mieści 5,4~kWh, więc musi być
+niemal pusta (SOC$\le$25\%); przy dwóch gałęziach (10,8~kWh) wystarczy mieć mniej niż 40\%.
+Test 1F (3,7~kWh) zmieści się przy SOC do 60\%. Jeśli bateria jest za pełna --- stacja po prostu
+prosi: włącz odbiory wyspy i wróć za chwilę.}
+
+\section{Bezpieczeństwo --- zestawienie}
+\begin{itemize}
+\item \textbf{AC}: łańcuch E2 (rozdz. 8.9), -K4 gasi CP przy E-STOP, gG na fazach, RCM (-B1)
+zdejmuje zezwolenie, blokada wtyku -Y1, tabliczki przy gniazdach bananowych.
+\item \textbf{DC}: mega przy pakiecie, -Q1, -KB od BMS, przekroje/momenty, przedział bateryjny
+z przegrodą; LFP (chemia stabilna) zamiast NMC.
+\item \textbf{Wyspa}: brak pracy równoległej z siecią (przełącznik z przerwą), N--PE przy źródle,
+RCD 30~mA, oznakowanie obwodów.
+\item \textbf{Formalnie}: użytek własny zakładu; wykonanie i odbiór --- osoba z uprawnieniami
+SEP E/D; pomiary protokołowe przyrządami z aktualnym świadectwem; zgodność ogólna: IEC~61010
+(kategorie pomiarowe), IEC~61851 (interfejs), PN-HD~60364 (instalacja, wyspa).
+\end{itemize}
+\why{Test wciśnięcia E-STOP, krok po kroku: (1) pierwszy zestyk grzybka przerywa łańcuch ---
+przekaźnik -RB puszcza, stycznik -K1 otwiera moc do szafy; (2) drugi zestyk grzybka odbiera
+zasilanie przekaźnikowi -K4 --- linia CP zostaje przerwana, ładowarka widzi ,,brak auta''
+i otwiera własny stycznik; (3) firmware dostaje informację po opto i loguje zdarzenie, ale
+w wyłączaniu nie uczestniczy. Powrót wymaga fizycznego odkręcenia grzybka i wciśnięcia START.}
+
+\section{Sekwencja pomiarowa (pełny przebieg testu ładowarki)}
+Kolejność nie jest przypadkowa: najpierw próby ,,na zimno'' (izolacja, ciągłość --- bez napięcia
+z DUT), potem stany złącza, potem testy zabezpieczeń, na końcu moc. Każdy wpis wyniku to
+\emph{bramka} --- bez niego sekwencer nie przejdzie dalej.
+\begin{enumerate}
+\item \textbf{Self-test:} odczyt członów łańcucha, próba wentylatorów (-K3$\to$-K2), komunikacja
+(CDSR, metering, BMS, FP2, HMI), serwa do pozycji spoczynkowych (BB/NC) z potwierdzeniem CP,
+\textbf{bramka SOC}.
+\item \textbf{Tryb izolacji:} -K30..-K33 otwarte (elektronika własna odłączona od magistrali);
+HMI prowadzi: UT595 na gniazdach bananowych PM701E, próba 250~V (elektronika DUT!), żyły czynne
+zwarte względem PE; wynik $\ge$1~M\ohm{} wpisany $=$ bramka.
+\item \textbf{Ciągłość PE:} UT595 $\ge$200~mA przez wyjście PE; wpis $=$ bramka.
+\item \textbf{Stan B:} serwo stanu $\to$ B, CP musi pokazać $+9$~V; pre-testy PM701E.
+\item \textbf{Stan C:} serwo $\to$ C, CP $+6$~V; DUT zamyka stycznik; -U2 weryfikuje napięcia
+i kolejność faz; -Y1 rygluje wtyk.
+\item \textbf{Zabezpieczenia:} RDC-DD automatycznie (-A3: rampa DC, prąd zadziałania $\le$6~mA,
+czas z opto faz); RCD typ~A protokołowo (UT595: $\frac{1}{2}$I$_{\Delta n}$, I$_{\Delta n}$,
+5I$_{\Delta n}$, U$_B$); po każdym zadziałaniu prowadzony reset DUT i powrót do C.
+\item \textbf{Pętla Z$_s$:} UT595 na gniazdach bananowych; wpis.
+\item \textbf{Obciążenie/soak:} serwo prądu $\to$ deklaracja; kontrola konfiguracji -X6 przy 25\%
+(zgodność faz z -U2); kroki 25/50/75/100\% deklaracji zadawane FP2 po CAN (zawsze $\le$ deklaracji
+CP); soak 15--30~min: log U/I/P per faza, $\Delta$T wtyku (MLX90640), temperatury pakietu;
+kryteria pass/fail (spadki, asymetria, $\Delta$T, stabilność).
+\item \textbf{Testy błędów:} przyciski CP~Error ,,E'' / PE~Error na PM701E (etap 1 ręcznie) ---
+czas reakcji DUT z opto faz.
+\item \textbf{Uziom} (niezależnie): UT522 na E/S/H.
+\item \textbf{Raport:} CSV/JSON na SD + MQTT$\to$HA; protokół PDF na PC; metryka energii
+(pobrana/zmagazynowana/sprawność).
+\end{enumerate}
+Warunki ciągłe: CP zgodne z komendą, RCM $<$ progu, termiki OK, wentylatory OK, BMS OK, E-STOP
+zwolniony --- naruszenie $=$ przerwanie (zezwolenie zdjęte, zrzut obciążenia CAN-em, serwa do
+spoczynku, log przyczyny).
+
+\section{Firmware -A1 --- specyfikacja funkcji}
+\begin{itemize}
+\item \textbf{Sekwencer} stanów z bramkami (izolacja $\to$ PE $\to$ B $\to$ C $\to$ testy $\to$
+soak) i ścieżkami błędów; tryb serwisowy ręczny (pojedyncze aparaty z HMI, z blokadami).
+\item \textbf{Serwa:} tabela kalibracji 5+5 pozycji (EEPROM), najazd, weryfikacja CP, procedura
+kalibracyjna z HMI.
+\item \textbf{Akwizycja:} CP (poziom+duty), PP, -U2 (200~ms), CDSR (50~ms, progi zależne od fazy
+testu), DS18B20 (2~s), bocznik -A3 (1~ms w teście RDC-DD), opto faz (przerwania, znaczniki ms).
+\item \textbf{CAN:} sterownik FP2 (napięcie 55,2~V ładowania, limit prądu per moduł, załączanie),
+odczyt BMS; watchdog komunikacji (brak ramek 1~s $=$ przerwanie testu).
+\item \textbf{Bezpieczeństwo programowe} (uzupełniające, nie zastępuje łańcucha): spójność
+CP$\leftrightarrow$suma limitów FP2, bramka SOC, limity temperatur, timeout stanów.
+\item \textbf{HMI (DWIN):} ekrany: start/status, prowadzenie pomiarów UT595 z polami wpisu,
+przebieg soak (wykres), alarmy, serwis, kalibracja; fizyczny START/E-STOP poza HMI.
+\item \textbf{Rejestracja:} SD (CSV: telemetria 1~s; JSON: wynik testu), RTC DS3231, identyfikator
+DUT; \textbf{MQTT} do Home Assistant zakładu (podgląd, archiwum).
+\item \textbf{OTA/serwis:} aktualizacja po USB; konfiguracja (progi, moce) w pliku na SD.
+\end{itemize}
+\why{Firmware jest ,,kierownikiem testu'', ale nie ,,ochroniarzem'' --- wszystkie jego
+zabezpieczenia to dodatkowa siatka pod siatką sprzętową. Nawet watchdog komunikacji CAN działa
+w drugą stronę: to firmware przerywa test, gdy Flatpacki milkną, a nie odwrotnie.}
+
+\section{Obudowy i rozmieszczenie}
+\textbf{Moduł A} (rozdzielnica przenośna IP54 $\sim$600$\times$400$\times$250, przezroczysta
+pokrywa): strefa mocy za osłoną z krańcówką (lewa), strefa analogowa (środek), logika (prawa);
+półka PM701E z ramą serw pod pokrywą; HMI w pokrywie; panel: -X1, -X2, E-STOP, START, napęd -Q0,
+LED, banany, E/S/H, przepust -X4. \textbf{Szafa B} ($\sim$600$\times$1200$\times$400 na kółkach):
+dół --- pakiet -GB1 za przegrodą; środek --- szyna DC, -F13, -KB, -Q1, BMS; wyżej --- półka
+6$\times$FP2; góra --- -K11..13, pole -X6, wentylatory; obok --- wieża UPS (W2) połączona DC;
+wyjście na rozdzielniczkę wyspy (B16+RCD) z przełącznikiem sieć--0--wyspa. Szczegóły przestrzenne:
+\textbf{wizualizacja 3D v3} (plik HTML w folderze).
+\why{Układ szafy to grawitacja i serwis: najcięższe (bateria) na dole za przegrodą, część DC
+w zasięgu ręki na środku, prostowniki na półce z przepływem powietrza, aparatura łączeniowa
+u góry przy przepustach.}
+
+\section{Plan realizacji --- etapy, czasy, zakupy}
+\label{sec:plan}
+Etap 0 jest \textbf{bramką wydatkową}: za małe pieniądze sprawdza wszystkie niepewne założenia
+(protokół CAN, mechanika serw, czujnik CDSR), zanim kupimy ogniwa i resztę floty prostowników.
+\begin{longtable}{@{}p{0.06\textwidth}p{0.46\textwidth}p{0.20\textwidth}p{0.20\textwidth}@{}}
+\toprule
+\textbf{Etap} & \textbf{Zakres i zadania} & \textbf{Zakupy kluczowe} & \textbf{Czas własny}\\
+\midrule
+0 & Weryfikacje na stole: (a) serwa na PM701E --- rama, kalibracja, trwałość, potwierdzanie CP;
+(b) tor CP (dzielnik+capture) na płytce; (c) \textbf{1$\times$FP2 + CAN z ESP32}: zadawanie prądu,
+telemetria; (d) próbka CDSR; (e) stanowisko top-balance & 1$\times$FP2, transceiver CAN, CDSR,
+serwa, drobnica & 3--4 dni\\
+1 & Moduł A kompletny (tor mocy, łańcuch E2 z -K4, bloki pomiarowe, HMI, firmware rdzeń) +
+\textbf{szafa 1F}: 3--4$\times$FP2 na L1, pakiet 16S1P (przepis \ref{sec:pakiet}), UPS W2
+(przepis \ref{sec:ups}), wyspa; pełny test ładowarek 1F do 32~A z magazynowaniem & obudowy,
+aparaty E1/E2, ogniwa 16 szt.+BMS, UPS, FP2 do 4 szt. & 4--6 dni\\
+2 & Rozbudowa 3F: 6$\times$FP2, pole -X6, (opcjonalnie) druga gałąź 2P; testy asymetrii;
+aktuatory przycisków PM701E & 2$\times$FP2, 16 ogniw (2P) & 1--2 dni\\
+3 & Rozszerzenia: upgrade falownika do W1 (ESS, zgłoszenie), SZR wyspy, front-endy przesiewowe,
+wzorcowanie bloków własnych & wg decyzji & ---\\
+\bottomrule
+\end{longtable}
+Kolejność zakupów minimalizująca ryzyko: najpierw etap 0 (FP2+CDSR $=$ najdłuższe/najbardziej
+niepewne pozycje), ogniwa dopiero po zaliczeniu CAN, UPS po potwierdzeniu modelu z szyną 48~V.
+
+\section{Kosztorys zbiorczy (PL, lipiec 2026, $\pm$30\%)}
+\begin{longtable}{@{}p{0.62\textwidth}r@{}}
+\toprule
+\textbf{MODUŁ A} & \textbf{zł}\\
+\midrule
+-X1 Type 2 z blokadą + odczep -X3 (7 żył) z wtykiem & 400--900\\
+tor mocy: -Q0, -F1..3, szyny 6 mm$^2$, -K1, -X2 & 500--900\\
+łańcuch bezpieczeństwa: E-STOP (2-torowy), -RB, -K10, -K4, -A2, krańcówka & 350--600\\
+-B1 CDSR/RCM + generator -A3 (DAC, AMC1301, MOSFET) & 350--800\\
+serwa DS3218 $\times$2 + rama + sprzęgła & 150--300\\
+termowizja: MLX90640 + 2$\times$MLX90614 + DS18B20 $\times$8 & 400--600\\
+metering: ATM90E36A + 3$\times$CT 40 A/1 V + dzielniki + -K30..33 & 200--400\\
+logika: ESP32-S3, MCP23017, ULN2803, opto, RTC, SD, transceiver CAN, -G1, -F4/-F5 & 300--500\\
+HMI DWIN 7$''$ + LED + przyciski & 300--500\\
+obudowa IP54, przegrody, PCB, złącza, drobnica & 900--1600\\
+\midrule
+\textbf{Moduł A razem} & \textbf{3850--7100}\\
+\midrule
+\textbf{SZAFA B (wariant rekomendowany: B-b1 + W2)} & \\
+\midrule
+7$\times$ Flatpack2 48/2000 HE używane (6+1 zapas) + gniazda/półka & 1150--2400\\
+-K11..-K13, rozdział AC, pole -X6, okablowanie AC & 350--600\\
+szyna DC (płaskownik), -F13.1/2, -Q1, -KB, przewody 50 mm$^2$ & 600--1100\\
+pakiet 16S1P: 16$\times$LFP 105 Ah kl. B + BMS JK + kompresja/busbary & 2740--4100\\
+falownik W2: używany UPS on-line 5--6 kVA (48 V) + rozdzielniczka wyspy (B16+RCD+przełącznik) & 800--2000\\
+szafa na kółkach, wentylatory (-M3/4, -K2/-K3), -X5, drobnica & 500--900\\
+\midrule
+\textbf{Szafa B razem} & \textbf{6140--11100}\\
+\textbf{STACJA RAZEM} & \textbf{$\sim$9990--18200}\\
+\quad rozbudowa 2P (+16 ogniw) & +2240--3200\\
+\quad alternatywa W3 zamiast W2 (falownik własny LF) & $-$0--$+$700\\
+\bottomrule
+\end{longtable}
+Plan pomostowy (niezależny): UT595 + UT210E + UT522 $\approx$ 2,8--3,4 tys. zł --- przyrządy te są
+częścią systemu (pomiary protokołowe), zakup pozostaje zasadny od zaraz.
+\why{Gdzie są pieniądze: połowa kosztu szafy to ogniwa --- jedyna pozycja, której nie da się
+,,wypracować''. Prostowniki i falownik kupujemy za 10--20\% ceny nowych, a różnicę zastępuje
+nasza robota według przepisów z rozdz.~\ref{sec:pakiet} i \ref{sec:ups}.}
+
+\section{Rejestr ryzyk (skonsolidowany R1--R24)}
+Jak czytać: numeracja ciągła z historii projektu (R16--R19 dotyczyły odrzuconego wariantu
+termicznego v4 --- stąd luka); dla każdego ryzyka podano mitygację, większość weryfikuje etap 0.
+\begin{longtable}{@{}p{0.05\textwidth}p{0.55\textwidth}p{0.34\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Ryzyko} & \textbf{Mitygacja}\\
+\midrule
+R1 & PM701E na odczepie: poprawność pre-testów, prąd gniazd bananowych (brak instrukcji!) & test w etapie 0; pozyskać instrukcję\\
+R2 & mechanika serw: swoboda pokręteł, trwałość & etap 0 na sprzęcie; fallback: własny front-end stanów CP\\
+R3 & dostępność czujnika CDSR/RCM14 & zamówić najwcześniej; alternatywy WA RCM14\\
+R4 & cieplne (teraz tylko straty 0,4--0,9 kW) & wentylatory + termiki w łańcuchu\\
+R5 & generator upływu: potencjał na PE & ogranicznik sprzętowy, -K30, procedura\\
+R6 & wzorcowanie bloków własnych & protokoły na UT595/UT522; wzorcowanie opcją\\
+R7 & zgodność formalna (61010/61851/SEP) & przegląd przed etapem 2; uprawnienia E/D\\
+R8 & spójność CP$\leftrightarrow$pobór & limity w firmware + pomiar -U2\\
+R9--R10 & protokół CAN FP2 nieoficjalny; dynamika przy skokach & etap 0(c); rampy; fallback R4850G2\\
+R11 & koordynacja SOC/BMS w soaku & bramka SOC; rozładowanie równoległe\\
+R12 & formalności oddawania (dotyczy tylko upgrade W1) & start: wyspa bez zgłoszeń\\
+R13 & duże prądy DC 48 V & przekroje, momenty, mega, przegląd\\
+R14--R15 & jakość falownika DIY (W3); N--PE/RCD wyspy & procedury testowe; odbiór E/D (dot. też W2)\\
+R20 & jakość ogniw używanych/kl. B & selekcja IR/pojemność, zakup z pomiarami, zapas\\
+R21 & chemia NMC (gdyby moduły EV) & rekomendacja: LFP\\
+R22 & egzemplarz UPS (stan, szyna 48 V, dokumentacja) & weryfikacja modelu przed zakupem, test wstępny\\
+R23 & czas pracy własnej przekroczy plan & etapowanie, bufor czasowy, przepisy krok-po-kroku\\
+R24 & 1P za mały na pełny soak 3F & bramka SOC $\le$25\%, rozładowanie równoległe, rozbudowa 2P\\
+\bottomrule
+\end{longtable}
+
+\section{Decyzje projektowe --- status}
+Jak czytać: Z1--Z15 to historia decyzji z wersji 1--4 (zachowana dla ciągłości numeracji);
+\textbf{do zatwierdzenia pozostają Z16--Z19} --- to one definiują wariant budżetowy.
+\begin{longtable}{@{}p{0.10\textwidth}p{0.64\textwidth}p{0.18\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Decyzja} & \textbf{Status}\\
+\midrule
+Z1--Z6 & topologia odczepu PM701E; dwa moduły; mapa gniazd; pomiary protokołowe UT595/UT522;
+etapowanie; budżet kierunkowy & zatwierdzone\\
+Z7--Z10 & kierunek rekuperacyjny (PFC$\to$DC$\to$magazyn), parametry, tryb bez eksportu, budżet delta & zatwierdzone co do zasady\\
+Z11--Z12 & falownik: warianty W1--W3; praca wyłącznie wyspowa do czasu W1 & W2 rekomendowany\\
+Z13--Z15 & (wariant termiczny v4) & odrzucone przez zamawiającego\\
+Z16 & kierunek v5/v6: budżetowy magazyn elektryczny (FP2 + pakiet DIY + W2) & \textbf{do zatwierdzenia}\\
+Z17 & ogniwa: LFP kl. B 16S1P $\to$ 2P (alternatywy: moduły EV, rack) & \textbf{do zatwierdzenia}\\
+Z18 & falownik: W2 (UPS) vs W3 (własny LF) & \textbf{do zatwierdzenia}\\
+Z19 & budżet stacji $\sim$10--18,2 tys. zł & \textbf{do zatwierdzenia}\\
+\bottomrule
+\end{longtable}
+
+\section{Testy odbiorcze i walidacja końcowa}
+\begin{enumerate}
+\item \textbf{Pakiet:} pojemność zmierzona $\ge$90\% deklarowanej; rozrzut ogniw pod obciążeniem
+$\le$50~mV; zadziałanie progów BMS i -KB.
+\item \textbf{Łańcuch E2:} kolejno wymuszone: E-STOP, termik, krańcówka, zanik wentylatorów,
+zanik impulsów watchdoga, zanik 24~V --- każde musi otworzyć -K1; powrót tylko przez START;
+E-STOP musi też gasić CP (-K4) --- DUT otwiera stycznik $\le$1~s.
+\item \textbf{Wyspa:} RCD 30~mA (UT595: I$_{\Delta n}$, czas), praca 1--4~kW, udar silnikowy,
+1~h soak termiczny.
+\item \textbf{Tor pomiarowy:} zgodność -U2 z UT210E/UT890C ($\pm$2\%); CP duty vs deklaracje
+pokręteł; RDC-DD na ładowarce referencyjnej (Q11): prąd $\le$6~mA, czas $<$ limitu.
+\item \textbf{Test kompletny ładowarki referencyjnej} (P i Q11): pełna sekwencja bez interwencji
+poza wpisami UT595/UT522; raport wygenerowany; energia zmagazynowana zgodna z -U2 w granicach
+sprawności (85--92\%).
+\end{enumerate}
+
+\section{Dokumenty powiązane i źródła}
+\textbf{Dokumenty projektu (folder \texttt{custom\_device}):} schemat elektryczny v5 (EPLAN,
+E1--E3) + \emph{objaśnienie i przewodnik uruchomienia} (z poradnikiem EPLAN krok po kroku);
+wizualizacja 3D v3 (HTML); koncepcja v6 (wydanie zwięzłe --- ta sama treść bez warstwy
+objaśniającej); koncepcje v1--v5 (historia decyzji); \texttt{custom\_device\_inf.md} (kontekst).
+\textbf{Źródła:} IEC 61851-1 (interfejs CP/PP); IEC 62955 (RDC-DD); IEC 61010 (bezpieczeństwo
+przyrządów); PN-HD 60364 (instalacje, wyspa, N--PE); PN-EN 50549-1/NC RfG (dot. tylko przyszłego
+W1); noty: EVE LF105, smart BMS 16S (JK), Eltek Flatpack2 48/2000 HE + protokół CAN (dokumentacja
+społecznościowa openinverter/endless-sphere), LEM CDSR, ATM90E36A, MLX90640/14, EG8010 (wariant
+W3); ,,Przewodnik pomiarów elektrycznych stacji ładowania'' (Warszawa 2024).
+
+\end{document}

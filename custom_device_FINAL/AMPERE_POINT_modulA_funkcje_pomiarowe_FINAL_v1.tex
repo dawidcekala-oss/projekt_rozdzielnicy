@@ -1,0 +1,249 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+
+\title{\textbf{AMPERE POINT --- custom device / MODUŁ A}\\[4pt]
+\large Dodatkowe funkcje pomiarowe --- specyfikacja scalona (FINAL)\\[2pt]
+\normalsize wersja 1 --- zamyka i zastępuje propozycje pomiarów v1--v4 w zakresie modułu A}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{13 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\section{Status, zakres i granice}
+Dokument scala wszystkie \textbf{zaakceptowane} funkcje pomiarowe rozważane w propozycjach v1--v4
+(wybór z 2026-07-13: P4, P5, D5, S1, S2, S3 oraz klasy A/B z v4), po uporządkowaniu duplikatów:
+P4 wchodzi do F10, P5 $=$ F13, D5 jest warstwą treści F1. Wprowadza się \textbf{jednolitą numerację
+F1--F17} --- od tej wersji obowiązującą (mapowanie: tab.~\ref{tab:map}).
+\textbf{Zakres:} wyłącznie moduł A i pomiary. \textbf{Poza zakresem:} szafa B / magazyn energii
+(osobna decyzja, nie blokuje niczego z tego dokumentu), pomiary u klienta (odrzucone), testy
+zgodności z normą i weryfikacja liczników (odrzucone). \textbf{Pięć pomiarów obowiązkowych}
+(ciągłość PE, izolacja, uziom, RCD, pętla) pozostaje bez zmian --- wykonują je przyrządy
+wzorcowane UT595/UT522 w sekwencji prowadzonej przez moduł A; funkcje F nie kolidują z nimi
+(rozdz.~\ref{sec:spojnosc}). \textbf{Obciążenie do testów prądowych} (soak, F10, F13): przejściowo
+auto testowe; docelowe obciążenie stanowiskowe jest tematem odrębnym.
+
+\section{Lista funkcji F1--F17 (obowiązująca)}
+\label{sec:lista}
+\subsection{Fundament danych}
+\textbf{F1 --- Sesje pomiarowe i zgrywanie (dawne S3$+$D5).} Sesja $=$ folder na karcie SD
+(\texttt{/SESJE/RMA-xxxx\_data/}), zakładany z HMI numerem przypadku; wszystkie pomiary, logi
+(CSV 1~s), zdarzenia i wyniki trafiają do sesji; zamknięcie generuje podsumowanie JSON.
+Zgrywanie: \textbf{tryb pamięci USB} (ESP32-S3 jako pendrive po USB-C; na czas zgrywania pomiary
+zatrzymane --- wyłączny dostęp do systemu plików) oraz wbudowana strona WWW (,,pobierz ZIP'').
+Warstwa treści: \textbf{karty modeli} (wyniki F4--F10 na model/firmware), \textbf{profile
+środowiskowe} (nastawy F2 użyte do reprodukcji), \textbf{powiązanie z katalogiem U-xxx}.
+\textbf{Formaty wersjonowane od pierwszego dnia} (pole \texttt{schema\_version} w każdym pliku).
+Etap 2 (opcja): raport HTML w sesji, auto-spływ do HA.
+
+\subsection{Symulator środowiska (aktor wszystkich pomiarów F4--F10)}
+\textbf{F2 --- Symulator wad zasilania (dawne S1).} Wydzielony tor zasilania DUT w sekcji
+bench-test z elementami włączanymi przekaźnikami: \textbf{impedancja linii} 0{,}15/0{,}3/0{,}6~\ohm{}
+niezależnie na każdej fazie; \textbf{upływ tła} AC/DC z generatora -A3 przełączonego na stronę
+zasilania (zakres rozszerzony do 0--40~mA --- wymagane przez F7); \textbf{zapady/przerwy}
+50~ms--5~s (stycznik szybki z wyzwalaniem czasowym); \textbf{zamiana L--N}, \textbf{przerwa PE},
+\textbf{drabinka rezystancji PE} 0/10/50/200~\ohm{}/$\infty$; \textbf{źródło napięcia N--PE}
+0--10~V (transformator separacyjny, ogranicznik 1~k\ohm{} $\Rightarrow$ prąd $\le$10~mA);
+\textbf{krzyżowanie kolejności faz} i \textbf{utrata jednej fazy w trakcie}; \textbf{odbiornik
+równoległy} (grzałka 2~kW $+$ stycznik; opcjonalnie mały silnik --- udar indukcyjny) --- symulacja
+wspólnego obwodu. Tryb \textbf{replay}: odtworzenie sekwencji nastaw zapisanej jako profil (F1).
+\textbf{F3 --- Regulacja napięcia zasilania DUT} (potrzebna do pełnego F4 i głębokości zapadów F5)
+--- \textbf{pozycja wariantowa, decyzja W-A} (rozdz.~\ref{sec:warianty}); obie opcje w pełni
+automatyczne.
+
+\subsection{Karta odporności modelu (raz na model/firmware; automatyczne przemiatanie)}
+\textbf{F4 --- progi napięciowe:} U$_{min}$/U$_{max}$ zadziałania, histereza powrotu, czasy
+reakcji i wznowienia [wymaga F3; bez F3 wersja ograniczona: obniżenie U pod obciążeniem przez
+impedancję F2].\\
+\textbf{F5 --- zapady i przerwy:} matryca głębokość$\times$czas $\to$ kontynuacja / restart /
+czas wznowienia [F2; głębokości pośrednie wymagają F3].\\
+\textbf{F6 --- próg detekcji wadliwego PE:} przemiatanie drabinki R$_{PE}$ i U$_{N-PE}$ $\to$
+przy czym DUT zgłasza błąd uziemienia [F2].\\
+\textbf{F7 --- margines upływowy:} pomiar upływu własnego DUT($+$auta) czujnikiem RCM -B1
+w stanach B/C/pod obciążeniem $+$ dokładanie tła AC/DC do zadziałania wewnętrznego RCD/RDC-DD
+DUT (rampa, rejestracja prądu i czasu) [F2, -A3 0--40~mA, -B1].\\
+\textbf{F8 --- wrażliwość na impedancję zasilania:} reakcja DUT (redukcja prądu / przerwanie) na
+odczepy F2 pod prądem [F2, -U2].\\
+\textbf{F9 --- zachowania 3F} (tylko modele 3F): asymetria (odczep na jednej fazie), zamiana
+kolejności, utrata fazy w trakcie ładowania [F2].\\
+\textbf{F10 --- termika złącz i walidacja czujników DUT (dawne A8$+$P4):} soak przez
+\textbf{wzorcowe ,,złe gniazdo''} (skalibrowane 0{,}1/0{,}3~\ohm; tylko modele z wtyczką) $+$
+termowizja MLX90640 $+$ DS18B20 $\to$ przyrosty $\Delta$T, tempo, próg termicznego wstrzymania
+DUT i histereza wznowienia; równolegle \textbf{porównanie temperatury raportowanej przez DUT}
+(ekran/aplikacja) z pomiarem referencyjnym.
+
+\subsection{Diagnostyka egzemplarza (zwrotu)}
+\textbf{F11 --- rezystancje styków} wtyczki zasilającej i wtyku Type~2: 4-przewodowo (zaciski
+Kelvina $+$ wzmacniacz), pod prądem, wynik w m\ohm{} $+$ trend w czasie soaku.\\
+\textbf{F12 --- upływ własny egzemplarza} AC/DC (B/C/obciążenie) --- porównanie z kartą modelu
+[0~zł, -B1].\\
+\textbf{F13 --- jakość toru egzemplarza (dawne P5):} impedancja $\Delta$U/$\Delta$I toru DUT
+(skoki obciążenia), spadek pod obciążeniem, \textbf{czasy łączeń stycznika DUT} (z opto faz)
+--- degradacja styków/przekaźników wewnętrznych [0~zł].\\
+\textbf{F14 --- porównanie progów egzemplarza z kartą modelu} (skrócone F4/F6/F7) --- przesunięty
+próg $=$ uszkodzony obwód pomiarowy DUT; twarda kwalifikacja naprawy [0~zł, procedura].
+
+\subsection{Nadzór i pomiary uzupełniające}
+\textbf{F15 --- nadzór długoterminowy (dawne S2):} wielogodzinna/nocna praca zwrotu z profilami
+F2 i stemplowaniem zdarzeń (półokresowe minima U, zaniki, upływy, temperatury, stany CP);
+porównanie łączności zwrot--egzemplarz referencyjny. \emph{Wymóg organizacyjny: praca nocna tylko
+z czujką dymu w pomieszczeniu i sprawdzonym łańcuchem bezpieczeństwa.}\\
+\textbf{F16 --- prąd załączeniowy (inrush):} tani układ peak-hold (wzmacniacz $+$ dioda $+$
+kondensator, odczyt ADC) na torze bench --- szczyt i przybliżony czas; wpis do karty i porównanie
+egzemplarza [niski priorytet wdrożenia, sprzęt trywialny].\\
+\textbf{F17 --- stanowiskowy test różnicówek} (aparaty przyniesione/typowe): prąd i czas
+zadziałania dla przebiegu AC / pulsującego / gładkiego DC $+$ \textbf{test oślepiania typu AC
+składową stałą} (6--10~mA DC $+$ próba 30~mA AC) [generator -A3 0--40~mA; zaciski w osłonie;
+ostatni w kolejce --- wartość edukacyjno-dowodowa].
+
+\subsection{Mapowanie numeracji}
+\label{tab:map}
+\begin{center}\small
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+stare & S3$+$D5 & S1 & A1 & A2 & A3 & A4 & A5\\
+\textbf{nowe} & \textbf{F1} & \textbf{F2} & \textbf{F4} & \textbf{F5} & \textbf{F6} & \textbf{F7} & \textbf{F8}\\
+\midrule
+stare & A7 & A8$+$P4 & B1 & B2 & B6$=$P5 & B4 & S2 / A6$+$B3 / RCD\\
+\textbf{nowe} & \textbf{F9} & \textbf{F10} & \textbf{F11} & \textbf{F12} & \textbf{F13} & \textbf{F14} & \textbf{F15 / F16 / F17}\\
+\bottomrule
+\end{tabular}
+\end{center}
+(B5 --- trend termiczny --- zawiera się w F10/F15; A6 i B3 scalone w F16.)
+
+\section{Wpływ na architekturę modułu A}
+\subsection{Co jest wykorzystywane bez zmian (bloki bazowe modułu A)}
+PM701E z serwami (stany złącza), tor akwizycji CP/PP, metering -U2 $+$ przekładniki -T1..3,
+czujnik różnicowy -B1 (RCM), generator -A3, termowizja MLX90640 $+$ MLX90614 $+$ DS18B20,
+HMI DWIN, karta SD $+$ USB-C, RTC, WiFi/MQTT, łańcuch bezpieczeństwa E2 z -K4, optotransoptory
+obecności faz, przekaźniki separujące -K30..33. \textbf{Funkcje F12--F14 nie wymagają żadnego
+nowego sprzętu} --- to firmware i procedury na istniejących blokach.
+\subsection{Sekcja bench-test staje się rdzeniem (zmiana statusu Z3)}
+Dawna ,,opcjonalna sekcja bench-test'' jest teraz \textbf{obowiązkową częścią modułu A} --- to na
+niej działa F2 i wszystko, co z niego korzysta. Elementy i ich adresowanie:
+\begin{longtable}{@{}p{0.34\textwidth}p{0.16\textwidth}p{0.12\textwidth}p{0.30\textwidth}@{}}
+\toprule
+\textbf{Element (nowy sprzęt)} & \textbf{Dla funkcji} & \textbf{Sterowanie} & \textbf{Umiejscowienie / uwagi}\\
+\midrule
+pole zasilania DUT: gniazdo Schuko $+$ CEE16~3F; zabezpieczenia stanowiskowe B16~1P, B16~3P;
+\textbf{RCD 100~mA typ A toru bench} $+$ \textbf{RCD 30~mA typ A gniazd roboczych} & F2--F17 &
+--- & panel; rozdział: tor testowy (100~mA --- nie fałszuje testów progów 30~mA DUT) osobno od
+gniazd podręcznych (30~mA)\\
+odczepy impedancji 3$\times$(0,15/0,3/0,6~\ohm, drutowe z termikami do pętli -F11.x) & F2, F8, F9
+& 9 przek. & strefa mocy bench, za osłoną\\
+stycznik szybki zaników $+$ wyzwalanie czasowe & F2, F5, F15 & 1 przek. & sterowanie z -A1 (timer sprzętowy)\\
+przekaźniki: zamiana L--N, przerwa PE & F2, F6 & 2 przek. & tylko tor bench\\
+drabinka R$_{PE}$ 10/50/200~\ohm/$\infty$ & F6 & 3 przek. & \textbf{wyłącznie w PE toru bench}, nigdy w PE własnym stanowiska\\
+źródło U$_{N-PE}$ 0--10~V (transf. separacyjny $+$ ogranicznik 1~k\ohm) & F6 & 1 przek. $+$ DAC & strefa analogowa\\
+rozszerzenie -A3: przełącznik strony $+$ zakres do 40~mA & F2, F7, F17 & 1 przek. & zmiana rezystora zakresu $+$ przekaźnik\\
+krzyżowanie kolejności faz $+$ utrata fazy & F9 & 2 przek. & tor bench 3F\\
+zaciski Kelvina $+$ wzmacniacz pomiaru m\ohm & F11 & 1 wej. ADC & panel (4 gniazda sense)\\
+wzorcowe ,,złe gniazdo'' 0,1/0,3~\ohm{} (kalibrowane) & F10 & 1 przek. & panel, obok gniazda Schuko\\
+układ peak-hold (inrush) & F16 & 1 wej. ADC & strefa analogowa\\
+zaciski testu RCD w osłonie & F17 & --- & panel; \textbf{same zaciski przewidzieć od razu} (uniknięcie późniejszej przeróbki obudowy), elektronika wspólna z -A3\\
+odbiornik równoległy: grzałka 2~kW $+$ stycznik ($+$opcjonalny silnik) & F2 & 1 przek. & obok stanowiska\\
+drugi ekspander MCP23017 $+$ ULN2803 $+$ opto & obsługa powyższych & I2C & strefa logiki ($\sim$21 nowych wyjść $\Rightarrow$ 16$+$rezerwa z pierwszego)\\
+\bottomrule
+\end{longtable}
+\subsection{Firmware (rozszerzenia)}
+Sekwencje przemiatań F4--F10 z kryteriami zatrzymania; format kart modeli i profili (wersjonowany);
+replay; rejestrator półokresowy (szybkie odczyty -U2 $+$ zdarzenia z opto faz) dla F5/F15;
+tryb USB-MSC z blokadą pomiarów; procedura wejściowa zwrotu (checklista F11$+$F12$+$foto,
+$\sim$15~min) jako pierwszy ekran sesji.
+\subsection{Zasady bezpieczeństwa specyficzne dla symulatora}
+Wady symulowane wyłącznie w wydzielonym torze bench (nigdy w instalacji własnej stanowiska);
+przy próbach z przerwanym/rezystancyjnym PE obudowa DUT traktowana jako potencjalnie niebezpieczna
+(bariera, zakaz dotykania, procedura); upływ -A3 ograniczony sprzętowo do 40~mA; test F17 tylko
+w osłonie zacisków; praca nocna (F15) --- czujka dymu $+$ sprawdzony łańcuch E2.
+
+\section{Kosztorys (sprzęt nowy względem bazowego modułu A)}
+\begin{longtable}{@{}p{0.58\textwidth}r@{}}
+\toprule
+\textbf{Pozycja} & \textbf{zł}\\
+\midrule
+pole zasilania DUT (gniazda, B16 1P/3P, RCD 100~mA $+$ RCD 30~mA) & 250--450\\
+odczepy impedancji 3 fazy (9 rezystorów drutowych $+$ przekaźniki $+$ termiki) & 120--220\\
+stycznik szybki zaników $+$ elementy czasowe & 60--120\\
+przekaźniki L--N / przerwa PE & 40--80\\
+drabinka R$_{PE}$ $+$ przekaźniki & 60--120\\
+źródło U$_{N-PE}$ & 50--100\\
+rozszerzenie -A3 (strona $+$ zakres 40~mA) & 50--100\\
+krzyżowanie faz $+$ utrata fazy & 80--150\\
+pomiar m\ohm{} (zaciski Kelvina, wzmacniacz, przewody) & 60--120\\
+wzorcowe złe gniazdo (kalibrowane) & 40--80\\
+peak-hold (F16) & 20--40\\
+zaciski testu RCD w osłonie (sama mechanika panelu) & 20--40\\
+odbiornik równoległy (grzałka 2~kW $+$ stycznik) & 80--150\\
+drugi MCP23017 $+$ ULN $+$ opto $+$ drobnica & 40--80\\
+\midrule
+\textbf{Suma (bez F3)} & \textbf{970--1850}\\
+F3 wariant (a): variac 16~A używany $+$ \textbf{serwo na pokrętle} (jak przy PM701E) $+$ sprzęgło
+$+$ rama & 550--900\\
+F3 wariant (b): transformator z odczepami $+$ przekaźniki (skokowo co 2--3\%) & 250--450\\
+\midrule
+\textbf{Suma z rekomendowanym F3(a)} & \textbf{$\sim$1520--2750}\\
+\bottomrule
+\end{longtable}
+Praca własna: montaż sekcji bench $+$ symulatora 2--3 dni; firmware (F1, sekwencje, formaty)
+3--4 dni; mechanika F3(a) $+$0,5 dnia. \textbf{Razem $\sim$5,5--7,5 dnia.}
+
+\section{Warianty kosztowe i decyzje (z rekomendacją i terminem)}
+\label{sec:warianty}
+Zasada: \textbf{brak innej decyzji do momentu zamówień etapu 0 $=$ obowiązują rekomendacje}.
+\begin{longtable}{@{}p{0.08\textwidth}p{0.40\textwidth}p{0.40\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Wariant droższy} & \textbf{Wariant tańszy (ta sama funkcjonalność)}\\
+\midrule
+W-A (F3) & \textbf{(a) variac $+$ serwo --- REKOMENDACJA}: regulacja płynna 0--260~V, w pełni
+automatyczna (serwo kręci, -U2 domyka pętlę); 550--900~zł & (b) transformator odczepowy
+$+$ przekaźniki: również w pełni automatyczna, ale skokowa (2--3\% kroku --- progi F4 wyznaczane
+z dokładnością kroku); 250--450~zł. Wariant (c) ,,bez F3'' odpada --- F4/F5 byłyby kalekie\\
+W-B (F17) & stanowisko testu RCD kompletne od razu & \textbf{REKOMENDACJA: teraz tylko zaciski
+w panelu (20--40~zł), elektronika wspólna z -A3 dokładana na końcu kolejki} --- zero przeróbek
+obudowy później\\
+W-C (F16) & --- & \textbf{REKOMENDACJA: robić od razu} --- peak-hold za 20--40~zł, wpis do karty
+przy okazji każdego testu\\
+W-D (odbiornik równoległy) & dedykowany silnik z rozruchem (udar indukcyjny) & \textbf{REKOMENDACJA:
+grzałka 2~kW $+$ jeśli w warsztacie jest zbędny silnik --- dołożyć za 0~zł}\\
+\bottomrule
+\end{longtable}
+
+\section{Kolejność wdrożenia i zasady operacyjne}
+\textbf{Kolejność:} F1 $\to$ F11/F12/F13 (procedura wejściowa zwrotu) $\to$ F6/F7 $\to$ F2
+(komplet) $\to$ F10 $\to$ F15 $\to$ F8/F9 $\to$ F3$+$F4/F5 $\to$ F14 $\to$ F17 (F16 sprzętowo od
+razu, programowo przy okazji).\\
+\textbf{Zasady:} (1) \textbf{golden unit} --- utrzymywany egzemplarz referencyjny każdego modelu;
+karta modelu odświeżana po każdej aktualizacji firmware; (2) \textbf{zastrzeżenie interpretacyjne}
+w każdej karcie: progi zmierzono z obciążeniem stanowiskowym --- auto klienta może reagować
+wcześniej niż ładowarka; (3) kalibracja symulatora: rzeczywiste wartości odczepów/drabinki
+zmierzone i wpisane do konfiguracji; (4) \textbf{miary sukcesu} (przegląd po kwartale): odsetek
+zwrotów zamkniętych z twardym dowodem, średni czas diagnozy, liczba wpisów katalogu z danymi.
+
+\section{Spójność z pomiarami obowiązkowymi i resztą projektu}
+\label{sec:spojnosc}
+Pomiary obowiązkowe wykonywane są przy \textbf{wyłączonym symulatorze} (wszystkie przekaźniki F2
+w stanie neutralnym, tor bench odłączony stycznikiem, separacja -K30..33 jak dotychczas) ---
+sekwencer wymusza to blokadą. Funkcje F nie zmieniają łańcucha E2 (dochodzą tylko termiki odczepów
+do pętli -F11.x). Karta odporności nie jest testem zgodności: wyniki opisują zachowanie praktyczne
+modelu na naszym stanowisku i służą diagnozie oraz regresji --- zgodnie z wcześniejszymi decyzjami
+o nietestowaniu obszarów producenta. Dokument nie dotyczy szafy B; jedyny punkt styku to
+obciążenie do soaków (przejściowo auto testowe).
+
+\end{document}

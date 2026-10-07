@@ -1,0 +1,153 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+
+\title{\textbf{AMPERE POINT --- Wielofunkcyjne urządzenie pomiarowe (custom device)}\\[4pt]
+\large Koncepcja --- wersja 7: DODATKOWE POMIARY\\[2pt]
+\normalsize rewizja różnicowa koncepcji v6 --- włączenie pakietu funkcji pomiarowych F1--F17 do
+architektury modułu A}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{13 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\section{Status i zakres}
+Wersja 7 uzupełnia koncepcję v6 o wyniki wątku pomiarowego zamkniętego specyfikacją
+\texttt{AMPERE\_POINT\_modulA\_funkcje\_pomiarowe\_FINAL\_v2} (obowiązująca lista funkcji
+\textbf{F1--F17}, decyzje W-A--W-D rozstrzygnięte). Dokument dotyczy \textbf{modułu A i pomiarów};
+szafa B (magazyn energii) pozostaje bez zmian względem v6 i poza niniejszą rewizją. Pięć pomiarów
+obowiązkowych --- bez zmian (UT595/UT522 w sekwencji prowadzonej). Zmiany wprowadzane tą wersją:
+\begin{itemize}
+\item \textbf{nowy blok funkcjonalny B12 --- sekcja bench-test z symulatorem wad zasilania}
+(dawna opcjonalna sekcja bench-test z decyzji Z3 zmienia status na \textbf{obowiązkową część
+modułu A});
+\item zmiany w blokach istniejących: \textbf{B5} (generator -A3: zakres rozszerzony z 20 do
+\textbf{40~mA} $+$ przełącznik strony), \textbf{B8} (drugi ekspander I/O, dodatkowe wejścia ADC,
+trzeci kanał serwa --- variac), \textbf{B9} (termiki odczepów w pętli -F11.x; rozdział ochrony
+różnicowej stanowiska: 100~mA tor testowy / 30~mA gniazda robocze);
+\item rozszerzenie sekwencji o \textbf{procedurę wejściową zwrotu} i tryby ,,karta modelu'';
+\item aktualizacja kosztorysu modułu A i etapów;
+\item dokument wykonawczy schematu: \textbf{arkusz E4} w schemacie elektrycznym v6.
+\end{itemize}
+
+\section{B12 --- sekcja bench-test z symulatorem wad zasilania (nowy blok)}
+\textbf{Rola:} zasilanie badanej ładowarki (DUT) z panelu modułu A przez tor, w który można
+programowo wtrącać niedoskonałości instalacji klienta, oraz komplet pomiarów dodatkowych F1--F17.
+\subsection{Struktura toru testowego}
+Zasilanie sekcji (z instalacji stanowiska, \textbf{nie} z gniazda -X1!) $\to$ zabezpieczenie
+-F20 (B16 3P$+$N) $\to$ \textbf{-F22: RCD 100~mA typ A} (celowo nie 30~mA --- nie fałszuje
+pomiarów progów 30~mA badanych ładowarek F7/F14; ochronę osób zapewniają osłony i procedury)
+$\to$ elementy symulatora (w kolejności): \textbf{-TR1} variac 16~A z serwem \textbf{-M5}
+(F3; w torze L1, z przekaźnikiem bypass -K63 dla testów 3F) $\to$ odczepy impedancji
+\textbf{-R20.x} 3$\times$(0,15/0,3/0,6~\ohm) z przekaźnikami -K40..48 i termikami w pętli -F11.x
+$\to$ stycznik zaników \textbf{-K50} (50~ms--5~s) $\to$ krzyżowanie kolejności faz -K58/-K59
+i ,,utrata fazy'' -K60 $\to$ zamiana L--N \textbf{-K51} $\to$ gałąź PE: przerwa \textbf{-K52},
+drabinka \textbf{-R21.x} (10/50/200~\ohm, przekaźniki -K53..55), źródło U$_{N-PE}$ \textbf{-G2}
+(0--10~V, ogranicznik 1~k\ohm, przekaźnik -K56) $\to$ gniazda DUT: \textbf{-X7} (Schuko),
+\textbf{-X8} (CEE16 3F), \textbf{-X9} wzorcowe ,,złe gniazdo'' 0,1/0,3~\ohm{} (przez -K61).
+Dodatkowo: odbiornik równoległy \textbf{-K62/-E14} (grzałka 2~kW), przekładnik \textbf{-T4}
+$+$ układ peak-hold \textbf{-B7} (F16), zaciski Kelvina \textbf{-X10} ze wzmacniaczem
+\textbf{-B6} (F11, m\ohm), zaciski testu RCD \textbf{-X11} w osłonie (F17; elektronika wspólna
+z -A3), gniazda robocze \textbf{-X12} za -F21 (B16) i \textbf{-F23} (RCD 30~mA).
+Upływ tła: istniejący generator \textbf{-A3} przełączany na stronę zasilania DUT przekaźnikiem
+\textbf{-K57} (F2/F7/F17). Pomiar napięć toru bench: dzielniki -U2 przełączane przekaźnikiem
+\textbf{-K34} (tor główny $\leftrightarrow$ tor bench); pętla regulacji variaca domykana pomiarem
+-U2. Szczegóły połączeń: schemat v6, arkusz E4.
+\subsection{Funkcje realizowane}
+F2 (symulator $+$ replay), F3 (regulacja napięcia), F4--F10 (karta odporności modelu),
+F11--F14 (diagnostyka egzemplarza), F15 (nadzór nocny), F16 (inrush), F17 (test RCD ---
+elektronika na końcu kolejki). Objaśnienia każdego pomiaru: FINAL v2, rozdz.~3.
+
+\section{Zmiany w blokach istniejących}
+\begin{longtable}{@{}p{0.12\textwidth}p{0.82\textwidth}@{}}
+\toprule
+\textbf{Blok} & \textbf{Zmiana}\\
+\midrule
+B5 (-A3) & zakres generatora upływu rozszerzony do \textbf{0--40~mA AC/DC} (rezystor zakresu $+$
+przekaźnik) --- bez tego progi 30~mA wewnętrznych RCD badanych ładowarek (F7) i test F17 byłyby
+nieosiągalne; nowy przekaźnik strony -K57 (tor główny / tor bench)\\
+B8 (-A1) & drugi ekspander MCP23017 $+$ ULN2803 (ok. 21 nowych wyjść przekaźnikowych); nowe
+wejścia ADC: wzmacniacz m\ohm{} (-B6), peak-hold (-B7); trzeci kanał PWM: serwo -M5 (variac);
+firmware: sekwencje przemiatań F4--F10, formaty kart/profili/sesji z wersją schematu danych,
+replay, rejestrator półokresowy, tryb USB-pendrive z blokadą pomiarów, procedura wejściowa
+zwrotu\\
+B9 (bezp.) & termiki odczepów -R20.x włączone w istniejącą pętlę -F11.x łańcucha; ochrona
+różnicowa stanowiska rozdzielona: \textbf{-F22 100~mA typ A} (tor testowy) i \textbf{-F23 30~mA
+typ A} (gniazda robocze -X12); zasady: wady symulowane tylko w torze bench, przy próbach
+z osłabionym PE obudowa DUT za barierą, nadzór nocny tylko z czujką dymu\\
+B10 (panel) & dochodzą: gniazda -X7/-X8/-X9/-X12, zaciski Kelvina -X10, zaciski RCD -X11
+(w osłonie), wskaźnik trybu SYMULACJA na HMI i lampka na panelu\\
+\bottomrule
+\end{longtable}
+
+\section{Sekwencje pracy (rozszerzenie)}
+\textbf{Procedura wejściowa zwrotu} ($\sim$15~min, pierwszy ekran sesji F1): oględziny $+$ zdjęcia
+$\to$ F11 (m\ohm{} styków) $\to$ F12 (upływ własny) $\to$ F13 (tor, czasy stycznika) $\to$ decyzja:
+dalej wg objawu (profil F2 / karta F14 / nadzór F15). \textbf{Tryb ,,karta modelu''}: automatyczne
+przemiatania F4--F10 na egzemplarzu referencyjnym (golden unit), zapis karty; powtarzane po każdej
+aktualizacji firmware. \textbf{Tryb ,,reprodukcja''}: wybór lub złożenie profilu wad (F2), replay,
+rejestracja reakcji DUT. Pomiary obowiązkowe --- bez zmian, przy wyłączonym symulatorze
+(blokada sekwencera).
+
+\section{Kosztorys modułu A (aktualizacja)}
+\begin{longtable}{@{}p{0.62\textwidth}r@{}}
+\toprule
+\textbf{Pozycja} & \textbf{zł}\\
+\midrule
+moduł A --- baza wg koncepcji v6 (tor mocy, PM701E$+$serwa, bloki pomiarowe, HMI, obudowa) &
+3850--7100\\
+pakiet pomiarowy F1--F17 wg FINAL v2 (sekcja bench $+$ symulator $+$ variac z serwem $+$
+uzupełnienia) & 1520--2750\\
+\midrule
+\textbf{Moduł A razem (z pakietem pomiarowym)} & \textbf{$\sim$5370--9850}\\
+\bottomrule
+\end{longtable}
+Praca własna pakietu: $\sim$5,5--7,5 dnia (ponad harmonogram v6). Szafa B --- bez zmian (osobna
+decyzja; przejściowe obciążenie soaków: auto testowe).
+
+\section{Etapy realizacji (aktualizacja ścieżki modułu A)}
+\textbf{Etap 0} (bez zmian z v6) $+$ prototyp toru bench na stole: -F22/-F20, odczepy jednej fazy,
+-K50, pomiar -U2 przez -K34 --- weryfikacja koncepcji symulatora przed zabudową.
+\textbf{Etap 1:} moduł A kompletny \textbf{wraz z B12} i funkcjami w kolejności:
+F1 $\to$ F11/F12/F13 $\to$ F6/F7 $\to$ F2 komplet $\to$ F10.
+\textbf{Etap 2:} F15, F8/F9, F3$+$F4/F5, F14; karty modeli P, B, Q11 (golden unit).
+\textbf{Etap 3:} F17 (elektronika), etapowe rozszerzenia z v6.
+
+\section{Decyzje --- stan po v7}
+\begin{longtable}{@{}p{0.14\textwidth}p{0.60\textwidth}p{0.18\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Decyzja} & \textbf{Status}\\
+\midrule
+Z1--Z2, Z4--Z6 & topologia odczepu, dwa moduły, pomiary protokołowe, etapy, budżet & zatwierdzone (v1)\\
+\textbf{Z3} & sekcja bench-test & \textbf{zmiana: z opcji na RDZEŃ modułu A (v7)}\\
+Z7--Z19 & wątek szafy B (magazyn) & bez zmian, poza zakresem v7\\
+Z20--Z21 & pakiety pomiarowe (v3/v4 propozycji) & skonsumowane przez FINAL v2\\
+\textbf{Z22} & lista F1--F17, rozstrzygnięcia W-A--W-D, kosztorys i kolejność wg FINAL v2 &
+\textbf{zatwierdzone do realizacji (v7)}\\
+\bottomrule
+\end{longtable}
+
+\section{Dokumenty powiązane}
+\texttt{AMPERE\_POINT\_modulA\_funkcje\_pomiarowe\_FINAL\_v2} (specyfikacja funkcji $+$
+objaśnienia prostym językiem); \textbf{schemat elektryczny v6} (nowy arkusz E4 --- sekcja
+bench-test); koncepcja v6 (baza); przewodnik ,,Instalacje elektryczne a ładowanie EV'';
+opis instalacji referencyjnej (folder \texttt{instalacja}); katalog usterek U-xxx.
+
+\end{document}

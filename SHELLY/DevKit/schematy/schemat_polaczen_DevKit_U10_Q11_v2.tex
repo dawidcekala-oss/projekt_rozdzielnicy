@@ -1,0 +1,333 @@
+% !TEX program = xelatex
+\documentclass[10pt]{article}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\newfontfamily\sym{Segoe UI Symbol}
+\usepackage{polyglossia}\setdefaultlanguage{polish}
+\usepackage[table]{xcolor}
+\usepackage{geometry}
+\geometry{a4paper,landscape,margin=0.8cm}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{booktabs,array,longtable}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\definecolor{txblue}{HTML}{1D4ED8}
+\definecolor{rxgreen}{HTML}{15803D}
+\definecolor{pwrred}{HTML}{B91C1C}
+\definecolor{ncgrey}{HTML}{6B7280}
+\definecolor{copper}{HTML}{C2410C}
+\definecolor{padfill}{HTML}{F59E0B}
+\definecolor{boardfill}{HTML}{F3F4F6}
+\definecolor{modblue}{HTML}{DBEAFE}
+
+\newcommand{\ra}{{\sym →}}
+\newcommand{\la}{{\sym ←}}
+\newcommand{\approxs}{{\sym ≈}}
+
+\begin{document}
+
+%======================================================================
+% STRONA 1: SCHEMAT POLACZEN
+%======================================================================
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[anchor=north west, text width=27.5cm] at (0,19.3) {%
+{\Large\bfseries Schemat połączeń: Shelly DevKit M1 \ra\ miejsce U10 po module WBR3 na płytce sterującej Q11}\\[3pt]
+{\small Płytka X2Q322\_K\_V3 (250630), mikrokontroler X2Q311OW. Płytka Q11 w widoku od strony elementów, krawędź płytki z anteną modułu na dole.
+DevKit w widoku od góry, tak jak na zdjęciu. DevKit zasilany z płytki Q11 przez zworkę.\\ \mbox{AMPERE POINT}, 24.09.2026, v2.}};
+
+% ---------------- DevKit ----------------
+\draw[rounded corners=4pt, fill=boardfill, draw=black!70, line width=0.9pt] (2.0,9.6) rectangle (20.4,15.8);
+% USB-C
+\draw[fill=black!30, draw=black] (1.2,12.3) rectangle (2.3,13.5);
+\node[rotate=90, font=\scriptsize, align=center, text=pwrred] at (0.55,12.9) {\textbf{USB-C tylko}\\\textbf{przy wyjętej zworce}};
+% most USB-UART
+\draw[fill=white, draw=black!60] (3.3,12.7) rectangle (5.7,14.3);
+\node[font=\scriptsize, align=center] at (4.5,13.5) {most USB–UART\\CP210x};
+\draw[black!60] (2.3,12.9) -- (3.3,13.1);
+% przyciski
+\draw[fill=black!35] (2.65,14.05) circle (0.24); \node[font=\tiny] at (2.65,13.6) {BOOT};
+\draw[fill=black!35] (2.65,11.35) circle (0.24); \node[font=\tiny] at (2.65,11.8) {RST};
+% dioda
+\draw[fill=white, draw=black!70] (13.7,13.3) circle (0.22);
+\node[font=\scriptsize, anchor=west] at (13.95,13.3) {LED RGB};
+% modul MOD1
+\draw[fill=black!20, draw=black] (16.4,12.6) rectangle (19.4,14.5);
+\draw[fill=modblue, draw=black, dashed] (19.4,12.9) rectangle (21.0,14.2);
+\node[font=\scriptsize, align=center] at (17.9,13.55) {Shelly-X-MOD1-H8\\chip Shelly-C38F};
+\node[font=\tiny, rotate=90] at (20.2,13.55) {antena};
+\node[font=\small\bfseries, align=center] at (9.6,13.55) {Shelly DevKit M1\\[-1pt]{\scriptsize\mdseries zasilany z płytki Q11 albo z USB, nigdy z obu naraz}};
+
+% gorny rzad (J1), od lewej
+\foreach \i/\lab/\desc in {
+ 0/GND/masa, 1/5V/{5 V, wolna}, 2/5V/{5 V, wolna}, 3/GND/masa, 4/10/{GPIO10, wolna},
+ 5/1/{GPIO1, wolna}, 6/0/{GPIO0, wolna}, 7/GND/masa, 8/RST/{reset chipu}, 9/GND/masa,
+ 10/3/{GPIO3, wolna}, 11/2/{GPIO2, startowa}, 12/3V3/{3,3 V, wolna}, 13/3V3/{3,3 V \la\ VCC}, 14/GND/masa}{
+  \pgfmathsetmacro{\x}{3.8+1.1*\i}
+  \draw[fill=black!45, draw=black] (\x-0.17,15.13) rectangle (\x+0.17,15.47);
+  \node[font=\scriptsize\bfseries] at (\x,14.85) {\lab};
+  \node[font=\scriptsize, rotate=90, anchor=west, text=black!65] at (\x,16.0) {\desc};
+}
+\node[font=\scriptsize\itshape, text=black!60, anchor=east] at (3.5,16.6) {górny rząd};
+
+% dolny rzad (J3), od lewej
+\foreach \i/\lab/\desc in {
+ 0/GND/masa, 1/19/{USB D+}, 2/18/{USB D−}, 3/GND/masa, 4/4/{TX \ra\ Q11},
+ 5/5/{RX \la\ Q11}, 6/6/wolna, 7/7/wolna, 8/GND/masa, 9/8/{LED RGB},
+ 10/9/{BOOT}, 11/GND/masa, 12/RX/{log, USB}, 13/TX/{log, USB}, 14/GND/masa}{
+  \pgfmathsetmacro{\x}{3.8+1.1*\i}
+  \draw[fill=black!45, draw=black] (\x-0.17,9.93) rectangle (\x+0.17,10.27);
+  \node[font=\scriptsize\bfseries] at (\x,10.55) {\lab};
+  \node[font=\scriptsize, rotate=90, anchor=west, text=black!65] at (\x,10.95) {\desc};
+}
+\node[font=\scriptsize\itshape, text=black!60, anchor=east] at (3.5,9.35) {dolny rząd};
+
+% wyroznione nozki
+\draw[fill=txblue, draw=black] (8.2-0.19,9.91) rectangle (8.2+0.19,10.29);
+\draw[fill=rxgreen, draw=black] (9.3-0.19,9.91) rectangle (9.3+0.19,10.29);
+\draw[fill=black, draw=black] (12.6-0.19,9.91) rectangle (12.6+0.19,10.29);
+\draw[fill=pwrred, draw=black] (18.1-0.19,15.11) rectangle (18.1+0.19,15.49);
+% RX/TX na listwie to port USB i log: NIE lutowac tu przewodow do Q11 (pomylka 2026-09-24)
+\foreach \x in {17.0,18.1}{
+  \draw[pwrred, line width=1.6pt] (\x-0.28,9.82) -- (\x+0.28,10.38);
+  \draw[pwrred, line width=1.6pt] (\x-0.28,10.38) -- (\x+0.28,9.82);
+}
+\node[font=\scriptsize\bfseries, text=pwrred, align=center, fill=white, inner sep=1.5pt] at (17.55,9.3) {RX i TX: NIE TE!\\to port USB i log};
+\node[font=\scriptsize\bfseries, text=txblue, fill=white, inner sep=1.5pt] at (8.75,9.3) {przewody do Q11: nóżki 4 i 5};
+
+% ---------------- miejsce U10 ----------------
+\fill[modblue] (14.6,0.0) rectangle (20.6,0.7);
+\node[font=\scriptsize, text=black!70] at (17.6,0.35) {antena modułu nad wycięciem, krawędź płytki};
+\draw[fill=white, draw=black, line width=0.9pt] (14.6,0.7) rectangle (20.6,8.9);
+\node[align=center, font=\small] at (17.6,4.8) {\textbf{U10}\\miejsce\\po WBR3};
+\fill (21.05,0.75) circle (0.07);
+\node[font=\tiny, anchor=west] at (21.15,0.75) {kropka na płytce = pole 1};
+
+% lewy rzad: 9..16 od gory
+\foreach \k/\n/\name in {0/9/GND,1/10/A\_12,2/11/A\_16,3/12/A\_17,4/13/A\_18,5/14/A\_19,6/15/RXD,7/16/TXD}{
+  \pgfmathsetmacro{\y}{8.3-1.0*\k}
+  \draw[fill=padfill, draw=copper] (14.25,\y-0.18) rectangle (14.95,\y+0.18);
+  \node[anchor=west, font=\scriptsize\bfseries] at (15.05,\y) {\n\ \ \name};
+}
+% prawy rzad: 8..1 od gory
+\foreach \k/\n/\name in {0/8/VCC,1/7/A\_4,2/6/A\_3,3/5/A\_2,4/4/A\_11,5/3/EN,6/2/A\_7,7/1/NC}{
+  \pgfmathsetmacro{\y}{8.3-1.0*\k}
+  \draw[fill=padfill, draw=copper] (20.25,\y-0.18) rectangle (20.95,\y+0.18);
+  \node[anchor=east, font=\scriptsize\bfseries] at (20.15,\y) {\name\ \ \n};
+}
+
+% niepodlaczone pola lewego rzedu (10..14)
+\foreach \k in {1,2,3,4,5}{
+  \pgfmathsetmacro{\y}{8.3-1.0*\k}
+  \draw[ncgrey, line width=0.8pt] (14.25,\y) -- (13.85,\y);
+  \node[font=\scriptsize, text=ncgrey, anchor=east] at (13.8,\y) {× nie łączyć};
+}
+
+% opisy prawego rzedu (na zewnatrz)
+% zasilanie: pole VCC -> zworka -> 3V3 DevKitu (gorny rzad, pozycja 14)
+\draw[pwrred, line width=1.7pt] (20.95,8.3) -- (21.6,8.3) -- (21.6,11.25);
+\draw[pwrred, line width=1.7pt] (21.6,12.15) -- (21.6,15.65) -- (18.1,15.65) -- (18.1,15.49);
+\draw[pwrred, line width=1.2pt, fill=white] (21.6,11.35) circle (0.1);
+\draw[pwrred, line width=1.2pt, fill=white] (21.6,12.05) circle (0.1);
+\draw[pwrred, line width=1.2pt, fill=white] (21.35,11.25) rectangle (21.85,12.15);
+\fill[pwrred] (21.6,11.35) circle (0.06);
+\fill[pwrred] (21.6,12.05) circle (0.06);
+\node[anchor=west, font=\scriptsize, text=pwrred, text width=5.2cm] at (21.95,11.7) {\textbf{zworka}: wyjąć przed podłączeniem USB; wkładać i wyjmować przy wyłączonej ładowarce};
+\node[anchor=west, font=\scriptsize\bfseries, text=pwrred] at (21.7,9.2) {3,3 V z płytki \ra\ 3V3 DevKitu};
+\node[anchor=west, font=\scriptsize\bfseries, text=pwrred] at (21.7,14.6) {do górnego rzędu, 14. nóżka: 3V3};
+\foreach \k/\t in {1/{GPIO modułu}, 2/{GPIO modułu}, 3/{GPIO modułu}, 4/{GPIO modułu}, 5/{włączanie WBR3; DevKit ma własny RST}, 6/{GPIO modułu}}{
+  \pgfmathsetmacro{\y}{8.3-1.0*\k}
+  \draw[ncgrey, line width=0.8pt] (20.95,\y) -- (21.3,\y);
+  \node[anchor=west, font=\scriptsize, text=ncgrey] at (21.35,\y) {× nie łączyć: \t};
+}
+\node[anchor=west, font=\scriptsize, text=ncgrey] at (21.1,1.3) {× pole niepodłączone (NC)};
+
+% ---------------- przewody ----------------
+\draw[txblue, line width=1.7pt] (8.2,9.91) -- (8.2,1.3) -- (14.25,1.3);
+\draw[rxgreen, line width=1.7pt] (9.3,9.91) -- (9.3,2.3) -- (14.25,2.3);
+\draw[black, line width=1.7pt] (12.6,9.91) -- (12.6,8.3) -- (14.25,8.3);
+\draw[fill=white, draw=txblue, line width=1.2pt] (8.02,7.35) rectangle (8.38,8.35);
+\draw[fill=white, draw=rxgreen, line width=1.2pt] (9.12,7.35) rectangle (9.48,8.35);
+\node[font=\scriptsize\bfseries, text=txblue, rotate=90] at (7.8,7.85) {470 {\sym Ω}};
+\node[font=\scriptsize\bfseries, text=rxgreen, rotate=90] at (9.7,7.85) {470 {\sym Ω}};
+\node[font=\tiny, text=black!60, rotate=90] at (9.98,7.85) {zalecane, uwaga 3};
+% strzalki kierunku
+\draw[-{Stealth[length=3.4mm,width=2.6mm]}, txblue, line width=1.7pt] (12.2,1.3) -- (13.4,1.3);
+\draw[-{Stealth[length=3.4mm,width=2.6mm]}, rxgreen, line width=1.7pt] (9.3,5.2) -- (9.3,6.5);
+\draw[-{Stealth[length=3.4mm,width=2.6mm]}, txblue, line width=1.7pt] (8.2,6.5) -- (8.2,5.2);
+% etykiety przewodow
+\node[font=\scriptsize\bfseries, text=txblue, anchor=south west] at (8.35,1.33) {nóżka 4 DevKitu, wyjście TX \ra\ pole TXD \ra\ wejście RX mikrokontrolera};
+\node[font=\scriptsize\bfseries, text=rxgreen, anchor=south west] at (9.45,2.33) {nóżka 5 DevKitu, wejście RX \la\ pole RXD \la\ wyjście TX mikrokontrolera};
+\node[font=\scriptsize\bfseries, anchor=south] at (13.45,8.33) {masa};
+
+% mikrokontroler - wyjasnienie kierunkow
+\node[draw=black!50, dashed, rounded corners=3pt, align=center, font=\scriptsize, text width=2.3cm, fill=white] at (11.0,5.6) {%
+\textbf{Mikrokontroler Q11}\\(X2Q311OW) na tej samej płytce, połączony ścieżkami:\\[2pt]
+pole TXD \ra\ jego RX\\pole RXD \la\ jego TX};
+
+% ---------------- legenda i uwagi ----------------
+\node[anchor=north west, draw=black!40, rounded corners=3pt, fill=white, text width=6.75cm, font=\scriptsize, inner sep=5pt] at (0.2,9.15) {%
+\textbf{Legenda}\\[2pt]
+{\color{txblue}\rule[0.5ex]{0.8cm}{1.7pt}}\ nadawanie: DevKit \ra\ mikrokontroler\\
+{\color{rxgreen}\rule[0.5ex]{0.8cm}{1.7pt}}\ odbiór: mikrokontroler \ra\ DevKit\\
+{\color{black}\rule[0.5ex]{0.8cm}{1.7pt}}\ masa wspólna\\
+\fbox{\rule{0pt}{0.8ex}\hspace{0.6cm}}\ rezystor szeregowy 470 {\sym Ω}, przy DevKicie\\
+{\color{pwrred}\rule[0.5ex]{0.8cm}{1.7pt}}\ zasilanie 3,3 V z płytki, przez zworkę\\
+{\color{ncgrey}×}\ pole zostaje wolne\\[4pt]
+\textbf{Uwagi} {\color{black!60}(uzasadnienia na stronie 3)}\\[2pt]
+1. Przewody do Q11 lutuj do nóżek z napisami \textbf{4 i 5}, piątej i szóstej od złącza USB-C w dolnym rzędzie. \textbf{Nie do nóżek RX i TX} na końcu tego rzędu: to port USB i log DevKitu. Nóżka 4 do pola TXD, nóżka 5 do RXD, bez krzyżowania.\\[2pt]
+2. \textbf{Zasilanie z płytki albo z USB, nigdy oba.} Zworkę wkładaj i wyjmuj tylko przy wyłączonej ładowarce.\\[2pt]
+3. Rezystory 470 {\sym Ω} są zalecane, chronią przy pomyłce.\\[2pt]
+4. Przed lutowaniem, ładowarka włączona: VCC–GND \approxs\ 3,3 V, RXD–GND \approxs\ 3,3 V.\\[2pt]
+5. Po włączeniu, przy pracy Wi-Fi: VCC–GND co najmniej 3,2 V.\\[2pt]
+6. W portalu: IO4 = TX, IO5 = RX; numer IO = numer nóżki.\\[2pt]
+7. Pola A\_x i EN sprawdź miernikiem przed lutowaniem.\\[2pt]
+8. DevKit w obudowie: w osłonie izolacyjnej, przymocowany, z dala od części pod napięciem sieci.};
+
+\end{tikzpicture}
+
+\newpage
+%======================================================================
+% STRONA 2: MIEJSCE U10 - FUNKCJE POL
+%======================================================================
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\node[anchor=north west, text width=27.5cm] at (0,19.3) {%
+{\Large\bfseries Miejsce U10: funkcja każdego pola z modułem WBR3 \ra\ z DevKitem}\\[3pt]
+{\small Widok od strony elementów, krawędź płytki z anteną na dole. Lewy rząd: pola 9–16 od góry. Prawy rząd: pola 1–8 od dołu, kropka przy U10 = pole 1.
+Układ z opisu na spodzie wylutowanego WBR3, zgodny z kartą katalogową Tuya.}};
+
+\fill[modblue] (10.7,0.6) rectangle (16.9,1.6);
+\node[font=\footnotesize, text=black!70] at (13.8,1.1) {antena modułu nad wycięciem płytki};
+\draw[fill=white, draw=black, line width=1pt] (10.7,1.6) rectangle (16.9,17.2);
+\node[align=center, font=\large] at (13.8,9.4) {\textbf{U10}\\[2pt]\normalsize miejsce na moduł\\\normalsize 2 × 8 pól, raster 2 mm};
+\fill (17.5,1.8) circle (0.09);
+\node[font=\scriptsize, anchor=west] at (17.65,1.8) {kropka = pole 1};
+
+% lewy rzad
+\foreach \k/\n/\name in {0/9/GND,1/10/A\_12,2/11/A\_16,3/12/A\_17,4/13/A\_18,5/14/A\_19,6/15/RXD,7/16/TXD}{
+  \pgfmathsetmacro{\y}{16.4-2.0*\k}
+  \draw[fill=padfill, draw=copper] (10.25,\y-0.25) rectangle (11.15,\y+0.25);
+  \node[anchor=west, font=\normalsize\bfseries] at (11.3,\y) {\n\ \ \name};
+}
+% prawy rzad
+\foreach \k/\n/\name in {0/8/VCC,1/7/A\_4,2/6/A\_3,3/5/A\_2,4/4/A\_11,5/3/EN,6/2/A\_7,7/1/NC}{
+  \pgfmathsetmacro{\y}{16.4-2.0*\k}
+  \draw[fill=padfill, draw=copper] (16.45,\y-0.25) rectangle (17.35,\y+0.25);
+  \node[anchor=east, font=\normalsize\bfseries] at (16.3,\y) {\name\ \ \n};
+}
+
+% opisy lewego rzedu
+\newcommand{\gpioL}{{\color{black!55}WBR3: GPIO modułu. Przy pracy z mikrokontrolerem najpewniej nieużywane.}\\\ra\ {\color{ncgrey}\textbf{DevKit: nie łączyć.} Sprawdź miernikiem, czy ścieżka biegnie do mikrokontrolera.}}
+\foreach \k/\t in {
+ 0/{{\color{black!55}WBR3: masa modułu.}\\\ra\ \textbf{DevKit: masa. Przewód do dowolnego GND DevKitu, np. dolny rząd między 7 i 8.}},
+ 1/{\gpioL}, 2/{\gpioL}, 3/{\gpioL}, 4/{\gpioL}, 5/{\gpioL},
+ 6/{{\color{black!55}WBR3: wejście portu szeregowego modułu. Odbiera ramki Tuya z wyjścia TX mikrokontrolera.}\\\ra\ {\color{rxgreen}\textbf{DevKit: nóżka 5 (RX), wejście 3,3 V, przez 470 {\sym Ω}. Odbiera te same ramki.}}},
+ 7/{{\color{black!55}WBR3: wyjście portu szeregowego modułu. Nadaje ramki Tuya do wejścia RX mikrokontrolera.}\\\ra\ {\color{txblue}\textbf{DevKit: nóżka 4 (TX), wyjście 3,3 V, przez 470 {\sym Ω}. Nadaje ramki zamiast WBR3.}}}}{
+  \pgfmathsetmacro{\y}{16.4-2.0*\k}
+  \draw[black!30] (10.25,\y) -- (10.05,\y);
+  \node[anchor=east, align=right, text width=9.6cm, font=\footnotesize] at (10.0,\y) {\t};
+}
+
+% opisy prawego rzedu
+\newcommand{\gpioR}{{\color{black!55}WBR3: GPIO modułu. Przy pracy z mikrokontrolerem najpewniej nieużywane.}\\\ra\ {\color{ncgrey}\textbf{DevKit: nie łączyć.} Sprawdź miernikiem, czy ścieżka biegnie do mikrokontrolera.}}
+\foreach \k/\t in {
+ 0/{{\color{black!55}WBR3: wejście zasilania 3,3 V ze stabilizatora płytki sterującej.}\\\ra\ {\color{pwrred}\textbf{DevKit: przez zworkę do 3V3 DevKitu, górny rząd, 14. nóżka.}} Zasila DevKit zamiast USB. USB wtedy odłączone, bo dwa źródła naraz grożą spaleniem.},
+ 1/{\gpioR}, 2/{\gpioR}, 3/{\gpioR}, 4/{\gpioR},
+ 5/{{\color{black!55}WBR3: wejście włączające moduł. Stan wysoki = praca, niski = moduł wyłączony.}\\\ra\ {\color{ncgrey}\textbf{DevKit: nie łączyć.} DevKit ma własny reset (RST). Sprawdź, czy ścieżka biegnie do mikrokontrolera.}},
+ 6/{\gpioR},
+ 7/{{\color{black!55}WBR3: pole niepodłączone (NC).}\\\ra\ {\color{ncgrey}\textbf{DevKit: nic.}}}}{
+  \pgfmathsetmacro{\y}{16.4-2.0*\k}
+  \draw[black!30] (17.35,\y) -- (17.55,\y);
+  \node[anchor=west, align=left, text width=9.8cm, font=\footnotesize] at (17.6,\y) {\t};
+}
+
+\node[anchor=south west, font=\footnotesize] at (0.2,0.2) {%
+Kolory: {\color{txblue}\textbf{niebieski}} nadawanie DevKit \ra\ mikrokontroler,
+{\color{rxgreen}\textbf{zielony}} odbiór mikrokontroler \ra\ DevKit, \textbf{czarny} masa,
+{\color{pwrred}\textbf{czerwony}} zasilanie 3,3 V z płytki do DevKitu, {\color{ncgrey}\textbf{szary}} pole wolne.};
+
+\end{tikzpicture}
+
+\newpage
+%======================================================================
+% STRONA 3: WSZYSTKIE NOZKI DEVKITU
+%======================================================================
+{\Large\bfseries Wszystkie nóżki Shelly DevKit M1}\\[3pt]
+{\small Pozycje liczone od lewej, DevKit w widoku od góry: USB-C po lewej, moduł z anteną po prawej. Numer IO w portalu Shelly X = numer nóżki GPIO
+(log startu DevKitu: io=[0, 1, --, 3, 4, 5, 6, 7, 8, 9, 10, ..., 18, 19]; IO2 jest w oprogramowaniu Shelly niedostępne).}\\[6pt]
+
+\renewcommand{\arraystretch}{1.25}
+\begin{minipage}[t]{0.49\linewidth}
+\textbf{Górny rząd}\\[2pt]
+\footnotesize
+\begin{tabular}{@{}r l p{4.9cm} p{2.9cm}@{}}
+\toprule
+\rowcolor{black!8}\textbf{Poz.} & \textbf{Napis} & \textbf{Funkcja} & \textbf{W tym połączeniu} \\
+\midrule
+1 & GND & masa & wolna \\
+2 & 5V & 5 V z gniazda USB & \textbf{nie łączyć} \\
+3 & 5V & jak wyżej & \textbf{nie łączyć} \\
+4 & GND & masa & wolna \\
+5 & 10 & GPIO10, wejście/wyjście 3,3 V & wolna \\
+6 & 1 & GPIO1, wejście/wyjście 3,3 V & wolna \\
+7 & 0 & GPIO0, wejście/wyjście 3,3 V & wolna \\
+8 & GND & masa & wolna \\
+9 & RST & reset chipu (EN), stan niski = reset; przycisk RST & wolna \\
+10 & GND & masa & wolna \\
+11 & 3 & GPIO3, wejście/wyjście 3,3 V, wejście analogowe & wolna \\
+12 & 2 & GPIO2, nóżka startowa: stan przy starcie decyduje o trybie & wolna \\
+13 & 3V3 & szyna 3,3 V DevKitu & wolna \\
+14 & 3V3 & szyna 3,3 V DevKitu; tędy zasilanie z płytki & {\color{pwrred}\textbf{\la\ zworka \la\ VCC}} \\
+15 & GND & masa & wolna \\
+\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\textbf{Dolny rząd}\\[2pt]
+\footnotesize
+\begin{tabular}{@{}r l p{4.9cm} p{2.9cm}@{}}
+\toprule
+\rowcolor{black!8}\textbf{Poz.} & \textbf{Napis} & \textbf{Funkcja} & \textbf{W tym połączeniu} \\
+\midrule
+1 & GND & masa & wolna \\
+2 & 19 & GPIO19 = linia USB D+ chipu & nie używać \\
+3 & 18 & GPIO18 = linia USB D$-$ chipu & nie używać \\
+4 & GND & masa & wolna \\
+5 & 4 & GPIO4, wyjście 3,3 V & {\color{txblue}\textbf{TX \ra\ 470 {\sym Ω} \ra\ TXD}} \\
+6 & 5 & GPIO5, wejście 3,3 V & {\color{rxgreen}\textbf{RX \la\ 470 {\sym Ω} \la\ RXD}} \\
+7 & 6 & GPIO6, wejście/wyjście 3,3 V & wolna \\
+8 & 7 & GPIO7, wejście/wyjście 3,3 V & wolna \\
+9 & GND & masa & \textbf{\ra\ pole GND} \\
+10 & 8 & GPIO8: dioda RGB stanu, nóżka startowa & nie używać \\
+11 & 9 & GPIO9: przycisk BOOT, nóżka startowa & nie używać \\
+12 & GND & masa & wolna \\
+13 & RX & GPIO20, odbiór UART0: most USB, log i polecenia & nie używać \\
+14 & TX & GPIO21, nadawanie UART0: most USB & nie używać \\
+15 & GND & masa & wolna \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\vspace{10pt}
+\textbf{Kolejność przed pierwszym włączeniem}\\[2pt]
+\small
+1. Miernikiem, bez zasilania: ciągłość pól TXD, RXD, GND i VCC z ich ścieżkami; sprawdź, dokąd prowadzą pola A\_x i EN.\\
+2. Ładowarka włączona, DevKit jeszcze niepodłączony: VCC–GND \approxs\ 3,3 V, RXD–GND \approxs\ 3,3 V w spoczynku.\\
+3. Ładowarka wyłączona: przylutuj cztery przewody: nóżka 4 \ra\ 470 {\sym Ω} \ra\ TXD, nóżka 5 \ra\ 470 {\sym Ω} \ra\ RXD, GND \ra\ GND, VCC \ra\ zworka \ra\ 3V3 (górny rząd, 14.). Rezystory przy DevKicie. Odciąż przewody.\\
+4. Odłącz USB od DevKitu, włóż zworkę, włącz ładowarkę. Dioda DevKitu powinna się zaświecić, a DevKit połączyć z Wi-Fi biura.\\
+5. Zmierz VCC–GND podczas pracy: co najmniej 3,2 V.\\
+6. Monitor czyta log przez Wi-Fi (python monitor\_devkit.py 192.168.0.238): pierwsze ramki Tuya pojawią się jako „Q11: mikrokontroler się odezwał”.
+
+\vspace{8pt}
+\textbf{Dlaczego tak}\\[2pt]
+\textbf{Bez krzyżowania.} Pole TXD to wyjście WBR3, podłączone ścieżką do wejścia RX mikrokontrolera. DevKit zajmuje miejsce WBR3, więc jego wyjście TX idzie na to samo pole.\\
+\textbf{Rezystory 470 {\sym Ω}.} Po zamianie TXD z RXD dwa wyjścia 3,3 V zwierają się ze sobą; rezystor ogranicza prąd do 3,3 V / 470 {\sym Ω} \approxs\ 7 mA. Przy wyjętej zworce i pracującej ładowarce mikrokontroler nie zasili chipu DevKitu przez nóżkę 5. Sygnał nie cierpi: 470 {\sym Ω} × 20 pF \approxs\ 10 ns, a bit przy 9600 b/s trwa 104 µs.\\
+\textbf{Nigdy USB i płytka naraz.} Przy USB i płytce naraz stabilizator DevKitu i stabilizator płytki pracują równolegle; ten z wyższym napięciem wpycha prąd wstecz w drugi. Na innej płytce ESP32 podobny błąd, USB razem z zasilaniem z przetwornicy, kosztował port USB laptopa i kość ESP32. Zworka w przewodzie zasilania daje jeden ruch, który rozłącza płytkę przed podłączeniem USB.\\
+\textbf{Zworka tylko przy wyłączonej ładowarce.} DevKit wpięty na gorąco ładuje swoje kondensatory prądem udarowym z tego samego stabilizatora, z którego może pracować mikrokontroler Q11. Chwilowy spadek napięcia mógłby go zrestartować w trakcie ładowania auta.\\
+\textbf{Co najmniej 3,2 V.} Stabilizator płytki był dobrany do WBR3. ESP32-C3 pobiera przy nadawaniu Wi-Fi do około 0,35 A według karty Espressif, a minimalne napięcie pracy to 3,0 V. Pomiar pokaże, czy zostaje zapas. Restarty z przyczyną „brownout” w logu znaczą, że stabilizator nie daje rady; wtedy DevKit zasilasz z ładowarki USB, a zworka zostaje wyjęta.\\
+\textbf{Bez laptopa.} Log DevKitu idzie przez Wi-Fi, a konfigurację wgrywa się przez Bluetooth albo przez internet. USB jest potrzebne tylko do przywrócenia kopii stanu z dostawy; wtedy DevKit wyjmujesz z ładowarki.
+
+\end{document}

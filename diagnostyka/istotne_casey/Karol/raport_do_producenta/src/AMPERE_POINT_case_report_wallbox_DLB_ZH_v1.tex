@@ -1,0 +1,194 @@
+% !TEX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\newcommand{\ZHDOC}{1}
+\newcommand{\DOCFOOT}{AMPERE POINT · 案例报告：充电桩 + DLB-A1 · 2026 年 9 月 26 日}
+\input{ap_report_preamble.tex}
+\renewcommand{\Hyp}{\textcolor{apwarn}{\textbf{【假设】}}}
+\renewcommand{\figurename}{图}
+\hypersetup{pdftitle={案例报告：壁挂式充电桩与 DLB-A1 控制器},pdfauthor={AMPERE POINT Service}}
+\begin{document}
+
+\apheader{案例报告：壁挂式充电桩与 DLB-A1 控制器}%
+{充电电流超过充电桩设定的电流上限、过流保护动作、DLB 暂停后不自动恢复充电}%
+{AMPERE POINT — 售后服务部 · 致制造商的报告\\2026 年 9 月 26 日\\案例编号：充电桩 \texttt{bfe26d78713489f8a6ulsj} + DLB-A1}
+
+\section{摘要}
+
+一台 AmperePoint 11~kW 三相壁挂式充电桩（涂鸦设备 ID \texttt{bfe26d78713489f8a6ulsj}，固件 \texttt{(V8.0.7)F1.3.6}）在客户现场原本工作正常。在该电路中加装 DLB-A1 动态负载均衡控制器之后，出现了两个问题。2026 年 9 月 26 日，安装人员在现场发现了这两个问题，并以视频记录。涂鸦平台的设备事件日志中也可以看到同样的事件。本报告中的全部事实均来自该视频记录以及设备事件日志中的相应条目。
+
+\begin{apredb}[问题 1 —— 绝对优先：DLB 模式下充电桩不遵守自身的电流上限]
+充电桩电流上限设为 \textbf{16~A}、DLB 控制器设为 \textbf{18~A} 时，充电桩以 \textbf{16.9~A}（7.3~kW）充电。充电过程中将充电桩上限下调至 \textbf{9~A} 后，充电桩仍以 \textbf{16.6~A / 7.1~kW} 继续充电数秒，随后显示\emph{“电流过载保护 —— 自动切换为低电流充电”}；但充电桩并没有切换为低电流，而是完全停止了充电。\textbf{问题 1 导致三相车辆的车载充电机损坏：车辆无法响应，需要维修技师才能恢复。}
+\end{apredb}
+
+\begin{apwarnb}[问题 2：DLB 暂停后充电桩不恢复充电]
+当额外的家庭负载使 DLB 将充电桩电流降到 6~A 以下时，充电桩停止充电——这是正确的。断开该负载后，充电\textbf{并不}恢复，等待 5 分钟也不恢复。只有拔下充电枪再重新插入，充电才会恢复。
+\end{apwarnb}
+
+加装 DLB 之前，该充电桩在同一电路、同一插座上工作正常，因此可以排除电气安装的问题。测试使用了两辆车辆——一辆为两相车载充电机，一辆为三相车载充电机——因此可以排除车辆的问题。测试使用了两套独立的 DLB 控制器套件（含附件），两套都出现了这些问题。因此这是充电桩 / DLB 组合的问题。请贵司分析并提供修正后的固件。下文给出证据、日志摘录和具体问题。
+
+\section{设备}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{12.9cm}}
+\toprule
+\rowcolor{aphead}\textbf{项目} & \textbf{详情} \\
+\midrule\endhead
+\bottomrule\endfoot
+充电桩 & AmperePoint 壁挂式充电桩，11~kW，三相，最大 16~A。涂鸦设备 ID \texttt{bfe26d78713489f8a6ulsj}，产品 ID \texttt{gbmxngploofmhbjc}，固件 \texttt{(V8.0.7)F1.3.6}，设备信息 \emph{“Type~B, AC~30mA + DC~6mA”}，产品变种 3（均为设备在涂鸦日志中上报的信息）。 \\
+DLB 控制器 & DLB-A1。使用了\textbf{两套独立的套件}（控制器及附件），两套都出现了这些问题。 \\
+车辆 & \textbf{车辆 A}：两相车载充电机（仅在 L1 和 L2 上充电）——问题 1。\textbf{车辆 B}：三相车载充电机——问题 2；其车载充电机因问题 1 而损坏。两辆车的充电口见图~\ref{fig:cars}。 \\
+\end{longtable}
+
+\begin{apbox}[已排除的因素]
+\begin{itemize}
+\item \textbf{电气安装：}加装 DLB 之前，充电桩在同一电路、同一插座上充电正常。
+\item \textbf{充电桩本身故障：}同一台充电桩在不接 DLB 时工作正常。
+\item \textbf{车辆：}在两辆不同的车辆（两相和三相车载充电机）上进行了测试。
+\item \textbf{DLB 单件或电流互感器故障：}使用了两套完整、独立的 DLB-A1 套件（控制器及全部附件，包括电流互感器）——两套都出现了这些问题。
+\end{itemize}
+\end{apbox}
+
+\section{问题 1 —— 电流超过充电桩上限、过流保护动作、充电停止}
+
+\subsection{视频记录（2026 年 9 月 26 日，当地时间 12:27–12:32）}
+
+车辆 A（两相）。设置：DLB 控制器 \textbf{18~A}（DLB 显示 \emph{018}，图~\ref{fig:p1}），充电桩上限 \textbf{16~A}。
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \kroknum{1} 正在充电。充电桩显示：\textbf{DLB 16.9~A}，7.3~kW，225~V，上限 16~A。尽管充电桩上限为 16~A，DLB 却把电流限制在 16.9~A——即使考虑一定的误差，这仍高于上限。
+\item \kroknum{2} 充电过程中，在充电桩上将充电电流上限从 16~A 下调至 \textbf{9~A}。显示：DLB 16.9~A，7.3~kW，上限 9~A。
+\item \kroknum{3} 充电桩没有降低充电功率：在上限为 9~A 的情况下，仍以 \textbf{16.6~A / 7.1~kW} 继续充电数秒。
+\item \kroknum{4} 几秒后出现过流保护信息：\emph{“\pl{Ochrona przed przeciążeniem prądu — Automatyczne przełączenie na ładowanie niskim prądem}”}（波兰语，意为\emph{“电流过载保护 —— 自动切换为低电流充电”}）。显示：DLB 0.0~A，226~V，上限变为 \textbf{8~A}。充电桩并没有切换为低电流充电，而是完全停止了充电。
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\shot{0.19\textwidth}{p1_step1.png}{\kroknum{1} 16.9~A，7.3~kW，上限 16~A}\hfill
+\shot{0.19\textwidth}{p1_step2.png}{\kroknum{2} 上限下调至 9~A —— 仍为 16.9~A}\hfill
+\shot{0.19\textwidth}{p1_step3.png}{\kroknum{3} 数秒后：上限 9~A 时 16.6~A，7.1~kW}\hfill
+\shot{0.19\textwidth}{p1_step4.png}{\kroknum{4} 过流保护，上限 8~A，充电停止}\hfill
+\shot{0.19\textwidth}{p1_dlb018_rot.png}{DLB 显示：SEt = 018（18~A）；为便于阅读，截图已旋转 180°}
+\caption{问题 1 —— 安装人员视频截图。}
+\label{fig:p1}
+\end{figure}
+
+\subsection{设备事件日志中的同一时段（涂鸦平台）}
+
+时间为当地时间（UTC+2）。数据点名称按涂鸦日志中的原样引用。
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{14.1cm}}
+\toprule
+\rowcolor{aphead}\textbf{时间} & \textbf{事件} \\
+\midrule\endhead
+\bottomrule\endfoot
+12:27:14 & 充电桩上电后上线；\dpn{设置充电电流} = 16；12:27:20 \dpn{工作状态} = 300（充电中） \\
+12:29:11 – 12:31:10 & \dpn{指标信息}：\textbf{L1 17.0~A，L2 15.3~A，L3 0~A，7.3~kW} —— 稳定 \\
+12:31:57 – 12:31:59 & 设备（而非 App）上报 \dpn{设置充电电流}：6 → 7 → 8 → \textbf{9}；工作状态仍为 300（充电中） \\
+12:32:09 & \dpn{报警信息} \texttt{\{"t":"2026-09-26 12:32:05","v":400\}}；\dpn{工作状态} = \textbf{400}；\dpn{调试用工作状态} = \dpn{发生故障}；\dpn{设置充电电流} = \textbf{8}；\dpn{指标信息} 0~A \\
+12:32:30 & \dpn{充电记录}：12:27–12:32，287~s \\
+\end{longtable}
+
+日志与视频吻合：上限 16~A 时 7.3~kW；充电过程中在设备上将上限下调至 9~A；电流没有降低；最后一次上限变更约 10~s 后出现报警 400，上限下调至 8~A，充电停止。日志中充电桩自身测得的电流（L1 为 17.0~A）也与屏幕 DLB 栏显示的数值（16.9~A）一致。
+
+\begin{apredb}[后果]
+问题 1 导致三相车辆的车载充电机损坏。车辆无法响应，需要维修技师才能使其恢复。因此，修复问题 1 是绝对优先事项。
+\end{apredb}
+
+\section{问题 2 —— DLB 暂停后不自动恢复充电}
+
+\subsection{视频记录（2026 年 9 月 26 日，当地时间 12:36–12:44）}
+
+车辆 B（三相）。设置：为了引发故障，DLB 控制器被\textbf{有意设为较低的电流}，因此充电桩的最大电流也较低；充电桩上限 16~A。
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \kroknum{1} 以 \textbf{DLB 10.8~A}、7.4~kW、226~V、上限 16~A 充电。
+\item \kroknum{2} 接入电水壶以模拟电路上的额外负载。DLB 按预期工作，降低充电桩电流；电流降到 6~A 以下，充电桩\textbf{正确地停止充电}。显示：DLB 0.0~A，0.0~kW，228~V，上限 16~A，车辆仍然连接。
+\item \kroknum{3} 断开电水壶。\textbf{充电桩没有重新开始充电。}安装人员等待了 5 分钟——仍然没有充电。
+\item \kroknum{4} 只有\textbf{拔下充电枪再重新插入}，充电才会恢复。
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\shot{0.26\textwidth}{p2_step1.png}{\kroknum{1} 以 DLB 10.8~A、7.4~kW、上限 16~A 充电}\hspace{1.5cm}
+\shot{0.26\textwidth}{p2_step2.png}{\kroknum{2} 接入电水壶后停止：DLB 0.0~A，0.0~kW，车辆已连接——并一直保持这一状态}
+\caption{问题 2 —— 安装人员视频截图。}
+\label{fig:p2}
+\end{figure}
+
+\subsection{设备事件日志中的同一时段（涂鸦平台）}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{14.1cm}}
+\toprule
+\rowcolor{aphead}\textbf{时间} & \textbf{事件} \\
+\midrule\endhead
+\bottomrule\endfoot
+12:35:51 & 充电桩断电重启后上线；正在充电（自 12:35:54 起有电流测量值） \\
+12:36:13 – 12:37:34 & \dpn{指标信息}：\textbf{10.5–10.8 / 10.7–11.0 / 11.1–11.6~A，7.4~kW}，225–226~V —— 稳定 \\
+12:37:53 & \dpn{工作状态} = \textbf{200}（车辆已连接、未充电）——暂停 \\
+12:37:53 – 12:44:21 & 未上报任何充电状态和电流；充电桩一直处于状态 200 \\
+12:44:21 & 充电桩离线（\emph{keepalive\_timeout}） \\
+\end{longtable}
+
+DLB-A1 快速用户手册（第 6.2 节，\emph{Paused}）写明：\emph{“Recovery is automatic when headroom returns.”}（余量恢复后自动恢复充电）。实际并未发生。
+
+\section{实际表现与说明书的对比}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{5.0cm}>{\raggedright\arraybackslash}p{5.1cm}>{\raggedright\arraybackslash}p{5.8cm}}
+\toprule
+\rowcolor{aphead}\textbf{功能} & \textbf{文档说明（DLB-A1 快速用户手册，Rev.~20251109）或屏幕显示} & \textbf{实际观察} \\
+\midrule\endhead
+\bottomrule\endfoot
+充电电流的上限 & “each wall box is capped by its own requested current”（每台充电桩以其自身请求的电流为上限） & 电流超过充电桩上限：上限 16~A 时 16.9~A；上限 9~A 时 16.6~A \\
+可用上限 & “90\,\% of the Configured Supply Limit (10\,\% buffer)”（供电限值的 90\,\%，10\,\% 裕度） & DLB 设为 18~A 时充电桩以 16.9~A 充电，高于 90\,\% $\times$ 18~A = 16.2~A \\
+余量减少时降流，低于 6~A 时暂停 & 降低电流，尽可能保持 $\geq$6~A，否则暂停 & 正常（问题 2 第 2 步） \\
+暂停后恢复 & “Recovery is automatic when headroom returns”（余量恢复后自动恢复） & 不恢复，5 分钟后也不恢复；必须重新插拔充电枪 \\
+过流保护信息 & 充电桩信息：“Automatic switch to low-current charging”（自动切换为低电流充电） & 充电完全停止；上限从 9~A 下调至 8~A \\
+\end{longtable}
+
+\section{我们对证据的解读}
+
+以下是我们对证据的解读；请贵司确认或纠正。
+
+\begin{enumerate}
+\item 在 DLB 模式下，通过控制导引（CP）信号告知车辆的允许电流似乎只跟随 DLB 的分配值，而\textbf{不受充电桩自身电流上限的限制}：上限 16~A 时 16.9~A，上限 9~A 时 16.6~A。DLB 设为 18~A 时，允许电流也高于该设定值的 90\,\%，这说明 10\,\% 安全裕度未被应用。
+\item 充电过程中下调上限时，新值似乎立即用于过流保护，而 CP 允许电流仍保持为 DLB 的值。车辆从未被要求降低电流，约 10~s 后保护动作，将上限下调 1~A 并停止充电。
+\item 问题 2 是独立的：分配电流低于 6~A 导致暂停后，额外负载移除时充电桩（或 DLB）不会重新开始充电。
+\end{enumerate}
+
+期望的行为：CP 允许电流 = min(充电桩电流上限, DLB 分配值)；充电过程中更改上限时先降低 PWM 占空比，并给车辆标准的响应时间，之后再进行保护判断；暂停后自动恢复。
+
+\section{请求与问题}
+
+\begin{enumerate}
+\item \textbf{首先：请修复这两个问题，使其不再出现在后续的产品中。}请提供充电桩（当前 \texttt{(V8.0.7)F1.3.6}）和/或 DLB-A1 的修正固件，并告知受影响的固件版本和生产批次，以便我们通知其他客户。
+\item 在 DLB 模式下，CP 允许电流是否按 \textbf{min(充电桩电流上限, DLB 分配值)} 计算？我们的观察表明并非如此。
+\item DLB-A1 实际采用的分配公式是什么？说明书写明为 90\,\% × 供电限值减去 CT 测得的最高相电流；DLB 设为 18~A 时我们观察到 16.9~A。
+\item 过流保护（报警 400）的触发条件是什么？“自动切换为低电流充电”具体做了什么？我们观察到的是：充电完全停止，上限下调 1~A。
+\item 充电过程中更改电流上限时，充电桩是否先降低 CP 允许电流并等待车辆响应，之后再进行保护判断？
+\item 为什么额外负载移除后，充电桩不从 DLB 暂停中恢复充电？重新插拔充电枪是否属于设计要求？
+\item 为便于诊断：能否将 DLB 的分配值（发送给充电桩的目标电流）作为数据点上报到涂鸦日志？目前日志中没有任何与 DLB 相关的数据点。
+\end{enumerate}
+
+\needspace{6\baselineskip}
+\begin{apgreenb}[我们给客户的临时措施]
+在获得修正固件之前：不接 DLB 使用充电桩——不接 DLB 时充电桩工作正常。
+\end{apgreenb}
+
+\section{附件与可提供的材料}
+
+\begin{itemize}
+\item 安装人员 2026 年 9 月 26 日视频的截图（问题 1 和问题 2）：图~\ref{fig:p1} 和图~\ref{fig:p2}。
+\item 两辆车充电口的照片（图~\ref{fig:cars}）。
+\item 涂鸦平台上 \texttt{bfe26d78713489f8a6ulsj} 在 2026 年 9 月 26 日的设备事件日志——上文引用的事件均可按该设备 ID 在平台上查到。本报告中的时间均为当地时间（UTC+2）；日志本身以 UTC 存储。
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\shotsm{0.24\textwidth}{car2ph.png}{车辆 A —— 两相车载充电机}\hspace{1.2cm}
+\shotsm{0.24\textwidth}{car3ph.png}{车辆 B —— 三相车载充电机}
+\caption{测试所用车辆。}
+\label{fig:cars}
+\end{figure}
+
+{\color{apmuted}\small AMPERE POINT — 售后服务部 · www.amperepoint.pl · +48 666 612 044 · 本报告于 2026 年 9 月 26 日根据安装人员的视频和涂鸦设备事件日志编写。}
+
+\end{document}

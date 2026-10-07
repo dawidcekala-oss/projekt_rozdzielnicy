@@ -1,0 +1,33 @@
+{
+  "document": {
+    "title": "KOSZTORYS NAPRAWY",
+    "issue_date": "05.10.2026",
+    "place": "Tuchom"
+  },
+  "service_provider": {
+    "name": "Maxima Trading sp. z o.o. sp. k. / Ampere Point",
+    "address": "Gdyńska 72, 80-209 Tuchom",
+    "contact": "hello@amperepoint.com"
+  },
+  "customer": {
+    "name": "Dawid Kaczmarek",
+    "address": "Odrodzenia 151 A, 44-230 Czerwionka-Leszczyny"
+  },
+  "equipment": {
+    "model": "Ampere Point Q22 Pro AC22/7M",
+    "serial_number": "",
+    "purchase_date": "06.09.2026"
+  },
+  "damage": "Przewód ładowania z wtyczką Typ 2 uszkodzony mechanicznie — według informacji klienta najechany kołem samochodu. Stan przedstawiony na zdjęciu przesłanym przez klienta.",
+  "scope": "Wymiana przewodu ładowania wraz z wtyczką Typ 2 na nowy, fabryczny, oraz testy elektryczne urządzenia po naprawie.",
+  "currency": "zł",
+  "items": [
+    {"name": "Przewód ładowania z wtyczką Typ 2 — część fabryczna", "quantity": "1 szt.", "gross": 400},
+    {"name": "Robocizna (demontaż uszkodzonego i montaż nowego przewodu) oraz testy elektryczne po naprawie", "quantity": "1 usł.", "gross": 150}
+  ],
+  "notes": [
+    "Wymiana przewodu nie wpływa na gwarancję pozostałych elementów ładowarki.",
+    "Kosztorys sporządzono na podstawie zdjęcia uszkodzenia. Jeżeli po przyjęciu urządzenia zostaną stwierdzone inne uszkodzenia, zakres i koszt naprawy zostaną uzgodnione z klientem przed jej wykonaniem."
+  ],
+  "prepared_by": "Dawid Cekała"
+}

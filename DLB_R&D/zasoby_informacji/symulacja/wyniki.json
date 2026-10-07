@@ -1,0 +1,1319 @@
+{
+ "houses": {
+  "A1 dom 3x25 A, kuchnia elektryczna": {
+   "weight": 0.3,
+   "csl": 25,
+   "nph": 3,
+   "desc": "indukcja + piekarnik, zmywarka, pralka; bojler nocny u 40 %",
+   "pauses_T0_mean": 3.725,
+   "pauses_T0_p90": 11.500000000000043,
+   "nights_with_pause_pct": 43.333333333333336,
+   "T": {
+    "30": {
+     "cycles_mean": 3.475,
+     "cycles_p90": 11.100000000000009,
+     "maxh_mean": 3.125,
+     "maxh_p90": 9.200000000000017,
+     "empty_mean": 1.3583333333333334,
+     "short_mean": 1.8333333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.24430555555555553,
+     "pause_max_mean": 2.114102564102564
+    },
+    "60": {
+     "cycles_mean": 2.875,
+     "cycles_p90": 7.200000000000017,
+     "maxh_mean": 2.525,
+     "maxh_p90": 7.0,
+     "empty_mean": 0.8,
+     "short_mean": 1.2333333333333334,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.5106944444444445,
+     "pause_max_mean": 2.3576923076923078
+    },
+    "90": {
+     "cycles_mean": 2.591666666666667,
+     "cycles_p90": 7.0,
+     "maxh_mean": 2.2416666666666667,
+     "maxh_p90": 6.0,
+     "empty_mean": 0.5083333333333333,
+     "short_mean": 0.95,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.7961111111111111,
+     "pause_max_mean": 2.5935897435897437
+    },
+    "120": {
+     "cycles_mean": 2.466666666666667,
+     "cycles_p90": 7.0,
+     "maxh_mean": 2.1166666666666667,
+     "maxh_p90": 6.0,
+     "empty_mean": 0.44166666666666665,
+     "short_mean": 0.8583333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.1594444444444443,
+     "pause_max_mean": 2.9326923076923075
+    },
+    "180": {
+     "cycles_mean": 2.3333333333333335,
+     "cycles_p90": 6.0,
+     "maxh_mean": 1.975,
+     "maxh_p90": 5.1000000000000085,
+     "empty_mean": 0.35,
+     "short_mean": 0.725,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.9322222222222223,
+     "pause_max_mean": 3.6374999999999997
+    },
+    "240": {
+     "cycles_mean": 2.2416666666666667,
+     "cycles_p90": 6.0,
+     "maxh_mean": 1.875,
+     "maxh_p90": 5.0,
+     "empty_mean": 0.35833333333333334,
+     "short_mean": 0.6583333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 2.7156944444444444,
+     "pause_max_mean": 4.598717948717948
+    },
+    "300": {
+     "cycles_mean": 2.1166666666666667,
+     "cycles_p90": 5.0,
+     "maxh_mean": 1.7416666666666667,
+     "maxh_p90": 4.0,
+     "empty_mean": 0.26666666666666666,
+     "short_mean": 0.5333333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 3.145555555555555,
+     "pause_max_mean": 5.4698717948717945
+    },
+    "420": {
+     "cycles_mean": 2.0,
+     "cycles_p90": 5.0,
+     "maxh_mean": 1.6166666666666667,
+     "maxh_p90": 4.0,
+     "empty_mean": 0.18333333333333332,
+     "short_mean": 0.4083333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 4.409305555555556,
+     "pause_max_mean": 7.320833333333334
+    },
+    "600": {
+     "cycles_mean": 1.8666666666666667,
+     "cycles_p90": 4.0,
+     "maxh_mean": 1.45,
+     "maxh_p90": 3.0,
+     "empty_mean": 0.10833333333333334,
+     "short_mean": 0.2833333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 5.845277777777778,
+     "pause_max_mean": 10.169871794871794
+    },
+    "900": {
+     "cycles_mean": 1.775,
+     "cycles_p90": 3.0,
+     "maxh_mean": 1.3583333333333334,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.075,
+     "short_mean": 0.2,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 8.570972222222222,
+     "pause_max_mean": 15.001602564102562
+    }
+   }
+  },
+  "A2 dom 3x25 A + pompa ciepła": {
+   "weight": 0.15,
+   "csl": 25,
+   "nph": 3,
+   "desc": "jak A1 + pompa ciepła 3-f (sprężarka 6 A/fazę, grzałka 9 A/fazę) + bojler",
+   "pauses_T0_mean": 12.666666666666666,
+   "pauses_T0_p90": 28.10000000000001,
+   "nights_with_pause_pct": 93.33333333333333,
+   "T": {
+    "30": {
+     "cycles_mean": 11.291666666666666,
+     "cycles_p90": 21.10000000000001,
+     "maxh_mean": 7.966666666666667,
+     "maxh_p90": 16.0,
+     "empty_mean": 3.425,
+     "short_mean": 6.708333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.38722222222222225,
+     "pause_max_mean": 8.679315476190476
+    },
+    "60": {
+     "cycles_mean": 10.25,
+     "cycles_p90": 18.0,
+     "maxh_mean": 6.958333333333333,
+     "maxh_p90": 13.0,
+     "empty_mean": 2.575,
+     "short_mean": 5.658333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.4109722222222223,
+     "pause_max_mean": 8.726041666666667
+    },
+    "90": {
+     "cycles_mean": 9.425,
+     "cycles_p90": 17.0,
+     "maxh_mean": 6.191666666666666,
+     "maxh_p90": 11.0,
+     "empty_mean": 1.6166666666666667,
+     "short_mean": 4.841666666666667,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 2.1036111111111113,
+     "pause_max_mean": 8.785714285714286
+    },
+    "120": {
+     "cycles_mean": 9.133333333333333,
+     "cycles_p90": 17.0,
+     "maxh_mean": 5.933333333333334,
+     "maxh_p90": 11.0,
+     "empty_mean": 1.575,
+     "short_mean": 4.583333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 3.7083333333333335,
+     "pause_max_mean": 8.843005952380953
+    },
+    "180": {
+     "cycles_mean": 8.633333333333333,
+     "cycles_p90": 16.0,
+     "maxh_mean": 5.441666666666666,
+     "maxh_p90": 10.0,
+     "empty_mean": 2.191666666666667,
+     "short_mean": 4.108333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 7.609861111111112,
+     "pause_max_mean": 9.319642857142856
+    },
+    "240": {
+     "cycles_mean": 7.566666666666666,
+     "cycles_p90": 13.100000000000009,
+     "maxh_mean": 4.483333333333333,
+     "maxh_p90": 8.0,
+     "empty_mean": 1.5333333333333334,
+     "short_mean": 3.158333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 9.760277777777777,
+     "pause_max_mean": 9.627380952380951
+    },
+    "300": {
+     "cycles_mean": 6.975,
+     "cycles_p90": 12.0,
+     "maxh_mean": 3.9583333333333335,
+     "maxh_p90": 6.1000000000000085,
+     "empty_mean": 0.8,
+     "short_mean": 2.533333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 11.295277777777779,
+     "pause_max_mean": 9.902232142857143
+    },
+    "420": {
+     "cycles_mean": 6.741666666666666,
+     "cycles_p90": 12.0,
+     "maxh_mean": 3.658333333333333,
+     "maxh_p90": 6.0,
+     "empty_mean": 1.0,
+     "short_mean": 2.325,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 18.633194444444445,
+     "pause_max_mean": 11.111011904761906
+    },
+    "600": {
+     "cycles_mean": 6.091666666666667,
+     "cycles_p90": 10.0,
+     "maxh_mean": 3.05,
+     "maxh_p90": 5.0,
+     "empty_mean": 0.5583333333333333,
+     "short_mean": 1.6916666666666667,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 27.30902777777778,
+     "pause_max_mean": 12.922767857142857
+    },
+    "900": {
+     "cycles_mean": 5.733333333333333,
+     "cycles_p90": 9.0,
+     "maxh_mean": 2.6,
+     "maxh_p90": 4.0,
+     "empty_mean": 0.525,
+     "short_mean": 1.2666666666666666,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 45.236250000000005,
+     "pause_max_mean": 16.915327380952384
+    }
+   }
+  },
+  "A3 dom 3x16 A, starsza instalacja": {
+   "weight": 0.15,
+   "csl": 16,
+   "nph": 3,
+   "desc": "płyta gazowa, piekarnik elektryczny u 50 %, czajnik, zmywarka",
+   "pauses_T0_mean": 15.991666666666667,
+   "pauses_T0_p90": 32.0,
+   "nights_with_pause_pct": 99.16666666666667,
+   "T": {
+    "30": {
+     "cycles_mean": 17.008333333333333,
+     "cycles_p90": 33.0,
+     "maxh_mean": 10.033333333333333,
+     "maxh_p90": 18.0,
+     "empty_mean": 2.725,
+     "short_mean": 11.583333333333334,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.4402777777777777,
+     "pause_max_mean": 42.35546218487395
+    },
+    "60": {
+     "cycles_mean": 16.983333333333334,
+     "cycles_p90": 32.10000000000001,
+     "maxh_mean": 9.975,
+     "maxh_p90": 18.0,
+     "empty_mean": 3.091666666666667,
+     "short_mean": 11.575,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.8398611111111114,
+     "pause_max_mean": 42.370728291316524
+    },
+    "90": {
+     "cycles_mean": 15.783333333333333,
+     "cycles_p90": 31.10000000000001,
+     "maxh_mean": 8.966666666666667,
+     "maxh_p90": 16.0,
+     "empty_mean": 1.4333333333333333,
+     "short_mean": 10.45,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 2.6569444444444446,
+     "pause_max_mean": 42.385714285714286
+    },
+    "120": {
+     "cycles_mean": 15.666666666666666,
+     "cycles_p90": 31.10000000000001,
+     "maxh_mean": 8.841666666666667,
+     "maxh_p90": 15.100000000000009,
+     "empty_mean": 1.7416666666666667,
+     "short_mean": 10.4,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 4.8516666666666675,
+     "pause_max_mean": 42.38515406162465
+    },
+    "180": {
+     "cycles_mean": 15.191666666666666,
+     "cycles_p90": 30.0,
+     "maxh_mean": 8.483333333333333,
+     "maxh_p90": 15.0,
+     "empty_mean": 4.558333333333334,
+     "short_mean": 10.15,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 11.06625,
+     "pause_max_mean": 42.49411764705882
+    },
+    "240": {
+     "cycles_mean": 12.341666666666667,
+     "cycles_p90": 23.0,
+     "maxh_mean": 6.425,
+     "maxh_p90": 11.0,
+     "empty_mean": 3.15,
+     "short_mean": 7.366666666666666,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 13.886249999999999,
+     "pause_max_mean": 42.6750700280112
+    },
+    "300": {
+     "cycles_mean": 10.933333333333334,
+     "cycles_p90": 19.10000000000001,
+     "maxh_mean": 5.333333333333333,
+     "maxh_p90": 8.0,
+     "empty_mean": 1.05,
+     "short_mean": 6.125,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 15.131527777777778,
+     "pause_max_mean": 42.88837535014005
+    },
+    "420": {
+     "cycles_mean": 10.308333333333334,
+     "cycles_p90": 18.10000000000001,
+     "maxh_mean": 5.0,
+     "maxh_p90": 8.0,
+     "empty_mean": 2.1333333333333333,
+     "short_mean": 5.766666666666667,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 21.72972222222222,
+     "pause_max_mean": 43.402380952380945
+    },
+    "600": {
+     "cycles_mean": 8.683333333333334,
+     "cycles_p90": 15.0,
+     "maxh_mean": 3.825,
+     "maxh_p90": 6.0,
+     "empty_mean": 0.7833333333333333,
+     "short_mean": 4.233333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 27.07638888888889,
+     "pause_max_mean": 44.1766106442577
+    },
+    "900": {
+     "cycles_mean": 7.333333333333333,
+     "cycles_p90": 12.0,
+     "maxh_mean": 3.0416666666666665,
+     "maxh_p90": 4.0,
+     "empty_mean": 0.9916666666666667,
+     "short_mean": 3.1333333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 36.44819444444444,
+     "pause_max_mean": 46.7781512605042
+    }
+   }
+  },
+  "A4 dom 3x20 A": {
+   "weight": 0.1,
+   "csl": 20,
+   "nph": 3,
+   "desc": "jak A1, mniejsze przyłącze",
+   "pauses_T0_mean": 11.941666666666666,
+   "pauses_T0_p90": 30.200000000000017,
+   "nights_with_pause_pct": 95.0,
+   "T": {
+    "30": {
+     "cycles_mean": 9.908333333333333,
+     "cycles_p90": 23.10000000000001,
+     "maxh_mean": 7.808333333333334,
+     "maxh_p90": 22.0,
+     "empty_mean": 4.4,
+     "short_mean": 6.441666666666666,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.6830555555555555,
+     "pause_max_mean": 5.276315789473684
+    },
+    "60": {
+     "cycles_mean": 8.533333333333333,
+     "cycles_p90": 21.10000000000001,
+     "maxh_mean": 6.441666666666666,
+     "maxh_p90": 16.0,
+     "empty_mean": 3.2583333333333333,
+     "short_mean": 5.05,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.8520833333333333,
+     "pause_max_mean": 5.4602339181286546
+    },
+    "90": {
+     "cycles_mean": 7.391666666666667,
+     "cycles_p90": 17.10000000000001,
+     "maxh_mean": 5.333333333333333,
+     "maxh_p90": 13.0,
+     "empty_mean": 1.925,
+     "short_mean": 3.95,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.8493055555555555,
+     "pause_max_mean": 5.406286549707602
+    },
+    "120": {
+     "cycles_mean": 7.033333333333333,
+     "cycles_p90": 16.10000000000001,
+     "maxh_mean": 4.958333333333333,
+     "maxh_p90": 12.100000000000009,
+     "empty_mean": 1.8,
+     "short_mean": 3.6416666666666666,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 2.8401388888888888,
+     "pause_max_mean": 5.564766081871345
+    },
+    "180": {
+     "cycles_mean": 6.441666666666666,
+     "cycles_p90": 14.0,
+     "maxh_mean": 4.4,
+     "maxh_p90": 9.0,
+     "empty_mean": 1.7083333333333333,
+     "short_mean": 3.058333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 4.891944444444444,
+     "pause_max_mean": 5.857602339181287
+    },
+    "240": {
+     "cycles_mean": 5.825,
+     "cycles_p90": 12.0,
+     "maxh_mean": 3.841666666666667,
+     "maxh_p90": 8.0,
+     "empty_mean": 1.4333333333333333,
+     "short_mean": 2.4916666666666667,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 7.25125,
+     "pause_max_mean": 6.362573099415205
+    },
+    "300": {
+     "cycles_mean": 5.366666666666666,
+     "cycles_p90": 10.100000000000009,
+     "maxh_mean": 3.433333333333333,
+     "maxh_p90": 7.0,
+     "empty_mean": 0.9,
+     "short_mean": 2.025,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 9.407916666666667,
+     "pause_max_mean": 7.042836257309942
+    },
+    "420": {
+     "cycles_mean": 4.95,
+     "cycles_p90": 9.0,
+     "maxh_mean": 3.091666666666667,
+     "maxh_p90": 5.0,
+     "empty_mean": 0.875,
+     "short_mean": 1.6333333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 13.687361111111109,
+     "pause_max_mean": 8.691228070175438
+    },
+    "600": {
+     "cycles_mean": 4.458333333333333,
+     "cycles_p90": 8.0,
+     "maxh_mean": 2.675,
+     "maxh_p90": 4.0,
+     "empty_mean": 0.5333333333333333,
+     "short_mean": 1.2,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 19.59194444444444,
+     "pause_max_mean": 11.044883040935671
+    },
+    "900": {
+     "cycles_mean": 4.083333333333333,
+     "cycles_p90": 7.0,
+     "maxh_mean": 2.3333333333333335,
+     "maxh_p90": 4.0,
+     "empty_mean": 0.38333333333333336,
+     "short_mean": 0.925,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 30.217499999999998,
+     "pause_max_mean": 15.400292397660818
+    }
+   }
+  },
+  "A5 dom 3x25 A + przepływowy podgrzewacz 21 kW": {
+   "weight": 0.1,
+   "csl": 25,
+   "nph": 3,
+   "desc": "jak A1, ciepła woda z podgrzewacza przepływowego (30 A/fazę)",
+   "pauses_T0_mean": 9.041666666666666,
+   "pauses_T0_p90": 17.0,
+   "nights_with_pause_pct": 98.33333333333333,
+   "T": {
+    "30": {
+     "cycles_mean": 9.225,
+     "cycles_p90": 16.0,
+     "maxh_mean": 5.425,
+     "maxh_p90": 10.0,
+     "empty_mean": 1.175,
+     "short_mean": 2.825,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.36833333333333335,
+     "pause_max_mean": 6.325988700564973
+    },
+    "60": {
+     "cycles_mean": 8.866666666666667,
+     "cycles_p90": 14.100000000000009,
+     "maxh_mean": 4.991666666666666,
+     "maxh_p90": 8.0,
+     "empty_mean": 0.875,
+     "short_mean": 2.533333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 2.439027777777778,
+     "pause_max_mean": 6.436158192090397
+    },
+    "90": {
+     "cycles_mean": 8.625,
+     "cycles_p90": 14.0,
+     "maxh_mean": 4.741666666666666,
+     "maxh_p90": 8.0,
+     "empty_mean": 0.65,
+     "short_mean": 2.275,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 5.240694444444444,
+     "pause_max_mean": 6.602401129943504
+    },
+    "120": {
+     "cycles_mean": 8.483333333333333,
+     "cycles_p90": 14.0,
+     "maxh_mean": 4.575,
+     "maxh_p90": 7.0,
+     "empty_mean": 0.6416666666666667,
+     "short_mean": 2.183333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 8.165833333333333,
+     "pause_max_mean": 6.817796610169492
+    },
+    "180": {
+     "cycles_mean": 8.316666666666666,
+     "cycles_p90": 13.0,
+     "maxh_mean": 4.3,
+     "maxh_p90": 6.0,
+     "empty_mean": 0.7833333333333333,
+     "short_mean": 2.1416666666666666,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 14.24763888888889,
+     "pause_max_mean": 7.238276836158193
+    },
+    "240": {
+     "cycles_mean": 8.108333333333333,
+     "cycles_p90": 13.0,
+     "maxh_mean": 4.033333333333333,
+     "maxh_p90": 6.0,
+     "empty_mean": 0.625,
+     "short_mean": 2.0166666666666666,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 19.99958333333333,
+     "pause_max_mean": 7.88813559322034
+    },
+    "300": {
+     "cycles_mean": 7.825,
+     "cycles_p90": 12.0,
+     "maxh_mean": 3.7916666666666665,
+     "maxh_p90": 6.0,
+     "empty_mean": 0.475,
+     "short_mean": 1.75,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 24.114166666666666,
+     "pause_max_mean": 8.125847457627119
+    },
+    "420": {
+     "cycles_mean": 7.683333333333334,
+     "cycles_p90": 11.100000000000009,
+     "maxh_mean": 3.533333333333333,
+     "maxh_p90": 5.0,
+     "empty_mean": 0.5333333333333333,
+     "short_mean": 1.7,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 34.35111111111111,
+     "pause_max_mean": 8.927118644067795
+    },
+    "600": {
+     "cycles_mean": 7.341666666666667,
+     "cycles_p90": 11.0,
+     "maxh_mean": 3.216666666666667,
+     "maxh_p90": 4.0,
+     "empty_mean": 0.35,
+     "short_mean": 1.6666666666666667,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 49.447638888888896,
+     "pause_max_mean": 11.133474576271187
+    },
+    "900": {
+     "cycles_mean": 6.775,
+     "cycles_p90": 10.0,
+     "maxh_mean": 2.75,
+     "maxh_p90": 4.0,
+     "empty_mean": 0.425,
+     "short_mean": 1.4,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 71.78375000000001,
+     "pause_max_mean": 16.373022598870058
+    }
+   }
+  },
+  "A6 mieszkanie 1x25 A, wallbox 3,7 kW": {
+   "weight": 0.1,
+   "csl": 25,
+   "nph": 1,
+   "desc": "jedna faza: czajnik, indukcja 1-f, piekarnik u 40 %, zmywarka, pralka",
+   "pauses_T0_mean": 12.625,
+   "pauses_T0_p90": 39.20000000000002,
+   "nights_with_pause_pct": 70.83333333333334,
+   "T": {
+    "30": {
+     "cycles_mean": 8.875,
+     "cycles_p90": 23.0,
+     "maxh_mean": 7.45,
+     "maxh_p90": 19.0,
+     "empty_mean": 5.15,
+     "short_mean": 6.575,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.47930555555555554,
+     "pause_max_mean": 3.2290196078431377
+    },
+    "60": {
+     "cycles_mean": 6.916666666666667,
+     "cycles_p90": 16.0,
+     "maxh_mean": 5.591666666666667,
+     "maxh_p90": 13.0,
+     "empty_mean": 3.4166666666666665,
+     "short_mean": 4.625,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.0127777777777778,
+     "pause_max_mean": 3.313921568627451
+    },
+    "90": {
+     "cycles_mean": 5.808333333333334,
+     "cycles_p90": 12.100000000000009,
+     "maxh_mean": 4.6,
+     "maxh_p90": 10.0,
+     "empty_mean": 2.283333333333333,
+     "short_mean": 3.525,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.2451388888888888,
+     "pause_max_mean": 3.447450980392157
+    },
+    "120": {
+     "cycles_mean": 5.291666666666667,
+     "cycles_p90": 10.100000000000009,
+     "maxh_mean": 4.116666666666666,
+     "maxh_p90": 9.0,
+     "empty_mean": 1.975,
+     "short_mean": 3.0083333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.7809722222222222,
+     "pause_max_mean": 3.629019607843137
+    },
+    "180": {
+     "cycles_mean": 4.575,
+     "cycles_p90": 9.0,
+     "maxh_mean": 3.4916666666666667,
+     "maxh_p90": 7.0,
+     "empty_mean": 1.65,
+     "short_mean": 2.3,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 2.837222222222222,
+     "pause_max_mean": 4.207058823529413
+    },
+    "240": {
+     "cycles_mean": 3.9833333333333334,
+     "cycles_p90": 7.0,
+     "maxh_mean": 2.941666666666667,
+     "maxh_p90": 6.0,
+     "empty_mean": 1.225,
+     "short_mean": 1.7083333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 3.5651388888888893,
+     "pause_max_mean": 5.034901960784315
+    },
+    "300": {
+     "cycles_mean": 3.575,
+     "cycles_p90": 7.0,
+     "maxh_mean": 2.575,
+     "maxh_p90": 5.0,
+     "empty_mean": 0.7916666666666666,
+     "short_mean": 1.3166666666666667,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 4.052222222222222,
+     "pause_max_mean": 5.77921568627451
+    },
+    "420": {
+     "cycles_mean": 3.2416666666666667,
+     "cycles_p90": 6.0,
+     "maxh_mean": 2.2666666666666666,
+     "maxh_p90": 4.0,
+     "empty_mean": 0.6833333333333333,
+     "short_mean": 0.9916666666666667,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 5.8725000000000005,
+     "pause_max_mean": 7.466666666666668
+    },
+    "600": {
+     "cycles_mean": 2.95,
+     "cycles_p90": 6.0,
+     "maxh_mean": 1.9833333333333334,
+     "maxh_p90": 3.0,
+     "empty_mean": 0.43333333333333335,
+     "short_mean": 0.7916666666666666,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 8.789444444444444,
+     "pause_max_mean": 10.33
+    },
+    "900": {
+     "cycles_mean": 2.558333333333333,
+     "cycles_p90": 5.0,
+     "maxh_mean": 1.6416666666666666,
+     "maxh_p90": 3.0,
+     "empty_mean": 0.25,
+     "short_mean": 0.425,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 11.785,
+     "pause_max_mean": 15.126470588235295
+    }
+   }
+  },
+  "A7 dom 3x32 A": {
+   "weight": 0.1,
+   "csl": 32,
+   "nph": 3,
+   "desc": "jak A1, duże przyłącze",
+   "pauses_T0_mean": 0.7333333333333333,
+   "pauses_T0_p90": 2.0,
+   "nights_with_pause_pct": 16.666666666666664,
+   "T": {
+    "30": {
+     "cycles_mean": 1.4666666666666666,
+     "cycles_p90": 2.1000000000000085,
+     "maxh_mean": 1.4333333333333333,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.24166666666666667,
+     "short_mean": 0.31666666666666665,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.06208333333333334,
+     "pause_max_mean": 0.6391666666666667
+    },
+    "60": {
+     "cycles_mean": 1.325,
+     "cycles_p90": 2.0,
+     "maxh_mean": 1.2916666666666667,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.1,
+     "short_mean": 0.175,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.10986111111111112,
+     "pause_max_mean": 1.0691666666666666
+    },
+    "90": {
+     "cycles_mean": 1.2916666666666667,
+     "cycles_p90": 2.0,
+     "maxh_mean": 1.2583333333333333,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.08333333333333333,
+     "short_mean": 0.14166666666666666,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.19944444444444442,
+     "pause_max_mean": 1.5158333333333334
+    },
+    "120": {
+     "cycles_mean": 1.2583333333333333,
+     "cycles_p90": 2.0,
+     "maxh_mean": 1.225,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.041666666666666664,
+     "short_mean": 0.10833333333333334,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.2675,
+     "pause_max_mean": 2.0108333333333333
+    },
+    "180": {
+     "cycles_mean": 1.2333333333333334,
+     "cycles_p90": 2.0,
+     "maxh_mean": 1.2,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.03333333333333333,
+     "short_mean": 0.08333333333333333,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.43666666666666665,
+     "pause_max_mean": 3.005
+    },
+    "240": {
+     "cycles_mean": 1.2083333333333333,
+     "cycles_p90": 2.0,
+     "maxh_mean": 1.175,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.016666666666666666,
+     "short_mean": 0.058333333333333334,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.5530555555555555,
+     "pause_max_mean": 4.009166666666667
+    },
+    "300": {
+     "cycles_mean": 1.2,
+     "cycles_p90": 2.0,
+     "maxh_mean": 1.1666666666666667,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.008333333333333333,
+     "short_mean": 0.05,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 0.7063888888888888,
+     "pause_max_mean": 5.0
+    },
+    "420": {
+     "cycles_mean": 1.2083333333333333,
+     "cycles_p90": 2.0,
+     "maxh_mean": 1.1666666666666667,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.016666666666666666,
+     "short_mean": 0.058333333333333334,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.1520833333333333,
+     "pause_max_mean": 7.001666666666667
+    },
+    "600": {
+     "cycles_mean": 1.1916666666666667,
+     "cycles_p90": 2.0,
+     "maxh_mean": 1.1333333333333333,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.0,
+     "short_mean": 0.041666666666666664,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 1.5941666666666665,
+     "pause_max_mean": 10.0
+    },
+    "900": {
+     "cycles_mean": 1.1833333333333333,
+     "cycles_p90": 2.0,
+     "maxh_mean": 1.125,
+     "maxh_p90": 2.0,
+     "empty_mean": 0.0,
+     "short_mean": 0.025,
+     "e_lost_mean": 0.0,
+     "e_lost_p90": 0.0,
+     "unfinished_pct": 0.0,
+     "fin_delay_mean": 2.408888888888889,
+     "pause_max_mean": 15.0
+    }
+   }
+  }
+ },
+ "sites": {
+  "B1 wspólnota, 3x40 A, 3 wallboxy, wieczór/noc": {
+   "n": 3,
+   "csl": 40,
+   "pauses_T0_mean": 39.56666666666667,
+   "T": {
+    "30": {
+     "cycles_mean": 40.233333333333334,
+     "maxh_mean": 21.5,
+     "empty_mean": 7.333333333333333,
+     "e_lost_mean": -0.0002029537036965697,
+     "unfinished_pct": 0.0
+    },
+    "60": {
+     "cycles_mean": 36.9,
+     "maxh_mean": 19.0,
+     "empty_mean": 5.766666666666667,
+     "e_lost_mean": -3.3861111098095384e-05,
+     "unfinished_pct": 0.0
+    },
+    "90": {
+     "cycles_mean": 34.63333333333333,
+     "maxh_mean": 17.266666666666666,
+     "empty_mean": 5.366666666666666,
+     "e_lost_mean": -0.00013650925925171956,
+     "unfinished_pct": 0.0
+    },
+    "120": {
+     "cycles_mean": 32.53333333333333,
+     "maxh_mean": 15.966666666666667,
+     "empty_mean": 4.7,
+     "e_lost_mean": -0.0002936759259223246,
+     "unfinished_pct": 0.0
+    },
+    "180": {
+     "cycles_mean": 29.466666666666665,
+     "maxh_mean": 14.333333333333334,
+     "empty_mean": 3.566666666666667,
+     "e_lost_mean": -4.7703703698213457e-05,
+     "unfinished_pct": 0.0
+    },
+    "240": {
+     "cycles_mean": 27.666666666666668,
+     "maxh_mean": 13.1,
+     "empty_mean": 3.533333333333333,
+     "e_lost_mean": 1.0648148223898108e-06,
+     "unfinished_pct": 0.0
+    },
+    "300": {
+     "cycles_mean": 25.666666666666668,
+     "maxh_mean": 11.733333333333333,
+     "empty_mean": 2.6666666666666665,
+     "e_lost_mean": -0.0004521203703589549,
+     "unfinished_pct": 0.0
+    },
+    "420": {
+     "cycles_mean": 22.866666666666667,
+     "maxh_mean": 10.166666666666666,
+     "empty_mean": 2.3,
+     "e_lost_mean": -0.0005956574074010253,
+     "unfinished_pct": 0.0
+    },
+    "600": {
+     "cycles_mean": 19.9,
+     "maxh_mean": 8.633333333333333,
+     "empty_mean": 1.5333333333333334,
+     "e_lost_mean": -0.000250657407391941,
+     "unfinished_pct": 0.0
+    },
+    "900": {
+     "cycles_mean": 16.766666666666666,
+     "maxh_mean": 6.966666666666667,
+     "empty_mean": 1.1,
+     "e_lost_mean": -0.0005277222222067243,
+     "unfinished_pct": 0.0
+    }
+   }
+  },
+  "B2 biuro/hotel, 3x63 A, 3 wallboxy, dzień": {
+   "n": 3,
+   "csl": 63,
+   "pauses_T0_mean": 4.466666666666667,
+   "T": {
+    "30": {
+     "cycles_mean": 7.233333333333333,
+     "maxh_mean": 5.366666666666666,
+     "empty_mean": 0.7333333333333333,
+     "e_lost_mean": 0.00011372222222216048,
+     "unfinished_pct": 0.0
+    },
+    "60": {
+     "cycles_mean": 7.0,
+     "maxh_mean": 5.1,
+     "empty_mean": 0.5333333333333333,
+     "e_lost_mean": 0.0002608796296283818,
+     "unfinished_pct": 0.0
+    },
+    "90": {
+     "cycles_mean": 6.766666666666667,
+     "maxh_mean": 4.833333333333333,
+     "empty_mean": 0.23333333333333334,
+     "e_lost_mean": -0.00010435185185334225,
+     "unfinished_pct": 0.0
+    },
+    "120": {
+     "cycles_mean": 6.7,
+     "maxh_mean": 4.733333333333333,
+     "empty_mean": 0.23333333333333334,
+     "e_lost_mean": 0.00038972222222023826,
+     "unfinished_pct": 0.0
+    },
+    "180": {
+     "cycles_mean": 6.566666666666666,
+     "maxh_mean": 4.5,
+     "empty_mean": 0.1,
+     "e_lost_mean": 0.0002400092592592292,
+     "unfinished_pct": 0.0
+    },
+    "240": {
+     "cycles_mean": 6.566666666666666,
+     "maxh_mean": 4.433333333333334,
+     "empty_mean": 0.1,
+     "e_lost_mean": 0.0005096203703698639,
+     "unfinished_pct": 0.0
+    },
+    "300": {
+     "cycles_mean": 6.533333333333333,
+     "maxh_mean": 4.333333333333333,
+     "empty_mean": 0.13333333333333333,
+     "e_lost_mean": 0.00033797222222062826,
+     "unfinished_pct": 0.0
+    },
+    "420": {
+     "cycles_mean": 6.466666666666667,
+     "maxh_mean": 4.2,
+     "empty_mean": 0.2,
+     "e_lost_mean": -0.00024022222222323344,
+     "unfinished_pct": 0.0
+    },
+    "600": {
+     "cycles_mean": 6.433333333333334,
+     "maxh_mean": 4.033333333333333,
+     "empty_mean": 0.06666666666666667,
+     "e_lost_mean": 3.407407405831009e-06,
+     "unfinished_pct": 0.0
+    },
+    "900": {
+     "cycles_mean": 6.3,
+     "maxh_mean": 3.7666666666666666,
+     "empty_mean": 0.1,
+     "e_lost_mean": 0.00038333333333303205,
+     "unfinished_pct": 0.0
+    }
+   }
+  },
+  "I1 zakład, 3x100 A, 3 wallboxy, dzień": {
+   "n": 3,
+   "csl": 100,
+   "pauses_T0_mean": 5.9,
+   "T": {
+    "30": {
+     "cycles_mean": 8.8,
+     "maxh_mean": 6.3,
+     "empty_mean": 2.1666666666666665,
+     "e_lost_mean": 0.00045424999999970814,
+     "unfinished_pct": 0.0
+    },
+    "60": {
+     "cycles_mean": 7.933333333333334,
+     "maxh_mean": 5.6,
+     "empty_mean": 1.2666666666666666,
+     "e_lost_mean": 0.0003837592592600932,
+     "unfinished_pct": 0.0
+    },
+    "90": {
+     "cycles_mean": 6.7,
+     "maxh_mean": 4.566666666666666,
+     "empty_mean": 0.1,
+     "e_lost_mean": -6.388888889337825e-06,
+     "unfinished_pct": 0.0
+    },
+    "120": {
+     "cycles_mean": 6.733333333333333,
+     "maxh_mean": 4.566666666666666,
+     "empty_mean": 0.13333333333333333,
+     "e_lost_mean": 0.0007679444444427475,
+     "unfinished_pct": 0.0
+    },
+    "180": {
+     "cycles_mean": 6.866666666666666,
+     "maxh_mean": 4.566666666666666,
+     "empty_mean": 0.3333333333333333,
+     "e_lost_mean": 0.00019038888888900374,
+     "unfinished_pct": 0.0
+    },
+    "240": {
+     "cycles_mean": 6.733333333333333,
+     "maxh_mean": 4.5,
+     "empty_mean": 0.36666666666666664,
+     "e_lost_mean": 0.0005260185185171906,
+     "unfinished_pct": 0.0
+    },
+    "300": {
+     "cycles_mean": 6.5,
+     "maxh_mean": 4.3,
+     "empty_mean": 0.13333333333333333,
+     "e_lost_mean": 0.0003430833333320985,
+     "unfinished_pct": 0.0
+    },
+    "420": {
+     "cycles_mean": 6.5,
+     "maxh_mean": 4.133333333333334,
+     "empty_mean": 0.1,
+     "e_lost_mean": 0.0002561944444439727,
+     "unfinished_pct": 0.0
+    },
+    "600": {
+     "cycles_mean": 6.5,
+     "maxh_mean": 4.066666666666666,
+     "empty_mean": 0.1,
+     "e_lost_mean": 0.0005153703703700311,
+     "unfinished_pct": 0.0
+    },
+    "900": {
+     "cycles_mean": 6.566666666666666,
+     "maxh_mean": 3.8,
+     "empty_mean": 0.16666666666666666,
+     "e_lost_mean": 0.0006565648148137389,
+     "unfinished_pct": 0.0
+    }
+   }
+  },
+  "I2 warsztat, 3x63 A, 2 wallboxy, dzień": {
+   "n": 2,
+   "csl": 63,
+   "pauses_T0_mean": 11.8,
+   "T": {
+    "30": {
+     "cycles_mean": 13.6,
+     "maxh_mean": 9.766666666666667,
+     "empty_mean": 5.033333333333333,
+     "e_lost_mean": -0.00026237037037120104,
+     "unfinished_pct": 0.0
+    },
+    "60": {
+     "cycles_mean": 11.1,
+     "maxh_mean": 7.7,
+     "empty_mean": 2.6,
+     "e_lost_mean": 6.410185185335611e-05,
+     "unfinished_pct": 0.0
+    },
+    "90": {
+     "cycles_mean": 9.366666666666667,
+     "maxh_mean": 6.4,
+     "empty_mean": 0.8666666666666667,
+     "e_lost_mean": -0.0001997592592604273,
+     "unfinished_pct": 0.0
+    },
+    "120": {
+     "cycles_mean": 8.933333333333334,
+     "maxh_mean": 6.0,
+     "empty_mean": 0.5333333333333333,
+     "e_lost_mean": -0.00013012037036877662,
+     "unfinished_pct": 0.0
+    },
+    "180": {
+     "cycles_mean": 9.033333333333333,
+     "maxh_mean": 6.033333333333333,
+     "empty_mean": 0.8,
+     "e_lost_mean": 7.027777777999234e-05,
+     "unfinished_pct": 0.0
+    },
+    "240": {
+     "cycles_mean": 9.133333333333333,
+     "maxh_mean": 5.933333333333334,
+     "empty_mean": 1.3333333333333333,
+     "e_lost_mean": -0.00020529629629540598,
+     "unfinished_pct": 0.0
+    },
+    "300": {
+     "cycles_mean": 8.366666666666667,
+     "maxh_mean": 5.2,
+     "empty_mean": 1.1666666666666667,
+     "e_lost_mean": 0.00011010185185421998,
+     "unfinished_pct": 0.0
+    },
+    "420": {
+     "cycles_mean": 7.633333333333334,
+     "maxh_mean": 4.633333333333334,
+     "empty_mean": 0.5,
+     "e_lost_mean": -0.00024107407407190825,
+     "unfinished_pct": 0.0
+    },
+    "600": {
+     "cycles_mean": 7.3,
+     "maxh_mean": 4.333333333333333,
+     "empty_mean": 0.3,
+     "e_lost_mean": -0.00046191666666418977,
+     "unfinished_pct": 0.0
+    },
+    "900": {
+     "cycles_mean": 7.333333333333333,
+     "maxh_mean": 3.933333333333333,
+     "empty_mean": 0.6,
+     "e_lost_mean": -8.454629629438178e-05,
+     "unfinished_pct": 0.0
+    }
+   }
+  }
+ },
+ "T_list": [
+  30,
+  60,
+  90,
+  120,
+  180,
+  240,
+  300,
+  420,
+  600,
+  900
+ ],
+ "params": {
+  "PAUSE_A": 6,
+  "START_DELAY": 8,
+  "RAMP": 30,
+  "WB_MAX": 16
+ }
+}

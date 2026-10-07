@@ -1,0 +1,169 @@
+{
+  "home_assistant": {
+    "installation_type": "Home Assistant Container",
+    "version": "2025.3.3",
+    "dev": false,
+    "hassio": false,
+    "virtualenv": false,
+    "python_version": "3.13.2",
+    "docker": true,
+    "arch": "armv7l",
+    "timezone": "Europe/Warsaw",
+    "os_name": "Linux",
+    "os_version": "5.10.103-v7l+",
+    "run_as_root": true
+  },
+  "custom_components": {
+    "midea_dehumidifier_lan": {
+      "documentation": "https://github.com/nbogojevic/homeassistant-midea-air-appliances-lan/blob/main/README.md",
+      "version": "0.9.7",
+      "requirements": [
+        "midea-beautiful-air==0.10.7"
+      ]
+    },
+    "dreame_mower": {
+      "documentation": "https://github.com/bhuebschen/dreame-mower",
+      "version": "v0.0.5-alpha",
+      "requirements": [
+        "pillow",
+        "numpy",
+        "pybase64",
+        "requests",
+        "pycryptodome",
+        "python-miio",
+        "py-mini-racer",
+        "paho-mqtt"
+      ]
+    },
+    "tuyaextend_amperepoint": {
+      "documentation": "https://github.com/amperepoint/tuyaextend-amperepoint",
+      "version": "0.5.39",
+      "requirements": [
+        "tinytuya==1.20.0"
+      ]
+    },
+    "hacs": {
+      "documentation": "https://hacs.xyz/docs/use/",
+      "version": "2.0.5",
+      "requirements": [
+        "aiogithubapi>=22.10.1"
+      ]
+    },
+    "bhyve": {
+      "documentation": "https://github.com/sebr/bhyve-home-assistant/blob/main/README.md",
+      "version": "4.1.2",
+      "requirements": []
+    },
+    "dahua": {
+      "documentation": "https://github.com/rroller/dahua",
+      "version": "0.10.22",
+      "requirements": []
+    }
+  },
+  "integration_manifest": {
+    "domain": "tuyaextend_amperepoint",
+    "name": "AmperePoint",
+    "after_dependencies": [
+      "frontend",
+      "lovelace",
+      "tuya"
+    ],
+    "codeowners": [],
+    "config_flow": true,
+    "documentation": "https://github.com/amperepoint/tuyaextend-amperepoint",
+    "integration_type": "device",
+    "iot_class": "calculated",
+    "issue_tracker": "https://github.com/amperepoint/tuyaextend-amperepoint/issues",
+    "requirements": [
+      "tinytuya==1.20.0"
+    ],
+    "version": "0.5.39",
+    "is_built_in": false,
+    "overwrites_built_in": false
+  },
+  "setup_times": {},
+  "data": {
+    "entry": {
+      "title": "AmperePoint",
+      "data": {
+        "model": "q11",
+        "name": "AmperePoint",
+        "session_energy_mode": "auto",
+        "tariff_value": 1.2,
+        "currency": "PLN",
+        "complete_power_threshold_kw": 0.25,
+        "complete_idle_minutes": 3
+      },
+      "options": {
+        "model": "q_series",
+        "name": "AmperePoint",
+        "session_energy_mode": "auto",
+        "tariff_value": 1.2,
+        "currency": "PLN",
+        "complete_power_threshold_kw": 0.25,
+        "complete_idle_minutes": 3
+      }
+    },
+    "last_data": {
+      "model": "AmperePoint Q Series (auto)",
+      "charging_energy_kwh": null,
+      "charging_energy_method": null,
+      "charging_energy_quality": "unavailable",
+      "charging_energy_incomplete": false,
+      "power_energy_kwh": 0.0,
+      "power_energy_incomplete": true,
+      "power_validation": "missing_counter",
+      "energy_corrections": 0,
+      "excluded_energy_kwh": 0.0,
+      "charging_energy_since": null,
+      "product_id": null,
+      "status": "Nieznany",
+      "vehicle_connected": false,
+      "vehicle_connection_known": false,
+      "charging": false,
+      "switch_enabled": null,
+      "charging_complete": false,
+      "power_kw": null,
+      "session_energy_kwh": 0.0,
+      "local_session_energy_kwh": null,
+      "total_energy_kwh": null,
+      "last_session_energy_kwh": null,
+      "session_cost": 0.0,
+      "tariff": 1.2,
+      "currency": "PLN",
+      "phase_count": 0,
+      "error": "Brak danych",
+      "current_limit_a": null,
+      "temperature_c": null,
+      "cp_voltage_v": null,
+      "session_duration_s": null,
+      "session_duration_min": null,
+      "voltage_l1": null,
+      "voltage_l2": null,
+      "voltage_l3": null,
+      "current_l1": null,
+      "current_l2": null,
+      "current_l3": null,
+      "power_l1": null,
+      "power_l2": null,
+      "power_l3": null,
+      "work_mode": null,
+      "target_energy_kwh": null,
+      "schedule_start_time": null,
+      "schedule_end_time": null,
+      "system_version": null,
+      "raw_dp_count": 0,
+      "raw_dp": {},
+      "dp_metadata": {},
+      "source_type": "entity_mapping",
+      "local_host": null,
+      "read_only": false,
+      "local_diagnostics": [],
+      "local_dp_count": null,
+      "local_command_status": null,
+      "local_command_error": null,
+      "source_online": true
+    },
+    "native_tuya": null
+  }
+}

@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+
+% --- Silnik: xelatex ---
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.94]
+\setsansfont{DejaVu Sans}[Scale=0.94]
+\setmonofont{DejaVu Sans Mono}[Scale=0.86]
+
+\usepackage{amssymb}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+
+\definecolor{navy}{RGB}{19,40,82}
+\definecolor{rulegrey}{RGB}{180,190,205}
+
+\emergencystretch=3em
+\hbadness=2500
+
+% --- Naglowki ---
+\titleformat{\section}{\Large\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{1.3em}{0.45em}
+\titlespacing*{\subsection}{0pt}{0.9em}{0.2em}
+
+% --- Akapity i listy ---
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlist[itemize]{leftmargin=1.3em,itemsep=0.15em,topsep=0.2em}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.15em,topsep=0.2em}
+
+\newcommand{\ra}{$\rightarrow$}
+
+\begin{document}
+
+% ====== TYTUL ======
+{\sffamily\bfseries\color{navy}\LARGE Zadanie rekrutacyjne AMPERE POINT}\\[2pt]
+{\sffamily\large\color{navy} Zarys koncepcyjny --- prezentacja + własny projekt}\\[4pt]
+{\color{rulegrey}\rule{\linewidth}{1pt}}\\[2pt]
+{\sffamily\small Dawid Cekała \quad$\cdot$\quad wersja 1 \quad$\cdot$\quad 15 czerwca 2026}
+
+\vspace{0.6em}
+
+Roboczy plan obu części. Cel: pokazać \textbf{sposób myślenia} (definicja problemu \ra{} założenia \ra{} architektura \ra{} realny plan \ra{} budżet), a nie objętość. Trzymaj luźny ton --- to nie obrona pracy.
+
+% ==========================================================
+\section{Część 1 --- Prezentacja o własnym produkcie (ok. 10 min)}
+
+\subsection{Rekomendacja: system „follow-me” na ROSbot XL}
+
+To Twój najbogatszy projekt pod kątem \textbf{wyzwań projektowych i dochodzenia do architektury} --- a o to wprost pytają. Masz tu pełny łańcuch inżynierski: percepcja \ra{} estymacja stanu \ra{} sterowanie \ra{} napęd, plus realne kompromisy do opowiedzenia.
+
+Ramuj to uczciwie: platforma (ROSbot XL, Husarion) była gotowa --- \textbf{Twój jest system}: percepcja, śledzenie celu, regulator i strojenie. To jest „prawie samemu” i tak to przedstaw.
+
+Alternatywy, gdybyś wolał coś czysto „własnego od zera”: projekt \textbf{przekładni} albo \textbf{PKM} (bardziej mechaniczne, pełniej autorskie, ale uboższa historia architektury sterowania). Rekomenduję ROSbot --- bliżej elektroniki/embedded, czyli i bliżej roli w AMPERE POINT.
+
+\subsection{Struktura 10 minut (z czasami)}
+
+\begin{enumerate}
+  \item \textbf{Hook + problem (1 min)} --- co miało robić i dlaczego to nietrywialne. Jedno zdanie: „robot ma podążać za człowiekiem/markerem w czasie rzeczywistym, nie gubić celu i nie szarpać”.
+  \item \textbf{Założenia i ograniczenia (1 min)} --- platforma skid-steer, sensory, budżet obliczeniowy on-board, czas reakcji.
+  \item \textbf{Architektura --- serce prezentacji (3--4 min)} --- przejdź łańcuch: kamera/ArUco/YOLO \ra{} estymacja (Kalman, śledzenie celu) \ra{} regulator (MPC/LQR) \ra{} kinematyka unicycle/skid-steer \ra{} napęd. Pokaż \textbf{jeden schemat blokowy} (masz go już z artykułu).
+  \item \textbf{Wyzwania i decyzje (3 min)} --- 2--3 konkretne rozwidlenia (patrz niżej). To tutaj pokazujesz myślenie.
+  \item \textbf{Wynik + czego się nauczyłem (1 min)} --- co działa, co byś zrobił inaczej, co dalej.
+\end{enumerate}
+
+\subsection{Co podkreślić (wyzwania \ra{} decyzje, konkrety)}
+
+Wybierz \textbf{2--3}, nie wszystkie --- lepiej głęboko niż płytko:
+
+\begin{itemize}
+  \item \textbf{ArUco vs YOLO} --- marker (tani, pewny, ale sztuczny) kontra detekcja osoby (ogólniejsza, ale cięższa obliczeniowo i mniej stabilna). Dlaczego wybrałeś to, co wybrałeś --- kompromis pewność/koszt CPU.
+  \item \textbf{MPC vs LQR} --- predykcja i ograniczenia (MPC) kontra prostota i lekkość (LQR). Co wygrało i dlaczego, gdzie był koszt obliczeniowy.
+  \item \textbf{Filtr Kalmana / śledzenie celu} --- po co estymacja, jak radziłeś sobie z chwilową utratą celu i szumem pomiaru („surowy pomiar szarpał, więc\ldots”).
+  \item \textbf{Kinematyka skid-steer} --- poślizg kół, dlaczego odometria kłamie i jak to obchodziłeś.
+\end{itemize}
+
+\subsection{Ton i 3 pułapki}
+
+\begin{itemize}
+  \item Luźno, pierwsza osoba, „pokażę wam jak do tego doszedłem”, nie wykład.
+  \item \textbf{Pułapka 1:} za dużo teorii (równania Riccatiego) zamiast decyzji. Trzymaj „problem \ra{} opcje \ra{} wybór \ra{} efekt”.
+  \item \textbf{Pułapka 2:} brak konkretnego „co nie działało”. Inżynierowie kochają historię debugowania.
+  \item \textbf{Pułapka 3:} przegadanie czasu. Zrób próbę na zegarku, celuj w 9 min.
+\end{itemize}
+
+\subsection{Mostek do roli (powiedz to wprost na końcu)}
+
+„Ten sam sposób myślenia --- łańcuch sygnał \ra{} estymacja \ra{} decyzja \ra{} wykonanie, i diagnozowanie, co realnie zawodzi --- przenosi się 1:1 na serwis i jakość ładowarek.” Łączysz robotykę z ich światem.
+
+% ==========================================================
+\section{Część 2 --- Własny projekt: Symulator pojazdu / tester EVSE}
+
+Urządzenie elektroniczne, które \textbf{udaje samochód elektryczny} na stole, żeby testować i diagnozować ładowarki AC bez prawdziwego auta. Trafia w to, co sam zapisałeś o tej pracy („budowanie testerów/symulatorów do szybkiej diagnozy”) i w model firmy (marka serwisująca sprzęt OEM + kontrola jakości u fabryk).
+
+\subsection{Definicja problemu}
+
+Serwis i kontrola jakości ładowarki AC wymagają auta do wpięcia. Ale auto: jest drogie, zajmuje miejsce, daje tylko „grzeczne” odpowiedzi (nie zmusisz go łatwo do zachowań brzegowych) i \textbf{nie da się go zautomatyzować} do powtarzalnych testów regresyjnych po zmianie firmware. Efekt: trudno szybko odtworzyć zgłoszenie z terenu i trudno seryjnie sprawdzać partie od fabryki.
+
+\subsection{Cel}
+
+Kompaktowy przyrząd, który emuluje stronę pojazdu w handshake Type 2 / IEC 61851, więc pozwala \textbf{bez auta}: przeprowadzić ładowarkę przez stany A\ra{}B\ra{}C, odczytać oferowany prąd (wypełnienie PWM), opcjonalnie pobrać reprezentacyjny prąd dla weryfikacji stycznika i licznika, \textbf{wstrzykiwać usterki} (zła linia CP, brak diody, złe kodowanie PP, nagłe zmiany stanu, wolna reakcja) i wszystko \textbf{logować z wynikiem pass/fail}.
+
+\subsection{Założenia projektowe}
+
+\begin{itemize}
+  \item Tylko ładowanie \textbf{AC} (Type 2, 1- i 3-fazowe), podstawowa komunikacja \textbf{IEC 61851} (PWM na Control Pilot). Bez ISO 15118 / PLC w v1 --- świadomie poza zakresem.
+  \item \textbf{Bezpieczeństwo najpierw.} Wersja 1 pracuje po stronie niskonapięciowej sygnalizacji (CP/PP) i tylko \textbf{izolowanie wykrywa} obecność napięcia na torze mocy. Realny pobór prądu = osobny, poprawnie dobrany moduł obciążenia (v2, z przeglądem bezpieczeństwa).
+  \item Narzędzie dla technika na stanowisku --- \textbf{uzupełnia}, nie zastępuje certyfikowanych mierników bezpieczeństwa.
+  \item Mikrokontrolerowe, z ekranem i logowaniem (SD/USB/WiFi). Cel budżetu rdzenia: niskie setki zł.
+\end{itemize}
+
+\subsection{Architektura --- co realnie robi}
+
+\begin{enumerate}
+  \item \textbf{Emulacja CP (Control Pilot)} --- sieć po stronie auta: rezystor 2,74~k$\Omega$ + dioda szeregowa do PE, oraz dołączany 1,3~k$\Omega$ (przekaźnik/MOSFET) do przejścia stan B (9~V) \ra{} stan C (6~V). Ładowarka „widzi” podłączone, gotowe auto.
+  \item \textbf{Dekoder PWM / odczyt prądu} --- pomiar fali CP: amplituda ($\pm$12~V), częstotliwość (1~kHz), wypełnienie \ra{} przeliczenie na oferowany prąd (\textbf{A = wypełnienie \% $\times$ 0,6}; 32~A $\approx$ 53\%). MCU mierzy czas stanu wysokiego (input-capture/timer). Weryfikacja, czy ładowarka oferuje właściwy prąd.
+  \item \textbf{Emulacja PP (Proximity Pilot)} --- przełączany rezystor (np.\ 1,5~k$\Omega$ / 680~$\Omega$ / 220~$\Omega$) udający różną obciążalność kabla; sprawdzasz, czy ładowarka to respektuje.
+  \item \textbf{Weryfikacja toru mocy (rozszerzenie)} --- izolowany detektor zamknięcia stycznika (czy załącza, gdy powinna) i opcjonalne, poprawnie dobrane obciążenie rezystancyjne do pobrania zdefiniowanego prądu (test licznika i styków).
+  \item \textbf{Wstrzykiwanie usterek (najwartościowsze)} --- celowe stany brzegowe: brak diody (ładowarka ma odmówić), zwarcie CP do PE (stan E), szybkie B\ra{}C\ra{}B, bardzo wolna reakcja, PP w rozwarciu/zwarciu. Sprawdzasz, czy ładowarka reaguje bezpiecznie (otwiera stycznik, zgłasza błąd). To odtwarza zgłoszenia z terenu.
+  \item \textbf{Automatyzacja + logowanie} --- gotowe sekwencje testów uruchamiane automatycznie, wynik z czasem i pass/fail, eksport po USB/WiFi. Umożliwia regresję między wersjami firmware i raport jakości do fabryki.
+\end{enumerate}
+
+\subsection{Co realnie trzeba zrobić (plan fazowy)}
+
+\begin{itemize}
+  \item \textbf{Faza 0 (1--2 dni):} lektura IEC 61851-1 (CP/PP), spis przypadków testowych.
+  \item \textbf{Faza 1 (1--2 weekendy):} front-end analogowy CP na płytce stykowej --- obsługa $\pm$12~V, dzielnik/clamp do 0--3,3~V, przełączanie stanów + dekod PWM. Test najpierw z generatorem udającym ładowarkę, potem z realną ładowarką.
+  \item \textbf{Faza 2 (1 weekend):} emulacja PP, ekran OLED/TFT + enkoder, logowanie (SD/serial).
+  \item \textbf{Faza 3 (1--2 weekendy):} sekwencje automatyczne + wstrzykiwanie usterek + logika pass/fail.
+  \item \textbf{Faza 4 (opcjonalnie, osobno):} moduł obciążenia mocy --- stycznik o właściwym prądzie, obciążenie, czujnik prądu, bezpieczniki --- z przeglądem bezpieczeństwa.
+  \item \textbf{Walidacja:} 2--3 realne jednostki AMPERE POINT + ewentualnie konkurencja.
+\end{itemize}
+
+\subsection{Wykonalność w pojedynkę --- szczera ocena}
+
+\textbf{Tak, rdzeń jest wykonalny solo.} To klasyczny projekt embedded: MCU (ESP32/STM32), front-end op-amp/komparator, kilka przekaźników/MOSFET-ów, rezystory precyzyjne, timer/ADC, OLED, SD/WiFi. Główne wyzwanie analogowe to interfejs $\pm$12~V CP --- ale jest dobrze opisany (m.in.\ open-source \textbf{OpenEVSE}), więc nie projektujesz w ciemno.
+
+\textbf{Ryzyka, które nazywam wprost} (to też punktuje): (a) tor mocy dotyka napięcia sieci --- dlatego v1 zostaje na niskim napięciu + izolowany pomiar, a obciążenie to v2 z zabezpieczeniami; (b) poprawne wykrycie diody i poziomów CP wymaga starannej kalibracji; (c) to przyrząd diagnostyczny, nie certyfikowany tester bezpieczeństwa --- i tak go pozycjonuję.
+
+\subsection{Budżet estymowany}
+
+\begin{tabularx}{\linewidth}{@{}Xr@{}}
+\toprule
+\textbf{Element (rdzeń diagnostyczny)} & \textbf{Koszt} \\
+\midrule
+Mikrokontroler (ESP32/STM32) & 40--80 zł \\
+Front-end CP (op-amp/komparator, rezystory, dioda, clamp) & 30--60 zł \\
+Przełączanie rezystorów (przekaźniki/MOSFET) & 20--40 zł \\
+Emulacja PP (rezystory + przełącznik) & 10--20 zł \\
+Wyświetlacz OLED/TFT + enkoder & 30--60 zł \\
+Złącze Type 2 (gniazdo/wtyk lub tani kabel do rozbiórki) & 100--250 zł \\
+Płytka/obudowa/okablowanie/zasilacz $\pm$12~V/logowanie & 80--150 zł \\
+\midrule
+\textbf{Razem rdzeń} & \textbf{ok. 400--700 zł} \\
+\midrule
+Opcjonalny stopień mocy (stycznik + obciążenie + czujnik + bezpieczniki) & +300--700 zł \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+Realnie: \textbf{ok. 500 zł za sam rdzeń diagnostyczny}, do ok. 1\,200--1\,400 zł z prostym stopniem obciążenia. Daleko od „laboratorium za milion”, a na wyjściu masz \textbf{reużywalny przyrząd}, nie jednorazowe potwierdzenie fizyki.
+
+\subsection{Narzędzia}
+
+\begin{itemize}
+  \item \textbf{Prototypowanie:} ESP32/STM32 + Arduino/PlatformIO/STM32Cube, płytka stykowa, multimetr, oscyloskop (kluczowy do podglądu CP $\pm$12~V/PWM --- wystarczy tani USB-scope), generator (albo drugi MCU udający ładowarkę), lutownica.
+  \item \textbf{Projekt:} KiCad (schemat/PCB), Wokwi/Falstad (symulacja obwodu).
+  \item \textbf{Referencja:} open-source \textbf{OpenEVSE} (interfejs CP), norma IEC 61851-1.
+  \item \textbf{Dokumentacja/prezentacja:} Twój zwykły toolchain (LaTeX/Markdown).
+\end{itemize}
+
+\subsection{Dlaczego to wartościowe (nie tylko fizyka)}
+
+To narzędzie, którego dział serwisu/QA używałby codziennie: odtwarzanie usterek z terenu, regresja firmware, walidacja partii z fabryki --- dokładnie obieg marki-OEM, o którym rozmawialiśmy. Zamienia wiedzę diagnostyczną w \textbf{powtarzalny, automatyzowalny przyrząd}. To przeciwieństwo jednorazowego demo z podręcznika.
+
+% ==========================================================
+\section{Checklista do poniedziałku}
+
+\begin{itemize}[label=$\square$]
+  \item Część 1: wybierz projekt (rekom.\ ROSbot), wytnij schemat blokowy, wypisz 2--3 wyzwania-decyzje, zrób próbę na zegarku (do 9 min).
+  \item Część 2: 1 slajd problemu, 1 schemat architektury (CP/PP/MCU), 1 tabela budżetu, 1 zdanie o bezpieczeństwie/zakresie v1.
+  \item Spięcie: jedno zdanie łączące robotykę \ra{} serwis/jakość ładowarek.
+  \item Nie przepalaj czasu --- to ma pokazać myślenie, nie być produktem końcowym.
+\end{itemize}
+
+\end{document}

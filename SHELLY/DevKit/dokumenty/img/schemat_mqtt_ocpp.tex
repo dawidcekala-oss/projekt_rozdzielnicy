@@ -1,0 +1,69 @@
+% !TEX program = xelatex
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{fontspec}
+\setmainfont{Calibri}
+\setmonofont[Scale=0.88]{Consolas}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc}
+\definecolor{apteal}{HTML}{0E7C86}
+\definecolor{apteallight}{HTML}{E6F4F5}
+\definecolor{apgrey}{HTML}{F3F4F6}
+\definecolor{apamber}{HTML}{B45309}
+\definecolor{apamberlight}{HTML}{FEF3C7}
+\definecolor{apred}{HTML}{B91C1C}
+\definecolor{apblue}{HTML}{1D4ED8}
+\definecolor{apbluelight}{HTML}{DBEAFE}
+\definecolor{apgreen}{HTML}{15803D}
+\definecolor{apgreenlight}{HTML}{DCFCE7}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  box/.style={draw=#1, fill=#1!10, rounded corners=3pt, line width=0.8pt, align=center, font=\small, inner sep=5pt},
+  lbl/.style={font=\scriptsize, align=center, fill=white, inner sep=1.5pt},
+  arr/.style={-{Stealth[length=2.6mm]}, line width=1.1pt, #1},
+  darr/.style={{Stealth[length=2.6mm]}-{Stealth[length=2.6mm]}, line width=1.1pt, #1}]
+
+% --- Q11 ---
+\node[box=apamber, minimum width=3.1cm, minimum height=2.4cm] (mcu) at (0,0)
+  {\textbf{Mikrokontroler Q11}\\[2pt]steruje ładowaniem:\\stycznik, prąd,\\sygnał z auta, licznik};
+
+% --- DevKit ---
+\node[box=apteal, minimum width=4.2cm, minimum height=4.6cm] (dev) at (5.4,0)
+  {\textbf{Shelly DevKit}\\{\scriptsize 192.168.0.238}\\[4pt]
+   obsługa Tuya (TMCU)\\[1pt]{\large$\updownarrow$}\\[1pt]
+   skrypt usługi\\[1pt]{\large$\updownarrow$}\\[1pt]
+   \textbf{pola ładowarki}\\{\scriptsize\ttfamily state, current\_limit, mode,}\\{\scriptsize\ttfamily phase\_info, session\_*}};
+
+\draw[darr=apamber] (mcu.east) -- node[lbl, above=2pt] {UART 9600 b/s} node[lbl, below=2pt] {protokół Tuya\\ramki 55 AA} (dev.west);
+
+% --- chmura (wylaczona) ---
+\node[box=apred, dashed, minimum width=3.4cm, font=\scriptsize] (cloud) at (5.4,3.55) {Chmura Shelly\\\textbf{wyłączona}};
+\draw[apred, line width=1pt, dashed] (dev.north) -- (cloud.south);
+\draw[apred, line width=1.6pt] ($(dev.north)!0.5!(cloud.south)+(-0.2,-0.2)$) -- ++(0.4,0.4);
+\draw[apred, line width=1.6pt] ($(dev.north)!0.5!(cloud.south)+(-0.2,0.2)$) -- ++(0.4,-0.4);
+
+% --- laptop ---
+\node[box=apblue, minimum width=3.5cm, minimum height=1.25cm] (broker) at (12.4,2.1)
+  {\textbf{Broker MQTT}\\Mosquitto, Docker\\{\scriptsize\ttfamily :1883}};
+\node[box=apblue, minimum width=3.5cm, minimum height=1.25cm] (most) at (12.4,-0.2)
+  {\textbf{Most OCPP}\\{\scriptsize\ttfamily most\_q11.py}};
+\node[box=apblue, minimum width=3.5cm, minimum height=1.1cm] (ntp) at (12.4,-2.35)
+  {\textbf{Serwer czasu}\\chrony, Docker {\scriptsize\ttfamily :123/udp}};
+\node[box=apgreen, minimum width=3.3cm, minimum height=1.25cm] (clients) at (17.3,2.1)
+  {\textbf{Klienci MQTT}\\narzędzia testowe;\\później HA, Node-RED};
+\node[box=apgreen, minimum width=3.3cm, minimum height=1.25cm] (csms) at (17.3,-0.2)
+  {\textbf{Serwer OCPP (CSMS)}\\testowy: {\scriptsize\ttfamily csms\_test.py}\\{\scriptsize\ttfamily :9000}};
+\begin{scope}[on background layer]
+\node[draw=apblue!60, dashed, rounded corners=5pt, fill=apbluelight!35, inner sep=9pt,
+      fit=(broker)(most)(ntp)(clients)(csms)] (lap) {};
+\end{scope}
+\node[font=\scriptsize\bfseries, text=apblue, anchor=south east] at (lap.south east) {Laptop 192.168.0.57 (docelowo OptiPlex z HA)};
+
+% --- polaczenia ---
+\draw[darr=apblue] (dev.east |- broker.west) -- node[lbl, above=2pt] {MQTT, TCP} node[lbl, below=2pt] {stan i polecenia} (broker.west);
+\draw[darr=apblue] (dev.east |- most.west) -- node[lbl, above=2pt] {WebSocket RPC Shelly} node[lbl, below=2pt] {\ttfamily ws://…/rpc} (most.west);
+\draw[arr=apblue] (ntp.west) -- node[lbl, above=2pt] {NTP, UDP 123} node[lbl, below=2pt] {godzina dla DevKitu i Q11} (dev.east |- ntp.west);
+\draw[darr=apgreen] (broker.east) -- node[lbl, above=2pt] {subskrypcje,} node[lbl, below=2pt] {publikacje} (clients.west);
+\draw[darr=apgreen] (most.east) -- node[lbl, above=2pt] {OCPP 1.6J} node[lbl, below=2pt] {WebSocket} (csms.west);
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,881 @@
+{
+ "etykieta": "przed_P2",
+ "czas_laptopa": "2026-09-30T11:00:07",
+ "urzadzenie": {
+  "name": null,
+  "id": "apq11dev-543204516334",
+  "mac": "543204516334",
+  "slot": 1,
+  "model": "S3XT-0S",
+  "gen": 3,
+  "fw_id": "20260921-060046/2.0.0-beta11xciohttpfix-g35669f3",
+  "ver": "2.0.0+13109-3815",
+  "app": "XC3+evse:portable:3109",
+  "auth_en": false,
+  "auth_domain": null,
+  "jti": "001094000005",
+  "jwt": {
+   "p": "apq11dev",
+   "n": "Q11 DevKit test",
+   "url": "https://amperepoint.pl",
+   "m": "Ampere Point"
+  },
+  "ch": [
+   {
+    "key": "service:0",
+    "type": "evse:portable:3109"
+   }
+  ],
+  "provision": "unmanaged",
+  "enhanced_security": false
+ },
+ "konfiguracja": {
+  "ble": {
+   "rpc": {
+    "enable": true
+   }
+  },
+  "bthome": {},
+  "cloud": {
+   "enable": false,
+   "server": "shelly-288-eu.shelly.cloud:6022/jrpc"
+  },
+  "modbus": {
+   "enable": true
+  },
+  "mqtt": {
+   "enable": true,
+   "server": "192.168.0.57:1883",
+   "client_id": "apq11dev-543204516334",
+   "user": null,
+   "ssl_ca": null,
+   "topic_prefix": "ampere/q11dev",
+   "rpc_ntf": true,
+   "status_ntf": true,
+   "use_client_cert": false,
+   "enable_rpc": true,
+   "enable_control": true
+  },
+  "service:0": {},
+  "sys": {
+   "device": {
+    "name": null,
+    "mac": "543204516334",
+    "fw_id": "20260921-060046/2.0.0-beta11xciohttpfix-g35669f3",
+    "discoverable": true,
+    "eco_mode": false,
+    "tls_check_cert_validity_time": true,
+    "enhanced_security": false
+   },
+   "location": {
+    "tz": "Europe/Warsaw",
+    "lat": 51.8061,
+    "lon": 21.8987
+   },
+   "debug": {
+    "level": 3,
+    "file_level": null,
+    "mqtt": {
+     "enable": false
+    },
+    "websocket": {
+     "enable": true
+    },
+    "udp": {
+     "addr": "192.168.0.57:8514"
+    }
+   },
+   "ui_data": {
+    "device_revision": "1-47"
+   },
+   "rpc_udp": {
+    "dst_addr": null,
+    "listen_port": null
+   },
+   "sntp": {
+    "server": "192.168.0.57"
+   },
+   "cfg_rev": 121
+  },
+  "wifi": {
+   "ap": {
+    "ssid": "apq11dev-543204516334",
+    "is_open": true,
+    "enable": false,
+    "range_extender": {
+     "enable": false
+    }
+   },
+   "sta": {
+    "ssid": "AmperePoint",
+    "is_open": false,
+    "enable": true,
+    "ipv4mode": "dhcp",
+    "ip": null,
+    "netmask": null,
+    "gw": null,
+    "nameserver": null
+   },
+   "sta1": {
+    "ssid": null,
+    "is_open": true,
+    "enable": false,
+    "ipv4mode": "dhcp",
+    "ip": null,
+    "netmask": null,
+    "gw": null,
+    "nameserver": null
+   },
+   "roam": {
+    "rssi_thr": -80,
+    "interval": 60
+   }
+  },
+  "ws": {
+   "enable": false,
+   "server": "ws://192.168.0.57:8098/shelly",
+   "ssl_ca": "ca.pem"
+  }
+ },
+ "sys": {
+  "mac": "543204516334",
+  "restart_required": false,
+  "time": "11:00",
+  "unixtime": 1790758817,
+  "last_sync_ts": 1790758374,
+  "uptime": 467,
+  "ram_size": 276452,
+  "ram_free": 84352,
+  "ram_min_free": 67172,
+  "fs_size": 917504,
+  "fs_free": 344064,
+  "cfg_rev": 121,
+  "kvs_rev": 2,
+  "schedule_rev": 7,
+  "webhook_rev": 5,
+  "btrelay_rev": 0,
+  "bthc_rev": 0,
+  "available_updates": {},
+  "reset_reason": 1,
+  "backup": {},
+  "default_config": {
+   "exists": false
+  },
+  "utc_offset": 7200
+ },
+ "kvs": {
+  "items": [
+   {
+    "key": "q11_test_b6",
+    "etag": "28ApsW3Q3tAeIW9SM7QXwq5w==",
+    "value": "energia=12.34;czas=56;2026-09-29T14:03"
+   },
+   {
+    "key": "q11_test_pamiec",
+    "etag": "1ChrUJ8CZ0MQOqZpQgzVBcbg==",
+    "value": "znacznik P1 30.09 10:59:56"
+   }
+  ],
+  "offset": 0,
+  "total": 2
+ },
+ "harmonogram": {
+  "jobs": [
+   {
+    "id": 1,
+    "enable": false,
+    "timespec": "0 0 3 1 1 *",
+    "calls": [
+     {
+      "method": "KVS.Set",
+      "params": {
+       "key": "q11_harm_znacznik",
+       "value": "nie powinno odpalic"
+      }
+     }
+    ]
+   }
+  ],
+  "rev": 7
+ },
+ "webhooki": {
+  "hooks": [
+   {
+    "id": 1,
+    "cid": 200,
+    "enable": true,
+    "event": "enum.change",
+    "name": "q11_stan",
+    "ssl_ca": "ca.pem",
+    "urls": [
+     "http://192.168.0.57:8099/stan?v=${ev.value}"
+    ],
+    "condition": null,
+    "repeat_period": 0
+   },
+   {
+    "id": 2,
+    "cid": 200,
+    "enable": true,
+    "event": "enum.change",
+    "name": "q11_start_ladowania",
+    "ssl_ca": "ca.pem",
+    "urls": [
+     "http://192.168.0.57:8099/ladowanie_start"
+    ],
+    "condition": "ev.value == \"charger_charging\"",
+    "repeat_period": 0
+   },
+   {
+    "id": 3,
+    "cid": 200,
+    "enable": true,
+    "event": "number.change",
+    "name": "q11_limit",
+    "ssl_ca": "ca.pem",
+    "urls": [
+     "http://192.168.0.57:8099/limit?v=${ev.value}"
+    ],
+    "condition": null,
+    "repeat_period": 0
+   },
+   {
+    "id": 4,
+    "cid": 200,
+    "enable": true,
+    "event": "boolean.change",
+    "name": "q11_wlacznik",
+    "ssl_ca": "ca.pem",
+    "urls": [
+     "http://192.168.0.57:8099/wlacznik?v=${ev.value}"
+    ],
+    "condition": null,
+    "repeat_period": 0
+   },
+   {
+    "id": 5,
+    "cid": 200,
+    "enable": false,
+    "event": "number.change",
+    "name": "znacznik_pamiec",
+    "ssl_ca": "ca.pem",
+    "urls": [
+     "http://192.168.0.57:8099/znacznik"
+    ],
+    "condition": null,
+    "repeat_period": 0
+   }
+  ],
+  "rev": 5
+ },
+ "usluga_info": {
+  "type": "evse:portable:3109",
+  "ver": "13109-3815",
+  "build_id": "20260929-112246/d5a437f",
+  "etag": "80c7f33f9153d6fdf8a3f020cf7b682a",
+  "meta": {
+   "roles_order": [
+    "state",
+    "current_limit",
+    "mode"
+   ],
+   "integrations": {
+    "aa": [
+     {
+      "class": "evse:portable"
+     }
+    ],
+    "gh": [
+     {
+      "class": "evse:portable"
+     }
+    ],
+    "st": [
+     {
+      "class": "evse:portable"
+     }
+    ]
+   },
+   "ui": {
+    "actions": [
+     {
+      "component": "state",
+      "name": "Charging",
+      "method": "Set",
+      "input": {
+       "value": {
+        "type": "boolean",
+        "view": "radio",
+        "titles": [
+         "Stop charging",
+         "Start charging"
+        ],
+        "value": false
+       }
+      }
+     },
+     {
+      "component": "current_limit",
+      "name": "Current Limit",
+      "method": "Set",
+      "input": {
+       "value": {
+        "type": "number",
+        "view": "input",
+        "value": 10
+       }
+      }
+     }
+    ],
+    "conditions": {
+     "mode": [
+      {
+       "name": "Charger mode",
+       "event": "enum.change"
+      }
+     ],
+     "session_energy": [
+      {
+       "name": "Session energy",
+       "event": "number.change"
+      }
+     ],
+     "session_duration": [
+      {
+       "name": "Session duration",
+       "event": "number.change"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "usluga_stan": {
+  "etag": "80c7f33f9153d6fdf8a3f020cf7b682a",
+  "state": "running",
+  "dev_mode": true,
+  "stats": {
+   "mem": 1503,
+   "mem_peak": 1602
+  },
+  "files": {
+   "code": {
+    "sha256": "13fe4e047ecfb43c618fee735d4fa3eb9ee4789a2293728410cc8d8d414dc5bc"
+   },
+   "manifest": {
+    "sha256": "38cc1295339a48326ebdc6f76b4d18eaa3a263d565377afc93ad4f2a81f6871b"
+   },
+   "ui": {
+    "sha256": "8ba525eff60a93fbb68425d63abcdff8ef27b728f65819d9066453292fffa101"
+   }
+  }
+ },
+ "pola": {
+  "boolean:200": {
+   "config": {
+    "id": 200,
+    "name": "Charging",
+    "meta": {
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "toggle",
+      "titles": [
+       "Off",
+       "On"
+      ]
+     }
+    },
+    "persisted": true,
+    "default_value": false
+   },
+   "status": {
+    "value": false,
+    "source": "rpc",
+    "last_update_ts": 1790758804
+   },
+   "attrs": {
+    "access": "crw",
+    "owner": "service:0",
+    "role": "state"
+   }
+  },
+  "enum:200": {
+   "config": {
+    "id": 200,
+    "name": "Charger mode",
+    "options": [
+     "charger_free",
+     "charger_insert",
+     "charger_free_fault",
+     "charger_wait",
+     "charger_charging",
+     "charger_pause",
+     "charger_end",
+     "charger_fault"
+    ],
+    "meta": {
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "label",
+      "titles": {
+       "charger_free": "Free",
+       "charger_insert": "Insert",
+       "charger_free_fault": "Free fault",
+       "charger_wait": "Wait",
+       "charger_charging": "Charging",
+       "charger_pause": "Pause",
+       "charger_end": "End",
+       "charger_fault": "Fault"
+      }
+     }
+    },
+    "persisted": false,
+    "default_value": "charger_free"
+   },
+   "status": {
+    "value": "charger_free",
+    "source": "",
+    "last_update_ts": 0
+   },
+   "attrs": {
+    "access": "cr",
+    "owner": "service:0",
+    "role": "mode"
+   }
+  },
+  "enum:201": {
+   "config": {
+    "id": 201,
+    "name": "Vehicle signal",
+    "options": [
+     "controlpi_12v",
+     "controlpi_12v_pwm",
+     "controlpi_9v",
+     "controlpi_9v_pwm",
+     "controlpi_6v",
+     "controlpi_6v_pwm",
+     "controlpi_error"
+    ],
+    "meta": {
+     "portal_managed": true,
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "dropdown"
+     }
+    },
+    "persisted": false,
+    "default_value": null
+   },
+   "status": {
+    "value": "controlpi_12v",
+    "source": "sys",
+    "last_update_ts": 1790758374
+   },
+   "attrs": {
+    "access": "cr",
+    "owner": "service:0",
+    "role": "cp_state"
+   }
+  },
+  "enum:202": {
+   "config": {
+    "id": 202,
+    "name": "Charging mode",
+    "options": [
+     "charge_now",
+     "charge_energy",
+     "charge_schedule"
+    ],
+    "meta": {
+     "portal_managed": true,
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "dropdown"
+     }
+    },
+    "persisted": false,
+    "default_value": null
+   },
+   "status": {
+    "value": "charge_now",
+    "source": "sys",
+    "last_update_ts": 1790758374
+   },
+   "attrs": {
+    "access": "crw",
+    "owner": "service:0",
+    "role": "work_mode"
+   }
+  },
+  "number:200": {
+   "config": {
+    "id": 200,
+    "name": "Current limit",
+    "min": 6,
+    "max": 16,
+    "meta": {
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "slider",
+      "unit": "A",
+      "step": 1
+     }
+    },
+    "persisted": true,
+    "default_value": 16
+   },
+   "status": {
+    "value": 11,
+    "source": "rpc",
+    "last_update_ts": 1790758801
+   },
+   "attrs": {
+    "access": "crw",
+    "owner": "service:0",
+    "role": "current_limit"
+   }
+  },
+  "number:201": {
+   "config": {
+    "id": 201,
+    "name": "Session duration",
+    "min": 0,
+    "max": 50000,
+    "meta": {
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "label",
+      "unit": "min"
+     }
+    },
+    "persisted": false,
+    "default_value": 0
+   },
+   "status": {
+    "value": 0,
+    "source": "",
+    "last_update_ts": 0
+   },
+   "attrs": {
+    "access": "cr",
+    "owner": "service:0",
+    "role": "session_duration"
+   }
+  },
+  "number:202": {
+   "config": {
+    "id": 202,
+    "name": "Session energy",
+    "min": 0,
+    "max": 9999999999,
+    "meta": {
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "label",
+      "unit": "kWh"
+     }
+    },
+    "persisted": false,
+    "default_value": 0
+   },
+   "status": {
+    "value": 0,
+    "source": "",
+    "last_update_ts": 0
+   },
+   "attrs": {
+    "access": "cr",
+    "owner": "service:0",
+    "role": "session_energy"
+   }
+  },
+  "number:203": {
+   "config": {
+    "id": 203,
+    "name": "Energy limit",
+    "min": 0,
+    "max": 200,
+    "meta": {
+     "portal_managed": true,
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "slider",
+      "step": 1,
+      "unit": "kWh"
+     }
+    },
+    "persisted": false,
+    "default_value": 0
+   },
+   "status": {
+    "value": 0,
+    "source": "",
+    "last_update_ts": 0
+   },
+   "attrs": {
+    "access": "crw",
+    "owner": "service:0",
+    "role": "energy_limit"
+   }
+  },
+  "number:204": {
+   "config": {
+    "id": 204,
+    "name": "Last session energy",
+    "min": 0,
+    "max": 9999999,
+    "meta": {
+     "portal_managed": true,
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "slider",
+      "step": 0.01,
+      "unit": "kWh"
+     }
+    },
+    "persisted": false,
+    "default_value": 0
+   },
+   "status": {
+    "value": 0,
+    "source": "",
+    "last_update_ts": 0
+   },
+   "attrs": {
+    "access": "cr",
+    "owner": "service:0",
+    "role": "last_session_energy"
+   }
+  },
+  "number:205": {
+   "config": {
+    "id": 205,
+    "name": "Temperature",
+    "min": -40,
+    "max": 200,
+    "meta": {
+     "portal_managed": true,
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "slider",
+      "step": 1,
+      "unit": "°C"
+     }
+    },
+    "persisted": false,
+    "default_value": 0
+   },
+   "status": {
+    "value": 21,
+    "source": "sys",
+    "last_update_ts": 1790758374
+   },
+   "attrs": {
+    "access": "cr",
+    "owner": "service:0",
+    "role": "temperature"
+   }
+  },
+  "number:206": {
+   "config": {
+    "id": 206,
+    "name": "Charging window to",
+    "min": 0,
+    "max": 23,
+    "meta": {
+     "portal_managed": true,
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "slider",
+      "step": 1,
+      "unit": "h"
+     }
+    },
+    "persisted": false,
+    "default_value": 0
+   },
+   "status": {
+    "value": 0,
+    "source": "",
+    "last_update_ts": 0
+   },
+   "attrs": {
+    "access": "crw",
+    "owner": "service:0",
+    "role": "window_end"
+   }
+  },
+  "number:207": {
+   "config": {
+    "id": 207,
+    "name": "Charging window from",
+    "min": 0,
+    "max": 23,
+    "meta": {
+     "portal_managed": true,
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "slider",
+      "step": 1,
+      "unit": "h"
+     }
+    },
+    "persisted": false,
+    "default_value": 0
+   },
+   "status": {
+    "value": 0,
+    "source": "",
+    "last_update_ts": 0
+   },
+   "attrs": {
+    "access": "crw",
+    "owner": "service:0",
+    "role": "window_start"
+   }
+  },
+  "object:200": {
+   "config": {
+    "id": 200,
+    "name": "Consumption",
+    "meta": {
+     "cloud": [
+      "bymin"
+     ],
+     "ui": {
+      "unit": "kWh"
+     }
+    }
+   },
+   "status": {
+    "value": {
+     "phase_a": {
+      "voltage": 0,
+      "current": 0,
+      "power": 0
+     },
+     "phase_b": {
+      "voltage": 0,
+      "current": 0,
+      "power": 0
+     },
+     "phase_c": {
+      "voltage": 0,
+      "current": 0,
+      "power": 0
+     },
+     "total_current": 0,
+     "total_power": 0,
+     "total_act_energy": 0,
+     "counter": {
+      "total": 0,
+      "minute_ts": 1790681160,
+      "by_minute": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "source": "sys",
+    "last_update_ts": 1790681214
+   },
+   "attrs": {
+    "access": "cr",
+    "owner": "service:0",
+    "role": "phase_info"
+   }
+  },
+  "text:200": {
+   "config": {
+    "id": 200,
+    "name": "Controller version",
+    "max_len": 255,
+    "meta": {
+     "portal_managed": true,
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "field"
+     }
+    },
+    "persisted": false,
+    "default_value": ""
+   },
+   "status": {
+    "value": "V1",
+    "source": "sys",
+    "last_update_ts": 1790681216
+   },
+   "attrs": {
+    "access": "cr",
+    "owner": "service:0",
+    "role": "controller_version"
+   }
+  },
+  "text:201": {
+   "config": {
+    "id": 201,
+    "name": "Faults",
+    "max_len": 255,
+    "meta": {
+     "portal_managed": true,
+     "cloud": [
+      "log"
+     ],
+     "ui": {
+      "view": "field"
+     }
+    },
+    "persisted": false,
+    "default_value": ""
+   },
+   "status": {
+    "value": "none",
+    "source": "sys",
+    "last_update_ts": 1790758374
+   },
+   "attrs": {
+    "access": "cr",
+    "owner": "service:0",
+    "role": "faults"
+   }
+  }
+ },
+ "polaczenia": {
+  "Cloud": {
+   "connected": false
+  },
+  "MQTT": {
+   "connected": true
+  },
+  "WS": {
+   "connected": false
+  }
+ }
+}

@@ -1,0 +1,441 @@
+% !TeX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\definecolor{granat}{RGB}{12,35,88}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=granat,urlcolor=granat]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries\sffamily\color{granat}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily\color{granat}}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+% skróty typograficzne
+\newcommand{\ui}[1]{\textbf{#1}}                    % element interfejsu
+\newcommand{\szukaj}[1]{\mbox{\ui{Szukaj polecenia} $\to$ \emph{#1}}} % fallback
+\newcommand{\krok}[1]{\par\medskip\noindent\textbf{\color{granat}Krok #1.}\space}
+
+\title{\textbf{\color{granat}AMPERE POINT --- custom device}\\[4pt]
+\large Przewodnik EPLAN krok po kroku:\\ odtworzenie schematu elektrycznego v3 w EPLAN Education 2026\\[2pt]
+\normalsize wersja 1 --- dla osoby bez doświadczenia z EPLAN}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{6 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.6em}
+
+\noindent\textbf{Cel:} przenieść do EPLAN trzy arkusze schematu elektrycznego custom device
+(wersja 3: \texttt{AMPERE\_POINT\_custom\_device\_schemat\_elektryczny\_v3\_EPLAN.pdf} --- miej ten
+PDF otwarty obok jako wzór rysunkowy). \textbf{Stan wyjściowy:} dokładnie ten z Twojego ekranu ---
+EPLAN Education 2026 (interfejs polski), otwarty projekt \texttt{AMPERE\_POINT\_custom\_device}
+(AP-CD-001) ze stroną tytułową \texttt{=CA1+EAA/1}.
+
+\textbf{Jak pisany jest ten przewodnik (ważne):} nazwy kart wstążki (\ui{Plik},
+\ui{Narzędzia główne}, \ui{Wstaw}, \ui{Edytuj}, \ui{Widok}, \ui{Narzędzia}\ldots) oraz elementy
+okna (\ui{Centrum wprowadzania}, nawigator \ui{Strony}, pole \ui{Szukaj polecenia}, pasek stanu
+z siatką) są zgodne z Twoim zrzutem ekranu; ścieżki tworzenia stron i typy stron sprawdzono
+w oficjalnej pomocy EPLAN. Ponieważ drobne nazwy przycisków bywają różne między wydaniami,
+\emph{każda} instrukcja ma niezawodny wariant zapasowy: pole \ui{Szukaj polecenia} (lupka na
+górnym pasku okna) --- wpisujesz tam podaną nazwę i EPLAN sam pokazuje oraz uruchamia właściwą
+funkcję. Jeśli więc jakiegoś przycisku nie widzisz na wstążce --- nie szukaj po omacku, użyj
+\ui{Szukaj polecenia}.
+
+\tableofcontents
+
+% =====================================================================
+\section{Trzy zasady, zanim klikniesz cokolwiek}
+
+\begin{enumerate}
+\item \textbf{EPLAN nie ma przycisku ,,Zapisz''.} Każda zmiana na stronie zapisywana jest do bazy
+projektu od razu. Nie szukaj Ctrl+S; pomyłki wycofujesz przez \ui{Cofnij} (Ctrl+Z, strzałki na
+pasku szybkiego dostępu w lewym górnym rogu).
+\item \textbf{Wszystko wstawia się ,,na kursor''.} Po wybraniu symbolu/polecenia symbol wisi na
+kursorze; klik lewym = wstawienie (można wstawiać wielokrotnie), \textbf{Esc} = koniec.
+W trakcie wstawiania klawisz \textbf{Tab} obraca/zmienia wariant symbolu.
+\item \textbf{Dwuklik = właściwości.} Każdy wstawiony element (symbol, tekst, skrzynka) otwiera
+dwuklikiem okno właściwości --- tam zmieniasz oznaczenie (DT), numery przyłączy, teksty.
+Zaznaczenie + \textbf{Delete} usuwa.
+\end{enumerate}
+
+% =====================================================================
+\section{Orientacja w oknie (mapa Twojego ekranu)}
+
+\begin{itemize}
+\item \textbf{Wstążka} u góry --- karty \ui{Plik}, \ui{Narzędzia główne}, \ui{Wstaw},
+\ui{Edytuj}, \ui{Widok}, \ui{Połączenia}, \ui{Narzędzia}, \ui{Dane zasadnicze}. Większość rysowania
+robi się z karty \ui{Wstaw} albo z Centrum wprowadzania.
+\item \textbf{Nawigator Strony} (lewy panel, zakładka z nazwą projektu) --- drzewo stron:
+\texttt{CA1 $\to$ EAA $\to$ 1 Strona tytułowa}. Dwuklik na stronie otwiera ją w edytorze.
+\item \textbf{Edytor graficzny} (środek) --- tu rysujesz; na dole pasek stanu ze współrzędnymi
+X/Y, \ui{Siatka C: 4,00 mm} i przełącznikami przyciągania. Zostaw siatkę 4 mm --- to domyślna
+siatka stron schematów i wszystkie odległości w tym przewodniku jej odpowiadają.
+\item \textbf{Centrum wprowadzania} (prawy panel) --- najważniejsze narzędzie tego przewodnika:
+pole \ui{Szukaj} + sekcje \ui{Symbole}, \ui{Urządzenia}, \ui{Makra okna/symbolu},
+\ui{Ostatnio używane}, \ui{Ulubione}. Wpisujesz polskie hasło (np. \emph{bezpiecznik}),
+klikasz wynik i wstawiasz na stronę.
+\item \textbf{Podgląd graficzny} (lewy dół) --- miniatura aktualnej strony.
+\item Zamknięty panel przywrócisz wpisując jego nazwę w \ui{Szukaj polecenia}
+(np. \emph{Strony}, \emph{Centrum wprowadzania}, \emph{Podgląd graficzny}).
+\end{itemize}
+
+Nawigacja w edytorze: kółko myszy = zoom; przytrzymanie kółka (środkowego przycisku) =
+przesuwanie widoku; klawisz \textbf{3} na klawiaturze = dopasuj całą stronę do okna
+(jeśli nie zadziała: \szukaj{Cała strona}).
+
+% =====================================================================
+\section{Utworzenie stron E1--E3}
+\label{sec:strony}
+
+Schemat v3 ma trzy arkusze robocze. W strukturze projektu będą to strony
+\texttt{=CA1+EAA/2}, \texttt{/3} i \texttt{/4} (strona \texttt{/1} to istniejąca tytułowa).
+Oznaczenia ,,E1/E2/E3'' zapiszemy w opisie strony.
+
+\krok{1} W nawigatorze \ui{Strony} kliknij \textbf{prawym} przyciskiem na węźle \ui{EAA}
+i wybierz \ui{Nowy\ldots} (to samo daje karta \ui{Narzędzia główne} $\to$ grupa \ui{Strona}
+$\to$ \ui{Nowy}). Otworzy się okno \ui{Nowa strona}.
+
+\krok{2} Wypełnij:
+\begin{itemize}
+\item \ui{Pełna nazwa strony}: \texttt{=CA1+EAA/2} (przycisk \ui{\ldots} obok pola otwiera
+pomocnika struktury, ale można wpisać ręcznie);
+\item \ui{Typ strony}: \textbf{Schemat wielobiegunowy (I)} --- wybierz z listy rozwijanej;
+litera (I) oznacza stronę interaktywną, rysowaną ręcznie;
+\item \ui{Opis strony}: \texttt{E1 --- tor mocy 3F};
+\item resztę zostaw domyślną (siatka 4 mm jest domyślna dla tego typu strony) i kliknij \ui{OK}.
+\end{itemize}
+
+\krok{3} Powtórz dla dwóch kolejnych stron:
+\texttt{/3} z opisem \texttt{E2 --- łańcuch bezpieczeństwa 24 V} oraz
+\texttt{/4} z opisem \texttt{E3 --- obciążenie i sterowanie}.
+
+\krok{4} Sprawdź w drzewie: pod \ui{EAA} są teraz strony 1--4. Dwuklik na \texttt{/2} otwiera
+pustą stronę z ramką: kolumny 1--10 u góry/dołu i wiersze A--F po bokach pochodzą z formularza
+ramki projektu. \textbf{Tak czytamy odsyłacze:} zapis \texttt{/E2.3} z PDF-a v3 oznacza
+,,strona E2 (czyli /3), kolumna 3''.
+
+\emph{Uwaga:} jeśli w Twoim szablonie okno \ui{Nowa strona} pokazuje od razu inne pola
+(np. skalę) --- nie zmieniaj ich. Liczy się typ strony, nazwa i opis.
+
+% =====================================================================
+\section{Elementarz rysowania --- sześć czynności, z których składa się wszystko}
+\label{sec:elementarz}
+
+Cały schemat powstaje z powtarzania sześciu czynności. Dalsze rozdziały odsyłają do nich
+numerami (E.1--E.6).
+
+\subsection*{E.1 --- Wstawienie symbolu z Centrum wprowadzania}
+\begin{enumerate}
+\item W \ui{Centrum wprowadzania} (prawy panel) kliknij \ui{Symbole} (albo od razu wpisz hasło
+w pole \ui{Szukaj}, np. \emph{bezpiecznik}).
+\item Kliknij znaleziony symbol --- zawiśnie na kursorze. \textbf{Tab} przełącza warianty
+(obrót, odbicie), kółko przybliża widok.
+\item Kliknij w miejscu docelowym na stronie. Otworzy się okno \ui{Właściwości}:
+  \begin{itemize}
+  \item \ui{Widoczne oznaczenie DT} --- wpisz oznaczenie z wzoru, np. \texttt{-F1}
+  (z myślnikiem na początku, jak w PDF);
+  \item zakładka/pola przyłączy --- numery zacisków, np. \texttt{1} i \texttt{2}
+  (u nas: 13/14 dla zwiernych pomocniczych, 11/12 i 21/22 dla rozwiernych, A1/A2 dla cewek);
+  \item \ui{OK}.
+  \end{itemize}
+\item Symbol nadal wisi na kursorze (można wstawić następny egzemplarz); \textbf{Esc} kończy.
+\end{enumerate}
+Alternatywa: karta \ui{Wstaw} $\to$ \ui{Symbol} otwiera pełną przeglądarkę bibliotek
+(IEC\_symbol); Centrum wprowadzania jest po prostu szybsze.
+
+\subsection*{E.2 --- Połączenia (autoconnecting)}
+EPLAN \textbf{sam} rysuje połączenie, gdy dwa punkty przyłączeń (czerwone strzałki na końcach
+symboli) znajdą się dokładnie w jednej pionowej lub poziomej linii siatki. Nie rysuje się więc
+,,kabli'' ręcznie --- ustawia się symbole w osi. Jeśli połączenie nie powstało: element leży poza
+siatką (przesuń go; ma się ,,przyciągać'' co 4 mm) albo przyłącza nie są naprzeciw siebie.
+
+\subsection*{E.3 --- Zagięcia i rozgałęzienia (symbole połączeń)}
+Do prowadzenia linii pod kątem i do odczepów służą \emph{symbole połączeń}:
+\ui{Narożnik} (zagięcie 90$^\circ$) i \ui{Trójnik} (rozgałęzienie --- kropka węzła).
+Znajdziesz je na karcie \ui{Wstaw}; najpewniej przez \szukaj{Narożnik} oraz \szukaj{Trójnik}.
+Wstawiasz je \emph{na} istniejącej linii/osi połączenia; Tab obraca kierunek odejścia.
+Skrzyżowanie dwóch linii bez trójnika = brak połączenia (tak mają się krzyżować np. odczepy
+-X3 z pionami L2/L3 na E1).
+
+\subsection*{E.4 --- Punkt przerwania (kontynuacja potencjału na innej stronie)}
+,,Punkt przerwania'' to strzałka z nazwą (np. \texttt{+24V}): dwa punkty przerwania o tej samej
+nazwie w projekcie łączą się logicznie i pokazują nawzajem swoje adresy (dokładnie jak
+odsyłacze \texttt{/E3.5} w PDF). Wstawianie: \szukaj{Punkt przerwania}, klik na końcu linii,
+w właściwościach wpisz \ui{Widoczne oznaczenie DT} = nazwę potencjału (np. \texttt{+24V},
+\texttt{0V}, \texttt{L1\_MB}). Używamy ich do: szyn 24 V (E2$\leftrightarrow$E3), zasilania
+modułu B (E1$\to$E3) i odczepu generatora (E1$\to$E3).
+
+\subsection*{E.5 --- Czarna skrzynka (urządzenie bez gotowego symbolu)}
+Bloki takie jak -A1 (płyta ESP32), -A3 (generator), -G1 (zasilacz), -B1 (czujnik CDSR),
+-A2 (watchdog), -P1 (HMI) rysuje się jako \emph{czarną skrzynkę}: prostokąt reprezentujący
+urządzenie. Wstawianie: \szukaj{Czarna skrzynka} (na karcie \ui{Wstaw});
+kliknij pierwszy narożnik, potem przeciwległy; w właściwościach nadaj DT (np. \texttt{-A1})
+i ewentualnie tekst opisu. Jeżeli skrzynka ma mieć własne, podłączalne piny, dodaj na jej
+krawędzi \emph{punkty przyłączenia urządzeń}: \szukaj{Punkt przyłączenia} --- każdy dostaje numer
+(np. 1, 2\ldots). Dla naszych celów w większości wystarczą skrzynki z tekstami, jak w PDF.
+
+\subsection*{E.6 --- Teksty, grafika, powielanie}
+\begin{itemize}
+\item \textbf{Tekst wolny} (uwagi, opisy przy skrzynkach): \ui{Wstaw} $\to$ \ui{Tekst}
+(lub \szukaj{Tekst}); klik w miejscu docelowym, wpisz treść, OK.
+\item \textbf{Prostokąt/linia jako grafika} (np. przerywana obwiednia ,,MODUŁ B''):
+\ui{Wstaw} $\to$ grupa grafiki $\to$ \ui{Prostokąt} (\szukaj{Prostokąt}); po narysowaniu
+dwuklik $\to$ w formatowaniu ustaw \ui{Rodzaj linii} przerywany. Grafika nie tworzy połączeń
+elektrycznych --- można nią bezpiecznie obrysowywać.
+\item \textbf{Powielanie} (klucz do 12 gałęzi load banku): zaznacz fragment (przeciągnij ramkę),
+karta \ui{Edytuj} $\to$ \ui{Powiel} (widoczny na Twoim zrzucie), wskaż punkt odniesienia
+i miejsca kopii; EPLAN zapyta/ponumeruje DT kolejnych kopii --- i tak sprawdź je dwuklikiem.
+Zwykłe Ctrl+C/Ctrl+V też działa.
+\end{itemize}
+
+% =====================================================================
+\section{Arkusz E1 (strona /2) --- tor mocy}
+\label{sec:e1}
+
+Otwórz stronę \texttt{/2} (dwuklik w nawigatorze). Wzór: strona 2/4 PDF-a v3.
+Rysuj z grubsza w tych samych kolumnach ramki co wzór --- odsyłacze będą się zgadzać z PDF-em.
+
+\textbf{Aparaty tego arkusza} (hasła do pola Szukaj w Centrum wprowadzania):
+
+\begin{longtable}{@{}p{0.10\textwidth}p{0.26\textwidth}p{0.25\textwidth}p{0.31\textwidth}@{}}
+\toprule
+\textbf{DT} & \textbf{Co to} & \textbf{Hasło wyszukiwania} & \textbf{Uwagi}\\
+\midrule
+\endhead
+-X1:1..7 & zaciski gniazda Type 2 & \emph{zacisk} & 7 szt. w poziomie, u góry\\
+-X3:1..7 & zaciski odczepu PM701E & \emph{zacisk} & 7 szt. w pionie, po prawej\\
+-K4 & zestyk zwierny w linii CP & \emph{zestyk zwierny} & DT \texttt{-K4}; cewka będzie na E2\\
+-Q0 & rozłącznik 4-bieg. & \emph{rozłącznik} & wariant 3-bieg. + 1-bieg. z tym samym DT\\
+-F1..-F3 & bezpieczniki gG 32 A & \emph{bezpiecznik} & po jednym na L1/L2/L3\\
+-B1 & czujnik różnicowy CDSR & --- (czarna skrzynka, E.5) & obejmuje 4 piony, bez PE\\
+-T1..-T3 & przekładniki prądowe & \emph{przekładnik prądowy} & na L1/L2/L3\\
+-K1 & styki główne stycznika & \emph{zestyk mocy} lub \emph{stycznik} & 4 szt., DT \texttt{-K1}\\
+-X2:1..5 & zaciski wyjścia CEE & \emph{zacisk} & na dole\\
+\bottomrule
+\end{longtable}
+
+\krok{1} \textbf{Zaciski -X1.} Wstaw symbol zacisku (E.1) i kliknij 7 razy w jednej linii
+poziomej u góry strony, w odstępach ok.\ 5--6 pól siatki. W właściwościach pierwszego wpisz
+DT \texttt{-X1} i \ui{oznaczenie zacisku} \texttt{1}; kolejne EPLAN zwykle numeruje sam (sprawdź
+dwuklikiem). Nad zaciskami dodaj teksty (E.6): L1, L2, L3, N, PE, CP, PP.
+
+\krok{2} \textbf{Piony.} Zaciski mają przyłącza w osi pionowej --- poprowadź układ tak, aby
+kolejne aparaty (kroki 4--8) stawały dokładnie pod zaciskami 1--4 (L1..N): wtedy połączenia
+narysują się same (E.2). Pion PE (zacisk 5) zostaje pusty aż do -X2 --- po prostu seria
+połączeń w dół.
+
+\krok{3} \textbf{Odczep -X3 i zestyk -K4.} Na pionach L1, L2, L3, N (na wysokości tuż pod -X1)
+wstaw \ui{Trójniki} (E.3) i wyprowadź poziome linie w prawo; zakończ je 7 zaciskami \texttt{-X3}
+ustawionymi pionowo (numery 1--7). Linie CP i PP prowadź od zacisków 6 i 7 gniazda -X1;
+\textbf{w linii CP wstaw zestyk zwierny} (E.1) z DT \texttt{-K4} (przyłącza 13/14). Odsyłacz przy
+-K4 pojawi się automatycznie, gdy na E2 powstanie cewka -K4. Dodaj teksty: \emph{odczep Type 2
+$\to$ PM701E (7 żył, $\le$1 m)}, \emph{SIGNAL OUTPUT (CP)}, \emph{mostek serwisowy CP na
+listwie -X3}.
+
+\krok{4} \textbf{-Q0.} Wyszukaj \emph{rozłącznik}; wybierz wariant 3-biegunowy i wstaw na pionach
+L1--L3; obok, na pionie N, wstaw wariant 1-biegunowy i nadaj mu \textbf{ten sam DT} \texttt{-Q0}
+--- EPLAN potraktuje oba jako jeden aparat (spyta lub scali w nawigatorze urządzeń; to normalne).
+Numery przyłączy: 1/2, 3/4, 5/6, 7/8 jak w PDF.
+
+\krok{5} \textbf{-F1..-F3.} Symbol \emph{bezpiecznik} na L1, L2, L3 (N bez zabezpieczenia ---
+zostaje samo połączenie). Tekst obok: \emph{gG 32 A}.
+
+\krok{6} \textbf{-B1 (CDSR).} Czarna skrzynka (E.5) narysowana \textbf{w poprzek} czterech pionów
+L1--N (wąski, leżący prostokąt jak w PDF), DT \texttt{-B1}, tekst: \emph{czujnik różnicowy AC/DC
+(CDSR 0.07-TP), okno L1+L2+L3+N} oraz strzałka/tekst \emph{SPI $\to$ /E3.3}. Piony przechodzą
+przez skrzynkę --- to odwzorowanie ,,okna'' czujnika; nie potrzeba tu przyłączy elektrycznych.
+
+\krok{7} \textbf{Odczep do generatora -A3 (poprawka v3).} Na pionie L1, \textbf{poniżej} skrzynki
+-B1 a nad -T1, wstaw \ui{Trójnik}, krótką linię w lewo i \ui{Punkt przerwania} (E.4) o nazwie
+\texttt{L1\_A3}; jego para znajdzie się na E3 przy generatorze. Tekst: \emph{przez -K30}.
+
+\krok{8} \textbf{-T1..-T3, potem -K1, potem -X2.} Przekładniki (hasło: \emph{przekładnik prądowy})
+na L1--L3; niżej cztery zestyki mocy z DT \texttt{-K1} (przyłącza 1/2\ldots7/8); na dole 5 zacisków
+\texttt{-X2} (L1, L2, L3, N, PE --- tu pion PE dołącza). Teksty: \emph{40 A / 1 V},
+\emph{6 mm$^2$}, \emph{gniazdo CEE 32 A 5p $\to$ moduł B}, \emph{przewód 5$\times$6 mm$^2$
+H07RN-F}. Pod -K1 automatycznie pojawi się odsyłacz do cewki (gdy narysujesz ją na E2).
+
+\krok{9} \textbf{Zasilanie modułu B na E3.} Zamiast prowadzić moc ,,poza stronę'', wstaw przy
+-X2 cztery \ui{Punkty przerwania}: \texttt{L1\_MB}, \texttt{L2\_MB}, \texttt{L3\_MB},
+\texttt{N\_MB} --- ich pary będą początkiem szyn modułu B na E3 (rozdz.~\ref{sec:e3g}).
+
+\krok{10} \textbf{Uwagi tekstowe} (E.6) po prawej: przepisz bloki \emph{Uwagi},
+\emph{Ostrzeżenie (v3)} i \emph{-K4 (v3)} z PDF-a. Gotowe --- porównaj stronę z wzorem
+(klawisz 3 = cała strona).
+
+% =====================================================================
+\section{Arkusz E2 (strona /3) --- łańcuch bezpieczeństwa 24 V}
+\label{sec:e2g}
+
+Wzór: strona 3/4 PDF-a. To schemat drabinkowy: dwie poziome szyny (+24 V u góry, 0 V u dołu)
+i pionowe ścieżki między nimi.
+
+\textbf{Aparaty:} -S0 (E-STOP, 2 zestyki rozwierne 11/12 i 21/22), -F11.1 i -F11.12 (termiki,
+zestyki rozwierne z wyzwalaczem termicznym), -S1 (krańcówka, rozwierny), -K2/-K10/-RB (zestyki
+zwierne 13/14), -A2 (czarna skrzynka + zestyk), -S2 (przycisk zwierny), cewki: -RB, -K1, -K4.
+
+\krok{1} \textbf{Szyny.} Wstaw \ui{Punkt przerwania} (E.4) o nazwie \texttt{+24V} przy lewej
+krawędzi obszaru roboczego i drugi \texttt{+24V} przy prawej; ustaw je dokładnie w jednej osi
+poziomej --- EPLAN sam pociągnie między nimi linię (to nasza szyna). Tak samo zbuduj szynę
+\texttt{0V} na dole. (Punkty o tych samych nazwach wykorzystamy też na E3 przy zasilaczu -G1 ---
+wtedy przy szynach pojawią się odsyłacze, jak \texttt{z G1 /E3.5} w PDF.)
+
+\krok{2} \textbf{Ścieżka 1 (kolumna 1): E-STOP i termiki.} Z szyny +24 V w dół (Trójnik, E.3):
+zestyk \textbf{rozwierny} (hasło: \emph{zestyk rozwierny}; jeśli w bibliotece jest wariant
+,,przycisk grzybkowy/awaryjny'' --- użyj go) z DT \texttt{-S0}, przyłącza 11/12. Pod nim dwa
+zestyki rozwierne \texttt{-F11.1} i \texttt{-F11.12} (jeśli znajdziesz wariant \emph{z wyzwalaczem
+termicznym} --- lepiej; jeśli nie, zwykłe rozwierne + tekst $\theta$ obok) i wielokropek tekstem
+,,\vdots'' między nimi --- rysujemy pierwszy i ostatni z dwunastu, jak w PDF. Niżej krańcówka
+\texttt{-S1} (rozwierny; wariant z rolką, jeśli dostępny). Obrysuj termiki przerywanym
+prostokątem (E.6) i podpisz: \emph{termiki KSD301 sekcji grzałek, NC szeregowo; moduł B, złącze
+-X5}. Ścieżkę zakończ \ui{Punktem przerwania} \texttt{LB1} (przejście do ścieżki 3 --- w PDF
+odpowiada strzałce /E2.3).
+
+\krok{3} \textbf{Ścieżka 3 (kolumna 3): zezwolenia i cewka -RB.} Zacznij od pary punktu
+przerwania \texttt{LB1}, dalej w dół: zestyki \textbf{zwierne} \texttt{-K2} (13/14),
+\texttt{-K10} (13/14), \texttt{-A2}. Poniżej gałąź równoległa: Trójnik, w lewej odnodze
+\emph{przycisk zwierny} \texttt{-S2} (START), w prawej zestyk zwierny \texttt{-RB} 13/14
+(samopodtrzymanie), odnogi połącz Trójnikiem z powrotem. Pod spodem \textbf{cewka} (hasło:
+\emph{cewka}) z DT \texttt{-RB} (A1/A2) i dalej do szyny 0 V. Podpisy tekstem jak w PDF
+(\emph{potwierdzenie wentylatorów}, \emph{zezwolenie MCU}, \emph{watchdog impulsowy},
+\emph{START}, \emph{samopodtrzymanie}, \emph{przekaźnik bezpieczeństwa}).
+
+\krok{4} \textbf{Ścieżka 5: cewka -K1.} Z szyny +24 V przez zestyk zwierny \texttt{-RB}
+(przyłącza \textbf{23/24}) do \textbf{cewki} \texttt{-K1}, dalej do 0 V. Gdy tylko nadasz cewce
+DT \texttt{-K1}, pod cewką pojawi się \emph{lustro styków} --- automatyczny spis styków -K1
+z E1 z adresami (to samo, co ręcznie wypisane w PDF). Jeśli lustro się nie pokazuje, otwórz
+właściwości cewki i poszukaj ustawienia \emph{lustra styków} (wyświetlanie na cewce);
+w razie trudności: \szukaj{lustro styków}.
+
+\krok{5} \textbf{Ścieżka 6 (nowa w v3): cewka -K4.} Z szyny +24 V w dół: zestyk
+\textbf{rozwierny} z DT \texttt{-S0} i przyłączami \textbf{21/22} (drugi zestyk tego samego
+E-STOPa --- ten sam DT!), pod nim \textbf{cewka} \texttt{-K4}, dalej do 0 V. EPLAN pokaże przy
+obu zestykach -S0 wzajemne odsyłacze, a przy cewce -K4 --- odsyłacz do zestyku CP z E1.
+Tekst: \emph{przerwanie CP (v3)}.
+
+\krok{6} \textbf{-A2 jako urządzenie.} Watchdog to fizyczny moduł: obok ścieżki (jak w PDF na E3)
+wystarczy zestyk z DT \texttt{-A2} tutaj i czarna skrzynka \texttt{-A2} na E3; oba elementy
+z tym samym DT zwiążą się odsyłaczem.
+
+\krok{7} \textbf{Adnotacje} (E.6): przepisz bloki \emph{Zasada}, \emph{-K4 (v3)},
+\emph{Odczyty diagnostyczne}, \emph{Poza łańcuchem} z PDF-a. Porównaj całość ze wzorem.
+
+% =====================================================================
+\section{Arkusz E3 (strona /4) --- obciążenie i sterowanie}
+\label{sec:e3g}
+
+Wzór: strona 4/4 PDF-a. Najwięcej elementów, ale w 80\% to powielanie.
+
+\krok{1} \textbf{Szyny modułu B.} U góry strony wstaw pary punktów przerwania z E1:
+\texttt{L1\_MB}, \texttt{L2\_MB}, \texttt{L3\_MB} (trzy poziome szyny jedna pod drugą)
+oraz niżej \texttt{N\_MB} (czwarta szyna). Każdą szynę zakończ po prawej drugim punktem tej
+samej nazwy albo po prostu pozostaw linię do ostatniej gałęzi. Obrysuj całość przerywanym
+prostokątem (E.6) i podpisz: \emph{MODUŁ B --- obciążenie (zasilanie z -X2, złącze sterownicze
+-X5)}.
+
+\krok{2} \textbf{Gałąź wzorcowa obciążenia.} Zbuduj pionowo, od szyny L1 do szyny N:
+\ui{Trójnik} na L1 $\to$ zestyk mocy \texttt{-K11} $\to$ bezpiecznik \texttt{-F12.1} $\to$
+grzałka: wyszukaj \emph{grzałka} lub \emph{rezystor} (symbol prostokąta rezystora), DT
+\texttt{-E1} $\to$ \ui{Trójnik} na N. Tekst \emph{1,0} (kW) obok grzałki.
+
+\krok{3} \textbf{Powielenie $\times$11.} Zaznacz całą gałąź ramką, \ui{Edytuj} $\to$ \ui{Powiel}
+(E.6), wstaw 11 kopii w równych odstępach (kolejne trzy czwórki podpinaj Trójnikami do szyn L1,
+L2, L3 --- przesuń początek gałęzi na właściwą szynę). Potem dwuklikiem popraw DT i moce:
+\texttt{-K12/-F12.2/-E2/1,5} \ldots \texttt{-K22/-F12.12/-E12/3,0}, zgodnie z tabelą na
+wzorze. Podpis zbiorczy pod gałęziami przepisz z PDF-a.
+
+\krok{4} \textbf{Wentylatory (poprawka v3).} W prawym dolnym rogu części B: tekst/punkt
+\texttt{X4:L} $\to$ bezpiecznik \texttt{-F5} $\to$ zestyk zwierny \texttt{-K3} $\to$ czarna
+skrzynka \texttt{-K2} z tekstem \emph{I$>$} (przekaźnik prądowy --- nadzoruje, że wentylatory
+biorą prąd) $\to$ Trójnik $\to$ dwa silniki: hasło \emph{silnik} (symbol M w kółku), DT
+\texttt{-M3} i \texttt{-M4}, wspólny powrót do \texttt{X4:N}. Obrysuj przerywaną ramką
+z podpisem \emph{wentylatory modułu B (v3: -F5, -K3)}.
+
+\krok{5} \textbf{Zasilacz -G1.} Po lewej: trzy zaciski \texttt{X4:1..3} (L/N/PE), w linii L
+bezpiecznik \texttt{-F4}, dalej czarna skrzynka \texttt{-G1} z tekstem \emph{zasilacz
+24 / 5 / 3,3 V}; z prawej krawędzi skrzynki dwie strzałki tekstowe: \emph{24 V $\to$ /E2.1,
+cewki, -Y1, -K4} i \emph{5 / 3,3 V $\to$ -A1, czujniki}. Tu też umieść pary punktów przerwania
+\texttt{+24V} i \texttt{0V} (te z E2) --- odsyłacze przy szynach E2 zaczną wskazywać na E3.
+
+\krok{6} \textbf{Płyta logiki -A1.} Duża czarna skrzynka \texttt{-A1} z tytułem
+\emph{ESP32-S3 --- płyta logiki}. Na prawej krawędzi opisz magistrale tekstami (E.6), wiersz po
+wierszu jak w PDF: SPI, I2C, UART, 1-W, ADC, DI --- wraz z listą urządzeń. Na dolnej krawędzi
+trzy krótkie linie DO1/DO2/DO3 (v3: rozdzielone!) prowadzące do: cewki \texttt{-K10}, skrzynki
+\texttt{-A2 WDT} i cewki \texttt{-Y1}. Cewki wstawiasz hasłem \emph{cewka}; -A2 to mała czarna
+skrzynka. Nad każdą cewką tekst \emph{24 V}, pod spodem podpis \emph{DO1--DO3 (opto, low-side)}.
+
+\krok{7} \textbf{Generator -A3.} Czarna skrzynka \texttt{-A3} z tekstem jak w PDF; obok niej
+para punktu przerwania \texttt{L1\_A3} z E1 (przyłącze generatora do L1 za oknem -B1).
+
+\krok{8} \textbf{Rząd cewek stopni.} Krótka szyna \emph{24 V} $\to$ 17 małych cewek
+(\texttt{-K11}\ldots\texttt{-K22}, \texttt{-K30}\ldots\texttt{-K33}, \texttt{-K3}) $\to$ szyna
+\emph{0 V}: wstaw jedną cewkę, resztę Powielem, potem popraw DT. Gdy DT cewki -K11 pokryje się
+z zestykiem -K11 z kroku 2 --- pojawią się wzajemne odsyłacze (to jest cała ,,magia'' EPLAN:
+cewka i styki tego samego aparatu = ten sam DT). Nad rzędem umieść skrzynkę z tekstem
+\emph{-U5/-U6 ULN2803 $\leftarrow$ -U3/-U4 (I2C -A1)} i podpis zbiorczy z PDF-a.
+
+\krok{9} \textbf{Adnotacje końcowe} (E.6) i porównanie ze wzorem strona-po-stronie.
+
+% =====================================================================
+\section{Kontrola, drukowanie, eksport}
+
+\begin{itemize}
+\item \textbf{Nawigacja po odsyłaczach:} kliknij prawym na zestyku lub cewce --- w menu
+kontekstowym jest polecenie przejścia do elementu powiązanego (\szukaj{Przejdź do} pokaże
+dostępne warianty). Tak sprawdzisz każdą parę cewka--styki (K1, K2, K3, K4, K10, RB, K11--K33)
+i wszystkie punkty przerwania.
+\item \textbf{Weryfikacja projektu:} \szukaj{Sprawdź} --- uruchom sprawdzenie projektu
+i przejrzyj komunikaty (np. niesparowane punkty przerwania, zdublowane DT). Komunikaty otwierają
+się dwuklikiem wprost na winnym elemencie.
+\item \textbf{Eksport PDF:} karta \ui{Plik} $\to$ pozycja eksportu/publikacji PDF
+(najszybciej: \szukaj{PDF}). Zaznacz wszystkie strony projektu. \emph{Uwaga:} wersja Education
+dodaje do wydruków znak wodny --- to normalne i nie da się go wyłączyć.
+\item \textbf{Drukowanie:} \ui{Plik} $\to$ \ui{Drukuj} (Ctrl+P).
+\end{itemize}
+
+% =====================================================================
+\section{Najczęstsze problemy początkującego}
+
+\begin{longtable}{@{}p{0.42\textwidth}p{0.54\textwidth}@{}}
+\toprule
+\textbf{Objaw} & \textbf{Przyczyna / rozwiązanie}\\
+\midrule
+\endhead
+Symbole się nie łączą & przyłącza nie leżą w jednej osi siatki --- włącz przyciąganie (pasek
+stanu, na dole), przesuń symbol; sprawdź, czy siatka to 4 mm\\
+Nie mogę znaleźć przycisku z przewodnika & wpisz nazwę w \ui{Szukaj polecenia} (lupka na górze)
+--- to zawsze działa; nazwy grup wstążki bywają skrócone przy wąskim oknie\\
+Zamknąłem panel Strony / Centrum wprowadzania & \szukaj{Strony} lub \szukaj{Centrum
+wprowadzania} --- panel wróci\\
+Symbol wstawia się obrócony & podczas wstawiania naciskaj \textbf{Tab} (warianty A--D symbolu)\\
+Lustro styków nie pokazuje się pod cewką & upewnij się, że styki mają \emph{identyczny} DT jak
+cewka (łącznie z myślnikiem); potem właściwości cewki $\to$ ustawienie lustra styków\\
+Punkt przerwania zgłasza brak pary & druga strona musi mieć punkt o \emph{tej samej} nazwie;
+literówka = brak pary\\
+Chcę cofnąć kilka operacji & Ctrl+Z wielokrotnie (pasek szybkiego dostępu, lewy górny róg)\\
+Przypadkowo rysuję na złej stronie & patrz na zakładkę nad edytorem (np. \texttt{=CA1+EAA/2})
+--- dwuklik właściwej strony w nawigatorze\\
+\bottomrule
+\end{longtable}
+
+\section{Co dalej}
+Po narysowaniu E1--E3: uzupełnij stronę tytułową (dwuklik na \texttt{/1}; pola pochodzą
+z właściwości projektu --- \szukaj{Właściwości projektu}), uruchom weryfikację, wyeksportuj PDF
+i porównaj z \texttt{schemat\_elektryczny\_v3\_EPLAN.pdf}. Dalsze etapy (dobór artykułów z bazy,
+zestawienia aparatów, numeracja przewodów) wykraczają poza ten przewodnik --- to naturalny
+następny krok po opanowaniu rysowania.
+
+\end{document}

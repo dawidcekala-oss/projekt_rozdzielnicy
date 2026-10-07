@@ -1,0 +1,2 @@
+# Brak zaleznosci - symulator uzywa wylacznie biblioteki standardowej Pythona 3.8+.
+# Ten plik istnieje tylko informacyjnie.

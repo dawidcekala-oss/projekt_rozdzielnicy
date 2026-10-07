@@ -1,0 +1,80 @@
+12:11:00  Monitor DevKitu na COM5. Ustawienia na starcie:
+12:11:00      Symulacja: samochód: A, odłączony
+12:11:00      Symulacja: awaria uziemienia: nie
+12:11:00      Ładowanie włączone: tak
+12:11:00      Limit prądu: 16 A
+12:11:00      Tryb ładowania: Natychmiast
+12:11:00      Energia docelowa: 10 kWh
+12:11:00      Początek harmonogramu: 22 h
+12:11:00      Koniec harmonogramu: 6 h
+12:11:00      Stan ładowarki: Wolna
+12:11:00      Sygnał Control Pilot: 12 V, brak auta
+12:11:00      Błędy: brak
+12:11:00      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 0,05 kWh | temperatura 23,2 °C
+12:11:25      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 0,05 kWh | temperatura 23,1 °C
+12:12:37      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 0,05 kWh | temperatura 23 °C
+12:15:22  Wi-Fi DevKitu: urządzenie 0a:c8:2c:bd:eb:d6 połączyło się
+12:15:31  [strona WWW] strona DevKitu została otwarta
+12:15:31  [strona WWW] polecenie RPC.Ping
+12:15:31  [strona WWW] polecenie sys.SetConfig
+12:15:32  [strona WWW] polecenie BLE.ListPairedDevices
+12:15:32  [strona WWW] polecenie Script.GetCode
+12:15:33  [strona WWW] polecenie Webhook.ListAllSupported
+12:15:33  [strona WWW] polecenie Script.GetCode
+12:15:33  [strona WWW] polecenie Webhook.ListAllSupported
+12:15:33  [strona WWW] polecenie Script.GetCode
+12:15:33  [strona WWW] polecenie Script.GetCode
+12:15:33  [strona WWW] polecenie Script.GetCode
+12:15:33  [strona WWW] polecenie Script.GetCode
+12:15:41  [strona WWW] Limit prądu: 16 A na 10 A
+12:15:42  [strona WWW] Limit prądu: 10 A na 14 A
+12:15:44  [strona WWW] Limit prądu: 14 A na 16 A
+12:15:46  [strona WWW] Limit prądu: 16 A na 6 A
+12:15:47  [strona WWW] Limit prądu: 6 A na 8 A
+12:15:48  [strona WWW] Limit prądu: 8 A na 12 A
+12:15:49  [strona WWW] Limit prądu: 12 A na 15 A
+12:16:01  [strona WWW] Symulacja: samochód: A, odłączony na B, podłączony
+12:16:01      skrypt: Q11 stan: charger_free -> charger_insert
+12:16:01      Stan ładowarki: Auto podłączone
+12:16:01      Sygnał Control Pilot: 9 V, auto podłączone
+12:16:03  [strona WWW] Symulacja: samochód: B, podłączony na C, gotowy do ładowania
+12:16:03      skrypt: Q11 stan: charger_insert -> charger_charging
+12:16:03      Stan ładowarki: Ładuje
+12:16:03      Sygnał Control Pilot: 6 V, auto gotowe
+12:16:03      odczyty: moc 10,33 kW | energia sesji 0 kWh | licznik całkowity 0,05 kWh | temperatura 23 °C
+12:16:05  [strona WWW] Symulacja: awaria uziemienia: nie na tak
+12:16:07      skrypt: Q11 stan: charger_charging -> charger_fault
+12:16:07      Stan ładowarki: Błąd
+12:16:07      Błędy: earth_fault: brak uziemienia (symulacja)
+12:16:12  [strona WWW] Ładowanie włączone: tak na nie
+12:16:15      odczyty: moc 0 kW | energia sesji 0,012 kWh | licznik całkowity 0,06 kWh | temperatura 23,8 °C
+12:16:15  [strona WWW] Ładowanie włączone: nie na tak
+12:16:33      odczyty: moc 0 kW | energia sesji 0,012 kWh | licznik całkowity 0,06 kWh | temperatura 23,6 °C
+12:16:54  [strona WWW] polecenie rpc.ping
+12:16:55  [strona WWW] strona DevKitu została otwarta
+12:16:55  [strona WWW] polecenie RPC.Ping
+12:16:56  [strona WWW] polecenie BLE.ListPairedDevices
+12:16:56  [strona WWW] polecenie Script.GetCode
+12:16:56  [strona WWW] polecenie Webhook.ListAllSupported
+12:16:56  [strona WWW] polecenie Script.GetCode
+12:16:56  [strona WWW] polecenie Webhook.ListAllSupported
+12:16:56  [strona WWW] polecenie Script.GetCode
+12:16:57  [strona WWW] polecenie Script.GetCode
+12:16:57  [strona WWW] polecenie Script.GetCode
+12:16:57  [strona WWW] polecenie Script.GetCode
+12:16:57      odczyty: moc 0 kW | energia sesji 0,012 kWh | licznik całkowity 0,06 kWh | temperatura 23,4 °C
+12:17:04  [strona WWW] Symulacja: samochód: C, gotowy do ładowania na A, odłączony
+12:17:05      skrypt: Q11 stan: charger_fault -> charger_free_fault
+12:17:05      Stan ładowarki: Wolna, błąd
+12:17:05      Sygnał Control Pilot: 12 V, brak auta
+12:17:06  [strona WWW] Symulacja: awaria uziemienia: tak na nie
+12:17:07      skrypt: Q11 stan: charger_free_fault -> charger_free
+12:17:07      Stan ładowarki: Wolna
+12:17:07      Błędy: brak
+12:17:07  [strona WWW] Ładowanie włączone: tak na nie
+12:17:10  [strona WWW] Limit prądu: 15 A na 7 A
+12:17:13      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 0,06 kWh | temperatura 23,3 °C
+12:17:13  [strona WWW] Tryb ładowania: Natychmiast na Według harmonogramu
+12:17:21  Wi-Fi DevKitu: urządzenie 0a:c8:2c:bd:eb:d6 rozłączyło się
+12:17:35      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 0,06 kWh | temperatura 23,2 °C
+12:18:09      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 0,06 kWh | temperatura 23,1 °C

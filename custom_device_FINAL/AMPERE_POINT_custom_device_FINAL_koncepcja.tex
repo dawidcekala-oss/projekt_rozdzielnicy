@@ -1,0 +1,508 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+\newcommand{\why}[1]{\par\smallskip\noindent\colorbox{blue!6}{\parbox{0.965\linewidth}{\small\textbf{Po ludzku:} #1}}\par\smallskip}
+\newcommand{\poj}[2]{\item \textbf{#1} --- #2}
+
+\title{\textbf{AMPERE POINT --- Wielofunkcyjne urządzenie pomiarowe (custom device)}\\[4pt]
+\large KONCEPCJA FINALNA --- zautomatyzowana stacja testowa EVSE\\
+z użytkowym obciążeniem termicznym (grzejniki olejne, sezonowo wymienne na chłodzenie)\\[2pt]
+\normalsize dokument samodzielny, wydanie objaśnione --- do czytania po kolei}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{9 lipca 2026 --- wersja FINALNA (decyzja Z20)}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\section*{Streszczenie wykonawcze}
+Budujemy \textbf{stację testową ładowarek AC (EVSE)}, która wobec badanej ładowarki udaje samochód
+elektryczny: symuluje stany złącza wg IEC~61851-1, pobiera zadany prąd (1F do 32~A, 3F do 16~A/fazę)
+i rejestruje wyniki --- bez auta testowego. Energia testów jest \textbf{użyteczna od pierwszego dnia
+i bez żadnej elektroniki pośredniczącej}: moduł obciążenia to \textbf{panel dziewięciu sterowanych
+gniazd 230~V}, do których wpina się zwykłe \textbf{grzejniki olejne} --- zimą ogrzewają warsztat;
+latem w te same gniazda wpina się \textbf{urządzenia chłodzące} (klimatyzatory przenośne/osuszacze),
+a jeden grzejnik zostaje jako precyzyjne obciążenie odniesienia. System: \textbf{moduł A} (przenośna
+jednostka sterująco-pomiarowa z testerem PM701E obracanym serwami --- bez zmian względem wcześniejszych
+wersji) + \textbf{panel B} (rozdzielniczka gniazd). Bezpieczeństwo: sprzętowy łańcuch 24~V, którego
+procesor nie może zmostkować. Budżet: \textbf{$\sim$5,2--10,8~tys.~zł} (najtańszy ze wszystkich
+rozważanych wariantów, w granicach pierwotnego budżetu Z6); praca własna $\sim$5--8 dni.
+Ta wersja \textbf{zastępuje} warianty magazynowe (v2--v6) decyzją zamawiającego --- architektura
+pozostaje jednak modularna: panel B można w przyszłości wymienić na szafę magazynu bez zmian w module A.
+\why{Pomysł w jednym zdaniu: ładowarka ,,ładuje samochód'', a tym samochodem jest ściana grzejników,
+które i tak byśmy włączyli, bo w warsztacie zimno --- a latem, zamiast grzać, energia napędza
+klimatyzację. Zero baterii, zero przetwornic, zero strat na konwersji: 100\% energii testu robi
+dokładnie to, czego akurat potrzebuje warsztat.}
+
+\tableofcontents
+
+\section{Jak czytać ten dokument}
+Dokument czyta się \textbf{od początku do końca}: elementarz pojęć (rozdz.~\ref{sec:elementarz}),
+,,spacer po systemie'' (rozdz.~\ref{sec:spacer}), potem wymagania, architektura, bloki i tabele
+wykonawcze. Ramki \colorbox{blue!6}{\small\textbf{Po ludzku:}} tłumaczą intuicyjnie fragmenty
+techniczne --- można je pomijać. \textbf{Konwencja oznaczeń} (jak na schemacie elektrycznym FINAL):
+\textbf{-K} stycznik/przekaźnik, \textbf{-F} zabezpieczenie, \textbf{-Q} rozłącznik, \textbf{-S}
+łącznik/przycisk, \textbf{-X} złącze/zaciski/gniazda, \textbf{-A} zespół elektroniczny, \textbf{-B}
+czujnik, \textbf{-G} źródło, \textbf{-M} silnik/serwo, \textbf{-T} przekładnik, \textbf{-U} układ
+scalony, \textbf{-Y} blokada elektromagnetyczna, \textbf{-P} panel/HMI. Zapis \texttt{/E2.3} $=$
+,,arkusz E2 schematu, kolumna 3''.
+
+\section{Elementarz pojęć}
+\label{sec:elementarz}
+\subsection{Jak ładuje się auto prądem przemiennym}
+\begin{itemize}
+\poj{Ładowarka AC / EVSE / wallbox}{urządzenie, które testujemy (\textbf{DUT} --- device under
+test). Nie przetwarza energii: to inteligentny, zabezpieczony stycznik podający 230/400~V do auta.}
+\poj{OBC}{prostownik \emph{w aucie} --- to on pobiera prąd. Nasza stacja udaje auto, więc musi
+pobierać prąd ,,jak OBC'': płynnie i bez przerw --- to robią grzejniki (obciążenie rezystancyjne).}
+\poj{CP (Control Pilot)}{jedyna linia ,,rozmowy'': ładowarka podaje $\pm$12~V, auto rezystorami
+ustawia stany \textbf{A} $+12$~V (brak auta), \textbf{B} $+9$~V (podłączone), \textbf{C} $+6$~V
+(,,ładuj'' --- ładowarka zamyka stycznik), \textbf{D} $+3$~V, \textbf{E/F} 0/$-12$~V (błąd).}
+\poj{PWM na CP}{deklaracja prądu: I[A] $=$ wypełnienie[\%]$\times$0,6 (53\% $\approx$ 32~A).
+Pobór stacji nigdy nie przekracza deklaracji --- pilnuje tego firmware.}
+\poj{PP}{rezystor we wtyczce koduje obciążalność kabla (1,5~k\ohm=13~A, 680~\ohm=20~A,
+220~\ohm=32~A, 100~\ohm=63~A).}
+\poj{Type 2}{europejskie złącze AC: L1/L2/L3/N/PE $+$ CP $+$ PP.}
+\end{itemize}
+\subsection{Pomiary ochronne (po co jest każdy z pięciu)}
+\begin{itemize}
+\poj{Ciągłość PE}{czy żyła ochronna naprawdę łączy obudowę z uziemieniem ($\ge$200~mA, mała
+rezystancja) --- fundament reszty ochrony.}
+\poj{Rezystancja izolacji}{napięcie stałe 250/500/1000~V między żyłami a PE, wynik $\ge$1~M\ohm{}
+(dla urządzeń z elektroniką 250~V, żyły czynne można zewrzeć).}
+\poj{Impedancja pętli Z$_s$}{czy zwarcie L--PE da prąd wystarczający do szybkiego zadziałania
+zabezpieczenia: Z$_s\cdot$I$_a\le$U$_o$.}
+\poj{RCD i typy}{różnicówka mierzy różnicę prądów (upływ). Typ \textbf{AC}: tylko sinusoidalny;
+\textbf{A}: też pulsujący DC; \textbf{B}: również gładki DC. Test: prąd i czas zadziałania, U$_B$.}
+\poj{RDC-DD (6 mA DC)}{moduł w ładowarce wykrywający gładki upływ DC $\ge$6~mA (IEC~62955) ---
+zwykły przekładnik go nie widzi (transformator nie przenosi DC), stąd w stacji czujnik fluxgate
+-B1 i generator prądu upływu -A3.}
+\poj{Uziom, metoda E/S/H}{pomiar rezystancji własnego pręta uziemiającego stacji elektrodami
+pomocniczymi w gruncie ($\sim$20~m); przyrząd UT522.}
+\poj{Przyrząd wzorcowany}{miernik ze świadectwem --- tylko taki do pomiarów protokołowych
+(UT595/UT522); stacja \emph{prowadzi} te pomiary i robi sama to, czego mierniki nie umieją.}
+\end{itemize}
+\subsection{Obciążenie termiczne (serce wariantu finalnego)}
+\begin{itemize}
+\poj{Grzejnik olejny}{przenośny grzejnik 230~V (typowo 1000/1500/2500~W przełączane dwoma
+klawiszami): grzałki zanurzone w oleju w szczelnych żebrach. Pobór czysto rezystancyjny
+(PF$=$1, idealna sinusoida), duża bezwładność cieplna, wbudowany termostat $+$ bezpiecznik
+termiczny $+$ wyłącznik przewrócenia. Gotowy, tani ($\sim$150--250~zł), certyfikowany odbiornik.}
+\poj{Termostat grzejnika}{wyłącza grzałki po nagrzaniu pomieszczenia/oleju --- podczas testu
+ustawiany na maksimum; stacja i tak mierzy prąd każdej fazy i wykryje, gdyby któryś grzejnik
+,,odpuścił'' (rozdz.~\ref{sec:cieplo}).}
+\poj{Klimatyzator przenośny (monoblok)}{latem zastępuje grzejniki w tych samych gniazdach:
+pobiera $\sim$1,0--1,4~kW i \emph{chłodzi} warsztat. Uwaga: sprężarka startuje udarowo i cyklicznie
+--- pobór jest zmienny, dlatego do precyzyjnych kroków obciążenia zawsze zostaje jeden grzejnik
+,,odniesienia'' (rozdz.~\ref{sec:lato}).}
+\poj{PF (współczynnik mocy)}{stosunek mocy czynnej do pozornej. Grzejnik: PF$=$1 (jak idealny OBC);
+klimatyzator: PF$\approx$0,9 i zmienny --- kolejny powód, by dokładne pomiary robić na grzejnikach.}
+\end{itemize}
+\subsection{Sterowanie i aparatura}
+\begin{itemize}
+\poj{Stycznik/przekaźnik}{łącznik sterowany cewką (A1/A2); styk zwierny \textbf{NO} 13-14,
+rozwierny \textbf{NC} 11-12; styki mocy 1/2\ldots7/8.}
+\poj{Łańcuch bezpieczeństwa (prąd spoczynkowy)}{szereg styków wszystkich zabezpieczeń zasilający
+cewkę stycznika mocy: cokolwiek się otworzy --- moc znika. Fizyka, nie oprogramowanie.}
+\poj{Watchdog}{układ wymagający od procesora ciągłych impulsów ,,żyję''; zawieszenie firmware
+$=$ rozpad łańcucha.}
+\poj{Optoizolacja}{separacja galwaniczna sygnałów (LED$+$fototranzystor) między logiką 3,3~V
+a obwodami 24/230~V.}
+\poj{ESP32-S3 i magistrale}{mikrokontroler z WiFi; SPI/I2C/1-Wire/UART --- standardy podłączenia
+czujników, ekspanderów i wyświetlacza.}
+\poj{Przekładnik prądowy (CT)}{pomiar prądu bez rozcinania obwodu logiki; -T1..-T3 40~A/1~V.}
+\poj{PM701E}{posiadany tester-adapter EVSE: pokrętła stanu i deklaracji prądu, gniazda bananowe,
+wyjście CP. Pracuje nietknięty --- serwa kręcą jego pokrętłami z zewnątrz.}
+\end{itemize}
+
+\section{Spacer po systemie --- pełny test w siedmiu krokach}
+\label{sec:spacer}
+\begin{enumerate}
+\item Serwisant wpina wtyk Type~2 badanej ładowarki w gniazdo \textbf{-X1} modułu A, a na panelu B
+--- zgodnie z podpowiedzią ekranu --- sprawdza, że w gniazdach siedzą grzejniki z nastawami wg
+tabeli (zimą; latem: klimatyzatory $+$ grzejnik odniesienia). Start testu $=$ self-test stacji.
+\item Pomiary ,,na zimno'': stacja odłącza swoją elektronikę od żył (przekaźniki -K30..-K33),
+serwisant miernikiem UT595 wykonuje --- prowadzony przez HMI --- próbę izolacji (250~V) i ciągłość
+PE przez gniazda bananowe PM701E; wyniki wpisuje (bramki).
+\item Stany złącza: serwo przekręca pokrętło PM701E na B, potem C; niezależny odczyt CP potwierdza
+każdy krok. W stanie C ładowarka zamyka stycznik --- żyły pod napięciem; blokada -Y1 rygluje wtyk.
+\item Testy zabezpieczeń DUT: generator -A3 podaje rosnący gładki prąd DC L1$\to$PE --- stacja
+rejestruje, przy ilu mA i po jakim czasie ładowarka się wyłączy (RDC-DD, $\le$6~mA); RCD typu~A
+--- protokołowo UT595. Po każdym zadziałaniu prowadzony reset i powrót do C.
+\item Pętla Z$_s$ (UT595, wpis) i test mocy: stacja deklaruje np. 32~A, zamyka -K1 i kolejne
+styczniki gniazd -K11..-K19 wg planu kroków 25/50/75/100\%; grzejniki pobierają prąd. Przez
+15--30~min (\emph{soak}) rejestrowane są U/I/P per faza, $\Delta$T wtyku (kamera IR) i stabilność.
+\item Testy błędów (przyciski CP/PE Error na PM701E), pomiar uziomu (UT522) --- i raport:
+CSV/JSON $+$ MQTT do Home Assistant, protokół PDF na PC. Ciepło z testu zostało w warsztacie
+(albo chłód --- latem).
+\item Przez cały czas czuwa sprzętowy łańcuch 24~V: E-STOP, pętla obecności panelu B, krańcówka
+pokrywy, zezwolenie i watchdog procesora. Cokolwiek pęknie --- stycznik -K1 puszcza, a przekaźnik
+-K4 przerywa CP, więc ładowarka sama też odcina napięcie.
+\end{enumerate}
+
+\section{Cel, kontekst i wymagania}
+\subsection{Kontekst}
+Zakład AMPERE POINT importuje, testuje, sprzedaje i serwisuje ładowarki AC (wallboxy 11/22~kW
+serii PRIME/HM, przenośne Q/P/B; Type~2; firmware producenta zamknięty). Stanowisko ma:
+(a) umożliwiać \textbf{obowiązkowe pomiary elektryczne} stacji ładowania, (b) prowadzić
+\textbf{testy funkcjonalne pod realnym obciążeniem} (kontrola importu, serwis, regresje po
+firmware) --- bez samochodu testowego.
+\subsection{Pięć obowiązkowych pomiarów (,,Przewodnik pomiarów stacji ładowania'', W-wa 2024)}
+\begin{enumerate}
+\item \textbf{Ciągłość przewodów ochronnych} --- prąd $\ge$200~mA, kryterium niskiej rezystancji.
+\item \textbf{Rezystancja izolacji} --- 250/500/1000~V~DC, $\ge$1~M\ohm{} (250~V dla obwodów
+z elektroniką; żyły czynne można zewrzeć i mierzyć względem PE).
+\item \textbf{Rezystancja uziemienia} --- metoda 3-elektrodowa (E/S/H), gdy stacja ma własny uziom.
+\item \textbf{Sprawdzenie RCD} --- typ, prąd i czas zadziałania, U$_B$; dodatkowo RDC-DD 6~mA~DC
+(IEC~62955).
+\item \textbf{Impedancja pętli zwarcia Z$_s$} --- warunek Z$_s\cdot$I$_a\le$U$_o$.
+\end{enumerate}
+Pomiary 1, 2, 4, 5 wymagają stanu ,,ładuje'' i dostępu do żył --- stąd tester PM701E na odczepie
+i własne gniazdo pojazdowe.
+\subsection{Wymagania funkcjonalne stacji}
+\begin{itemize}
+\item symulacja stanów A/B/C/D/E z weryfikacją; deklaracje prądu 13/20/32/63~A (pokrętła PM701E);
+\item pobór prądu: 1F 6--32~A oraz 3F do 16~A/fazę (11~kW), kroki $\le$25\% deklaracji, soak
+15--30~min z rejestracją; pobór sinusoidalny ciągły (PF$\approx$1) jak prawdziwy OBC;
+\item testy zabezpieczeń: RDC-DD 6~mA~DC automatycznie; RCD typ~A, pętla, izolacja, ciągłość ---
+miernikiem wzorcowanym w sekwencji prowadzonej;
+\item termowizja wtyku podczas soak; pomiar U/I/P/cos$\varphi$ per faza;
+\item energia testów \textbf{użyteczna} (ogrzewanie zimą / chłodzenie latem), bez konieczności
+magazynowania i bieżącej obecności odbiorów specjalnych;
+\item rejestracja (SD + MQTT$\to$Home Assistant), protokół PDF na PC;
+\item rozłączanie mocy sprzętowe, niezależne od firmware.
+\end{itemize}
+
+\section{Zasady projektowe}
+\begin{enumerate}
+\item \textbf{Spójność do poziomu złączy i sygnałów} --- architektura przenosi się 1:1 na schemat.
+\item \textbf{Bezpieczeństwo sprzętowe, nie programowe} --- łańcuch styków 24~V zasila cewkę
+stycznika mocy; firmware tylko zezwala (-K10) i dowodzi życia (-A2).
+\item \textbf{Praktyczna wykonalność} --- komponenty z półki; obciążeniem są \emph{gotowe,
+certyfikowane urządzenia AGD}, nie własne konstrukcje mocy.
+\item \textbf{Wiarygodność protokołów} --- pomiary urzędowe przyrządami wzorcowanymi
+(UT595/UT522) prowadzonymi przez stację.
+\item \textbf{Energia zawsze użyteczna, tor zawsze prosty} --- zero konwersji: prąd z badanej
+ładowarki płynie prosto do odbiorników, których warsztat i tak potrzebuje (ciepło zimą, chłód
+latem). Modularność: panel gniazd można kiedyś wymienić na szafę magazynu bez zmian modułu A.
+\end{enumerate}
+\why{Poprzednie wersje (v2--v6) magazynowały energię w baterii --- elegancko, ale drogo (bateria,
+prostowniki, falownik) i z ryzykami (protokół CAN, ogniwa, UPS). Wersja finalna wybiera prostotę:
+skoro energia ma być użyteczna, niech od razu robi klimat w warsztacie. Najmniej elementów $=$
+najmniej awarii $=$ najniższy koszt.}
+
+\section{Architektura systemu}
+\subsection{Dwa moduły i przepływ energii}
+\begin{center}\small
+DUT (ładowarka, zasilana z instalacji) $\to$ wtyk Type~2 $\to$ \textbf{MODUŁ A} [gniazdo -X1 $\to$
+rozłącznik -Q0 $\to$ bezpieczniki -F1..3 $\to$ czujnik różnicowy -B1 $\to$ przekładniki -T1..3 $\to$
+stycznik -K1 $\to$ gniazdo CEE -X2] $\to$ przewód 5$\times$6~mm$^2$ $\to$ \textbf{PANEL B}
+[9 obwodów: stycznik -K11..-K19 $+$ zabezpieczenie -F12.1..9 $\to$ gniazda -X10.1..9] $\to$
+\textbf{grzejniki olejne} (zimą) / \textbf{klimatyzatory $+$ grzejnik odniesienia} (latem).
+\end{center}
+Równolegle z -X1 wychodzi \textbf{odczep sterujący -X3} (7 żył: L1/L2/L3/N/PE/CP/PP, $\le$1~m) do
+testera \textbf{PM701E}, którego pokrętła obracają serwa; prąd obciążenia NIE płynie przez PM701E.
+Moduł A jest przenośny (pomiary terenowe z UT595/UT522); panel B wisi w warsztacie.
+\why{Moduł A --- ,,głowa'' --- zostaje dokładnie taki, jak w poprzednich wersjach (cała inwestycja
+w pomiary i bezpieczeństwo przeżywa każdą zmianę odbiornika). Panel B to już tylko ,,listwa
+zasilająca na sterydach'': dziewięć gniazd, każde z własnym stycznikiem i bezpiecznikiem.}
+\subsection{Dlaczego grzejniki olejne są dobrym ,,samochodem''}
+OBC auta pobiera prąd sinusoidalny o stałej wartości. Grzejnik olejny robi dokładnie to samo
+(czysta rezystancja, PF$=$1, zero przerw i udarów), a przy tym: jest fabrycznie zabezpieczony
+(termostat, bezpiecznik termiczny, czujnik przewrócenia), nie wymaga chłodzenia wymuszonego
+(olej $+$ żebra $=$ własny radiator o dużej bezwładności) i kosztuje ułamek ceny rezystorów
+przemysłowych o tej mocy. Regulacja skokowa (klawisze mocy $+$ dobór liczby gniazd) w zupełności
+pokrywa wymagane kroki 25/50/75/100\% deklaracji.
+\subsection{Konfiguracja mocy}
+\begin{longtable}{@{}p{0.30\textwidth}p{0.44\textwidth}p{0.18\textwidth}@{}}
+\toprule
+\textbf{Tryb} & \textbf{Obciążenie} & \textbf{Pokrycie}\\
+\midrule
+1F do 32 A (7,4 kW) & sekcja L1: 3 gniazda $\times$ grzejnik 2,5 kW $=$ 7,5 kW & pełne, bez
+przełączania\\
+3F do 16 A/fazę (11 kW) & po 2 gniazda na fazę (2,5$+$1,5 kW $=$ 4 kW $>$ 3,7 kW) & pełne\\
+kroki 25/50/75/100\% & kombinacje gniazd (-K11..19) $\times$ nastawy klawiszy (1,0/1,5/2,5 kW)
+wg tabeli kalibracji & krok $\le$0,5 kW\\
+margines 3$\times$32 A & 9 gniazd $\times$ 2,5 kW $=$ 22,5 kW (pełna rozbudowa grzejników) &
+opcja przyszła\\
+\bottomrule
+\end{longtable}
+\why{Kluczowa wygrana względem wariantu magazynowego: test 1F 32~A mieści się w JEDNEJ sekcji
+(3$\times$2,5~kW), więc znika pole przełączeń -X6 i wszelkie ręczne mostki. Zmiana trybu
+1F$\leftrightarrow$3F to wyłącznie inny plan załączeń styczników --- czysto programowa.}
+
+\section{Moduł A --- bloki funkcjonalne (bez zmian koncepcyjnych)}
+Blokowo identyczny z wersjami poprzednimi --- pełne omówienie aparatów zawiera objaśnienie do
+schematu; tu zestawienie ról:
+\begin{itemize}
+\item \textbf{B1 --- wejście i tor mocy:} -X1 (Type~2 32~A z blokadą -Y1), odczep -X3 z zestykiem
+-K4 w linii CP (E-STOP/zanik 24~V $\Rightarrow$ DUT sam się wyłącza), -Q0, -F1..-F3 (gG 32~A),
+-B1 (czujnik różnicowy AC/DC fluxgate --- RCM $+$ weryfikacja generatora), -T1..-T3 (CT 40~A/1~V),
+-K1 (stycznik główny 4P), -X2 (CEE 32~A); przekroje 6~mm$^2$, PE nieprzerwane.
+\item \textbf{B2 --- symulacja stanów:} PM701E $+$ serwa -M1/-M2 (DS3218) na ramie nieinwazyjnej;
+kalibracja 5$+$5 pozycji; każda zmiana potwierdzana odczytem CP.
+\item \textbf{B4 --- metering:} -U2 ATM90E36A (SPI): U/I/P/Q/cos$\varphi$/f per faza; dzielniki
+odłączane -K31..-K33 na czas prób izolacji; opto obecności faz (czasy zadziałań, ms).
+\item \textbf{B5 --- generator upływu -A3:} źródło 0--20~mA DC (DAC$\to$MOSFET, bocznik$+$AMC1301),
+przyłącze L1 za oknem -B1 (przez -K30) $\to$ PE; rampa $\to$ prąd i czas zadziałania RDC-DD.
+\item \textbf{B6 --- akwizycja CP/PP:} dzielnik$+$komparator; poziom stanu i wypełnienie PWM.
+\item \textbf{B7 --- termika:} MLX90640 nad zatoką -X1 ($\Delta$T wtyku), 2$\times$MLX90614,
+DS18B20 (szyny, -K1, otoczenie).
+\item \textbf{B8 --- rdzeń -A1:} ESP32-S3; SPI/I2C/1-Wire/UART/ADC/PWM/DO/DI (opto); zasilacz -G1
+z własnego przewodu -X4 (nigdy z DUT). \emph{Względem wariantu magazynowego znika magistrala CAN
+--- panel B nie ma elektroniki.}
+\item \textbf{B9 --- łańcuch bezpieczeństwa 24 V:} rozdz.~\ref{sec:lancuch}.
+\item \textbf{B10 --- panel modułu A:} E-STOP, START, napęd -Q0, kolumna LED, gniazda bananowe
+(tabliczka!), zaciski E/S/H, HMI DWIN 7$''$ w pokrywie.
+\end{itemize}
+
+\section{Panel B --- obciążenie termiczne użytkowe}
+\subsection{Budowa panelu}
+Rozdzielniczka natynkowa IP44 ($\sim$24--36 modułów) na ścianie warsztatu (albo w skrzynce
+przenośnej): wejście \textbf{CEE 32~A 5p} (przewód z -X2 modułu A), rozdział na 3 sekcje fazowe,
+w każdej sekcji \textbf{3 obwody gniazd}: stycznik modułowy \textbf{-K11..-K19} (16~A, cewka 24~V)
+$+$ wyłącznik nadprądowy \textbf{-F12.1..-F12.9} (B16) $+$ gniazdo \textbf{-X10.1..-X10.9}
+(Schuko 16~A, opisane: sekcja/faza/numer). Złącze sterownicze \textbf{-X5}: cewki styczników,
+\textbf{pętla obecności} (mostek w złączu --- odłączenie przewodu sterowniczego $=$ rozpad
+łańcucha bezpieczeństwa) oraz 2$\times$DS18B20 wnętrza panelu. Żadnej innej elektroniki w panelu.
+\subsection{Obciążenia: zima / lato}
+\label{sec:lato}
+\textbf{Zima (tryb podstawowy):} 3--9 grzejników olejnych 2,5~kW (klasa 1000/1500/2500~W).
+Minimum funkcjonalne: 3 szt. (pełny test 1F 32~A $+$ 3F do $\sim$10~A/fazę); komplet: 6--9 szt.
+(pełne 3F 16~A z zapasem i rotacją). Przed sezonem testów nastawy termostatów: maksimum.
+\textbf{Lato:} w te same gniazda --- klimatyzatory przenośne/osuszacze (chłodzą warsztat,
+zużywając energię testu); \textbf{jeden grzejnik pozostaje całorocznie} jako obciążenie
+odniesienia do kroków wymagających stabilności (klima ma pobór cykliczny i udar sprężarki).
+Stacja traktuje gniazda z klimą jako ,,obciążenie użytkowe'' (luźniejsze kryteria stabilności),
+a gniazdo z grzejnikiem --- jako ,,odniesienie''.
+\why{Dlaczego nie same klimy: sprężarka włącza się i wyłącza, kiedy chce, a przy starcie pobiera
+udarowo kilka razy więcej --- wykres prądu wygląda jak piła. Do ogrzania/schłodzenia warsztatu
+to bez znaczenia, ale do zdania ,,ładowarka trzyma 32~A przez 30 minut'' potrzebny jest odbiornik,
+który pobiera równo --- i od tego jest grzejnik odniesienia.}
+\subsection{Zarządzanie ciepłem i planowanie testów}
+\label{sec:cieplo}
+Firmware zna \textbf{tabelę kalibracji}: zmierzone (nie nominalne) moce każdego gniazda przy
+każdej nastawie (procedura U4 przewodnika). Plan kroków 25/50/75/100\% dobiera kombinacje gniazd
+i podpowiada operatorowi nastawy klawiszy przed testem. W trakcie: -U2 porównuje pobór z planem;
+\textbf{odchyłka $>$10\%} (np. zadziałał termostat) $=$ pauza kroku, komunikat (,,przestaw/zmień
+grzejnik''), soak liczy tylko stabilne okna. Zimą problem praktycznie nie występuje (zimne
+otoczenie); latem obowiązuje tryb klima $+$ grzejnik odniesienia. Rejestr: energia testu
+i szacunek ciepła/chłodu oddanego do warsztatu w raporcie.
+\subsection{BHP rozmieszczenia}
+Grzejniki min. 0,5~m od materiałów palnych, nie przykrywać, pozycja pionowa (czujnik przewrócenia
+i tak jest); przewody odbiorników po podłodze w mostkach najazdowych; gniazda panelu opisane;
+klimatyzatory z odprowadzeniem powietrza/skroplin wg instrukcji producenta.
+
+\section{Łańcuch bezpieczeństwa 24 V}
+\label{sec:lancuch}
+Szeregowo od $+$24~V: \textbf{-S0} E-STOP (drugi zestyk 21/22 zwalnia -K4 $\Rightarrow$ przerwa CP)
+$\to$ \textbf{pętla obecności -X5} (mostek w złączu panelu B --- wyjęcie wtyku sterowniczego
+otwiera łańcuch) $\to$ \textbf{-S1} krańcówka pokrywy strefy mocy modułu A $\to$ \textbf{-K10}
+zezwolenie MCU $\to$ \textbf{-A2} watchdog impulsowy $\to$ [\textbf{-S2} START $\parallel$
+samopodtrzymanie] $\to$ cewka \textbf{-RB} (styki wymuszone); szczebel 2: styk -RB $\to$ cewka
+\textbf{-K1}. Każda przerwa $=$ moc odcięta; powrót wyłącznie przyciskiem START.
+\emph{Względem wariantu magazynowego łańcuch jest krótszy}: znikają termiki radiatorów
+przetwornic (-F11.x) i potwierdzenie wentylatorów (-K2/-K3) --- grzejniki mają własne, fabryczne
+zabezpieczenia termiczne, a panel B nie wymaga chłodzenia. Nadzór temperatury panelu: 2$\times$
+DS18B20 (programowo, z progiem ostrzegawczym).
+\why{Łańcuch pilnuje teraz czterech rzeczy: człowieka (E-STOP), kompletności instalacji (czy
+panel B jest podłączony), zamknięcia strefy mocy (krańcówka) i zdrowia procesora (zezwolenie
+$+$ watchdog). Ochronę cieplną odbiorników oddaliśmy tam, gdzie ona fabrycznie jest --- do
+grzejników; a nadprądową --- wyłącznikom B16 przy każdym gnieździe.}
+
+\section{Sekwencja pomiarowa (pełny przebieg)}
+\begin{enumerate}
+\item \textbf{Self-test:} człony łańcucha, komunikacja (CDSR, -U2, HMI), serwa do BB/NC
+z potwierdzeniem CP, \textbf{kontrola planu obciążenia} (HMI: lista gniazd i nastaw do
+potwierdzenia przez operatora).
+\item \textbf{Tryb izolacji:} -K30..-K33 otwarte; UT595 przez gniazda bananowe (250~V, żyły
+zwarte wzgl. PE); wynik $\ge$1~M\ohm{} $=$ bramka.
+\item \textbf{Ciągłość PE:} UT595 $\ge$200~mA; wpis $=$ bramka.
+\item \textbf{Stan B} (CP $+9$~V), pre-testy PM701E; \textbf{stan C} (CP $+6$~V): DUT zamyka
+stycznik, -U2 weryfikuje napięcia/kolejność faz, -Y1 rygluje.
+\item \textbf{Zabezpieczenia:} RDC-DD automatycznie (-A3: rampa, $\le$6~mA, czas z opto);
+RCD typ~A protokołowo (UT595); po zadziałaniach prowadzony reset.
+\item \textbf{Pętla Z$_s$} (UT595); wpis.
+\item \textbf{Obciążenie/soak:} serwo prądu $\to$ deklaracja; styczniki -K11..-K19 wg planu
+kroków 25/50/75/100\% (pobór zawsze $\le$ deklaracji CP); soak 15--30~min: U/I/P per faza,
+$\Delta$T wtyku, stabilność; kryteria pass/fail.
+\item \textbf{Testy błędów:} CP~Error/PE~Error (PM701E), czasy reakcji DUT.
+\item \textbf{Uziom} (UT522, E/S/H) --- niezależnie; \textbf{raport} (SD/MQTT/PDF $+$ bilans
+energii oddanej do warsztatu).
+\end{enumerate}
+Warunki ciągłe: CP zgodne z komendą, RCM $<$ progu, pobór zgodny z planem ($\pm$10\%), E-STOP
+zwolniony, pętla -X5 zamknięta --- naruszenie $=$ przerwanie i log przyczyny.
+
+\section{Firmware -A1 --- specyfikacja funkcji}
+\begin{itemize}
+\item \textbf{Sekwencer} z bramkami (izolacja $\to$ PE $\to$ B $\to$ C $\to$ zabezpieczenia $\to$
+Z$_s$ $\to$ soak) i ścieżkami błędów; tryb serwisowy ręczny z blokadami.
+\item \textbf{Serwa:} kalibracja 5$+$5 pozycji (EEPROM), najazd, weryfikacja CP.
+\item \textbf{Plan obciążenia:} tabela kalibracji mocy gniazd (U4), dobór kombinacji do kroków,
+prowadzenie operatora (nastawy), nadzór odchyłki $\pm$10\%, okna stabilne soaku, tryb letni
+(gniazda ,,użytkowe'' vs ,,odniesienia'').
+\item \textbf{Akwizycja:} CP (poziom$+$duty), PP, -U2 (200~ms), CDSR (50~ms), DS18B20 (2~s,
+w tym panel B), bocznik -A3 (1~ms), opto faz (ms).
+\item \textbf{Bezpieczeństwo programowe} (uzupełnia łańcuch): spójność CP$\leftrightarrow$plan
+poboru, limity $\Delta$T wtyku, timeout stanów, próg temperatur panelu.
+\item \textbf{HMI (DWIN):} start/status, prowadzenie UT595 z polami wpisu, plan obciążenia
+z listą kontrolną gniazd, wykres soak, alarmy, serwis, kalibracja.
+\item \textbf{Rejestracja:} SD (CSV 1~s $+$ JSON wyniku), RTC, identyfikator DUT; MQTT $\to$
+Home Assistant.
+\end{itemize}
+
+\section{Obudowy i rozmieszczenie}
+\textbf{Moduł A} --- rozdzielnica przenośna IP54 $\sim$600$\times$400$\times$250 (strefa mocy za
+osłoną z krańcówką / strefa analogowa / logika; półka PM701E z ramą serw; HMI w pokrywie; panel:
+-X1, -X2, E-STOP, START, -Q0, LED, banany, E/S/H, przepust -X4). \textbf{Panel B} --- rozdzielniczka
+IP44 na ścianie: wejście CEE u dołu, 3 rzędy aparatów (sekcje L1/L2/L3), gniazda -X10.1..9 na
+licu, -X5 z boku; grzejniki rozstawione wg BHP wokół stanowiska/warsztatu (zimą tam, gdzie ma być
+ciepło); latem klimatyzatory przy stanowiskach pracy $+$ grzejnik odniesienia przy panelu.
+Szczegóły przestrzenne: \textbf{wizualizacja 3D FINAL} (HTML, tryb zima/lato).
+
+\section{Plan realizacji --- etapy, czasy, zakupy}
+Etap 0 pozostaje \textbf{bramką wydatkową} dla jedynych niepewnych elementów (mechanika serw,
+czujnik CDSR); reszta wariantu finalnego to katalogowa aparatura i AGD.
+\begin{longtable}{@{}p{0.06\textwidth}p{0.46\textwidth}p{0.22\textwidth}p{0.18\textwidth}@{}}
+\toprule
+\textbf{Etap} & \textbf{Zakres i zadania} & \textbf{Zakupy kluczowe} & \textbf{Czas własny}\\
+\midrule
+0 & Weryfikacje na stole: (a) serwa na PM701E --- rama, kalibracja, trwałość, potwierdzanie CP;
+(b) tor CP (dzielnik$+$capture); (c) próbka czujnika CDSR $+$ generator -A3 na płytce &
+serwa, CDSR, drobnica elektroniczna & 2--3 dni\\
+1 & Moduł A kompletny (tor mocy, łańcuch, bloki pomiarowe, HMI, firmware rdzeń) $+$ panel B
+(9 obwodów) $+$ 3 grzejniki $\to$ pełny test 1F 32~A i 3F do $\sim$10~A/fazę; kalibracja tabeli
+mocy (U4) & obudowy, aparaty, gniazda, 3$\times$grzejnik 2,5~kW & 3--4 dni\\
+2 & Komplet 3F: $+$3--6 grzejników (pełne 3$\times$16~A z rotacją), tryb letni (klimatyzatory
+--- jeśli zakład nie ma, zakup wg potrzeb chłodzenia), aktuatory przycisków PM701E (opcja) &
+grzejniki, ew. klimatyzatory & 1 dzień\\
+3 & Rozszerzenia (opcje): front-endy przesiewowe, wzorcowanie bloków własnych, \emph{wymiana
+panelu B na szafę magazynu energii wg koncepcji v6} --- moduł A gotowy bez zmian & wg decyzji & ---\\
+\bottomrule
+\end{longtable}
+
+\section{Kosztorys zbiorczy (PL, lipiec 2026, $\pm$30\%)}
+\begin{longtable}{@{}p{0.62\textwidth}r@{}}
+\toprule
+\textbf{MODUŁ A (bez zmian względem poprzednich wersji)} & \textbf{zł}\\
+\midrule
+-X1 Type 2 z blokadą $+$ odczep -X3 (7 żył) z wtykiem & 400--900\\
+tor mocy: -Q0, -F1..3, szyny 6 mm$^2$, -K1, -X2 & 500--900\\
+łańcuch bezpieczeństwa: E-STOP (2-torowy), -RB, -K10, -K4, -A2, krańcówka & 350--600\\
+-B1 CDSR/RCM $+$ generator -A3 (DAC, AMC1301, MOSFET) & 350--800\\
+serwa DS3218 $\times$2 $+$ rama $+$ sprzęgła & 150--300\\
+termowizja: MLX90640 $+$ 2$\times$MLX90614 $+$ DS18B20 & 400--600\\
+metering: ATM90E36A $+$ 3$\times$CT $+$ dzielniki $+$ -K30..33 & 200--400\\
+logika: ESP32-S3, MCP23017, ULN2803, opto, RTC, SD, -G1, -F4 & 250--450\\
+HMI DWIN 7$''$ $+$ LED $+$ przyciski & 300--500\\
+obudowa IP54, przegrody, PCB, złącza, drobnica & 900--1600\\
+\midrule
+\textbf{Moduł A razem} & \textbf{3800--7050}\\
+\midrule
+\textbf{PANEL B $+$ OBCIĄŻENIA} & \\
+\midrule
+rozdzielniczka IP44 24--36M $+$ wejście CEE 32 A $+$ -X5 & 250--450\\
+9$\times$ stycznik modułowy 16 A (cewka 24 V) & 360--540\\
+9$\times$ wyłącznik B16 $+$ 9$\times$ gniazdo panelowe & 220--420\\
+okablowanie, listwy, opisy, mostki najazdowe & 150--300\\
+grzejniki olejne 2,5 kW: 3 szt. (minimum) / 9 szt. (komplet) & 450--2250\\
+\emph{(opcja lato) klimatyzatory przenośne 1--2 szt., jeśli zakład nie posiada} & \emph{0--3000}\\
+\midrule
+\textbf{Panel B $+$ grzejniki razem} & \textbf{1430--3960}\\
+\textbf{STACJA RAZEM (bez opcji klimatyzatorów)} & \textbf{$\sim$5230--11010}\\
+\bottomrule
+\end{longtable}
+Plan pomostowy (niezależny): UT595 $+$ UT210E $+$ UT522 $\approx$ 2,8--3,4 tys.~zł --- przyrządy
+są częścią systemu (pomiary protokołowe).
+\why{Wariant finalny wraca do pierwotnego budżetu (Z6: 6,3--11,6 tys.) i schodzi poniżej niego,
+bo obciążeniem są urządzenia AGD kupowane od ręki --- a jeśli zakład już ma grzejniki lub
+klimatyzatory, koszt spada o kolejne setki złotych. Dla porównania: wariant magazynowy v6 to
+10--18,2 tys.}
+
+\section{Rejestr ryzyk}
+Jak czytać: R1--R8 dotyczą modułu A (bez zmian od wersji 1--5); R9--R24 dotyczyły wariantów
+magazynowych i \textbf{nie obowiązują} w wersji finalnej (zostają w koncepcji v6 na wypadek
+przyszłej rozbudowy); nowe R25--R27 dotyczą obciążenia termicznego.
+\begin{longtable}{@{}p{0.05\textwidth}p{0.55\textwidth}p{0.34\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Ryzyko} & \textbf{Mitygacja}\\
+\midrule
+R1 & PM701E na odczepie: poprawność pre-testów, prąd gniazd bananowych (brak instrukcji!) &
+test w etapie 0; pozyskać instrukcję\\
+R2 & mechanika serw: swoboda pokręteł, trwałość & etap 0 na sprzęcie; fallback: własny front-end
+stanów CP\\
+R3 & dostępność czujnika CDSR/RCM14 & zamówić najwcześniej; alternatywa WA RCM14\\
+R4 & cieplne stanowiska (7--11 kW ciepła \emph{w pomieszczeniu} podczas soak) & rozmieszczenie
+wg BHP; latem tryb klima; wentylacja warsztatu; planowanie testów\\
+R5 & generator upływu: potencjał na PE & ogranicznik sprzętowy, -K30, procedura\\
+R6 & wzorcowanie bloków własnych & protokoły na UT595/UT522; wzorcowanie opcją\\
+R7 & zgodność formalna (61010/61851/SEP) & przegląd przed etapem 2; uprawnienia E/D\\
+R8 & spójność CP$\leftrightarrow$pobór & plan obciążenia $+$ pomiar -U2, odchyłka $\pm$10\%\\
+R25 & termostat/cyklowanie grzejnika w trakcie soak (spadek poboru) & nastawy na maksimum;
+zimne otoczenie zimą; monitoring -U2 $+$ okna stabilne; rotacja grzejników; zapas mocy\\
+R26 & klimatyzator jako obciążenie: udar sprężarki, pobór cykliczny, PF$<$1 & tryb ,,obciążenie
+użytkowe'' z luźnymi kryteriami; grzejnik odniesienia do kroków precyzyjnych\\
+R27 & BHP cieplne: gorące powierzchnie, kable po podłodze, materiały palne & rozstawienie
+$\ge$0,5~m, mostki najazdowe, oznakowanie, instrukcja stanowiskowa\\
+\bottomrule
+\end{longtable}
+
+\section{Decyzje projektowe --- status}
+\begin{longtable}{@{}p{0.10\textwidth}p{0.64\textwidth}p{0.18\textwidth}@{}}
+\toprule
+\textbf{Nr} & \textbf{Decyzja} & \textbf{Status}\\
+\midrule
+Z1--Z6 & topologia odczepu PM701E; dwa moduły; mapa gniazd; pomiary protokołowe UT595/UT522;
+etapowanie; budżet kierunkowy & zatwierdzone, w mocy\\
+Z7--Z19 & warianty magazynowe (rekuperacja, bufor wodny, magazyn budżetowy v5/v6) & zastąpione
+przez Z20; v6 zachowana jako opcja przyszłej rozbudowy (etap 3)\\
+\textbf{Z20} & \textbf{FINALNA: moduł B $=$ panel 9 sterowanych gniazd $+$ grzejniki olejne
+(zimą), sezonowo wymienne na urządzenia chłodzące (latem) $+$ grzejnik odniesienia całorocznie}
+& \textbf{zatwierdzona przez zamawiającego 2026-07-09}\\
+\bottomrule
+\end{longtable}
+
+\section{Testy odbiorcze i walidacja końcowa}
+\begin{enumerate}
+\item \textbf{Panel B:} kolejność faz i przypisanie gniazd do sekcji (pomiar -U2 gniazdo po
+gnieździe przy 1 grzejniku); zadziałanie B16; pętla obecności -X5 (wyjęcie wtyku $=$ rozpad
+łańcucha $\le$0,2~s).
+\item \textbf{Tabela kalibracji:} zmierzone moce wszystkich gniazd i nastaw ($\pm$5\% powtarzalności).
+\item \textbf{Łańcuch:} kolejno wymuszone E-STOP, wyjęcie -X5, krańcówka, zanik impulsów
+watchdoga, zanik 24~V --- każde otwiera -K1; powrót tylko START; E-STOP gasi też CP (-K4) ---
+DUT otwiera stycznik $\le$1~s.
+\item \textbf{Tor pomiarowy:} zgodność -U2 z UT210E/UT890C ($\pm$2\%); CP duty vs pokrętła;
+RDC-DD na ładowarce referencyjnej (Q11): prąd $\le$6~mA, czas $<$ limitu.
+\item \textbf{Test kompletny ładowarki referencyjnej} (P 1F 32~A i Q11 3F 16~A): pełna sekwencja
+bez interwencji (poza wpisami UT595/UT522); soak stabilny (odchyłka $<$10\%, bez zadziałań
+termostatów zimą); raport z bilansem energii.
+\item \textbf{Tryb letni:} test funkcjonalny z klimatyzatorami $+$ grzejnikiem odniesienia ---
+sekwencja przechodzi, kroki precyzyjne realizowane na grzejniku.
+\end{enumerate}
+
+\section{Dokumenty powiązane (folder \texttt{custom\_device\_FINAL})}
+Schemat elektryczny FINAL (EPLAN, arkusze E1--E3) $+$ objaśnienie z przewodnikiem uruchomienia
+(w tym poradnik EPLAN krok po kroku i kalibracja tabeli mocy U4); wizualizacja 3D FINAL
+(HTML, tryb zima/lato); \texttt{README.md}. Historia projektu i warianty odłożone: folder
+\texttt{custom\_device} (koncepcje v1--v7, schematy v1--v5, przewodniki). \textbf{Źródła:}
+IEC 61851-1; IEC 62955; IEC 61010; PN-HD 60364; ,,Przewodnik pomiarów elektrycznych stacji
+ładowania'' (Warszawa 2024); noty: LEM CDSR, ATM90E36A, MLX90640/14, DS3218.
+
+\end{document}

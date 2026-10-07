@@ -1,0 +1,121 @@
+# ============================================================================
+# Pakiet symulacyjny ladowarki AMPERE POINT dla Home Assistant
+# Projekt AMPERE_POINT - 2026-07-06
+#
+# Tworzy komplet encji udajacych ladowarke (status, moc, energia, limit
+# pradu, przelacznik) - pozwala testowac WSZYSTKIE automatyzacje z poradnika
+# bez fizycznego sprzetu. Moc symulowana = limit_pradu x 3 x 230 V.
+#
+# INSTALACJA (wariant Docker, C:\HomeAssistant\config):
+# 1) w configuration.yaml dopisz (raz, jesli nie masz sekcji packages):
+#      homeassistant:
+#        packages: !include_dir_named packages
+# 2) utworz folder packages, wrzuc ten plik do packages\symulator_ladowarki.yaml
+# 3) zrestartuj kontener homeassistant
+# Encje pojawia sie z prefiksem "Symulowana ladowarka ...".
+# ============================================================================
+
+input_boolean:
+  sym_wtyczka:
+    name: "SYM: wtyczka wlozona"
+    icon: mdi:power-plug
+  sym_ladowanie:
+    name: "SYM: ladowanie aktywne"
+    icon: mdi:ev-station
+  alarm_potwierdzony:
+    name: "Alarm potwierdzony"
+    icon: mdi:check-circle
+
+input_number:
+  sym_limit_pradu_store:
+    name: "SYM: pamiec limitu pradu"
+    min: 6
+    max: 16
+    step: 1
+    initial: 16
+  cena_kwh:
+    name: "Cena energii"
+    min: 0
+    max: 5
+    step: 0.01
+    unit_of_measurement: "zl/kWh"
+    initial: 1.00
+  pv_prog_startu:
+    name: "PV: prog startu ladowania"
+    min: 0
+    max: 10000
+    step: 100
+    unit_of_measurement: W
+    initial: 4200
+  pv_prog_stopu:
+    name: "PV: prog stopu ladowania"
+    min: 0
+    max: 5000
+    step: 100
+    unit_of_measurement: W
+    initial: 800
+
+template:
+  - sensor:
+      - name: "Symulowana ladowarka status"
+        unique_id: sym_ladowarka_status
+        icon: mdi:ev-station
+        state: >-
+          {%- if is_state('input_boolean.sym_ladowanie','on') -%}charger_charging
+          {%- elif is_state('input_boolean.sym_wtyczka','on') -%}charger_insert
+          {%- else -%}charger_free{%- endif -%}
+      - name: "Symulowana ladowarka moc"
+        unique_id: sym_ladowarka_moc
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >-
+          {{ (states('input_number.sym_limit_pradu_store')|float(6) * 3 * 230) | round(0)
+             if is_state('input_boolean.sym_ladowanie','on') else 0 }}
+  - number:
+      - name: "Symulowana ladowarka limit pradu"
+        unique_id: sym_ladowarka_limit_pradu
+        unit_of_measurement: "A"
+        min: 6
+        max: 16
+        step: 1
+        icon: mdi:current-ac
+        state: "{{ states('input_number.sym_limit_pradu_store') | float(6) }}"
+        set_value:
+          - action: input_number.set_value
+            target: { entity_id: input_number.sym_limit_pradu_store }
+            data: { value: "{{ value }}" }
+
+switch:
+  - platform: template
+    switches:
+      symulowana_ladowarka:
+        friendly_name: "Symulowana ladowarka przelacznik"
+        value_template: "{{ is_state('input_boolean.sym_ladowanie','on') }}"
+        icon_template: mdi:ev-station
+        turn_on:
+          # ladowanie wystartuje tylko przy wlozonej wtyczce - jak w realu
+          - condition: state
+            entity_id: input_boolean.sym_wtyczka
+            state: "on"
+          - action: input_boolean.turn_on
+            target: { entity_id: input_boolean.sym_ladowanie }
+        turn_off:
+          - action: input_boolean.turn_off
+            target: { entity_id: input_boolean.sym_ladowanie }
+
+sensor:
+  # energia narastajaca (kWh) z mocy - calka Riemanna metoda lewostronna
+  - platform: integration
+    source: sensor.symulowana_ladowarka_moc
+    name: "Symulowana ladowarka energia"
+    unique_id: sym_ladowarka_energia
+    unit_prefix: k
+    method: left
+    round: 3
+
+utility_meter:
+  symulowana_ladowarka_energia_dzienna:
+    name: "Symulowana ladowarka energia dzienna"
+    source: sensor.symulowana_ladowarka_energia
+    cycle: daily

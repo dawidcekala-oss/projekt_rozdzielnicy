@@ -1,0 +1,276 @@
+% !TeX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\definecolor{granat}{RGB}{12,35,88}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=granat,urlcolor=granat]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries\sffamily\color{granat}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily\color{granat}}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcommand{\ohm}{$\Omega$}
+\newcommand{\krok}[1]{\textbf{\color{granat}Kryterium przejścia:} #1}
+
+\title{\textbf{AMPERE POINT --- custom device (WERSJA FINALNA)}\\[4pt]
+\large Schemat elektryczny FINAL --- objaśnienie, przewodnik uruchomienia i poradnik EPLAN}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{9 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.6em}
+
+\noindent\textbf{Podstawa:} \texttt{FINAL\_schemat\_elektryczny\_EPLAN.pdf} (arkusze E1--E3) oraz
+\texttt{FINAL\_koncepcja.pdf} (decyzja Z20: moduł B $=$ panel gniazd $+$ grzejniki olejne, sezonowo
+wymienne na chłodzenie). Dokument w trzech rolach: \emph{objaśnienie} arkuszy (co jest na schemacie
+i dlaczego), \emph{przewodnik uruchomienia} U0--U6 z kryteriami przejścia oraz \emph{poradnik EPLAN}
+krok po kroku dla osoby bez doświadczenia w programie.
+
+\tableofcontents
+
+\section{Jak czytać schemat --- konwencje}
+Arkusze w konwencji EPLAN: rama z siatką odniesień (kolumny 1--10, wiersze A--F), tabelka
+rysunkowa, symbole IEC~60617. Oznaczenia aparatów z myślnikiem (litera $=$ rodzaj: -K stycznik,
+-F zabezpieczenie, -S łącznik, -X złącze/gniazdo, -A zespół, -B czujnik, -G źródło, -M serwo,
+-T przekładnik, -U układ scalony, -Y blokada, -P panel). Odsyłacze \texttt{/arkusz.kolumna}
+(np. \texttt{/E2.3}); pod cewkami \emph{lustra styków}. Zestyki rysowane w stanie spoczynkowym:
+NC z poprzeczką, NO bez. Strzałki trójkątne $=$ potencjały między arkuszami. Linia przerywana $=$
+sprzężenie mechaniczne, obwiednia lub odbiór zewnętrzny (wtykany).
+
+\section{Arkusz E1 --- tor mocy (bez zmian względem v3--v5)}
+Przepływ: \textbf{-X1} (gniazdo pojazdowe Type~2 32~A, blokada \textbf{-Y1}) $\to$ \textbf{-Q0}
+(rozłącznik 4P; \emph{nie odłącza odczepu} --- tabliczka) $\to$ \textbf{-F1..-F3} (gG 32~A; N bez
+wkładki, rozłączany 4-biegunowo) $\to$ \textbf{-B1} (czujnik różnicowy AC/DC fluxgate --- RCM
+własnych torów i weryfikacja generatora; okno L1$+$L2$+$L3$+$N; SPI $\to$ -A1) $\to$
+\textbf{-T1..-T3} (przekładniki 40~A/1~V $\to$ -U2) $\to$ \textbf{-K1} (stycznik główny 4P, cewka
+wyłącznie z łańcucha E2) $\to$ \textbf{-X2} (CEE 32~A $\to$ panel B). Równolegle: \textbf{-X3}
+--- 7-żyłowy odczep do PM701E (gniazda bananowe $=$ przyłącze UT595); w linii CP zestyk
+\textbf{-K4} (E-STOP/zanik 24~V $\Rightarrow$ przerwa CP $\Rightarrow$ DUT sam otwiera stycznik,
+$\le$1~s); mostek serwisowy na listwie. Odczep generatora: L1 za oknem -B1, przez \textbf{-K30},
+do -A3 (/E3). Przekroje 6~mm$^2$, PE nieprzerwane.
+
+\section{Arkusz E2 --- łańcuch bezpieczeństwa 24 V (uproszczony w wersji FINAL)}
+Obwód prądu spoczynkowego: $+$24~V $\to$ \textbf{-S0} E-STOP (11/12) $\to$ \textbf{-X5:9-10
+pętla obecności panelu B} (mostek w złączu sterowniczym; wyjęcie wtyku -X5 $=$ natychmiastowy
+rozpad --- moc nie może płynąć do niepodłączonego panelu) $\to$ \textbf{-S1} krańcówka pokrywy
+strefy mocy $\to$ \textbf{-K10} zezwolenie MCU $\to$ \textbf{-A2} watchdog impulsowy $\to$
+[\textbf{-S2} START $\parallel$ \textbf{-RB}:13-14 samopodtrzymanie] $\to$ cewka \textbf{-RB}
+(styki wymuszone). Szczebel 2: \textbf{-RB}:23-24 $\to$ cewka \textbf{-K1}. Szczebel 3:
+\textbf{-S0}:21-22 $\to$ cewka \textbf{-K4} (przerwanie CP). \emph{Zmiana względem v5:} termiki
+-F11.x i potwierdzenie wentylatorów -K2/-K3 usunięte --- grzejniki mają fabryczne zabezpieczenia
+termiczne, panel B nie wymaga chłodzenia; ochrona nadprądowa obwodów gniazd: \textbf{-F12.1..9
+(B16)} na E3. Diagnostyka (DI przez opto): -S0, -X5:9-10, -S1 $\to$ -A1 (nie ingeruje w tor).
+
+\section{Arkusz E3 --- panel B i sterowanie (nowy w wersji FINAL)}
+\subsection{Panel B: 9 obwodów gniazd}
+Zasilanie z -X2 (/E1): szyny L1/L2/L3 $+$ N $+$ PE. Trzy sekcje fazowe po trzy obwody; każdy
+obwód: stycznik \textbf{-K11..-K19} (modułowy 16~A, cewka 24~V przez -X5, sterowana z -A1 przez
+-U3/-U5 --- tylko przy zamkniętym łańcuchu) $\to$ wyłącznik nadprądowy \textbf{-F12.1..-F12.9}
+(B16) $\to$ gniazdo \textbf{-X10.1..-X10.9} (Schuko 16~A, opisane). Złącze \textbf{-X5} do modułu
+A: cewki, \textbf{mostek obecności 9-10} (/E2.2), 2$\times$DS18B20 wnętrza panelu. W panelu nie ma
+żadnej elektroniki --- wyłącznie aparatura łączeniowa.
+\subsection{Odbiory: grzejniki / chłodzenie (wtykane, poza schematem stałym)}
+Na schemacie jako odbiory zewnętrzne (przerywane): \textbf{grzejniki olejne} 1,0/1,5/2,5~kW ---
+tryb zimowy (ogrzewanie warsztatu; termostaty na maksimum podczas testów); \textbf{klimatyzator
+przenośny/osuszacz} --- tryb letni (chłodzenie; pobór cykliczny z udarem sprężarki, więc gniazdo~1
+zawsze zajmuje \textbf{grzejnik odniesienia} do kroków wymagających stabilności). Konfiguracje
+mocy: 1F 32~A $=$ sekcja L1 z 3$\times$2,5~kW (7,5~kW $\ge$ 7,4~kW --- bez żadnego przełączania);
+3F 16~A $=$ po 2 gniazda na fazę (4~kW $>$ 3,7~kW/fazę); kroki 25/50/75/100\% --- kombinacje
+gniazd i nastaw wg tabeli kalibracji (U4).
+\subsection{Sterowanie i pomocnicze (dolna część arkusza)}
+\textbf{-G1} zasilacz 24/5/3,3~V z własnego przewodu -X4 (przez -F4, T2A) --- logika nigdy z DUT;
+\textbf{-A1} ESP32-S3: SPI (-B1, -U2, SD), I2C (MLX-y, -U3/-U4 $\to$ -U5/-U6 $\to$ cewki), UART
+(HMI DWIN), 1-Wire (-B5.1..8: szyny, -K1, \emph{panel B}, otoczenie), ADC (CP/PP z -X3), DI
+(łańcuch), DO1--DO3 (opto, low-side: -K10 / -A2 / -Y1); \textbf{-A3} generator upływu (rampa DC
+0--20~mA, bocznik$+$AMC1301); rząd cewek \textbf{-K11..-K19, -K30..-K33}. \emph{Względem v5
+zniknęły:} magistrala CAN, cała strona DC (F13/KB/Q1/GB1/INV), wentylatory i pole -X6.
+
+\section{Sekwencja pomiarowa w ujęciu elektrycznym}
+\begin{enumerate}
+\item \textbf{Self-test}: łańcuch (DI), komunikacja (-B1, -U2, HMI), serwa $\to$ BB/NC
+z potwierdzeniem CP, plan obciążenia na HMI (operator potwierdza rozmieszczenie
+grzejników/nastawy --- lista kontrolna).
+\item \textbf{Tryb izolacji}: -K30..-K33 otwarte; UT595 przez bananowe PM701E (250~V, żyły zwarte
+wzgl. PE); wpis $\ge$1~M\ohm{} $=$ bramka. \textbf{Ciągłość PE}: $\ge$200~mA; wpis.
+\item \textbf{Stan B $\to$ C}: serwa $+$ CP; -U2 weryfikuje napięcia/kolejność faz; -Y1 rygluje.
+\item \textbf{Zabezpieczenia}: RDC-DD automatycznie (-A3: rampa, $\le$6~mA, czas z opto faz);
+RCD typ~A protokołowo (UT595); prowadzone resety.
+\item \textbf{Pętla Z$_s$} (UT595); wpis.
+\item \textbf{Obciążenie/soak}: -K11..-K19 wg planu kroków 25/50/75/100\% (pobór $\le$ deklaracji
+CP); 15--30~min logowania (U/I/P per faza, $\Delta$T wtyku, temperatury panelu); nadzór odchyłki
+$\pm$10\% (termostat grzejnika $\to$ pauza kroku i komunikat); latem gniazda ,,użytkowe'' (klima)
+z luźnymi kryteriami $+$ gniazdo odniesienia do kroków precyzyjnych.
+\item \textbf{Testy błędów} (CP/PE Error na PM701E), \textbf{uziom} (UT522), \textbf{raport}
+(SD/MQTT/PDF $+$ energia oddana do warsztatu).
+\end{enumerate}
+
+\section{Przewodnik uruchomienia --- krok po kroku}
+Kolejność zgodna z etapami 0--2 koncepcji FINAL; każdy podrozdział kończy kryterium przejścia.
+
+\subsection{U0 --- zasady bezpieczeństwa}
+\begin{itemize}
+\item Prace przy 230/400~V --- osoba z uprawnieniami SEP~E; montaż panelu B i odbiór ---
+zgodnie z PN-HD~60364.
+\item Łańcuch E2 (z -K4!) uruchomić i przetestować \emph{zanim} popłynie pierwszy prąd przez -K1.
+\item Grzejniki: min. 0,5~m od materiałów palnych, nie przykrywać, pion (czujnik przewrócenia);
+przewody odbiorników w mostkach najazdowych; gniazda panelu opisane.
+\item Gniazda bananowe PM701E mogą być pod napięciem w stanie C --- tabliczka, nawyk pomiaru
+przed dotykiem; -Q0 nie odłącza odczepu.
+\item Klimatyzator: odprowadzenie powietrza/skroplin wg producenta; nie testować kroków
+precyzyjnych na sprężarce (od tego grzejnik odniesienia).
+\end{itemize}
+
+\subsection{U1 --- narzędzia i stanowisko}
+Posiadane: PM701E, UT890C, mikrooscyloskop (podgląd CP), UTi120S (termowizja połączeń), wkrętak
+dynamometryczny. Plan pomostowy: UT595 (izolacja/ciągłość/Zs/RCD), UT210E (cęgi --- weryfikacja
+-U2), UT522 (uziom). Do montażu: standardowy warsztat elektryczny.
+
+\subsection{U2 --- etap 0: weryfikacje stołowe (bramka wydatkowa)}
+(a)~serwa na PM701E: rama nieinwazyjna, kalibracja 2$\times$5 pozycji, 200 cykli, każdorazowe
+potwierdzenie stanu przez CP; (b)~tor CP: dzielnik$+$komparator na płytce, odczyt poziomów i duty
+zgodny z mikrooscyloskopem; (c)~próbka czujnika \textbf{CDSR}: odczyt SPI, reakcja na znany prąd
+różnicowy; (d)~generator \textbf{-A3} na płytce: rampa DC 0--20~mA na rezystorze, pomiar bocznikiem
+zgodny z UT890C ($\pm$2\%). \krok{(a)--(d) działają --- dopiero teraz zakup aparatury panelu
+i obudów.}
+
+\subsection{U3 --- montaż panelu B}
+Rozdzielniczka IP44 na ścianie; wejście CEE 32~A; 3 sekcje $\times$ (stycznik 16~A $+$ B16 $+$
+gniazdo); złącze -X5 z mostkiem 9-10 i przewodem do modułu A; 2$\times$DS18B20; opisy gniazd
+(sekcja/faza/numer). Pomiary powykonawcze instalatorskie (UT595): ciągłość PE do każdego gniazda,
+izolacja obwodów, Z$_s$ na końcach. \krok{kolejność faz zgodna z projektem; wyjęcie wtyku -X5
+otwiera łańcuch $\le$0,2~s (test z modułem A); B16 zadziałały przy próbie zwarciowej instalatorskiej.}
+
+\subsection{U4 --- kalibracja tabeli mocy obciążeń}
+Dla każdego gniazda i każdej nastawy używanych grzejników: załącz pojedynczo (tryb serwisowy HMI),
+odczyt -U2 po ustabilizowaniu (30~s), zapis do tabeli (gniazdo $\times$ nastawa $\to$ moc, prąd);
+kontrola cęgami UT210E na wyrywkach. Firmware buduje z tabeli plany kroków 25/50/75/100\% dla
+deklaracji 13/20/32~A (1F) i 16~A (3F). \krok{tabela kompletna; powtarzalność $\pm$5\%; plany
+kroków wygenerowane i zatwierdzone.}
+
+\subsection{U5 --- tryb letni}
+Podmiana grzejników sekcji L2/L3 na klimatyzatory (gniazdo 1 $=$ grzejnik odniesienia ---
+zawsze); w HMI oznacz gniazda ,,użytkowe''; test funkcjonalny: soak 3F z klimą --- sekwencja
+przechodzi z kryteriami luźnymi (średnia poboru), kroki precyzyjne realizowane na gnieździe
+odniesienia. \krok{stacja poprawnie rozróżnia gniazda odniesienia/użytkowe; raport oznacza tryb
+letni.}
+
+\subsection{U6 --- testy odbiorcze całej stacji}
+\begin{enumerate}
+\item \textbf{Łańcuch na żywo}: E-STOP, wyjęcie -X5, krańcówka, zanik impulsów watchdoga, zanik
+24~V --- każde otwiera -K1; powrót tylko START; E-STOP gasi CP (-K4) --- DUT otwiera stycznik
+$\le$1~s.
+\item \textbf{Tor pomiarowy}: -U2 vs UT210E/UT890C ($\pm$2\%); duty CP vs pokrętła; RDC-DD na
+ładowarce referencyjnej (Q11): $\le$6~mA, czas $<$ limitu.
+\item \textbf{Soaki referencyjne}: P 1F 32~A (3$\times$2,5~kW) i Q11 3F 16~A --- pełna sekwencja
+bez interwencji (poza wpisami UT595/UT522); odchyłka poboru $<$10\%, bez zadziałań termostatów
+(zimą); raporty z bilansem energii.
+\item \textbf{Protokół odbiorczy} U3--U6 do dokumentacji stacji.
+\end{enumerate}
+\krok{wszystkie punkty zaliczone --- stacja w eksploatacji (pomiary urzędowe nadal przyrządami
+wzorcowanymi).}
+
+\section{Poradnik EPLAN --- odtworzenie schematu FINAL krok po kroku}
+Dla osoby bez doświadczenia; program: EPLAN Education 2026 (PL). Wersja Education znakuje wydruki
+(użytek niekomercyjny). Projekt \texttt{AP-CD-001} już istnieje (2026-07-03); tworzenie od zera
+--- ramka niżej.
+
+\subsection{Trzy zasady i mapa ekranu}
+(1)~Nie ma ,,Zapisz'' --- wszystko zapisuje się od razu; cofanie: \texttt{Ctrl+Z}. (2)~Wszystko
+wstawia się ,,na kursor'': klik $=$ wstawienie, \texttt{Tab} $=$ wariant, \texttt{Esc} $=$ koniec.
+(3)~Dwuklik $=$ właściwości (oznaczenie DT, przyłącza, teksty). Ekran: \textbf{wstążka} (karty
+Plik/Wstaw/Edytuj\ldots) $+$ pole \textbf{Szukaj polecenia} (gdy nie widzisz przycisku --- wpisz
+nazwę, zawsze działa); \textbf{Strony} (lewy panel, dwuklik otwiera); \textbf{edytor} (siatka
+4~mm --- zostaw); \textbf{Centrum wprowadzania} (prawy panel: Szukaj $+$ Symbole). Nawigacja:
+kółko zoom, wciśnięte kółko przesuw, klawisz \texttt{3} cała strona.
+
+\subsection{Projekt i strony}
+Od zera: \textbf{Plik $\to$ Nowy\ldots}: nazwa \texttt{AMPERE\_POINT\_custom\_device}, projekt
+bazowy \texttt{IEC\_bas001.zw9} (Data $\to$ Szablony $\to$ Company name), OK; we właściwościach
+Numer projektu \texttt{AP-CD-001}; zgódź się na jednorazowe generowanie makr ($\sim$10~min).
+Strony: prawy klik na \texttt{EAA} $\to$ \textbf{Nowy\ldots}; \emph{Pełna nazwa}: \texttt{=CA1+EAA/2},
+\emph{Typ}: \textbf{Schemat wielokreskowy (I)} (w starszych wersjach ,,wielobiegunowy''),
+\emph{Opis}: \texttt{E1 --- tor mocy 3F}; powtórz dla \texttt{/3} (\texttt{E2 --- łańcuch bezp.
+24 V}) i \texttt{/4} (\texttt{E3 --- panel B i sterowanie}).
+
+\subsection{Elementarz --- sześć czynności}
+\textbf{E.1 Symbol}: Centrum wprowadzania $\to$ hasło (,,zacisk'', ,,bezpiecznik'', ,,zestyk
+zwierny'', ,,cewka'', ,,rozłącznik'', ,,przekładnik prądowy'', ,,gniazdo wtyczkowe'') $\to$ klik
+wynik $\to$ klik na stronie $\to$ w właściwościach \emph{Widoczne oznaczenie DT} (np. \texttt{-K11},
+z myślnikiem) i numery przyłączy (cewki A1/A2; NO 13/14; NC 11/12, 21/22; styki mocy 1/2\ldots7/8)
+$\to$ OK, \texttt{Esc}. \textbf{E.2 Połączenia}: powstają same, gdy punkty przyłączeń leżą w jednej
+osi siatki. \textbf{E.3 Narożnik/Trójnik}: zagięcia i odczepy (Szukaj polecenia); skrzyżowanie bez
+trójnika $=$ brak połączenia. \textbf{E.4 Punkt przerwania}: strzałka z nazwą potencjału
+(\texttt{+24V}, \texttt{0V}, \texttt{L1\_MB}\ldots); pary o tej samej nazwie łączą strony
+i pokazują adresy. \textbf{E.5 Czarna skrzynka}: urządzenia bez symbolu (-A1, -A3, -G1, -B1, -A2);
+piny: ,,Punkt przyłączenia''. \textbf{E.6 Tekst / Prostokąt przerywany / Powiel} (karta Edytuj)
+--- klucz do dziewięciu obwodów panelu.
+
+\subsection{Arkusze E1 i E2}
+\textbf{E1} --- identyczny jak w poprzednich wersjach: 7 zacisków -X1 (L1/L2/L3/N/PE/CP/PP);
+piony pod zaciskami 1--4; odczep -X3 (trójniki $+$ 7 zacisków pionowo, w linii CP zestyk -K4
+13/14); -Q0 (wariant 3-bieg. $+$ 1-bieg., ten sam DT); -F1..-F3; czarna skrzynka -B1 w poprzek
+pionów; trójnik L1 $+$ punkt przerwania \texttt{L1\_A3}; -T1..-T3; 4 zestyki mocy -K1; 5 zacisków
+-X2 $+$ punkty \texttt{L1\_MB}/\texttt{L2\_MB}/\texttt{L3\_MB}/\texttt{N\_MB}/\texttt{PE\_MB};
+teksty uwag. \textbf{E2} --- szyny \texttt{+24V}/\texttt{0V} (pary punktów przerwania); ścieżka 1:
+-S0 (11/12) $\to$ \textbf{dwa zaciski -X5:9 i -X5:10 połączone łukiem} (grafika: łuk $=$ mostek
+obecności; opisz tekstem) $\to$ -S1 $\to$ punkt \texttt{LB1}; ścieżka 3: \texttt{LB1} $\to$ -K10
+$\to$ -A2 $\to$ [S2 $\parallel$ RB:13-14] $\to$ cewka -RB; ścieżka 5: RB:23-24 $\to$ cewka -K1
+(lustro styków pojawi się samo); ścieżka 6: -S0:21-22 $\to$ cewka -K4. \emph{Uwaga: w wersji FINAL
+nie rysujemy termików -F11.x ani -K2/-K3 --- jeśli pracujesz po przewodniku do v3/v5, pomiń je.}
+
+\subsection{Arkusz E3 --- panel B (nowy)}
+\begin{enumerate}
+\item \textbf{Szyny}: pary punktów \texttt{L1\_MB}/\texttt{L2\_MB}/\texttt{L3\_MB} (trzy poziome
+u góry) oraz \texttt{N\_MB} i \texttt{PE\_MB} (dwie niżej, pod przyszłymi gniazdami). Obwiednia
+przerywana ,,PANEL B'' (E.6).
+\item \textbf{Obwód wzorcowy}: trójnik na L1 $\to$ zestyk mocy \texttt{-K11} (1/2) $\to$
+bezpiecznik/wyłącznik \texttt{-F12.1} (symbol bezpiecznika $+$ tekst ,,B16'') $\to$ \textbf{gniazdo}:
+hasło ,,gniazdo wtyczkowe'' (symbol gniazda 230~V; jeśli w bibliotece niewygodny --- czarna
+skrzynka 9$\times$5~mm z DT \texttt{-X10.1}) $\to$ dwie nóżki w dół: do \texttt{N\_MB}
+i \texttt{PE\_MB} (trójniki).
+\item \textbf{Powielenie $\times$8} (E.6): kopie co ok. 10 pól; popraw DT (\texttt{-K12..-K19},
+\texttt{-F12.2..9}, \texttt{-X10.2..9}) i podepnij trójki do właściwych szyn L1/L2/L3. Ramki
+przerywane sekcji $+$ podpisy ,,sekcja L1: gniazda 1--3'' itd.
+\item \textbf{Odbiory}: trzy przerywane prostokąty z tekstami (,,grzejnik olejny 2,5~kW ---
+ODNIESIENIE'', ,,grzejniki olejne (zima)'', ,,klimatyzator (lato)'') $+$ przerywane kreski do
+gniazd. To grafika --- odbiory są wtykane, nie na stałe.
+\item \textbf{-X5}: tekst przy panelu: cewki -K11..-K19, mostek 9-10 $\to$ /E2.2, DS18B20.
+\item \textbf{Dół arkusza jak w v5}: -G1 z -F4 i zaciskami X4; czarne skrzynki -A3 i -A1 (wiersze
+portów tekstem: SPI/I2C/UART/1-W/ADC/DI --- \emph{bez CAN}); DO1--DO3 $\to$ cewka -K10, skrzynka
+-A2, cewka -Y1; \textbf{rząd 13 cewek} (\texttt{-K11..-K19}, \texttt{-K30..-K33}) między krótkimi
+szynami 24~V/0~V (jedna cewka $+$ Powiel; DT musi się zgadzać ze stykami --- wtedy odsyłacze
+i lustra powstają same); skrzynka -U5/-U6 ULN2803.
+\item \textbf{Kontrola}: Szukaj polecenia $\to$ ,,Sprawdź'' (niesparowane punkty przerwania,
+zdublowane DT); eksport: Plik $\to$ PDF.
+\end{enumerate}
+
+\subsection{Typowe problemy}
+Symbole się nie łączą $\to$ przyłącza poza osią siatki (przyciąganie, siatka 4~mm). Nie ma
+przycisku $\to$ Szukaj polecenia. Zamknięty panel $\to$ Szukaj polecenia $\to$ nazwa panelu.
+Symbol obrócony $\to$ \texttt{Tab} przy wstawianiu. Brak lustra styków $\to$ identyczny DT cewki
+i styków $+$ ustawienie we właściwościach cewki. Punkt przerwania ,,bez pary'' $\to$ literówka.
+Rysujesz na złej stronie $\to$ zakładka nad edytorem.
+
+\section{Dokumenty powiązane}
+\texttt{FINAL\_koncepcja.pdf} (architektura, plan, kosztorys, ryzyka, Z20);
+\texttt{FINAL\_schemat\_elektryczny\_EPLAN.pdf} (E1--E3); \texttt{FINAL\_wizualizacja\_3D.html}
+(rozmieszczenie, tryb zima/lato); \texttt{README.md} (mapa folderu). Historia i warianty odłożone:
+folder \texttt{custom\_device} (v1--v7). Przyrządy: UT595/UT522/UT210E (pomiary protokołowe
+i weryfikacja).
+
+\end{document}

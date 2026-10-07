@@ -1,0 +1,593 @@
+{
+  "home_assistant": {
+    "arch": "x86_64",
+    "dev": false,
+    "docker": true,
+    "hassio": false,
+    "installation_type": "Home Assistant Container",
+    "os_name": "Linux",
+    "os_version": "6.18.33.2-microsoft-standard-WSL2",
+    "python_version": "3.14.5",
+    "timezone": "Europe/Warsaw",
+    "version": "2026.6.4",
+    "virtualenv": false,
+    "container_arch": "amd64",
+    "run_as_root": true
+  },
+  "custom_components": {
+    "hacs": {
+      "documentation": "https://hacs.xyz/docs/use/",
+      "version": "2.0.5",
+      "requirements": [
+        "aiogithubapi>=22.10.1"
+      ]
+    },
+    "tuyaextend_amperepoint": {
+      "documentation": "https://github.com/amperepoint/tuyaextend-amperepoint",
+      "version": "0.6.0",
+      "requirements": []
+    },
+    "tuya_local": {
+      "documentation": "https://github.com/make-all/tuya-local",
+      "version": "2026.7.2",
+      "requirements": [
+        "tinytuya==1.20.0",
+        "tuya-device-sharing-sdk~=0.2.4"
+      ]
+    }
+  },
+  "integration_manifest": {
+    "domain": "tuya_local",
+    "name": "Tuya Local",
+    "codeowners": [
+      "make-all"
+    ],
+    "config_flow": true,
+    "dependencies": [],
+    "documentation": "https://github.com/make-all/tuya-local",
+    "integration_type": "device",
+    "iot_class": "local_push",
+    "issue_tracker": "https://github.com/make-all/tuya-local/issues",
+    "loggers": [
+      "tuya_local",
+      "tinytuya"
+    ],
+    "requirements": [
+      "tinytuya==1.20.0",
+      "tuya-device-sharing-sdk~=0.2.4"
+    ],
+    "version": "2026.7.2",
+    "is_built_in": false,
+    "overwrites_built_in": false
+  },
+  "setup_times": {
+    "null": {
+      "setup": 1.6795000000513483e-05
+    },
+    "01KYSJYGKB5458ZMDW6V68VCB1": {
+      "config_entry_setup": 15.019288869999999
+    }
+  },
+  "data": {
+    "name": "Q37 OTA",
+    "type": "amperepoint_q11_pro_evcharger",
+    "device_id": "**REDACTED**",
+    "device_cid": "",
+    "local_key": "**REDACTED**",
+    "host": "**REDACTED**",
+    "protocol_version": 3.5,
+    "tinytuya_version": "1.20.0",
+    "api_version_set": 3.5,
+    "api_version_used": 3.5,
+    "api_working": true,
+    "status": {},
+    "cached_state": {
+      "updated_at": 1790242093.9574275,
+      "1": 0,
+      "3": "charger_free",
+      "4": 16,
+      "9": 0,
+      "10": 0,
+      "13": "controlpi_12v",
+      "14": "charge_now",
+      "18": true,
+      "24": 23
+    },
+    "pending_state": {},
+    "connected": true,
+    "force_dps": [
+      23,
+      6,
+      6,
+      6,
+      7,
+      7,
+      7,
+      8,
+      8,
+      8,
+      1,
+      25,
+      17
+    ],
+    "home_assistant": {
+      "name": "Q37 OTA",
+      "name_by_user": null,
+      "disabled": false,
+      "disabled_by": null,
+      "entities": [
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "enum",
+          "icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "sensor.q37_ota_charging_status",
+            "state": "available",
+            "attributes": {
+              "options": [
+                "charging",
+                "available",
+                "plugged_in",
+                "fault_unplugged",
+                "waiting",
+                "paused",
+                "charged",
+                "fault"
+              ],
+              "device_class": "enum",
+              "icon": "mdi:ev-station",
+              "friendly_name": "Q37 OTA Charging status"
+            },
+            "last_changed": "2026-09-24T09:25:07.455964+00:00",
+            "last_reported": "2026-09-24T09:28:13.957619+00:00",
+            "last_updated": "2026-09-24T09:25:07.455964+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "enum",
+          "icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "sensor.q37_ota_vehicle_connection_state",
+            "state": "standby",
+            "attributes": {
+              "options": [
+                "standby",
+                "vehicle_detected",
+                "ready_to_charge",
+                "fault"
+              ],
+              "device_class": "enum",
+              "icon": "mdi:car-electric",
+              "friendly_name": "Q37 OTA Vehicle connection state"
+            },
+            "last_changed": "2026-09-24T09:25:07.456601+00:00",
+            "last_reported": "2026-09-24T09:28:13.957680+00:00",
+            "last_updated": "2026-09-24T09:25:07.456601+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": "power",
+          "icon": null,
+          "unit_of_measurement": "kW",
+          "state": {
+            "entity_id": "sensor.q37_ota_power",
+            "state": "0.0",
+            "attributes": {
+              "state_class": "measurement",
+              "unit_of_measurement": "kW",
+              "device_class": "power",
+              "friendly_name": "Q37 OTA Power"
+            },
+            "last_changed": "2026-09-24T09:25:07.457242+00:00",
+            "last_reported": "2026-09-24T09:28:13.957734+00:00",
+            "last_updated": "2026-09-24T09:25:07.457242+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "temperature",
+          "icon": null,
+          "unit_of_measurement": "\u00b0C",
+          "state": {
+            "entity_id": "sensor.q37_ota_temperature",
+            "state": "23",
+            "attributes": {
+              "state_class": "measurement",
+              "unit_of_measurement": "\u00b0C",
+              "device_class": "temperature",
+              "friendly_name": "Q37 OTA Temperature"
+            },
+            "last_changed": "2026-09-24T09:28:13.957777+00:00",
+            "last_reported": "2026-09-24T09:28:13.957777+00:00",
+            "last_updated": "2026-09-24T09:28:13.957777+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "enum",
+          "icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "sensor.q37_ota_fault",
+            "state": "0",
+            "attributes": {
+              "device_class": "enum",
+              "icon": "mdi:alert-circle-outline",
+              "friendly_name": "Q37 OTA Fault"
+            },
+            "last_changed": "2026-09-24T09:25:07.458138+00:00",
+            "last_reported": "2026-09-24T09:28:13.957907+00:00",
+            "last_updated": "2026-09-24T09:25:07.458138+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "voltage",
+          "icon": null,
+          "unit_of_measurement": "V",
+          "state": {
+            "entity_id": "sensor.q37_ota_voltage_l1",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "V",
+              "device_class": "voltage",
+              "friendly_name": "Q37 OTA Voltage L1"
+            },
+            "last_changed": "2026-09-24T09:25:07.461215+00:00",
+            "last_reported": "2026-09-24T09:28:13.957943+00:00",
+            "last_updated": "2026-09-24T09:25:07.461215+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "current",
+          "icon": null,
+          "unit_of_measurement": "A",
+          "state": {
+            "entity_id": "sensor.q37_ota_current_l1",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "A",
+              "device_class": "current",
+              "friendly_name": "Q37 OTA Current L1"
+            },
+            "last_changed": "2026-09-24T09:25:07.461789+00:00",
+            "last_reported": "2026-09-24T09:28:13.957969+00:00",
+            "last_updated": "2026-09-24T09:25:07.461789+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "power",
+          "icon": null,
+          "unit_of_measurement": "kW",
+          "state": {
+            "entity_id": "sensor.q37_ota_power_l1",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "kW",
+              "device_class": "power",
+              "friendly_name": "Q37 OTA Power L1"
+            },
+            "last_changed": "2026-09-24T09:25:07.462221+00:00",
+            "last_reported": "2026-09-24T09:28:13.957993+00:00",
+            "last_updated": "2026-09-24T09:25:07.462221+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "voltage",
+          "icon": null,
+          "unit_of_measurement": "V",
+          "state": {
+            "entity_id": "sensor.q37_ota_voltage_l2",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "V",
+              "device_class": "voltage",
+              "friendly_name": "Q37 OTA Voltage L2"
+            },
+            "last_changed": "2026-09-24T09:25:07.462627+00:00",
+            "last_reported": "2026-09-24T09:28:13.958018+00:00",
+            "last_updated": "2026-09-24T09:25:07.462627+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "current",
+          "icon": null,
+          "unit_of_measurement": "A",
+          "state": {
+            "entity_id": "sensor.q37_ota_current_l2",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "A",
+              "device_class": "current",
+              "friendly_name": "Q37 OTA Current L2"
+            },
+            "last_changed": "2026-09-24T09:25:07.463091+00:00",
+            "last_reported": "2026-09-24T09:28:13.958040+00:00",
+            "last_updated": "2026-09-24T09:25:07.463091+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "power",
+          "icon": null,
+          "unit_of_measurement": "kW",
+          "state": {
+            "entity_id": "sensor.q37_ota_power_l2",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "kW",
+              "device_class": "power",
+              "friendly_name": "Q37 OTA Power L2"
+            },
+            "last_changed": "2026-09-24T09:25:07.463474+00:00",
+            "last_reported": "2026-09-24T09:28:13.958064+00:00",
+            "last_updated": "2026-09-24T09:25:07.463474+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "voltage",
+          "icon": null,
+          "unit_of_measurement": "V",
+          "state": {
+            "entity_id": "sensor.q37_ota_voltage_l3",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "V",
+              "device_class": "voltage",
+              "friendly_name": "Q37 OTA Voltage L3"
+            },
+            "last_changed": "2026-09-24T09:25:07.463871+00:00",
+            "last_reported": "2026-09-24T09:28:13.958087+00:00",
+            "last_updated": "2026-09-24T09:25:07.463871+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "current",
+          "icon": null,
+          "unit_of_measurement": "A",
+          "state": {
+            "entity_id": "sensor.q37_ota_current_l3",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "A",
+              "device_class": "current",
+              "friendly_name": "Q37 OTA Current L3"
+            },
+            "last_changed": "2026-09-24T09:25:07.464300+00:00",
+            "last_reported": "2026-09-24T09:28:13.958111+00:00",
+            "last_updated": "2026-09-24T09:25:07.464300+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "power",
+          "icon": null,
+          "unit_of_measurement": "kW",
+          "state": {
+            "entity_id": "sensor.q37_ota_power_l3",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "kW",
+              "device_class": "power",
+              "friendly_name": "Q37 OTA Power L3"
+            },
+            "last_changed": "2026-09-24T09:25:07.464793+00:00",
+            "last_reported": "2026-09-24T09:28:13.958133+00:00",
+            "last_updated": "2026-09-24T09:25:07.464793+00:00"
+          }
+        },
+        {
+          "disabled": true,
+          "disabled_by": "integration",
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "unit_of_measurement": null,
+          "state": null
+        },
+        {
+          "disabled": true,
+          "disabled_by": "integration",
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "unit_of_measurement": null,
+          "state": null
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "energy",
+          "icon": null,
+          "unit_of_measurement": "kWh",
+          "state": {
+            "entity_id": "sensor.q37_ota_total_energy",
+            "state": "0.0",
+            "attributes": {
+              "state_class": "total_increasing",
+              "unit_of_measurement": "kWh",
+              "device_class": "energy",
+              "friendly_name": "Q37 OTA Total energy"
+            },
+            "last_changed": "2026-09-24T09:25:07.465550+00:00",
+            "last_reported": "2026-09-24T09:28:13.958169+00:00",
+            "last_updated": "2026-09-24T09:25:07.465550+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "device_class": null,
+          "original_device_class": "energy",
+          "icon": null,
+          "unit_of_measurement": "kWh",
+          "state": {
+            "entity_id": "sensor.q37_ota_last_session_energy",
+            "state": "unknown",
+            "attributes": {
+              "unit_of_measurement": "kWh",
+              "device_class": "energy",
+              "friendly_name": "Q37 OTA Last session energy"
+            },
+            "last_changed": "2026-09-24T09:25:07.466769+00:00",
+            "last_reported": "2026-09-24T09:28:13.958195+00:00",
+            "last_updated": "2026-09-24T09:25:07.466769+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "config",
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "select.q37_ota_charging_mode",
+            "state": "immediate",
+            "attributes": {
+              "options": [
+                "immediate",
+                "fixed_charge",
+                "scheduled_charge"
+              ],
+              "friendly_name": "Q37 OTA Charging mode"
+            },
+            "last_changed": "2026-09-24T09:25:07.467385+00:00",
+            "last_reported": "2026-09-24T09:28:13.958244+00:00",
+            "last_updated": "2026-09-24T09:25:07.467385+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "config",
+          "device_class": null,
+          "original_device_class": "current",
+          "icon": null,
+          "unit_of_measurement": "A",
+          "state": {
+            "entity_id": "number.q37_ota_charging_current",
+            "state": "16",
+            "attributes": {
+              "min": 6.0,
+              "max": 32.0,
+              "step": 1.0,
+              "mode": "auto",
+              "unit_of_measurement": "A",
+              "device_class": "current",
+              "icon": "mdi:current-ac",
+              "friendly_name": "Q37 OTA Charging current"
+            },
+            "last_changed": "2026-09-24T09:25:07.468127+00:00",
+            "last_reported": "2026-09-24T09:28:13.958300+00:00",
+            "last_updated": "2026-09-24T09:25:07.468127+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": "config",
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "unit_of_measurement": "kWh",
+          "state": {
+            "entity_id": "number.q37_ota_target_energy",
+            "state": "unknown",
+            "attributes": {
+              "min": 0.0,
+              "max": 200.0,
+              "step": 1.0,
+              "mode": "auto",
+              "unit_of_measurement": "kWh",
+              "icon": "mdi:battery-charging-high",
+              "friendly_name": "Q37 OTA Target energy"
+            },
+            "last_changed": "2026-09-24T09:25:07.468542+00:00",
+            "last_reported": "2026-09-24T09:28:13.958340+00:00",
+            "last_updated": "2026-09-24T09:25:07.468542+00:00"
+          }
+        },
+        {
+          "disabled": false,
+          "disabled_by": null,
+          "entity_category": null,
+          "device_class": null,
+          "original_device_class": null,
+          "icon": null,
+          "unit_of_measurement": null,
+          "state": {
+            "entity_id": "switch.q37_ota_charging",
+            "state": "on",
+            "attributes": {
+              "icon": "mdi:ev-station",
+              "friendly_name": "Q37 OTA Charging"
+            },
+            "last_changed": "2026-09-24T09:25:07.469217+00:00",
+            "last_reported": "2026-09-24T09:28:13.958376+00:00",
+            "last_updated": "2026-09-24T09:25:07.469217+00:00"
+          }
+        }
+      ]
+    }
+  },
+  "issues": []
+}

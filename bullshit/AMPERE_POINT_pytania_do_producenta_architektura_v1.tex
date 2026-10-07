@@ -1,0 +1,118 @@
+\documentclass[11pt]{article}
+
+% --- Silnik: xelatex ---
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.94]
+\setsansfont{DejaVu Sans}[Scale=0.94]
+\setmonofont{DejaVu Sans Mono}[Scale=0.86]
+
+\usepackage{amssymb}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{fancyhdr}
+
+\definecolor{navy}{RGB}{19,40,82}
+\definecolor{rulegrey}{RGB}{180,190,205}
+\definecolor{accent}{RGB}{0,110,90}
+
+\emergencystretch=3em
+\hbadness=2500
+
+\titleformat{\section}{\Large\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titleformat{\subsection}{\large\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\sffamily\color{navy}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{1.25em}{0.4em}
+\titlespacing*{\subsection}{0pt}{0.85em}{0.2em}
+\titlespacing*{\subsubsection}{0pt}{0.6em}{0.15em}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlist[itemize]{leftmargin=1.3em,itemsep=0.12em,topsep=0.2em}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.12em,topsep=0.2em}
+
+\newcommand{\key}[1]{\textbf{\color{navy}#1}}
+
+% Etykieta pytania
+\newcommand{\pyt}[1]{\textbf{\color{navy}#1}\hspace{0.4em}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{rulegrey}\leaders\hrule height \footrulewidth\hfill}}
+\fancyfoot[L]{\footnotesize\sffamily\color{rulegrey}AMPERE POINT — pytania do producenta (P72 vs P00), v1}
+\fancyfoot[R]{\footnotesize\sffamily\color{rulegrey}\thepage}
+
+\begin{document}
+
+% --- Nagłówek tytułowy ---
+{\sffamily\bfseries\color{navy}\LARGE AMPERE POINT — pytania do producenta}\\[3pt]
+{\sffamily\large\color{navy} Architektura P72 (stara) a P00 (nowa)}\\[6pt]
+{\color{rulegrey}\hrule height 1pt}\vspace{4pt}
+{\footnotesize\sffamily Wersja v1 \quad•\quad data: 2026-06-24 \quad•\quad opracowanie: serwis (na podstawie oględzin płyt i oznaczeń elementów)}\\[2pt]
+
+\section{Cel i zakres}
+
+Niniejszy dokument zbiera pytania, które należy skierować do producenta w związku z porównaniem dwóch wersji płyty głównej ładowarki AC: starszej \key{P72} oraz nowszej \key{P00}. Pytania wynikają z wewnętrznej analizy zdjęć wnętrza i oznaczeń elementów, dlatego część ustaleń ma charakter roboczy i wymaga formalnego potwierdzenia. Celem jest domknięcie pozycji oznaczonych jako „do potwierdzenia'', zanim zostaną one wykorzystane w dokumentacji serwisowej lub w decyzjach o bezpieczeństwie i częściach zamiennych. Najpilniejsze ze względów bezpieczeństwa są pytania o logikę bezpiecznego rozłączania (P1) oraz o wykrywanie sklejenia zestyku (P3); w dalszej kolejności o margines prądowy (P2) i bezpiecznik szeregowy (P8).
+
+\section{Skrót zmian: P72 vs P00}
+
+Poniższe zestawienie podsumowuje obserwowane różnice. Pozycje opisane jako „do potwierdzenia'' są przedmiotem pytań w dalszej części.
+
+\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}p{4.3cm} X X@{}}
+\toprule
+\textbf{Funkcja} & \textbf{P72 (stara)} & \textbf{P00 (nowa)} \\
+\midrule
+Pomiar napięcia & ZMPT107-1 & ZHTP107 (właśc. ZHTPT107) \\
+Tor różnicowy / upływ & ZMCT236C \emph{(rola do potwierdzenia)} & ZHT501A 5\,A/2,5\,mA \emph{(dedykowany)} \\
+Prąd obciążenia / energia & ZMCT430 & ZMCT430 \emph{(bez zmian)} \\
+Rozłączanie mocy & 2× HF165F-50: SPST, mono\-stabilny, 50\,A & 1× FANHAR FH35L-40-2AT-L2: DPST, zatrzaskowy, 2×40\,A \\
+Bezpiecznik szeregowy & \emph{do potwierdzenia} & obecny na fazie \emph{(parametry do potwierdzenia)} \\
+Płyta / kod & GOODLINK GPEV100 (2023.09) & „GKL116'' (2025), prawdopodobnie inny ODM \\
+\bottomrule
+\end{tabularx}
+
+\vspace{2pt}
+Wniosek wstępny: przekładnik energii ZMCT430 jest niezmieniony, co sprzyja ciągłości pomiaru energii. Dwubiegunowość rozłączania nie została utracona, ponieważ pojedynczy FANHAR jest dwustykowy; zmianą jest scalenie dwóch przekaźników w jeden oraz przejście na technologię zatrzaskową. To właśnie te zmiany generują większość pytań poniżej.
+
+\section{Przekaźniki mocy i logika rozłączania}
+
+\pyt{P1.} W P72 rozłączanie realizowały dwa monostabilne przekaźniki HF165F-50, które po zaniku zasilania cewki otwierały się samoczynnie (stan bezpieczny wymuszony fizyką elementu). W P00 zastosowano jeden bistabilny, magnetycznie zatrzaskowy FANHAR FH35L-40-2AT-L2, który utrzymuje ostatni stan zestyków także po zaniku napięcia sterującego. W jaki sposób urządzenie zapewnia bezpieczne, rozwarte położenie zestyków w sytuacji zaniku zasilania logiki, resetu lub awarii sterownika? Czy istnieje zapas energii (np. kondensator) i procedura wymuszająca rozłączenie, oraz jaki jest stan zestyków bezpośrednio po podaniu zasilania (przed inicjalizacją firmware)?
+
+\pyt{P2.} Zestyki FH35L-40 mają prąd znamionowy 40\,A na biegun, przy prądzie roboczym ładowarki 32\,A; w P72 było to 50\,A na element. Jaki jest dopuszczalny prąd ciągły zestyku zabudowanego w obudowie ładowarki w funkcji temperatury otoczenia (krzywa deratingu) i czy 40\,A zapewnia wymagany margines dla pracy ciągłej 32\,A według założeń producenta?
+
+\pyt{P3.} Przejście z dwóch przekaźników na jeden zmniejsza redundancję rozłączania. Czy konstrukcja i firmware wykrywają sklejenie (zespawanie) zestyku, na przykład przez kontrolę obecności napięcia po stronie wyjścia po wydaniu rozkazu otwarcia, i jaka jest reakcja urządzenia (blokada, kod błędu, sygnalizacja) zgodnie z wymaganiami IEC 61851-1?
+
+\pyt{P4.} Przyjmujemy, że FH35L-40-2AT-L2 jest dwustykowy i rozłącza jednocześnie biegun L oraz N, dzięki czemu dwubiegunowość została zachowana mimo redukcji liczby przekaźników. Czy potwierdzają Państwo jednoczesne rozłączanie obu biegunów przez ten pojedynczy przekaźnik?
+
+\section{Tor pomiaru upływu i składowej DC}
+
+\pyt{P5.} W P72 występują dwa przekładniki prądowe: ZMCT236C oraz ZMCT430. Roboczo przyjęliśmy, że ZMCT430 odpowiada za pomiar prądu obciążenia i energii, a ZMCT236C pełni rolę toru różnicowego (upływowego). Czy potwierdzają Państwo przypisanie funkcji obu przekładników w P72?
+
+\pyt{P6.} W P00 wydzielono dedykowany przekładnik różnicowy ZHT501A (5\,A/2,5\,mA), a instrukcje deklarują ochronę różnicowoprądową typu A wraz z detekcją gładkiej składowej stałej 6\,mA DC. Czy ZHT501A realizuje detekcję 6\,mA DC zgodnie z IEC 62955, jaki jest próg oraz czas zadziałania, i w jaki sposób tor ten jest testowany produkcyjnie oraz serwisowo?
+
+\section{Pomiar napięcia i kalibracja}
+
+\pyt{P7.} Czujnik napięcia zmieniono z ZMPT107-1 (P72) na ZHTP107/ZHTPT107 (P00), co wygląda na zmianę dostawcy. Czy zmiana wpływa na kalibrację i zakres pomiaru napięcia oraz na progi zabezpieczeń pod- i nadnapięciowych (w instrukcji wskazywane 150/270\,V), i czy wymaga odrębnej procedury kalibracji serwisowej?
+
+\section{Bezpiecznik szeregowy}
+
+\pyt{P8.} W P00 widoczny jest szeregowy bezpiecznik na fazie. Jakie są jego parametry (prąd znamionowy, charakterystyka zadziałania, zdolność zwarciowa), czy jest serwisowalny lub wymienny, oraz czy analogiczne zabezpieczenie występuje także w P72?
+
+\section{Zmiana płyty / ODM i skutki serwisowe}
+
+\pyt{P9.} P72 to płyta GOODLINK GPEV100 (2023.09), natomiast P00 to płyta „GKL116'' (2025), prawdopodobnie innego dostawcy/ODM. Czy zmiana ODM oznacza inne firmware, inną mapę diagnostyki i kodów błędów oraz inne części zamienne, i czy dla P00 obowiązuje odrębny zestaw serwisowy oraz odrębne procedury?
+
+\pyt{P10.} Czy dostępna jest aktualna lista kodów błędów i procedur diagnostycznych dla P00 wraz z różnicami względem P72, tak aby przy zamkniętym firmware serwis mógł jednoznacznie mapować objawy na przyczyny?
+
+\section{Priorytety}
+
+Ze względów bezpieczeństwa za krytyczne uznajemy potwierdzenie P1 (bezpieczne rozłączenie zatrzaskowego przekaźnika po zaniku zasilania) oraz P3 (wykrywanie sklejenia zestyku). W drugiej kolejności istotne są P2 (margines prądowy 40\,A wobec 32\,A) i P8 (parametry bezpiecznika). Pozostałe pytania mają charakter porządkujący dokumentację i procedury serwisowe.
+
+\end{document}

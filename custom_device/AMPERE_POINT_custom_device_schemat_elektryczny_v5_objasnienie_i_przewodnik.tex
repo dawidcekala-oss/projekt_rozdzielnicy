@@ -1,0 +1,494 @@
+% !TeX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\renewcommand{\contentsname}{Spis treści}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\definecolor{granat}{RGB}{12,35,88}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=granat,urlcolor=granat]{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries\sffamily\color{granat}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\sffamily\color{granat}}{\thesubsection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcommand{\ohm}{$\Omega$}
+\newcommand{\krok}[1]{\textbf{\color{granat}Kryterium przejścia:} #1}
+
+\title{\textbf{AMPERE POINT --- custom device}\\[4pt]
+\large Schemat elektryczny v5 --- objaśnienie i przewodnik uruchomienia}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{9 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.6em}
+
+\noindent\textbf{Podstawa:} \texttt{schemat\_elektryczny\_v5\_EPLAN.pdf} (arkusze E1--E3), koncepcja v5 (wariant budżetowy)
+i~koncepcja v6 (pełny plan realizacji, decyzje Z16--Z19). Dokument łączy dwie role: \emph{objaśnienie} --- co jest na
+schemacie i~dlaczego (E1/E2 skrótowo, bo pełne omówienie aparatów zawiera objaśnienie v1 z~2026-07-06, które pozostaje
+aktualne dla toru pomiarowego; E3 w~całości na nowo), oraz \emph{przewodnik uruchomienia} --- kolejność montażu
+i~testów z~kryteriami przejścia (rozdz.~\ref{sec:uruchomienie}). Wartości aparatów robocze --- do potwierdzenia
+w~etapie~0.
+
+\tableofcontents
+
+\section{Co się zmieniło w wersji 5 --- w jednym akapicie}
+\label{sec:zmiany}
+Moduł B przestaje być bankiem grzałek (v1) ani szafą rekuperacji z~drogim falownikiem hybrydowym (v2--v4),
+a~staje się \textbf{budżetowym magazynem elektrycznym}: energia pobierana z~badanej ładowarki płynie przez
+styczniki sekcji faz (-K11..-K13) do sześciu używanych prostowników telekomunikacyjnych \textbf{Eltek Flatpack2
+48/2000~HE} (-PR1..-PR6, sterowanie CAN), które ładują \textbf{samodzielnie złożony pakiet 16S LFP 105~Ah}
+(-GB1, 5,4~kWh; docelowo 2P $=$ 10,8~kWh). Z~pakietu zasilany jest falownik \textbf{-INV} --- używany UPS on-line
+48~V pracujący \emph{wyłącznie wyspowo} na wydzielone obwody warsztatu (przełącznik sieć--0--wyspa). Zamiast
+stycznika przełączenia faz -K14 jest \textbf{ręczne pole mostków -X6}; zamiast zrzutu ciepła do CWU (-K5/-E13) ---
+\textbf{bramka SOC w~firmware} (przed soakiem magazyn musi mieć zapas pojemności). Tor pomiarowy (E1) i~łańcuch
+bezpieczeństwa (E2) topologicznie bez zmian; termiki -F11.1..8 pilnują teraz radiatorów przetwornic, nie grzałek.
+
+\section{Jak czytać schemat --- konwencje (przypomnienie)}
+Arkusze rysowane w~konwencji EPLAN: rama z~siatką odniesień (kolumny 1--10, wiersze A--F), tabelka rysunkowa,
+symbole IEC~60617. \textbf{Oznaczenia aparatów} z~myślnikiem (-K1, -PR3); \textbf{odsyłacze krzyżowe} w~formacie
+\texttt{/arkusz.kolumna} --- np. \texttt{/E2.5} przy styku -K1 na E1 wskazuje cewkę na arkuszu E2, kolumna~5;
+pod cewkami \textbf{lustra styków} (gdzie pracują styki danego przekaźnika). Zestyki rysowane w~stanie
+beznapięciowym/spoczynkowym: NC (rozwierny) z~poprzeczką, NO (zwierny) bez. Strzałki trójkątne $=$ potencjały
+przechodzące między arkuszami lub ścieżkami. Linia przerywana $=$ sprzężenie mechaniczne albo powiązanie
+logiczne (magistrale opisane tekstem przy porcie -A1).
+
+\section{Arkusz E1 --- tor mocy (skrót + elementy specyficzne v3+)}
+Przepływ: \textbf{-X1} (gniazdo pojazdowe Type~2 32~A --- ,,urządzenie udaje samochód'') $\to$ \textbf{-Q0}
+(rozłącznik serwisowy 4P) $\to$ \textbf{-F1..-F3} (gG 32~A na fazach; N nieprzerywany bezpiecznikiem, rozłączany
+4-biegunowo przez Q0/K1) $\to$ \textbf{-B1} (czujnik różnicowy AC/DC CDSR --- własny RCM stacji, okno
+L1+L2+L3+N) $\to$ \textbf{-T1..-T3} (przekładniki prądowe do meteringu -U2) $\to$ \textbf{-K1} (stycznik główny,
+cewka w~łańcuchu E2) $\to$ \textbf{-X2} (CEE 32~A 5p, przewód 5$\times$6~mm$^2$ do szafy~B). Równolegle od -X1
+odchodzi \textbf{-X3} --- 7-żyłowy odczep do PM701E (L1/L2/L3/N/PE $+$ CP/PP): PM701E steruje stanami złącza
+(serwa -M1/-M2 na pokrętłach), a~jego gniazda bananowe są punktem przyłączenia wzorcowanego UT595.
+
+Elementy, których nie było w~pierwotnej wersji (wprowadzone w~v3, obowiązują w~v5):
+\begin{itemize}
+\item \textbf{-K4} --- przekaźnik w~linii CP odczepu: przy E-STOP-ie lub zaniku 24~V \emph{przerywa CP}, więc
+badana ładowarka widzi stan~A i~sama otwiera swój stycznik ($\le$1~s) --- bez tego E-STOP otwierał tylko -K1,
+a~gniazda bananowe PM701E zostawały pod napięciem. Na -X3 przewidziano mostek serwisowy do pracy ręcznej.
+\item \textbf{-F4/-F5} --- wkładki w~torze zasilania logiki (-G1) i~wentylatorów z~-X4.
+\item \textbf{Tabliczka ostrzegawcza}: ,,-Q0 nie odłącza odczepu -X3/PM701E'' przy gniazdach bananowych.
+\end{itemize}
+Pełne omówienie każdego aparatu E1 (funkcja, działanie, podłączenie): objaśnienie v1, rozdz.~3.
+
+\section{Arkusz E2 --- łańcuch bezpieczeństwa 24 V (skrót + zmiana v5)}
+Zasada: \textbf{obwód prądu spoczynkowego} --- cewka przekaźnika bezpieczeństwa -RB dostaje 24~V tylko przez
+szeregowy łańcuch styków sprzętowych: -S0 (E-STOP, NC) $\to$ \textbf{-F11.1..8} (termiki na radiatorach
+-PR1..-PR6 i~-INV --- \emph{zmiana v5}: pilnują przetwornic, nie grzałek; pętla przez złącze -X5)
+$\to$ -S1 (krańcówka pokrywy) $\to$ -K2 (potwierdzenie pracy wentylatorów) $\to$ -K10 (zezwolenie MCU)
+$\to$ -A2 (watchdog impulsowy). Za łańcuchem gałąź START (-S2) równolegle ze stykiem podtrzymania -RB:13-14;
+styk główny -RB:23-24 podaje 24~V na cewkę -K1 (E1). Każda awaria, zanik 24~V, zawieszenie firmware lub E-STOP
+$\Rightarrow$ -RB odpada $\Rightarrow$ -K1 otwiera tor mocy, a~-K4 gasi CP. Powrót wyłącznie przyciskiem START.
+MCU ma \emph{tylko} odczyt członów (optoizolacja, DI) i~możliwość zdjęcia zezwolenia --- nie może niczego
+zmostkować. Szczegóły członów: objaśnienie v1, rozdz.~4.
+
+\section{Arkusz E3 --- szafa magazynu energii (nowe serce wersji 5)}
+
+\subsection{-K11..-K13 i pole przełączeń -X6 (przydział faz)}
+Trzy styczniki sekcji faz (cewki 24~V, sterowane z~-A1 przez -U3/-U5, ale tylko przy zamkniętym łańcuchu E2)
+podają L1/L2/L3 z~-X2 na pary prostowników. Test 3F (Q11): wszystkie trzy zamknięte, po 2~prostowniki na fazę.
+Test 1F 32~A (P/B): ładowarka daje całą moc na L1 --- żeby nie przeciążyć pary -PR1/-PR2, \textbf{-X6}
+(listwa mostków śrubowych przy stycznikach) pozwala ręcznie przepiąć wejścia AC prostowników sekcji L2 na
+fazę L1: 4~prostowniki na L1 $=$ 8~kW $>$ 7,4~kW wymagane. Wybrano rozwiązanie ręczne zamiast stycznika -K14
+(v4): przełączenie robi się rzadko, beznapięciowo, a~oszczędza aparat i~cewkę. \textbf{Procedura:} tylko przy
+otwartym -Q0 i~-K1, potem weryfikacja konfiguracji przy 25\% mocy --- firmware porównuje rozpływ prądów
+z~-U2 z~oczekiwanym dla zadeklarowanej konfiguracji i~blokuje soak przy niezgodności.
+
+\subsection{-PR1..-PR6 --- prostowniki Eltek Flatpack2 48/2000 HE}
+Używane moduły telekom ($\sim$150--300~zł/szt.; kupujemy 7, jeden zapas): 2~kW, wejście 185--275~V~AC,
+wyjście 43,5--57,5~V~DC, sprawność 96,5\%, PF$>$0,99, własny wentylator, złącze krawędziowe (kupić z~gniazdem
+lub półką 2--4-slotową). \textbf{Sterowanie CAN 125~kb/s}: zadawanie napięcia i~limitu prądu, odczyt U/I/T ---
+protokół opisany społecznościowo (weryfikacja to zadanie (c) etapu~0; fallback: Huawei R4850G2). Prąd
+ładowania zadaje sekwencer -A1 tak, by pobór z~DUT odpowiadał deklaracji CP --- prostowniki są ,,regulowanym
+obciążeniem'', energia zamiast w~ciepło idzie do pakietu. Termiki -F11.x na radiatorach --- w~pętli E2.
+
+\subsection{Szyna DC 48 V i zabezpieczenia}
+Płaskownik Cu 20$\times$3~mm na izolatorach; połączenia pakietu przewodami 50~mm$^2$ (11~kW przy 48~V to
+$\sim$230~A); \textbf{-F13.1/-F13.2} --- bezpieczniki mega 150--200~A bezpośrednio przy pakiecie;
+\textbf{-Q1} --- rozłącznik serwisowy DC (tryb SERWIS $=$ otwarty); \textbf{-KB} --- kontaktor główny DC
+sterowany stykiem BMS (BMS może bezprądowo odciąć pakiet przy przekroczeniu progów). Wszystkie połączenia
+M8 z~kontrolą momentu (wkrętak dynamometryczny --- posiadany).
+
+\subsection{-GB1 --- pakiet bateryjny 16S LFP 105 Ah (DIY)}
+Wymiarowanie: soak 30~min przy 11~kW $=$ 5,5~kWh. Start: jedna gałąź 16S (51,2~V nominalnie, 5,4~kWh) ---
+pełny soak 1F (3,7~kWh) mieści się wprost, 3F przy SOC startowym $\le$25\% albo z~równoległym rozładowaniem
+przez falownik; docelowo 2P (10,8~kWh) --- pełny soak 3F przy SOC $\le$40\%. Ogniwa LFP 100--105~Ah klasy~B
+(np. EVE LF105) z~pomiarami od sprzedawcy. \textbf{BMS} 16S 150--200~A z~balansem aktywnym (klasy JK):
+progi 2,80/3,55~V na ogniwo, ładowanie tylko 0--45~$^{\circ}$C (2$\times$NTC), wyjście przekaźnikowe $\to$
+cewka -KB, telemetria (SOC, napięcia ogniw, temperatury) po RS485/CAN do -A1. Kompletny przepis montażu
+i~kryteria --- rozdz.~\ref{sec:u3}. Chemia LFP wybrana świadomie (stabilna termicznie) zamiast tańszych
+modułów NMC z~aut.
+
+\subsection{-INV --- falownik W2: używany UPS on-line 48 V (praca wyspowa)}
+UPS on-line (podwójna konwersja) 5--6~kVA w~wieży, z~szyną baterii 48~V i~złączem baterii zewnętrznej
+(500--1500~zł używany; \emph{przed zakupem potwierdzić w~dokumentacji modelu, że szyna to 48~V!}). DC wprost
+z~-GB1 przez -F13/-Q1; ładowarkę wewnętrzną UPS-a wyłączamy (ładowaniem zarządzają FP2$+$BMS), progi
+rozładowania UPS ustawiamy \emph{powyżej} progu BMS (np. 44~V), żeby UPS wyłączył się pierwszy. Wyjście 230~V
+$\to$ \textbf{rozdzielniczka wyspy}: B16 $+$ RCD 30~mA typ~A $+$ gniazda; \textbf{punkt N--PE wyspy przy
+źródle} (bez niego RCD wyspy nie zadziała); obwody oznakowane; zasilanie odbiorów wybierane przełącznikiem
+\textbf{sieć--0--wyspa} --- \emph{nigdy równolegle z~siecią} (falownik bez certyfikatu NC~RfG nie może oddawać
+do sieci --- to świadome ograniczenie wariantu budżetowego; upgrade W1 możliwy później bez zmian reszty szafy).
+Fallback W3 (własny falownik LF): przepis w~koncepcji v3, rozdz.~6.
+
+\subsection{Wentylacja strat i złącza szafy}
+Straty szafy to już tylko 0,4--0,9~kW (sprawności FP2/UPS), nie 11~kW jak przy grzałkach: dwa wentylatory
+szafowe -M3/-M4 (zasilanie z~-X4 przez -F5, załączane stycznikiem -K3 z~-A1, potwierdzane przekaźnikiem
+prądowym -K2 w~łańcuchu E2). Złącza szafy: CEE (moc z~-X2), -X5 (sterowanie: cewki K11--K13, pętla termików,
+wentylatory), CAN (skrętka z~transceiverem izolowanym), tor DC do wieży UPS.
+
+\subsection{Zarządzanie energią --- tryby i bramka SOC}
+\textbf{TEST}: FP2 ładują pakiet prądem zadanym przez sekwencer; falownik może równolegle zasilać wyspę.
+\textbf{MAGAZYN/UPS}: poza testami wyspa pracuje z~pakietu. \textbf{SERWIS}: -Q1 otwarty. \textbf{Bramka SOC
+przed soakiem}: 3F pełny --- SOC $\le$40\% (2P) / $\le$25\% (1P); 1F --- $\le$60\%; przy przekroczeniu HMI
+poleca ,,rozładuj magazyn'' (włącz odbiory wyspy). Bilans: -U2 liczy energię pobraną z~DUT, BMS --- energię
+do pakietu; raport podaje sprawność łańcucha (oczekiwane 85--92\%). Plan~C (opcja $\sim$100~zł): rezystor
+2~kW załączany ręcznie do szybkiego zrzutu.
+
+\section{-A1 i urządzenia podpięte --- co przybyło/ubyło w v5}
+Pełny opis wszystkich peryferiów -A1 (SPI: -B1 CDSR, -U2 ATM90E36A, microSD; I2C: -B2 MLX90640,
+-B3/-B4 MLX90614, -U3/-U4 MCP23017, DS3231, MCP4725; 1-Wire: -B5.x DS18B20; UART: -P1 DWIN; ADC/capture:
+CP/PP; PWM: -M1/-M2; DO/DI przez optoizolację) --- objaśnienie v1, rozdz.~6; wszystko pozostaje w~mocy.
+Różnice v5:
+\begin{itemize}
+\item \textbf{CAN/TWAI} (wiersz na E3): sprzętowy kontroler TWAI ESP32-S3 $+$ transceiver izolowany;
+na magistrali \textbf{-PR1..-PR6} (Flatpack2, 125~kb/s) oraz \textbf{BMS} pakietu (jeśli wariant CAN;
+alternatywnie BMS po RS485 --- drugi UART).
+\item \textbf{DS18B20 (-B5.x)}: dodatkowe punkty na ogniwach pakietu i~w~przedziale bateryjnym.
+\item \textbf{Rząd cewek zredukowany}: -K11..-K13 (sekcje faz), -K30..-K33 (separacja), -K3 (wentylatory);
+\emph{ubyły} -K14 (zastąpiony polem -X6) i~-K5 (zrzut CWU nie istnieje). DO1--DO3: -K10 (zezwolenie),
+-A2 (impulsy watchdog), -Y1 (blokada wtyku) --- rozdzielone wyjścia, jak w~v3.
+\item \textbf{Firmware --- nowe funkcje}: pętla regulacji prądu FP2 (spójność z~deklaracją CP), bramka SOC,
+nadzór temperatur ogniw/radiatorów, bilans energii w~raporcie, weryfikacja konfiguracji -X6 przy 25\% mocy.
+\end{itemize}
+
+\section{Sekwencja pomiarowa w ujęciu elektrycznym (v5)}
+\begin{enumerate}
+\item \textbf{Self-test}: łańcuch E2, wentylatory (-K3$\to$-K2), CAN (obecność 6$\times$FP2, BMS), SOC,
+temperatury, kalibracja serw (pozycje BB/NC potwierdzone przez CP).
+\item \textbf{Bramka SOC}: jeśli za wysoki --- komunikat ,,rozładuj magazyn'' (wyspa), test wstrzymany.
+\item \textbf{Tryb izolacji}: -K30..-K33 odłączają elektronikę od L/N/PE; UT595 przez gniazda bananowe
+PM701E (izolacja 250~V, bramka $\ge$1~M\ohm{}), ciągłość PE $\ge$200~mA; wpisy na HMI.
+\item \textbf{Stany B$\to$C}: serwa; potwierdzenie CP; -K1 zamyka (łańcuch zamknięty, START); weryfikacja
+napięć i~kolejności faz (-U2); blokada -Y1.
+\item \textbf{Zabezpieczenia DUT}: RCD typ~A protokołowo (UT595), RDC-DD 6~mA~DC automatycznie (-A3: rampa,
+rejestracja prądu/czasu zadziałania; -B1 jako weryfikacja krzyżowa). Po każdym zadziałaniu prowadzony reset.
+\item \textbf{Pętla Zs} (UT595); wpis.
+\item \textbf{Obciążenie/soak}: serwo prądu $\to$ deklaracja; -K11..-K13 (i~ew. konfiguracja -X6 dla 1F);
+FP2 dostają limit prądu narastająco 25/50/75/100\%; 15--30~min logowania (U/I/P z~-U2, $\Delta$T wtyku
+z~MLX, temperatury ogniw/radiatorów, SOC); energia idzie do -GB1.
+\item \textbf{Testy błędów}: CP Error ,,E''/PE Error na PM701E; pomiar czasu odcięcia DUT.
+\item \textbf{Uziom} (UT522 na E/S/H, niezależnie czasowo); \textbf{raport} (CSV/JSON, MQTT$\to$HA,
+bilans energii i~sprawność).
+\end{enumerate}
+
+\section{Przewodnik uruchomienia --- krok po kroku}
+\label{sec:uruchomienie}
+Kolejność zgodna z~etapami 0--2 koncepcji v6. Każdy podrozdział kończy się kryterium przejścia --- nie
+przechodzić dalej, dopóki nie jest spełnione.
+
+\subsection{U0 --- zasady bezpieczeństwa (przeczytać przed czymkolwiek)}
+\begin{itemize}
+\item Prace przy 230/400~V --- osoba z~uprawnieniami SEP E (pomiary: wg wymagań protokołów). Strona DC
+44--58~V jest ,,bezpieczna napięciowo'', ale \textbf{zwarciowo skrajnie groźna}: pakiet 105~Ah potrafi oddać
+tysiące amperów --- łuk spawa narzędzia. Narzędzia izolowane, zdjąć biżuterię, okulary ochronne przy pracach
+na pakiecie, nie kłaść niczego metalowego na ogniwach.
+\item Bezpieczniki mega montować \emph{przy pakiecie} zanim podłączy się cokolwiek dalej; -Q1 otwarty
+podczas wszystkich prac (tryb SERWIS).
+\item Wyspa \textbf{nigdy} równolegle z~siecią --- tylko przez przełącznik sieć--0--wyspa z~przerwą.
+\item Ładowanie LFP wyłącznie 0--45~$^{\circ}$C (pilnuje BMS $+$ NTC).
+\item E-STOP i~łańcuch E2 uruchomić i~przetestować \emph{zanim} popłynie pierwszy prąd testowy przez -K1.
+\end{itemize}
+
+\subsection{U1 --- narzędzia i stanowisko}
+Posiadane: UT890C, mikrooscyloskop (kontrola SPWM/CP), UTi120S (termowizja połączeń), wkrętak
+dynamometryczny, PM701E. Z~planu pomostowego: UT595 (izolacja/Zs/RCD), UT210E (cęgi AC/DC ---
+weryfikacja -U2 i~prądów DC), UT522 (uziom). Dodatkowo: multimetr z~pomiarem mV (rozrzut ogniw),
+zaciskarka do końcówek 50~mm$^2$ lub zlecenie zaprasowania, klucz dynamometryczny do M8.
+
+\subsection{U2 --- etap 0: weryfikacje stołowe (bramka wydatkowa)}
+(a)~serwa na PM701E: rama, kalibracja 2$\times$5 pozycji, 200~cykli, każdorazowe potwierdzenie stanu przez
+CP; (b)~tor CP: dzielnik$+$komparator na płytce, odczyt duty/poziomów zgodny z~mikrooscyloskopem;
+(c)~\textbf{1$\times$FP2 $+$ transceiver CAN $+$ ESP32}: identyfikacja, zadanie napięcia/limitu prądu, odczyt
+telemetrii --- to weryfikacja protokołu (ryzyko R20); (d)~próbka CDSR: odczyt SPI, reakcja na znany prąd
+różnicowy; (e)~stanowisko top-balance (rozdz.~\ref{sec:u3}, krok~2). \krok{wszystkie (a)--(e) działają;
+dopiero teraz zakup 16~ogniw, pozostałych FP2 i~UPS-a.}
+
+\subsection{U3 --- pakiet -GB1 (16S LFP)}
+\label{sec:u3}
+\begin{enumerate}
+\item \textbf{Selekcja}: napięcia ogniw (rozrzut $\le$30~mV) i~rezystancja wewnętrzna; parowanie.
+\item \textbf{Top-balance}: wszystkie ogniwa równolegle, CV 3,55--3,60~V do prądu $\approx$0 (12--48~h);
+źródłem może być jeden FP2 (po złożeniu 16S balans górny całej gałęzi: 56,8~V).
+\item \textbf{Kompresja}: płyty czołowe $+$ 4 pręty M8, docisk wg noty ogniwa ($\sim$300~kgf).
+\item \textbf{Połączenia}: busbary, M6 4--6~N$\cdot$m; pomiar spadków mV na każdym łączu przy prądzie próbnym
+(wyłapuje słabe styki zanim staną się hot-spotem).
+\item \textbf{BMS} (klasy JK, 150--200~A, balans aktywny): przewody balansera od minusa kolejno; progi
+2,80/3,55~V; ładowanie 0--45~$^{\circ}$C; 2$\times$NTC na ogniwach; wyjście $\to$ cewka -KB. Test:
+sprowokować próg (zasilacz lab.) i~sprawdzić, że -KB odpada.
+\item \textbf{Mega 150--200~A} przy biegunie $+$; przewody 50~mm$^2$.
+\item \textbf{Pierwsze ładowanie nadzorowane}: 10--20~A z~jednego FP2, obserwacja napięć ogniw w~aplikacji BMS.
+\item \textbf{Pomiar pojemności}: rozładowanie znanym obciążeniem przez falownik; zapis do metryki pakietu.
+\item \textbf{Zabudowa}: dolny przedział szafy za przegrodą, wentylacja grawitacyjna, DS18B20 na ogniwach,
+etykieta (pojemność, data, progi).
+\end{enumerate}
+\krok{pojemność $\ge$90\% deklarowanej; rozrzut ogniw pod obciążeniem $\le$50~mV; progi BMS i~-KB zadziałały.}
+
+\subsection{U4 --- szyna DC, -Q1, -KB}
+Montaż płaskownika na izolatorach, trasowanie 50~mm$^2$, -F13.1/2, -Q1, -KB; kontrola polaryzacji
+\emph{przed} pierwszym zamknięciem -Q1 (multimetr; zasada dwóch osób: jedna mierzy, druga potwierdza);
+wszystkie śruby M8 z~momentem; po pierwszym obciążeniu termowizja UTi120S na łącza. \krok{spadki na łączach
+w~normie, brak hot-spotów przy prądzie próbnym.}
+
+\subsection{U5 --- prostowniki -PR1..-PR6}
+Półka/gniazda krawędziowe, przydział 2/fazę, adresacja CAN (kolejno, pojedynczo), walk-in i~limity; test
+każdej pary: 25/50/100\% prądu zadanego, kontrola telemetrii vs -U2/UT210E; termiki -F11.x mocowane na
+radiatorach i~wpięte w~pętlę -X5$\to$E2 (sprawdzić: zdjęcie termika $=$ rozpad -RB). \krok{6/6 modułów
+steruje się po CAN i~raportuje; pętla termików przerywa łańcuch.}
+
+\subsection{U6 --- falownik -INV i wyspa}
+Wg przepisu koncepcji v6 (rozdz.~5.4): test wstępny UPS-a na własnych akumulatorach; wyprowadzenie toru
+baterii (25--35~mm$^2$) przez -F13/-Q1; dezaktywacja ładowarki wewnętrznej; progi rozładowania $>$ progu BMS
+(np. 44~V); rozdzielniczka wyspy (B16, RCD 30~mA typ~A, N--PE przy źródle), przełącznik sieć--0--wyspa.
+Testy: 1/2/4~kW z~pakietu, udar silnikowy, 1~h soak termiczny, przebieg na mikrooscyloskopie, pomiar RCD
+wyspy UT595 (I$_{\Delta n}$, czas). \krok{wyspa trzyma obciążenia, RCD wyspy zadziałał poprawnie.}
+
+\subsection{U7 --- integracja i testy odbiorcze całej stacji}
+\begin{enumerate}
+\item \textbf{Łańcuch E2 na żywo}: kolejno wymuszone E-STOP, termik, krańcówka, zanik wentylatorów, zanik
+impulsów watchdoga, zanik 24~V --- każde otwiera -K1; powrót tylko przez START; E-STOP gasi też CP (-K4)
+--- DUT otwiera stycznik $\le$1~s.
+\item \textbf{Tor pomiarowy}: zgodność -U2 z~UT210E/UT890C ($\pm$2\%); duty CP vs pozycje pokręteł;
+RDC-DD na ładowarce referencyjnej (Q11): prąd $\le$6~mA, czas $<$ limitu.
+\item \textbf{Pole -X6}: przełączenie 3F$\to$1F przy otwartym -Q0, start 25\% mocy, firmware potwierdza
+rozpływ; powrót do 3F.
+\item \textbf{Pierwsze soaki}: 1F 32~A i~3F 16~A na ładowarce referencyjnej --- pełna sekwencja bez
+interwencji (poza wpisami UT595/UT522); raport z~bilansem energii (sprawność 85--92\%).
+\item \textbf{Protokół odbiorczy}: wyniki U3--U7 $+$ metryka pakietu do dokumentacji stacji.
+\end{enumerate}
+\krok{wszystkie 5 punktów zaliczone --- stacja gotowa do pracy (protokoły urzędowe nadal na przyrządach
+wzorcowanych).}
+
+
+\section{Poradnik EPLAN --- odtworzenie schematu v5 krok po kroku (dla początkującego)}
+\label{sec:eplan}
+Poniższy poradnik zakłada \textbf{zero doświadczenia z~EPLAN}. Program: \emph{EPLAN Education 2026}
+(interfejs polski, wstążka). Uwaga licencyjna: wersja Education dodaje do wydruków znak wodny i~jest
+przeznaczona do użytku niekomercyjnego --- wystarcza do nauki i~wersji roboczej; dokumentację oficjalną
+trzeba będzie docelowo wykonać na licencji komercyjnej. Częścią wspólną z~przewodnikiem EPLAN v1
+(2026-07-06, pisanym dla schematu v3) są zasady, elementarz i~arkusze E1/E2 --- tutaj wszystko zebrane
+w~całość i~zaktualizowane do \textbf{v5} (nowy arkusz E3).
+
+\subsection{Trzy zasady, zanim klikniesz cokolwiek}
+\begin{enumerate}
+\item \textbf{EPLAN nie ma przycisku „Zapisz''} --- każda zmiana trafia do bazy projektu od razu.
+Pomyłki wycofujesz przez Cofnij (\texttt{Ctrl+Z}, strzałki w~lewym górnym rogu okna).
+\item \textbf{Wszystko wstawia się „na kursor''} --- po wybraniu symbolu wisi on na kursorze;
+klik lewym $=$ wstawienie (można wstawiać wiele razy), \texttt{Esc} $=$ koniec, \texttt{Tab} w~trakcie
+$=$ obrót/wariant symbolu.
+\item \textbf{Dwuklik $=$ właściwości} --- na każdym wstawionym elemencie dwuklik otwiera okno
+właściwości (oznaczenie DT, numery przyłączy, teksty). Zaznaczenie $+$ \texttt{Delete} usuwa.
+\end{enumerate}
+
+\subsection{Mapa ekranu}
+\textbf{Wstążka} u~góry (karty: Plik, Narzędzia główne, Wstaw, Edytuj, Widok, Połączenia, Narzędzia,
+Dane zasadnicze); nad nią pole \textbf{Szukaj polecenia} (lupka) --- \emph{gdy nie możesz znaleźć
+przycisku, wpisz tam jego nazwę; to zawsze działa}. \textbf{Nawigator Strony} (lewy panel) --- drzewo
+stron projektu; dwuklik otwiera stronę. \textbf{Edytor graficzny} (środek) --- pasek stanu na dole
+pokazuje współrzędne i~\emph{Siatka C: 4,00 mm} (zostaw 4~mm). \textbf{Centrum wprowadzania} (prawy
+panel) --- pole Szukaj $+$ sekcje Symbole/Urządzenia/Makra; wpisujesz polskie hasło (np. „bezpiecznik''),
+klikasz wynik, wstawiasz. \textbf{Nawigacja}: kółko $=$ zoom, wciśnięte kółko $=$ przesuwanie,
+klawisz \texttt{3} $=$ cała strona. Zamknięty panel przywrócisz przez Szukaj polecenia (np. „Strony'').
+
+\subsection{Utworzenie projektu (jeśli zaczynasz od zera)}
+Projekt \texttt{AP-CD-001 / AMPERE\_POINT\_custom\_device} już istnieje na komputerze zakładowym
+(utworzony 2026-07-03); wtedy ten krok pomijasz. Od zera:
+\begin{enumerate}
+\item \textbf{Plik $\to$ Nowy\ldots} Otworzy się okno \emph{Utwórz projekt}.
+\item Wypełnij: \emph{Nazwa projektu}: \texttt{AMPERE\_POINT\_custom\_device}; \emph{Miejsce zapisu}:
+zostaw \texttt{\$(MD\_PROJECTS)}; \emph{Projekt bazowy}: kliknij przycisk teczki i~wybierz
+\texttt{IEC\_bas001.zw9} (folder \emph{Data $\to$ Szablony $\to$ Company name}); zaznacz
+\emph{Ustal datę utworzenia} i~\emph{Ustal osobę tworzącą} (wpisz swoje dane). \textbf{OK}.
+\item Po chwili generowania otworzy się okno \emph{Właściwości projektu}: w~polu \emph{Numer
+projektu} wpisz \texttt{AP-CD-001}; resztę można zostawić. \textbf{OK}.
+\item Przy pierwszym użyciu Centrum wprowadzania EPLAN zaproponuje wygenerowanie zbioru makr ---
+zgódź się i~poczekaj (ok.~10 minut, jednorazowo).
+\end{enumerate}
+
+\subsection{Utworzenie stron E1--E3}
+\begin{enumerate}
+\item W~nawigatorze \emph{Strony} kliknij prawym na węźle \texttt{EAA} $\to$ \textbf{Nowy\ldots}
+(to samo: karta Narzędzia główne $\to$ grupa Strona $\to$ Nowy).
+\item W~oknie \emph{Nowa strona}: \emph{Pełna nazwa strony}: \texttt{=CA1+EAA/2}; \emph{Typ strony}:
+\textbf{Schemat wielokreskowy (I)} (w~starszych wersjach: „wielobiegunowy''; litera (I) $=$ strona
+rysowana ręcznie); \emph{Opis strony}: \texttt{E1 --- tor mocy 3F}. \textbf{OK}.
+\item Powtórz: strona \texttt{/3} z~opisem \texttt{E2 --- łańcuch bezp. 24 V} i~\texttt{/4} z~opisem
+\texttt{E3 --- magazyn energii i sterowanie}.
+\item Dwuklik na \texttt{/2}: pusta strona z~ramką (kolumny 1--10, wiersze A--F z~formularza projektu).
+Odsyłacz \texttt{/E2.3} z~PDF-a czytamy: strona E2 (\texttt{/3}), kolumna 3.
+\end{enumerate}
+
+\subsection{Elementarz --- sześć czynności, z których składa się całość}
+\begin{description}[style=nextline]
+\item[E.1 Wstawienie symbolu.] Centrum wprowadzania $\to$ wpisz hasło (np. „zacisk'', „bezpiecznik'',
+„zestyk zwierny'', „cewka'', „rozłącznik'', „przekładnik prądowy'', „silnik'') $\to$ klik na wynik
+(symbol na kursorze; \texttt{Tab} $=$ wariant) $\to$ klik na stronie $\to$ w~oknie właściwości wpisz
+\emph{Widoczne oznaczenie DT} (np. \texttt{-F1}, z~myślnikiem!) i~numery przyłączy (cewki
+\texttt{A1/A2}; zestyki zwierne pomocnicze \texttt{13/14}, rozwierne \texttt{11/12} i~\texttt{21/22};
+styki mocy \texttt{1/2\ldots7/8}) $\to$ OK $\to$ \texttt{Esc}.
+\item[E.2 Połączenia (autoconnecting).] Połączeń nie rysuje się ręcznie: powstają \emph{same}, gdy
+punkty przyłączeń (czerwone strzałki) dwóch symboli leżą dokładnie w~jednej osi siatki. Jeśli linii
+nie ma --- element leży poza siatką albo przyłącza nie są naprzeciw siebie.
+\item[E.3 Zagięcia i rozgałęzienia.] Symbole połączeń: \textbf{Narożnik} (zagięcie 90$^{\circ}$)
+i~\textbf{Trójnik} (odczep z~kropką węzła) --- najpewniej przez Szukaj polecenia. Skrzyżowanie linii
+\emph{bez} trójnika $=$ brak połączenia (tak krzyżują się odczepy -X3 z~pionami L2/L3 na E1).
+\item[E.4 Punkt przerwania.] Strzałka z~nazwą potencjału: dwa punkty o~tej samej nazwie łączą się
+logicznie między stronami i~pokazują nawzajem adresy (jak odsyłacze w~PDF). Szukaj polecenia $\to$
+„Punkt przerwania''; w~właściwościach DT $=$ nazwa (np. \texttt{+24V}, \texttt{0V}, \texttt{L1\_MB},
+\texttt{L1\_A3}).
+\item[E.5 Czarna skrzynka.] Urządzenia bez gotowego symbolu (-A1, -A3, -G1, -B1, -A2, -PR1..6, -GB1,
+-INV): Szukaj polecenia $\to$ „Czarna skrzynka'' $\to$ klik dwa narożniki $\to$ DT $+$ teksty.
+Podłączalne piny na krawędzi: Szukaj polecenia $\to$ „Punkt przyłączenia''.
+\item[E.6 Teksty, grafika, powielanie.] Tekst wolny: Wstaw $\to$ Tekst. Prostokąt przerywany
+(obwiednie „MODUŁ B''): Wstaw $\to$ Prostokąt, dwuklik $\to$ rodzaj linii \emph{przerywany} (grafika
+nie tworzy połączeń). Powielanie: zaznacz ramką $\to$ karta Edytuj $\to$ \textbf{Powiel} (albo
+Ctrl+C/V); po powieleniu popraw DT dwuklikiem.
+\end{description}
+
+\subsection{Arkusz E1 (strona /2) --- tor mocy}
+Wzór: strona 2/4 PDF-a v5. Trzymaj się kolumn ramki jak we wzorze --- odsyłacze będą zgodne.
+\begin{enumerate}
+\item \textbf{-X1}: symbol „zacisk'' 7$\times$ w~poziomie u~góry (DT \texttt{-X1}, zaciski 1--7;
+kolejne EPLAN numeruje sam). Teksty nad nimi: L1, L2, L3, N, PE, CP, PP.
+\item \textbf{Piony}: prowadź tak, by kolejne aparaty stawały dokładnie pod zaciskami 1--4 ---
+połączenia narysują się same (E.2). Pion PE (zacisk 5) idzie bez aparatów aż do -X2.
+\item \textbf{Odczep -X3 i~-K4}: na pionach L1/L2/L3/N wstaw Trójniki, poziome linie w~prawo, zakończ
+7~zaciskami \texttt{-X3} (pionowo, 1--7). Linie CP/PP od zacisków 6--7 gniazda; w~linii CP zestyk
+zwierny DT \texttt{-K4} (13/14) --- odsyłacz do cewki pojawi się po narysowaniu jej na E2. Teksty:
+„odczep Type 2 $\to$ PM701E (7 żył, $\le$1 m)'', „SIGNAL OUTPUT (CP)'', „mostek serwisowy CP na
+listwie -X3''.
+\item \textbf{-Q0}: „rozłącznik'', wariant 3-bieg. na L1--L3 $+$ wariant 1-bieg. na N \emph{z~tym samym
+DT} \texttt{-Q0} (EPLAN scali je w~jeden aparat). Przyłącza 1/2\ldots7/8.
+\item \textbf{-F1..-F3}: „bezpiecznik'' na L1/L2/L3; N bez zabezpieczenia. Tekst: gG 32 A.
+\item \textbf{-B1}: czarna skrzynka (E.5) w~poprzek czterech pionów (leżący prostokąt), DT \texttt{-B1},
+w~środku tekst \texttt{CDSR 0.07-TP}, obok opis i~„SPI $\to$ /E3.3''. Piony przechodzą przez skrzynkę ---
+to okno czujnika, bez przyłączy.
+\item \textbf{Odczep generatora}: na L1 pod -B1 Trójnik $+$ krótka linia w~lewo $+$ Punkt przerwania
+\texttt{L1\_A3}; tekst „przez -K30''.
+\item \textbf{-T1..-T3} („przekładnik prądowy''), niżej 4 zestyki mocy \texttt{-K1} (1/2\ldots7/8),
+na dole 5 zacisków \texttt{-X2}. Teksty: 40 A / 1 V; 6 mm$^2$; gniazdo CEE 32 A 5p $\to$ moduł B;
+przewód 5$\times$6 mm$^2$ H07RN-F.
+\item \textbf{Zasilanie modułu B}: przy -X2 cztery Punkty przerwania \texttt{L1\_MB}, \texttt{L2\_MB},
+\texttt{L3\_MB}, \texttt{N\_MB} --- ich pary zaczną szyny na E3.
+\item \textbf{Uwagi tekstowe} (E.6): przepisz bloki \emph{Uwagi}, \emph{Ostrzeżenie} i~\emph{-K4}
+z~PDF-a. Klawisz \texttt{3} $=$ porównaj całość ze wzorem.
+\end{enumerate}
+
+\subsection{Arkusz E2 (strona /3) --- łańcuch bezpieczeństwa}
+\begin{enumerate}
+\item \textbf{Szyny}: para Punktów przerwania \texttt{+24V} (lewy i~prawy koniec, jedna oś pozioma ---
+EPLAN pociągnie linię) i~tak samo \texttt{0V} na dole.
+\item \textbf{Ścieżka 1}: z~szyny w~dół: zestyk rozwierny \texttt{-S0} (11/12; jeśli w~bibliotece jest
+wariant „grzybkowy/awaryjny'' --- użyj), niżej \texttt{-F11.1} i~\texttt{-F11.12} (rozwierne; wariant
+z~wyzwalaczem termicznym, a~gdy go brak --- zwykły $+$ tekst $\theta$), między nimi tekst „\ldots'';
+niżej krańcówka \texttt{-S1} (rozwierny z~rolką). Termiki obrysuj przerywanym prostokątem z~podpisem
+(„termiki KSD301 radiatorów przetwornic\ldots''). Ścieżkę zakończ Punktem przerwania \texttt{LB1}.
+\item \textbf{Ścieżka 3}: od pary \texttt{LB1} w~dół: zestyki zwierne \texttt{-K2}, \texttt{-K10} (13/14),
+\texttt{-A2}; gałąź równoległa (Trójniki): przycisk zwierny \texttt{-S2} (START) $\parallel$ zestyk
+\texttt{-RB} 13/14 (samopodtrzymanie); pod spodem \textbf{cewka} \texttt{-RB} (A1/A2) i~do 0~V.
+\item \textbf{Ścieżka 5}: z~+24~V przez zestyk \texttt{-RB} 23/24 do \textbf{cewki} \texttt{-K1}
+i~do 0~V. Po nadaniu DT pod cewką pojawi się \emph{lustro styków} (spis styków -K1 z~E1 z~adresami);
+jeśli nie --- właściwości cewki $\to$ ustawienie lustra styków.
+\item \textbf{Ścieżka 6}: drugi zestyk rozwierny \texttt{-S0} (21/22 --- ten sam DT!) $+$ cewka
+\texttt{-K4} do 0~V; przy obu zestykach -S0 pojawią się wzajemne odsyłacze, przy cewce -K4 --- odsyłacz
+do zestyku CP z~E1. Tekst: „przerwanie CP''.
+\item \textbf{Adnotacje}: bloki \emph{Zasada}, \emph{-K4}, \emph{Odczyty diagnostyczne},
+\emph{Poza łańcuchem} --- teksty z~PDF-a.
+\end{enumerate}
+
+\subsection{Arkusz E3 (strona /4) --- szafa magazynu (NOWE w v5)}
+Wzór: strona 4/4 PDF-a v5.
+\begin{enumerate}
+\item \textbf{Szyny AC}: pary punktów przerwania \texttt{L1\_MB}/\texttt{L2\_MB}/\texttt{L3\_MB} ---
+trzy poziome szyny u~góry; niżej czwarta \texttt{N\_MB}. Całość szafy obrysuj przerywanym prostokątem
+z~podpisem „MODUŁ B --- szafa magazynu energii, wariant budżetowy''.
+\item \textbf{Sekcja fazy L1}: Trójnik na L1 $\to$ zestyk mocy \texttt{-K11} (1/2) $\to$ \textbf{pole
+-X6}: wstaw \emph{zacisk} z~DT \texttt{-X6} (symbolizuje listwę mostków; wystarczy jeden zacisk
+w~każdej sekcji $+$ wspólny opis) $\to$ \textbf{czarna skrzynka} \texttt{-PR1/-PR2} z~tekstami
+„2$\times$ Flatpack2 48/2000 HE'' / „używane, PFC, CAN 125 kb/s''. Z~dolnej krawędzi skrzynki trzy
+krótkie linie: do szyny \texttt{N\_MB} oraz do szyn DC (krok 4): $+$48~V i~0~V.
+\item \textbf{Powielenie sekcji}: zaznacz sekcję ramką $\to$ Edytuj $\to$ Powiel $\times$2; popraw DT:
+\texttt{-K12}/\texttt{-PR3/-PR4} (start z~szyny L2), \texttt{-K13}/\texttt{-PR5/-PR6} (L3). Obok pola
+-X6 tekst: „-X6: pole przełączeń --- mostki L2$\to$L1 dla 1F 32 A (kontrola: pomiar -U2)''.
+\item \textbf{Szyny DC}: dwie poziome linie z~tekstami $+$48~V i~0~V (rysuj połączeniem między punktami
+przyłączeń skrzynek albo dwoma punktami przerwania \texttt{+48V\_DC}/\texttt{0V\_DC}); Trójniki od
+wszystkich sekcji PR.
+\item \textbf{Zabezpieczenia DC}: w~szynie $+$48~V kolejno: bezpiecznik \texttt{-F13.1} (tekst: mega
+150--200~A), zestyk mocy \texttt{-KB} (tekst: kontaktor BMS), rozłącznik \texttt{-Q1} (tekst: rozłącznik
+DC); w~gałęzi 0~V do pakietu bezpiecznik \texttt{-F13.2}. Dalej \textbf{czarna skrzynka} \texttt{-GB1}
+(teksty: „pakiet 16S LFP 105 Ah (DIY)'', „5,4 kWh (2P: 10,8); BMS $\to$ -A1 i -KB'', „temperatury:
+-B5.x (1-Wire)'').
+\item \textbf{Falownik}: czarna skrzynka \texttt{-INV} (teksty: „falownik W2: UPS on-line 48 V'',
+„używany, 5--6 kVA; DC wprost z -GB1'', „wyjście: wydzielone obwody wyspy''), zasilona z~szyn DC;
+z~górnej krawędzi strzałka (grafika $+$ tekst) „$\to$ obwody wyspy (sieć--0--wyspa)''. Obok tekst:
+„bez zrzutu cieplnego: bramka SOC w~firmware''.
+\item \textbf{Wentylatory}: tekst/punkt \texttt{X4:L} $\to$ bezpiecznik \texttt{-F5} $\to$ zestyk
+zwierny \texttt{-K3} $\to$ skrzynka \texttt{-K2} z~tekstem I$>$ $\to$ Trójnik $\to$ dwa symbole
+„silnik'' \texttt{-M3}/\texttt{-M4} $\to$ powrót \texttt{X4:N}; przerywana ramka z~podpisem.
+\item \textbf{Zasilacz}: zaciski \texttt{X4:1..3}, w~linii L bezpiecznik \texttt{-F4} (T2A), czarna
+skrzynka \texttt{-G1} „zasilacz 24 / 5 / 3,3 V''; strzałki tekstowe „24 V $\to$ /E2.1, cewki, -Y1, -K4''
+i~„5 / 3,3 V $\to$ -A1''; tu umieść pary punktów \texttt{+24V} i~\texttt{0V} z~E2.
+\item \textbf{Płyta -A1}: duża czarna skrzynka „-A1 ESP32-S3 --- płyta logiki''; na prawej krawędzi
+wiersze tekstem: SPI, \textbf{CAN} (nowość v5: „TWAI izol.: -PR1..-PR6 (Flatpack2) $+$ BMS''), I2C,
+UART, 1-W, ADC, DI --- listy urządzeń przepisz z~PDF-a. Na dolnej krawędzi trzy linie DO1--DO3 do:
+cewki \texttt{-K10}, skrzynki \texttt{-A2 WDT} i~cewki \texttt{-Y1} (blokada wtyku). Teksty „24 V''
+przy cewkach i~podpis „DO1--DO3 (opto, low-side)''.
+\item \textbf{Generator}: czarna skrzynka \texttt{-A3} z~tekstami z~PDF-a $+$ para punktu
+\texttt{L1\_A3} z~E1.
+\item \textbf{Rząd cewek}: krótka szyna 24~V $\to$ \textbf{8 cewek}: \texttt{-K11}, \texttt{-K12},
+\texttt{-K13}, \texttt{-K30}\ldots\texttt{-K33}, \texttt{-K3} $\to$ szyna 0~V (jedna cewka $+$ Powiel;
+potem popraw DT). Gdy DT cewki pokryje się z~zestykiem (np. -K11 z~kroku 2) --- pojawią się wzajemne
+odsyłacze. Nad rzędem skrzynka „-U5 ULN2803 $\leftarrow$ -U3 (I2C -A1)''. \emph{Uwaga: w~v5 nie ma
+-K14 ani -K5 --- jeśli odtwarzasz po przewodniku v1/v3, pomiń je.}
+\item \textbf{Adnotacje końcowe} i~porównanie ze wzorem strona po stronie.
+\end{enumerate}
+
+\subsection{Kontrola, eksport, typowe problemy}
+\textbf{Nawigacja po odsyłaczach}: prawy klik na zestyku/cewce $\to$ polecenie przejścia do elementu
+powiązanego (Szukaj polecenia $\to$ „Przejdź do''). \textbf{Weryfikacja}: Szukaj polecenia $\to$
+„Sprawdź'' --- komunikaty (niesparowane punkty przerwania, zdublowane DT) otwierają się dwuklikiem na
+winnym elemencie. \textbf{Eksport PDF}: Plik $\to$ eksport/publikacja PDF (Szukaj polecenia $\to$
+„PDF''); Education doda znak wodny --- to normalne. \textbf{Typowe problemy}: symbole się nie łączą
+$\to$ przyłącza poza osią siatki (włącz przyciąganie, siatka 4~mm); nie ma przycisku $\to$ Szukaj
+polecenia; zamknięty panel $\to$ Szukaj polecenia $\to$ nazwa panelu; symbol obrócony $\to$ \texttt{Tab}
+przy wstawianiu; brak lustra styków $\to$ identyczny DT cewki i~styków $+$ ustawienie lustra we
+właściwościach cewki; punkt przerwania „bez pary'' $\to$ literówka w~nazwie; rysujesz na złej stronie
+$\to$ patrz na zakładkę nad edytorem.
+
+\section{Otwarte punkty i ryzyka specyficzne v5}
+Protokół CAN Flatpack2 --- opisany społecznościowo, weryfikacja w~U2(c) (fallback: Huawei R4850G2);
+dostępność UPS-a 48~V 5--6~kVA w~rozsądnej cenie (fallback: W3 DIY wg koncepcji v3); jakość ogniw klasy~B
+(mitygacja: selekcja i~pomiar pojemności w~U3); dyscyplina bramki SOC przy testach na pakiecie 1P
+(rozwiązanie docelowe: rozbudowa 2P). Pełny rejestr R1--R24 i~decyzje Z1--Z19: koncepcja v6, rozdz.~13--14.
+
+\section{Dokumenty powiązane}
+\texttt{schemat\_elektryczny\_v5\_EPLAN.pdf} (arkusze E1--E3); \texttt{koncepcja\_v6\_plan\_realizacji.pdf}
+(pełny plan: architektura, firmware, kosztorys, ryzyka, testy odbiorcze); \texttt{koncepcja\_v5.pdf}
+(warianty ogniw, przepis pakietu); \texttt{koncepcja\_v3.pdf} rozdz.~6 (przepis falownika W3);
+\texttt{schemat\_elektryczny\_objasnienie\_v1.pdf} (pełne omówienie aparatów E1/E2 i~peryferiów -A1);
+\texttt{przewodnik\_EPLAN\_v1.pdf} (odtworzenie schematu w~EPLAN); \texttt{wizualizacja\_3D\_v3\_budzetowa.html}
+(rozmieszczenie szafy).
+
+\end{document}

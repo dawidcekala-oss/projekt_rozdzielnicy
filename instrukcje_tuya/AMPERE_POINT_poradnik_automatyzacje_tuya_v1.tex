@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+\newcommand{\DOCFOOT}{AMPERE POINT — automatyzacje w aplikacji Tuya}
+\input{preambula.tex}
+\graphicspath{{screeny/norm/}}
+
+\begin{document}
+
+\apheader{Automatyzacje w aplikacji Tuya}{Jak działają harmonogram i sceny\\ Przykład: sterowanie godzinami ładowania\\ ładowarki AMPERE POINT z Wi-Fi}
+
+{\large\color{apink} Aplikacja daje dwa różne narzędzia do sterowania ładowarką: harmonogram i automatyzacje. Wyglądają podobnie, ale działają zupełnie inaczej i rozwiązują inne problemy. Ten poradnik wyjaśnia, czym się różnią, kiedy użyć którego i jak zbudować własną regułę.}
+
+\vspace{0.35cm}
+{\fontspec{DejaVu Sans}\bfseries\color{apnavy}\large Dwa narzędzia, dwie różne zasady działania}
+
+\vspace{0.2cm}
+\begin{tabularx}{\textwidth}{@{}p{3.4cm}XX@{}}
+\toprule
+ & \textbf{\color{apnavy}Harmonogram} & \textbf{\color{apnavy}Automatyzacja (scena)}\\
+\midrule
+Gdzie się znajduje & W ustawieniach samego urządzenia & W zakładce Smart $\rightarrow$ Automatyzacja\\
+Kiedy działa & O wyznaczonej godzinie & Gdy zajdzie określone zdarzenie\\
+Co potrafi & Włączyć lub wyłączyć o danej porze & Zareagować na zmianę stanu urządzenia\\
+Czego nie potrafi & Reagować na to, co dzieje się pomiędzy godzinami & Zadziałać samoistnie, bez zdarzenia\\
+Typowe zastosowanie & „Codziennie o 22:00 włącz” & „Jeśli zacznie ładować w złej porze — przerwij”\\
+\bottomrule
+\end{tabularx}
+
+\apinfo{Najważniejsza różnica}{Harmonogram wysyła pojedyncze polecenie o wyznaczonej godzinie i na tym kończy się jego rola. Automatyzacja czeka na zdarzenie — sama z siebie nic nie zrobi, ale gdy zdarzenie nastąpi, zareaguje natychmiast. Dlatego w praktyce najczęściej używa się obu naraz.}
+
+\vspace{0.35cm}
+{\fontspec{DejaVu Sans}\bfseries\color{apnavy}\large Problem, który to ilustruje}
+
+Załóżmy, że ładowarka ma nie ładować między 19:00 a 22:00. W harmonogramie ustawiamy: o 19:00 wyłącz, o 22:00 włącz. Wygląda poprawnie — i działa, dopóki samochód stoi podłączony przez cały ten czas.
+
+Jeżeli jednak kierowca wróci o 19:10 i dopiero wtedy wepnie wtyczkę, ładowanie ruszy. Polecenie „wyłącz” zostało już wysłane kwadrans wcześniej, a podłączenie samochodu jest dla ładowarki nowym zdarzeniem, które uruchamia ładowanie. Kolejne polecenie z harmonogramu przyjdzie dopiero o 22:00.
+
+Harmonogram nie potrafi tego wychwycić, ponieważ nie obserwuje urządzenia — działa wyłącznie o wyznaczonych godzinach. Potrzebna jest reguła, która patrzy na urządzenie \emph{cały czas}. To właśnie robi automatyzacja.
+
+\clearpage
+
+% ==================== BUDOWA ====================
+\apheader{Z czego składa się automatyzacja}{Trzy elementy: warunek, działanie, ograniczenie czasowe}
+
+Każda automatyzacja w aplikacji Tuya ma tę samą budowę. Zrozumienie tych trzech elementów wystarczy, aby tworzyć własne reguły.
+
+\vspace{0.3cm}
+\begin{tabularx}{\textwidth}{@{}p{2.7cm}p{3.9cm}X@{}}
+\toprule
+& \textbf{\color{apnavy}Element} & \textbf{\color{apnavy}Znaczenie}\\
+\midrule
+If & Warunek (wyzwalacz) & Zdarzenie, które uruchamia regułę. Reguła „śpi”, dopóki to zdarzenie nie nastąpi.\\
+Then & Działanie & Co ma się wykonać, gdy warunek zostanie spełniony.\\
+Precondition & Ograniczenie czasowe & Ramy, w których reguła w ogóle może zadziałać: godziny, dni tygodnia. Poza nimi reguła jest nieaktywna.\\
+\bottomrule
+\end{tabularx}
+
+\apwarnbox{Precondition nie jest wyzwalaczem}{To częste nieporozumienie. Ustawienie przedziału 19:00--22:00 nie oznacza „zrób coś o 19:00”. Oznacza „reaguj tylko wtedy, gdy zegar wskazuje między 19:00 a 22:00”. Bez zdarzenia opisanego w sekcji If nic się nie wydarzy.}
+
+\vspace{0.35cm}
+{\fontspec{DejaVu Sans}\bfseries\color{apnavy}\large Jakie warunki oferuje ładowarka}
+
+Po wybraniu wyzwalacza When device status changes i wskazaniu ładowarki aplikacja pokazuje listę parametrów, które można obserwować. Najbardziej przydatny jest Work State — stan pracy urządzenia.
+
+\vspace{0.3cm}
+\begin{minipage}[t]{0.45\textwidth}
+\vspace{0pt}
+\includegraphics[width=0.84\linewidth]{s05_workstate_charging.jpg}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.51\textwidth}
+\vspace{0pt}
+\small
+\begin{tabularx}{\linewidth}{@{}p{3.2cm}X@{}}
+\toprule
+\textbf{\color{apnavy}Stan} & \textbf{\color{apnavy}Znaczenie}\\
+\midrule
+Charger Free & Wolna, nic niepodłączone\\
+Charger Inserted & Wtyczka włożona do samochodu\\
+Charger Wait & Oczekuje na rozpoczęcie\\
+Charger Charging & Trwa ładowanie\\
+Charger Pause & Ładowanie wstrzymane\\
+Charge finished & Ładowanie zakończone\\
+Free with fault & Usterka bez podłączonego auta\\
+Charge with fault & Usterka w trakcie ładowania\\
+\bottomrule
+\end{tabularx}
+\par\vspace{0.25cm}
+Każdy z tych stanów może być wyzwalaczem. Reguła zadziała w chwili, gdy ładowarka \emph{przejdzie} w wybrany stan — a nie wtedy, gdy w nim trwa.
+\end{minipage}
+
+\clearpage
+
+% ==================== PRZYKLAD ====================
+\apheader{Przykład praktyczny}{Reguła: „nie ładuj w godzinach droższego prądu”\\ budowa krok po kroku}
+
+Zbudujemy regułę przerywającą ładowanie rozpoczęte w godzinach 19:00--22:00 od poniedziałku do piątku. Ta sama ścieżka obowiązuje dla każdej innej reguły — zmieniają się tylko wybrane wartości.
+
+\vspace{0.2cm}
+
+\krok{1}{Utwórz nową automatyzację}{Zakładka Smart $\rightarrow$ Automatyzacja $\rightarrow$ Create. Jeśli masz już inne reguły, użyj przycisku + w prawym górnym rogu.}{s01_automatyzacja_pusta.jpg}
+\hfill
+\krok{2}{Wybierz rodzaj wyzwalacza}{Lista zawiera kilka typów. When device status changes reaguje na urządzenie. Harmonogram wyzwala o godzinie — przydatny, gdy chcesz zbudować harmonogram w formie sceny.}{s02_wybor_wyzwalacza.jpg}
+
+\vspace{0.42cm}
+
+\krok{3}{Wskaż urządzenie}{Select a single device wybiera jedno urządzenie. Select multiple devices pozwala objąć regułą kilka ładowarek naraz — przydatne przy większej liczbie stanowisk.}{s03_device_single_warunek.jpg}
+\hfill
+\krok{4}{Wybierz ładowarkę z listy}{Lista pokazuje wszystkie urządzenia w koncie. Urządzenia oznaczone jako \emph{Poza siecią} są w tym momencie niedostępne, ale można ich użyć w regule.}{s04_lista_urzadzen_warunek.jpg}
+
+\clearpage
+\apheader{Przykład praktyczny}{ciąg dalszy — warunek i działanie}
+
+\krok{5}{Ustaw warunek}{Wybierz Work State, a następnie konkretny stan — tutaj Charger Charging. Reguła zadziała w chwili rozpoczęcia ładowania.}{s05_workstate_charging.jpg}
+\hfill
+\krok{6}{Warunek widoczny w sekcji If}{Po zatwierdzeniu wracasz do ekranu sceny. Warunek jest już zapisany. Regułę można rozbudować o kolejne warunki przyciskiem +, wybierając na górze, czy mają być spełnione wszystkie, czy dowolny z nich.}{s06_scena_if_gotowy.jpg}
+
+\vspace{0.42cm}
+
+\krok{7}{Dodaj działanie}{Naciśnij + przy sekcji Then. Poza sterowaniem urządzeniem dostępne są też: uruchomienie innej sceny, opóźnienie oraz powiadomienie.}{s07_dodaj_akcje.jpg}
+\hfill
+\krok{8}{Wskaż urządzenie do sterowania}{Może to być inne urządzenie niż w warunku — na tym polega siła scen. Tutaj sterujemy tą samą ładowarką, więc wybieramy ją ponownie.}{s08_device_single_akcja.jpg}
+
+\clearpage
+\apheader{Przykład praktyczny}{ciąg dalszy — ograniczenie czasowe}
+
+\krok{9}{Wybierz ładowarkę}{Ta sama lista urządzeń co poprzednio.}{s09_lista_urzadzen_akcja.jpg}
+\hfill
+\krok{10}{Ustaw parametr do zmiany}{Switch to włączenie i wyłączenie ładowania. Dostępne są również Charge Current Set (ograniczenie prądu) oraz Work Mode — można więc na przykład nie przerywać ładowania, tylko zmniejszyć prąd.}{s10_switch_off.jpg}
+
+\vspace{0.42cm}
+
+\krok{11}{Sprawdź komplet reguły}{Ekran pokazuje warunek, działanie oraz pozycję Precondition, domyślnie ustawioną na \emph{Cały dzień}. Bez jej zmiany reguła działałaby przez całą dobę.}{s11_scena_if_then.jpg}
+\hfill
+\krok{12}{Otwórz ograniczenie czasowe}{Naciśnij Precondition, a następnie Obowiązywanie odcinka czasu. Pozycja Valid When pozwala dodatkowo uzależnić regułę od stanu innych urządzeń lub od pogody.}{s12_precondition_calydzien.jpg}
+
+\clearpage
+\apheader{Przykład praktyczny}{zakończenie — godziny, dni, zapis}
+
+\krok{13}{Wybierz tryb ręczny}{Poza ustawieniem ręcznym dostępne są tryby Dzień i Noc, liczone od wschodu i zachodu słońca — przydatne np. do oświetlenia. Dla stałych godzin wybierz Dostosowane.}{s13_czas_calydzien.jpg}
+\hfill
+\krok{14}{Otwórz wybór godzin}{Po zaznaczeniu trybu ręcznego pojawia się pozycja Okres czasu z domyślną wartością od 00:00 do 23:59.}{s14_czas_dostosowane.jpg}
+
+\vspace{0.42cm}
+
+\krok{15}{Ustaw przedział godzin}{Warto zaczynać przedział kilka minut wcześniej niż godzina graniczna — reguła zaczyna wtedy czuwać, zanim harmonogram wyśle swoje polecenie.}{s15_okres_kola.jpg}
+\hfill
+\krok{16}{Ustaw dni tygodnia i miasto}{Powtórz to wybór dni. Miasto jest potrzebne aplikacji do prawidłowego liczenia czasu lokalnego oraz godzin wschodu i zachodu słońca.}{s16_czas_gotowy.jpg}
+
+\clearpage
+\apheader{Przykład praktyczny}{zakończenie}
+
+\krok{17}{Wskaż miasto na mapie}{Wystarczy przybliżyć okolicę i zatwierdzić przyciskiem OK.}{s17_miasto_mapa.jpg}
+\hfill
+\krok{18}{Zamknij ustawienia}{Ustawiony przedział widnieje przy pozycji Obowiązywanie odcinka czasu. Naciśnij Zakończ.}{s18_precondition_gotowy.jpg}
+
+\vspace{0.42cm}
+
+\krok{19}{Nazwij regułę}{Dobra nazwa zawiera godziny i efekt działania. Przy kilku regułach oszczędza to sporo czasu — widać wszystko na liście bez wchodzenia w szczegóły.}{s19_nazwa_sceny.jpg}
+\hfill
+\krok{20}{Sprawdź, czy jest aktywna}{Reguła pojawia się na liście z przełącznikiem. Zielony oznacza aktywną. Regułę można w każdej chwili wyłączyć bez usuwania — przydatne np. na czas urlopu.}{s20_lista_gotowa.jpg}
+
+\clearpage
+
+% ==================== ZASADY ====================
+\apheader{Zasady, o których warto pamiętać}{Typowe błędy i sprawdzone rozwiązania}
+
+\vspace{0.1cm}
+{\fontspec{DejaVu Sans}\bfseries\color{apnavy}\large Cztery najczęstsze błędy}
+
+\vspace{0.2cm}
+\begin{tabularx}{\textwidth}{@{}p{5.0cm}X@{}}
+\toprule
+\textbf{\color{apnavy}Błąd} & \textbf{\color{apnavy}Skutek i jak go uniknąć}\\
+\midrule
+Brak zaznaczonych dni w harmonogramie & Wpis wykona się jednorazowo i przestanie działać. Zawsze ustaw powtarzanie.\\
+Oczekiwanie, że automatyzacja włączy urządzenie & Reguła reagująca na rozpoczęcie ładowania potrafi je tylko przerwać. Do włączenia po zakończeniu blokady potrzebny jest harmonogram.\\
+Reguła bez ograniczenia czasowego & Zadziała o każdej porze doby. Ustaw Precondition.\\
+Błędna strefa czasowa urządzenia & Wszystkie godziny przesuwają się o kilka godzin. Sprawdź w ustawieniach urządzenia.\\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4cm}
+{\fontspec{DejaVu Sans}\bfseries\color{apnavy}\large Kiedy harmonogram, a kiedy automatyzacja}
+
+\vspace{0.2cm}
+\begin{tabularx}{\textwidth}{@{}p{6.6cm}X@{}}
+\toprule
+\textbf{\color{apnavy}Potrzeba} & \textbf{\color{apnavy}Narzędzie}\\
+\midrule
+Rozpocząć ładowanie o stałej porze & Harmonogram\\
+Przerwać ładowanie o stałej porze & Harmonogram\\
+Nie dopuścić do ładowania w danych godzinach, niezależnie od pory podłączenia & Automatyzacja z warunkiem \emph{Charger Charging}\\
+Zmniejszyć prąd zamiast przerywać & Automatyzacja z działaniem \emph{Charge Current Set}\\
+Otrzymać powiadomienie o usterce & Automatyzacja z warunkiem \emph{Charge with fault} i działaniem \emph{Send notification}\\
+Sterować kilkoma ładowarkami naraz & Automatyzacja z opcją \emph{Select multiple devices}\\
+\bottomrule
+\end{tabularx}
+
+\apinfo{Połączenie z internetem}{Harmonogram zapisuje się w samym urządzeniu i po zapisaniu działa również bez internetu. Automatyzacje są wykonywane w chmurze i wymagają połączenia. Po dłuższym zaniku zasilania urządzenie może potrzebować ponownej synchronizacji z aplikacją, aby odtworzyć zapisane godziny.}
+
+\apokbox{Rozwiązanie najpewniejsze technicznie}{Jeżeli sterowanie godzinami ładowania ma być całkowicie niezawodne, warto ustawić harmonogram również w samym samochodzie. Pojazd nie pobiera wtedy prądu poza wyznaczonymi godzinami niezależnie od aplikacji, ładowarki i połączenia z internetem.}
+
+\vspace{0.5cm}
+{\color{apline}\rule{\textwidth}{0.8pt}}\\[0.15cm]
+{\footnotesize\color{apmuted} W razie pytań prosimy o kontakt: hello@amperepoint.com}
+
+\end{document}

@@ -1,0 +1,20 @@
+* ================================================================
+* Control Pilot (IEC 61851) - obwod weryfikacyjny dla ngspice/LTspice
+* Pomiar napiecia na wezle CP (miedzy R1 a dioda) - tak jak ladowarka.
+* Stan B: tylko R2 (plateau ~9 V).  Stan C: + R3 rownolegle (plateau ~6 V).
+* ================================================================
+Vpilot pilot 0 PULSE(-12 12 0 1u 1u 0.5m 1m)   ; 1 kHz, 50%, +/-12 V
+R1 pilot cp 1k
+D1 cp nx DMOD
+R2 nx 0 2.74k
+* --- STAN C: odkomentuj ponizsza linie (plateau spada do ~6 V) ---
+*R3 nx 0 1.3k
+.model DMOD D(IS=1e-14 N=1)
+.tran 2u 9m
+* ngspice: pomiar dodatniego plateau
+.measure tran Vplateau MAX V(cp) FROM=4m TO=5m
+.control
+run
+plot V(cp)
+.endc
+.end

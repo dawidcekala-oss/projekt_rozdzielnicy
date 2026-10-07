@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>AP-T — dobór komponentów elektrycznych (lista zakupowa, v1)</title>
+<style>
+:root{--navy:#102a54;--red:#c81e28;--soft:#f4f6f9;--line:#d8dee6;--ok:#1a7f4b;--warn:#b26a00}
+body{font-family:"Segoe UI",system-ui,Arial,sans-serif;margin:0;color:#1b2430;font-size:14px;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding:26px 32px 60px}
+h1{color:var(--navy);font-size:22px;margin:0 0 4px}
+h1 .b{color:var(--red)}
+.sub{color:#555;font-size:13px;margin-bottom:14px}
+h2{color:var(--navy);font-size:16.5px;border-bottom:2px solid var(--line);padding-bottom:4px;margin:26px 0 8px}
+table{border-collapse:collapse;width:100%;font-size:12.6px;margin:8px 0}
+th{background:var(--navy);color:#fff;padding:5px 8px;text-align:left}
+td{border:1px solid var(--line);padding:5px 8px;vertical-align:top}
+tr:nth-child(even) td{background:var(--soft)}
+.ok{display:inline-block;background:#eaf6ef;border:1px solid #bfe3cd;color:var(--ok);border-radius:4px;padding:0 6px;font-size:11px;font-weight:600}
+.est{display:inline-block;background:#fff7e6;border:1px solid #f0ddb0;color:var(--warn);border-radius:4px;padding:0 6px;font-size:11px;font-weight:600}
+.box{background:var(--soft);border-left:4px solid var(--navy);padding:10px 14px;margin:12px 0;border-radius:0 5px 5px 0;font-size:13px}
+a{color:#0b57a4;text-decoration:none} a:hover{text-decoration:underline}
+.price{white-space:nowrap;font-variant-numeric:tabular-nums}
+.foot{color:#888;font-size:11px;margin-top:18px;border-top:1px solid var(--line);padding-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1><span class="b">AMPERE POINT</span> AP-T — dobór komponentów elektrycznych (v1)</h1>
+<div class="sub">Lista zakupowa do prototypu α i aktualizacja BOM • ceny z 25.07.2026 • <span class="ok">CENA POTWIERDZONA</span> = sprawdzona w sklepie (link) • <span class="est">SZACUNEK</span> = rząd wielkości do potwierdzenia przy zamówieniu</div>
+
+<h2>1. Gniazda siłowe CEE — tablicowe SKOŚNE (kluczowy komponent panelu P-CEE)</h2>
+<table>
+<tr><th>Produkt</th><th>Symbol</th><th>Parametry</th><th>Cena</th><th>Status</th></tr>
+<tr><td>PCE gniazdo tablicowe skośne 32A <a href="https://www.pce.pl/produkt/gniazdo-tablicowe-skosne-32a-5p-400v-6h-ip44-54/">karta PCE</a> • <a href="https://www.twojaelektra.pl/gniazda-tablicowe-skosne-twist-32a-400v-3p-z-n-87,3,1688039,108969">oferta</a> • <a href="https://www.ceneo.pl/7360526">ceneo</a></td><td><b>PCE 425-6</b></td><td>32A 5P (3P+N+PE) 400V 6h, IP44/54, kołnierz ~87×97 mm, z klapką</td><td class="price"><b>32,14 zł brutto</b></td><td><span class="ok">CENA POTWIERDZONA</span></td></tr>
+<tr><td>PCE gniazdo tablicowe skośne 16A (analogiczna seria „Twist")</td><td><b>PCE 415-6</b></td><td>16A 5P 400V 6h IP44/54</td><td class="price">~25–35 zł</td><td><span class="est">SZACUNEK</span></td></tr>
+<tr><td>PCE skośne <b>z puszką natynkową</b> (alternatywa bez głębokiej zabudowy) <a href="https://www.pce.pl/produkt/gniazdo-tablicowe-skosne-z-puszka-32a-5p-400v-6h-ip44-54/">karta PCE</a></td><td>seria 75x/„z puszką"</td><td>32A 5P 6h IP44/54</td><td class="price">~60–90 zł</td><td><span class="est">SZACUNEK</span></td></tr>
+<tr><td>Gniazdo CEE 32A 2P+E 230V (niebieskie, skośne) — dla ładowarek 1-fazowych (P72)</td><td>PCE 423-6 (do potw.)</td><td>32A 3P 230V 6h IP44</td><td class="price">~30–45 zł</td><td><span class="est">SZACUNEK</span></td></tr>
+</table>
+<div class="box"><b>Wniosek do BOM:</b> gniazdo skośne to koszt ~30–40 zł, nie 90–140 zł jak założono w koncepcji §13 — <b>osprzęt gniazdowy CHARGE tanieje o ~60–100 zł</b>. Do domknięcia przy DXF: wykrój montażowy 425-6 (karta PCE podaje kołnierz 87×97; wykrój i głębokość za panelem potwierdzić z rysunkiem technicznym PCE — wpływa na tłoczenie panelu P-CEE32). Alternatywy do wyceny równoległej: Bals, Mennekes TM, Scame OPTIMA (zapytanie ofertowe przy prototypie).</div>
+
+<h2>2. Aparatura modułowa (komora S2)</h2>
+<table>
+<tr><th>Funkcja</th><th>Produkt / symbol</th><th>Cena</th><th>Status</th></tr>
+<tr><td>RCD punktu EV: 4P 40A 30 mA <b>typ A</b></td><td>Hager <b>CDA440J</b> <a href="https://grupaelektro.pl/pl/p/Wylacznik-roznicowopradowy-4P-40A30mA-Typ-A-Hager-CDA440J/2045">oferta</a> (alternatywy: Eaton PF6/CFI6 typ A, ETI EFI-4 A)</td><td class="price"><b>125,09 netto / 153,86 brutto</b></td><td><span class="ok">CENA POTWIERDZONA</span></td></tr>
+<tr><td>MCB punktu 22 kW: C32 3P (6–10 kA)</td><td>Eaton CLS6-C32/3 / Hager MCN332 / Noark Ex9BN 3P C32</td><td class="price">~45–80 zł netto</td><td><span class="est">SZACUNEK</span></td></tr>
+<tr><td>RCBO gniazd: 1P+N B16 30 mA <b>typ A</b>, 2M</td><td>Hager <b>ADA916D</b> (6 kA) <a href="https://hager.com/pl/katalog/produkt/ada916d-rcbo-1p-n-6ka-b-16a-30ma-typ-a">karta</a> — ceny kanałowe silnie rozproszone (Allegro ~150–250 zł; <a href="https://sklep.enexon.pl/wylacznik-roznicowopradowy-z-czlonem-nadpradowym-2p-b-16a-30ma-typ-a-rcbo-ada916d-hager-1233091">enexon 617 zł — odrzucić</a>); ekonomicznie: Noark Ex9NLE B16 30mA typ A <a href="https://www.tim.pl/wylacznik-roznicowo-nadpradowy-rcbo-1-fazowy-b16-b-16a-30ma-typ-a-2-biegunowy-2p-230v-ac-2-modulowy-noark/p/0001-00019-38335">TIM</a></td><td class="price">Noark ~110–160 zł; Hager ~180–250 zł</td><td><span class="est">SZACUNEK (widełki z ofert)</span></td></tr>
+<tr><td>SPD typ 2, 4P (TN-S), Up ≤1,5–2,5 kV</td><td>ETI ETITEC A T2 275/20 4+0 / Eaton SPCT2-280/4 / Hager SPN440</td><td class="price">~200–350 zł netto</td><td><span class="est">SZACUNEK</span></td></tr>
+<tr><td>Licznik 3f DIN z <b>MID</b>, RS-485 Modbus (wariant FIRMA)</td><td>Eastron <b>SDM72D-M V2 MID</b> <a href="https://electric.pl/product/licznik-energii-3-fazowy-eastron-sdm72d-m-modbus-v2-mid">electric.pl</a> (4M, 100 A bezpośredni)</td><td class="price"><b>338,37 netto / 416,20 brutto</b></td><td><span class="ok">CENA POTWIERDZONA</span></td></tr>
+<tr><td>Rozłącznik główny FR 40A 4P (FIRMA/PRO)</td><td>Eaton IS-40/4 / Hager SBN440</td><td class="price">~90–140 zł</td><td><span class="est">SZACUNEK</span></td></tr>
+</table>
+
+<h2>3. Rozdział i przyłącze (strefa S1)</h2>
+<table>
+<tr><th>Funkcja</th><th>Produkt</th><th>Cena</th><th>Status</th></tr>
+<tr><td>Zaciski przelotowe 5×16–25 mm² (loop-in/loop-out)</td><td>bloki rozdzielcze na TH35 (np. Pollmann/Hager/WAGO), wariant ekonomiczny: 5× złączka gwintowa 35 mm² na płycie</td><td class="price">~60–130 zł/kpl</td><td><span class="est">SZACUNEK</span></td></tr>
+<tr><td>Dławnice M25/M32 IP68 + przelotka szczotkowa + membrana STEGO DA 084</td><td>kpl. wg koncepcji §11</td><td class="price">~60–90 zł/kpl</td><td><span class="est">SZACUNEK</span></td></tr>
+<tr><td>Śruba PE M8 + linki 6 mm² z końcówkami (3 szt.)</td><td>—</td><td class="price">~25–40 zł</td><td><span class="est">SZACUNEK</span></td></tr>
+<tr><td>Grzałka antykondensacyjna z termostatem (opcja FIRMA)</td><td>15 W TH35 + termostat/higrostat (STEGO/F&amp;F)</td><td class="price">~140–200 zł</td><td><span class="est">SZACUNEK (research cz.1: 88+49 zł)</span></td></tr>
+</table>
+
+<h2>4. Osprzęt użytkowy</h2>
+<table>
+<tr><th>Funkcja</th><th>Produkt</th><th>Cena</th><th>Status</th></tr>
+<tr><td>Schuko panelowe IP54 z klapką (2 szt. na P-2S)</td><td>PCE 105-0 / seria natynkowa hermetyczna; alternatywa: Dr. Storm z oferty AP (179 zł det.)</td><td class="price">~15–30 zł/szt.</td><td><span class="est">SZACUNEK</span></td></tr>
+<tr><td>Holster Typ 2 (kupny, do czasu własnego odlewu)</td><td>rynek PL 40–200 zł (kompozytowe ~139 zł — research cz.1 §5.4); docelowo własny kubek PA6 z odwodnieniem</td><td class="price">~40–140 zł</td><td><span class="est">SZACUNEK</span></td></tr>
+<tr><td>Hak kablowy</td><td>własny: pręt Ø12 gięty + stopka / odlew alu (etap 2)</td><td class="price">~20–45 zł (wykonanie)</td><td><span class="est">SZACUNEK</span></td></tr>
+</table>
+
+<h2>5. Zaktualizowany koszt elektryki — konfiguracja CHARGE (netto)</h2>
+<table>
+<tr><th>Pozycja</th><th>Przyjęto w koncepcji §13</th><th>Po weryfikacji cen</th></tr>
+<tr><td>RCD 4P 40A typ A</td><td class="price">150–220</td><td class="price"><b>125–155</b> (Hager CDA440J potwierdzone)</td></tr>
+<tr><td>MCB C32 3P</td><td class="price">45–70</td><td class="price">45–80</td></tr>
+<tr><td>RCBO B16 typ A (opcja Schuko)</td><td class="price">70–120</td><td class="price">110–160 (Noark; typ A droższy niż zakładano)</td></tr>
+<tr><td>SPD T2 (opcja/standard)</td><td class="price">180–350</td><td class="price">200–350</td></tr>
+<tr><td>Gniazdo CEE32 skośne</td><td class="price">90–140</td><td class="price"><b>32–45</b> (PCE 425-6 potwierdzone)</td></tr>
+<tr><td>Zaciski przelotowe + dławnice + PE + membrana</td><td class="price">130–200</td><td class="price">145–260</td></tr>
+<tr><td><b>Suma „elektryka CHARGE" (bez licznika)</b></td><td class="price"><b>665–1080</b></td><td class="price"><b>~657–1050 — założenia BOM potwierdzone</b></td></tr>
+<tr><td>+ licznik MID (FIRMA)</td><td class="price">250–400</td><td class="price"><b>338</b> (Eastron SDM72D-M V2, potwierdzone)</td></tr>
+</table>
+<div class="box"><b>Trzy ustalenia zmieniające projekt:</b> (1) skośne gniazda CEE są 3× tańsze niż zakładano — można je dawać <b>w standardzie</b> każdej konfiguracji bez bólu marży; (2) RCBO 1P+N w typie A kosztuje więcej niż zakładano — dla SOCKET rozważyć wariant: wspólny RCD 2P typ A + 2× MCB B16 (tańszy o ~80–120 zł, wciąż zgodny z 708, bo „własne zabezpieczenie nadprądowe" zachowane, ale RCD wspólny dla 2 gniazd — do decyzji: pełna zgodność „RCD na gniazdo" tylko w wariancie kempingowym); (3) licznik Eastron z Modbus daje za darmo przyszłą integrację (RS-485 już przewidziane w S1) — wariant FIRMA może raportować zużycie do Tuya/aplikacji przez bramkę.</div>
+
+<div class="foot">AP-T komponenty v1 • 25.07.2026 • ceny potwierdzone linkami w tabelach; szacunki oznaczone — potwierdzić przy zamówieniu prototypu • następny krok: zapytania ofertowe (PCE/Bals/Mennekes — gniazda; TIM/Onninen — aparatura kompletem) + karta wykroju 425-6 do projektu panelu</div>
+</div>
+</body>
+</html>

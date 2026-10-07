@@ -1,0 +1,24 @@
+# Pliki powyzej limitu GitHub (100 MB)
+komputer_HA/pobrane/*.iso
+komputer_HA/pobrane/*.img.xz
+komputer_HA/pobrane/*.img
+SMART_BIURO/wentylacja/test_com_manual/log_sondy.txt
+wentylacja/test_com_manual/log_sondy.txt
+
+# Srodowiska i cache
+.venv/
+venv/
+__pycache__/
+*.pyc
+node_modules/
+
+# Systemowe
+Thumbs.db
+desktop.ini
+.DS_Store
+*.lnk
+
+# Dane poufne (haslo Wi-Fi, token Shelly Cloud, niezaszyfrowany backup HA)
+SHELLY/DevKit/kopie_konfiguracji/
+komputer_HA/kopia_HA_*.tar
+komputer_HA/*.tar

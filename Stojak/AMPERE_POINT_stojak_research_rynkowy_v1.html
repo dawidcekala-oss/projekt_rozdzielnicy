@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMPERE POINT — Stojak: research rynkowy słupków zasilających i EV (v1)</title>
+<style>
+:root{
+  --navy:#102a54; --red:#c81e28; --gray:#787e85; --bg:#ffffff; --soft:#f4f6f9;
+  --line:#d8dee6; --ok:#1a7f4b; --warn:#b26a00;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;margin:0;background:var(--bg);color:#1b2430;line-height:1.5;font-size:15px}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 34px 80px}
+header.doc{border-bottom:4px solid var(--navy);padding:18px 0 14px;margin-bottom:18px}
+header.doc h1{margin:0;color:var(--navy);font-size:26px;letter-spacing:.3px}
+header.doc .sub{color:#333;font-size:15px;margin-top:6px}
+header.doc .meta{color:var(--gray);font-size:12.5px;margin-top:8px}
+.brand{color:var(--red);font-weight:700}
+h2{color:var(--navy);font-size:20px;border-bottom:2px solid var(--line);padding-bottom:6px;margin:38px 0 12px}
+h2 .no{color:var(--red);margin-right:8px}
+h3{color:var(--navy);font-size:16.5px;margin:24px 0 8px}
+h4{color:#31415e;font-size:14.5px;margin:16px 0 6px}
+p{margin:8px 0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.2px}
+th{background:var(--navy);color:#fff;text-align:left;padding:7px 9px;font-weight:600;vertical-align:bottom}
+td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
+tr:nth-child(even) td{background:var(--soft)}
+.small{font-size:12.3px;color:#444}
+.tag{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:4px;padding:1px 7px;font-size:11.5px;color:var(--navy);margin:0 4px 4px 0;white-space:nowrap}
+.tag.red{background:#fdeeee;border-color:#f0c4c6;color:var(--red)}
+.tag.green{background:#eaf6ef;border-color:#bfe3cd;color:var(--ok)}
+.box{background:var(--soft);border-left:4px solid var(--navy);padding:12px 16px;margin:14px 0;border-radius:0 6px 6px 0}
+.box.red{border-left-color:var(--red)}
+.box.green{border-left-color:var(--ok)}
+.box b.t{display:block;color:var(--navy);margin-bottom:4px}
+ol.exec{counter-reset:x;padding-left:0;list-style:none}
+ol.exec>li{margin:10px 0;padding:10px 14px 10px 52px;background:var(--soft);border-radius:6px;position:relative;min-height:38px}
+ol.exec>li::before{counter-increment:x;content:counter(x);position:absolute;left:12px;top:10px;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+ol.exec>li.hot::before{background:var(--red)}
+a{color:#0b57a4;text-decoration:none}
+a:hover{text-decoration:underline}
+.toc{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:14px 20px;margin:16px 0}
+.toc b{color:var(--navy)}
+.toc ol{margin:8px 0 0;padding-left:22px;columns:2;column-gap:36px}
+.toc li{margin:3px 0;font-size:13.5px}
+.src{font-size:11.5px;color:var(--gray)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}.toc ol{columns:1}}
+.kv{display:grid;grid-template-columns:230px 1fr;gap:4px 12px;font-size:13.5px;margin:8px 0}
+.kv div:nth-child(odd){color:var(--gray)}
+footer{margin-top:50px;border-top:2px solid var(--line);padding-top:12px;color:var(--gray);font-size:12px}
+.price{font-variant-numeric:tabular-nums}
+.legend{font-size:12px;color:var(--gray);margin-top:4px}
+mark{background:#fff3c2;padding:0 3px;border-radius:3px}
+.center{text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1><span class="brand">AMPERE POINT</span> — Uniwersalny słupek zasilająco-ładujący</h1>
+  <div class="sub"><b>CZĘŚĆ 1: RESEARCH RYNKOWO-TECHNICZNY</b> — kolumny zasilające, pedestały EV, normy, materiały, praktyka montażu</div>
+  <div class="meta">wersja 1 &nbsp;•&nbsp; 25 lipca 2026 &nbsp;•&nbsp; opracowanie wewnętrzne (folder roboczy: <code>AMPERE_POINT/Stojak</code>) &nbsp;•&nbsp; ~200 źródeł (linki w tekście) &nbsp;•&nbsp; dokument towarzyszący: <i>CZĘŚĆ 2 — Projekt koncepcyjny AP&#8209;T</i></div>
+</header>
+
+<div class="toc">
+<b>Spis treści</b>
+<ol>
+<li><a href="#s1">Streszczenie — 12 wniosków, które ustawiają projekt</a></li>
+<li><a href="#s2">Metodyka i zakres researchu</a></li>
+<li><a href="#s3">Stan obecny u nas + rozliczenie poprzedniej próby (AP-S1 v2)</a></li>
+<li><a href="#s4">Świat 1: profesjonalne kolumny zasilające (kemping / marina / place)</a></li>
+<li><a href="#s5">Świat 2: słupki i stojaki EV (PL + EU)</a></li>
+<li><a href="#s6">Co słupek musi nosić — urządzenia AMPERE POINT</a></li>
+<li><a href="#s7">Normy i przepisy — lista kontrolna wymagań</a></li>
+<li><a href="#s8">Materiały i technologia produkcji (PL, serie 20–500 szt.)</a></li>
+<li><a href="#s9">Montaż: kable, fundamenty, uziemienie, pomiary, koszty</a></li>
+<li><a href="#s10">Synteza: co robią najlepsi / luki rynkowe / pozycjonowanie ceny</a></li>
+<li><a href="#s11">Tezy projektowe → wejście do koncepcji AP-T</a></li>
+</ol>
+</div>
+
+<h2 id="s1"><span class="no">1.</span>Streszczenie — 12 wniosków, które ustawiają projekt</h2>
+
+<ol class="exec">
+<li class="hot"><b>Rynek to trzy światy, które się nie komunikują.</b> (1)&nbsp;Profesjonalne kolumny gniazdowe (GIFAS, Rolec, Walther, Gewiss — 1200–2500&nbsp;€) mają aparaturę na każde gniazdo, zaciski przelotowe i serwisowalność, ale zero EV i ceny zaporowe. (2)&nbsp;Pedestały EV (KEBA, ABL, Mennekes, Easee) mają vendor-lock na jedną markę ładowarki i <mark>nie mają żadnych gniazd ani aparatury</mark>. (3)&nbsp;Tani segment uniwersalny PL (FLOWEV 695&nbsp;zł, Green Wallbox 649&nbsp;zł, Platinet 1100&nbsp;zł) to puste rury z otworami. <b>Słupek łączący te trzy światy poniżej 1500&nbsp;zł nie istnieje.</b></li>
+<li class="hot"><b>Nikt nie obsługuje modelu sprzedaży AMPERE POINT.</b> Konfiguracja „gniazdo CEE przy stanowisku + ładowarka przenośna Q/P/B na uchwycie + holster Typ&nbsp;2" nie ma na rynku żadnego dedykowanego nośnika — wszystkie pedestały zakładają wallbox na stałe. To nasza unikalna pozycja i główny argument, by słupek był własnym produktem, a nie doklejką.</li>
+<li><b>Norma wymusza architekturę słupka.</b> 1 punkt ładowania = 1 obwód + własne RCD ≤30&nbsp;mA (PN-HD&nbsp;60364-7-722); każde gniazdo kempingowe = własne RCD + własne zabezpieczenie nadprądowe, max 4 gniazda w obudowie (60364-7-708); wysokość gniazd 0,5–1,5&nbsp;m; SPD typ 2 w słupku, gdy od rozdzielnicy jest &gt;10&nbsp;m. Wniosek: <mark>słupek „kompletny normowo" musi mieć komorę aparatową</mark> — czego tani segment nie ma. To przewaga zgodności, nie gadżet.</li>
+<li><b>Ładowarki AP upraszczają elektrykę słupka.</b> Cała oferta (Prime, Q, P, B) ma wbudowane RCD typ A 30&nbsp;mA + detekcję 6&nbsp;mA DC → w słupku wystarczy <b>RCBO typ A</b> na punkt (nie potrzeba drogiego typu B, ~150&nbsp;zł vs ~1200&nbsp;zł).</li>
+<li><b>Materiał: aluminium wygrywa dwuetapowo.</b> Pilot 20–100&nbsp;szt.: blacha EN&nbsp;AW-5754 3&nbsp;mm gięta, skręcana (zero kosztów narzędzi, 12–15&nbsp;kg, IK10, proszek Qualicoat kl.&nbsp;2). Seria 150–500&nbsp;szt./rok: własny profil wytłaczany EN&nbsp;AW-6060&nbsp;T66 z kanałami T-slot (matryca 6–15&nbsp;tys.&nbsp;zł, MOQ ~500&nbsp;kg) — dokładnie droga GIFAS/Enelion. Stal duplex tylko do przetargów/stref wandalskich; 316L tylko mariny.</li>
+<li><b>Serwisowalność to cecha klasy premium do skopiowania za grosze:</b> zdejmowany front (Walther), zdejmowany tył (patent edelboxx), okienka z poliwęglanu nad aparatami (GIFAS), wyprowadzenie kabla przy zamkniętych drzwiach (Walther/GIFAS), klapa samodomykająca (Tallykey).</li>
+<li><b>Kondensacja: dołu słupka się nie uszczelnia.</b> KEBA wymaga odpływu wody z podstawy; Pop&nbsp;Up Power celowo nie deklaruje IP studni („szczelne są aparaty, nie obudowa"); PCE daje grzałkę 20&nbsp;W w skrzynkach podłogowych. Recepta: dół otwarty do fundamentu + membrana wyrównywania ciśnienia (STEGO DA&nbsp;084, ~25&nbsp;zł) + grzałka 15&nbsp;W tylko w wersji z licznikiem.</li>
+<li><b>Daszek to funkcja mocy, nie kosmetyka.</b> KEBA P30: przy 32&nbsp;A praca tylko do +40&nbsp;°C i <mark>„bez bezpośredniego słońca"</mark> — inaczej derating. Daszek osłaniający ładowarkę i gniazda = pełne 22&nbsp;kW w lipcu + suchy wtyk CEE. Konkurencja premium daszka nie ma (!), tani PL ma symboliczny (FLOWEV 30×16&nbsp;cm).</li>
+<li><b>Kabel ładowania ma fizykę, którą wszyscy ignorują.</b> Kabel T2 22&nbsp;kW: Ø16,8&nbsp;mm, 5&nbsp;m = 3,5&nbsp;kg, 7,5&nbsp;m = 4,8&nbsp;kg, zwój Ø30–35&nbsp;cm. Wniosek: hak o ramieniu ≥150&nbsp;mm i promieniu ≥80&nbsp;mm, nośność ≥10&nbsp;kg; holster pochylony stykami w dół z odwodnieniem (tanie „gniazda do góry" zbierają wodę i lód). Nikt poniżej 1000&nbsp;zł tego nie liczy.</li>
+<li><b>Fundament jest produktem.</b> Green Wallbox sprzedaje prefabrykat za 399&nbsp;zł, Greenkick 50×50×14&nbsp;cm za 895&nbsp;zł, Alfen za 250&nbsp;€, benchmark kosztowy: żelbetowe fundamenty oświetleniowe F100 od 328&nbsp;zł. Praktyki producenckie do przejęcia: szpilki M12 w rozstawie 120×120&nbsp;mm (Enelion), rura osłonowa wyprowadzona 25&nbsp;cm nad fundament (KEBA), zapas kabla 1,0–1,5&nbsp;m chowany w słupie (KEBA/ABL), poziomowanie nakrętkami + podlewka.</li>
+<li><b>Zaciski przelotowe (loop-in/loop-out) = tania rozbudowa w łańcuch.</b> GIFAS do 70&nbsp;mm², Walther/edelboxx 2×5×10&nbsp;mm². W segmencie do 1500&nbsp;zł nie robi tego nikt, a to klucz dla firm (2–6 stanowisk z jednego WLZ + DLB po RS-485).</li>
+<li><b>„Gniazda dziś, EV jutro" — luka strategiczna.</b> Nikt nie oferuje słupka, który rośnie z klientem: dziś 2×Schuko do ogrodu, za rok CEE&nbsp;32A + ładowarka Q22, za trzy lata wallbox Prime — bez wymiany konstrukcji i fundamentu. To jest właściwa definicja „uniwersalny" i oś całej koncepcji AP-T.</li>
+</ol>
+
+<h2 id="s2"><span class="no">2.</span>Metodyka i zakres researchu</h2>
+<p>Research wykonano w pięciu równoległych wątkach (25.07.2026), łącznie ~120 zapytań wyszukiwarki i ~90 pobrań pełnych stron/PDF (karty katalogowe, instrukcje montażu, teksty norm IEC/BS, dokumenty UDT/OSD, cenniki usług):</p>
+<table>
+<tr><th style="width:30px">#</th><th>Wątek</th><th>Zakres</th><th>Najważniejsze źródła</th></tr>
+<tr><td>A</td><td><b>Profesjonalne kolumny zasilające</b></td><td>GIFAS, Rolec, Seijsener, Walther-Werke, edelboxx, Mennekes, Scame, Gewiss, Palazzoli, Bals, PCE, GARO, Tallykey, Pop&nbsp;Up Power, Gira, Albert, Pawbol + wersje podziemne/wysuwane</td><td>katalogi producentów DE/UK/IT/SE/DK, sklepy elektrotechniczne</td></tr>
+<tr><td>B</td><td><b>Słupki i stojaki EV</b></td><td>Enelion, Etrel, KEBA, ABL, Mennekes, Wallbox, Easee, Zaptec, go-e, Webasto, Heidelberg/Amperfied, Alfen, Vestel, myenergi, Ohme, Hypervolt, Autel + tani segment PL (Green Cell, Green Wallbox, Platinet, FLOWEV, Allegro) + oferta amperepoint.pl</td><td>karty produktów, sklepy PL/DE/UK, instrukcje instalacji</td></tr>
+<tr><td>C</td><td><b>Normy i przepisy</b></td><td>PN-EN IEC 61439-7, PN-HD 60364-7-722/-708/-709, PN-EN IEC 61851-1, ustawa o elektromobilności + rozp. Dz.U. 2019/1316, UDT, AFIR, dostępność, N&nbsp;SEP-E-004, ISO 12944, EN 62262, MID</td><td>teksty IEC/BS (iTeh), DIN VDE (wyciągi), UDT, DEHN, standardy Enea Operator</td></tr>
+<tr><td>D</td><td><b>Materiały i produkcja</b></td><td>profil wytłaczany (matryce, MOQ, tłocznie PL), blacha stalowa/nierdzewna/aluminiowa, HDPE/PC/SMC, powłoki, IK, kondensacja, uszczelki, zamki, ceny usług laser/gięcie/spaw/ocynk/proszek</td><td>cenniki usług PL 2025/26, katalogi Incobex/STEGO/Euro-Locks, fora produkcyjne</td></tr>
+<tr><td>E</td><td><b>Praktyka montażu</b></td><td>dobór przekrojów YKY/YKXS, N&nbsp;SEP-E-004 w praktyce, rury DVK, fundamenty i kotwy, śruby ziemne, uziemienie, SPD, DLB/RS-485, pomiary odbiorcze, koszty robocizny 2026</td><td>instrukcje Enelion/KEBA/ABL/Wallbox (PDF), karty kabli TFK, elektroda.pl, cenniki</td></tr>
+</table>
+<p class="small">Zastrzeżenie: liczby z norm PN pochodzą z publicznie dostępnych omówień i tekstów IEC/BS/DIN — przed dokumentacją wykonawczą zweryfikować brzmienie w aktualnych PN (PKN). Ceny wg stanu na lipiec 2026.</p>
+
+<h2 id="s3"><span class="no">3.</span>Stan obecny u nas + rozliczenie poprzedniej próby</h2>
+
+<h3>3.1. Co widać na zdjęciach obecnych słupków (folder <code>slupki_bullshit</code>)</h3>
+<p>Na zdjęciach: czarne słupki z profilu zamkniętego na płycie podstawy z otworami pod kotwy, w showroomie i przy wejściu. Konfiguracje improwizowane z bieżącej oferty:</p>
+<table>
+<tr><th>Obserwacja</th><th>Ocena / ryzyko</th></tr>
+<tr><td>Ładowarka przenośna (seria Q) w uchwycie na froncie; <b>przenośne gniazdo CEE 32&nbsp;A (iLuve 745103, 3P+N+E, IP44) przykręcone na szczycie profilu</b> jako gniazdo „stacjonarne"; wtyk CEE ładowarki wpięty od góry</td><td>Gniazdo przenośne (kablowe) użyte jako stałe: brak dławienia od dołu, uszczelnienie pod znakiem zapytania, wtyk + odgiętka sterczą ponad słupek (parcie dźwigni przy potrąceniu, woda na stykach klapki, estetyka)</td></tr>
+<tr><td>Drugi wariant: wallbox / duża ładowarka na wsporniku z boku profilu, gniazdo Typ&nbsp;2 (czarna kaseta z klapką) na froncie, holster Typ&nbsp;2 niżej</td><td>Każde urządzenie = osobne wiercenie profilu (ognisko korozji, nieodwracalne otwory), brak wspólnego standardu wysokości</td></tr>
+<tr><td><b>Kabel T2 owinięty wokół słupka</b> w kilku pętlach, część pętli leży przy podłodze; przewody zasilające biegną po wierzchu (przedłużacz z wtykiem CEE po posadzce)</td><td>UV + zaczepienie nogą + wandalizm; brak haka o właściwym ramieniu; brak wejścia kabla z ziemi — bo w środku nie ma przestrzeni przyłączeniowej</td></tr>
+<tr><td>Szare adaptery/gniazda pomocnicze doklejane obejmami; kartka „22 kW" na obudowie</td><td>Brak systemu paneli — każda zmiana konfiguracji to majsterkowanie</td></tr>
+<tr><td>Brak jakichkolwiek zabezpieczeń przy stanowisku (RCD/MCB w rozdzielnicy budynku)</td><td>Niezgodne z modelem 708/722 dla instalacji docelowych u klientów; reset różnicówki = spacer do budynku</td></tr>
+<tr><td>Brak daszka; wtyki i klapki gniazd wystawione na deszcz/słońce</td><td>Derating 32&nbsp;A latem, lód na stykach zimą, szybsze starzenie</td></tr>
+</table>
+
+<h3>3.2. Rozliczenie projektu AP-S1 v2 (13.07.2026) — co przejmujemy, co odrzucamy</h3>
+<div class="grid2">
+<div class="box green"><b class="t">PRZEJMUJEMY (dobre pomysły v2)</b>
+• montaż osprzętu bez wiercenia, na rastrze, z pełną odwracalnością<br>
+• kabel z ziemi w 100% wewnątrz + przepust w płycie podstawy<br>
+• strefa zabezpieczeń na szynie TH35 w słupku<br>
+• duży daszek osłaniający też gniazda (nie tylko szczyt)<br>
+• wersja DUO plecami do siebie bez zmian konstrukcji<br>
+• trzy warianty posadowienia (kotwy / prefabrykat / śruba ziemna)<br>
+• zestaw doposażenia AP-R1 dla istniejących słupków<br>
+• styl marki: czerń + srebrny akcent + czerwone logo</div>
+<div class="box red"><b class="t">ODRZUCAMY / ZMIENIAMY (dlaczego v2 było „bullshit")</b>
+• <b>research płytki</b>: tylko tani segment PL (Platinet/FLOWEV/Allegro) — bez świata GIFAS/Rolec/Walther, bez 61439-7, bez instrukcji montażu konkurencji<br>
+• <b>nakrętki koszykowe</b> wymagają wsunięcia ręki od wewnątrz → kolizja z uszczelnieniem, kablami i kolejnością montażu; zamieniamy na nitonakrętki fabryczne / kamienie T-slot (montaż wyłącznie od frontu)<br>
+• <b>stal 3&nbsp;mm, 30&nbsp;kg, spawana</b> — drogi spaw, ocynk, masa; zamieniamy na aluminium (pilot: blacha 5754; seria: profil 6060)<br>
+• <b>brak liczb montażowych</b>: przekroje vs długości, zapas kabla, promienie gięcia, momenty, wymiary wykopu — teraz policzone (rozdz. 9)<br>
+• <b>brak zgodności per-gniazdo</b> (RCD na każde gniazdo wg 708) i brak SPD<br>
+• <b>brak analizy termiki/kondensacji</b> (derating 32&nbsp;A, membrana, odpływ)<br>
+• cena 999–1199&nbsp;zł nieuzasadniona kosztowo (sama obudowa stalowa to 600–1100&nbsp;zł netto — rozdz. 8)<br>
+• wizualizacja 3D bez wartości decyzyjnej — zastąpimy rysunkami wymiarowymi SVG</div>
+</div>
+
+<h2 id="s4"><span class="no">4.</span>Świat 1: profesjonalne kolumny zasilające (kemping / marina / place / ogród premium)</h2>
+
+<h3>4.1. Mapa segmentu</h3>
+<table>
+<tr><th>Producent</th><th>Segment</th><th>Technologia korpusu</th><th>Klasa / uwaga</th></tr>
+<tr><td><b>GIFAS-Electric</b> (DE/CH/AT) <span class="src"><a href="https://www.gifas.de/en/energy-columns/">gifas.de</a></span></td><td>przemysł, place, kemping + podziemne</td><td><b>wytłaczany zamknięty profil alu</b> (GAS 100/160/230), pollery V2A/V4A, rozdzielnice z litej gumy</td><td>wzorzec techniczny segmentu</td></tr>
+<tr><td><b>Rolec</b> (UK) <span class="src"><a href="https://www.rolecserv.com/marina-product-ranges/quantum-pedestal">rolecserv.com</a></span></td><td>marina, kemping</td><td>profil alu 6063 anodowany + poliwęglan FR-VS UV; ocynk + panele kompozytowe</td><td>lider UK; IP66/IK10; ekosystem płatności BerthVend</td></tr>
+<tr><td><b>Walther-Werke</b> (DE) <span class="src"><a href="https://www.elektronetshop.de/product/walther-werke-energiesaeule-84201050.282904.html">karta 84201050</a></span></td><td>kemping/marina/przemysł</td><td>stal nierdzewna 1.4301 szczotkowana</td><td>1252&nbsp;€ netto; RCD+LS na każde gniazdo; zdejmowany front</td></tr>
+<tr><td><b>edelboxx</b> (DE) <span class="src"><a href="https://www.edelboxx.de/produkte/energiesaeulen/">edelboxx.de</a></span></td><td>kemping/marina (nisza)</td><td>V2A 2&nbsp;mm (V4A opcja)</td><td>RCBO + legalizowany licznik NA KAŻDE gniazdo; patent: zdejmowana ścianka tylna</td></tr>
+<tr><td><b>Seijsener</b> (NL) <span class="src"><a href="https://www.seijsener.com/en/webshop/productcategorie/servicezuilen">seijsener.com</a></span></td><td>marina/kemping pod klucz</td><td>aluminium AlMg3; tworzywo z recyklingu</td><td>10 lat gwarancji na powłokę; prefabrykowana „ground base"</td></tr>
+<tr><td><b>Mennekes</b> (DE) <span class="src"><a href="https://www.mennekes.de/industry/produkte/highlights/amaxx/">AMAXX</a></span></td><td>targi/eventy, kemping</td><td>AMAPLAST (tworzywo), lita guma EverGUM, wieże inox</td><td>kombinacje modułowe NA słupie; licznik legalizowany w kombinacji</td></tr>
+<tr><td><b>Scame</b> (IT) <span class="src"><a href="https://www.scame.com/web/scame-italia/serie-kiosk">seria KIOSK</a></span></td><td>kemping, porty</td><td>technopolimer samogasnący / ocynk / inox 316L</td><td>AMR: zdalny odczyt, zarządzanie obciążeniem</td></tr>
+<tr><td><b>Gewiss</b> (IT) <span class="src"><a href="https://www.gewiss.com/ww/en/series/serie.1007390.1000079.68-q-mc-terminal-system-for-energy-distribution-and-service-in-insulating-material">68 Q-MC</a></span></td><td>kemping, porty, place</td><td>technopolimer <b>barwiony w masie</b> + inox 316L</td><td>IK10/IK09; dedykowane płyty do betonu i pomostów pływających</td></tr>
+<tr><td><b>Palazzoli</b> (IT) <span class="src"><a href="https://www.palazzoli.com/en/products/electrical-systems/b-smart-distribution-turrets-from-2-to-4-socket-outlets-and-taps-in-stainless-steel-aisi-316l-ip56">B-SMART</a></span></td><td>marina/superjachty</td><td>AISI 316L, klasa II</td><td>IP56/IK10; RCBO na obwód gniazda; wersje z kranami</td></tr>
+<tr><td><b>Bals</b> (DE) <span class="src"><a href="https://shop.bals.com/de/Elektrotechnik-fuer-Industrie-und-Handwerk/Kombinationen/Elektroanschlusssaeulen-&amp;-Poller/c/EAS_3_0027">katalog</a></span></td><td>przemysł/rzemiosło</td><td>tworzywo; 17 modeli</td><td>art. 56884: 1355×250×250, 52&nbsp;kg, CEE16+32+Schuko, FI+4×LS</td></tr>
+<tr><td><b>PCE</b> (AT) <span class="src"><a href="https://www.pcelectric.at/shop/de/steckdosenkombinationen-verteiler/energiesaeulen/energiesaeulen-aluminium.html">MS10/18</a></span></td><td>przemysł, kemping + podłogowe</td><td>zamknięte profile alu 100×50 / 180×100 / 120×120</td><td>TerraMo: pokrywa najazdowa, grzałka 20&nbsp;W, odpływ DN40</td></tr>
+<tr><td><b>GARO</b> (SE) <span class="src"><a href="https://www.garo.se/en/professional/products/camping-power-outlets/marina-pedestals/marina-post0/pedestal-wo-mea-2xiec-16a-ant">Marina Post</a></span></td><td>marina/kemping</td><td>aluminium 253×1300×250, 10,5&nbsp;kg</td><td>IPX6; RCBO 2P C16 + licznik na gniazdo w standardzie</td></tr>
+<tr><td><b>Tallykey</b> (DK) <span class="src"><a href="https://www.tallykey.dk/tallykey-t4/?lang=en">T4</a></span></td><td>marina z płatnościami</td><td>aluminium anodowane</td><td>sztormoodporna samodomykająca klapa; płatność z telefonu</td></tr>
+<tr><td><b>Pop Up Power</b> (UK) <span class="src"><a href="https://www.popuppower.co.uk/pop-up-units.html">popuppower.co.uk</a></span></td><td>place miejskie — <b>wysuwane</b></td><td>AISI 304 + żeliwo + studnia betonowa</td><td>do 40&nbsp;t po schowaniu; filozofia „aparaty IP67, studnia mokra"</td></tr>
+<tr><td><b>Gira / Albert / Kopp</b> (DE) <span class="src"><a href="https://katalog.gira.de/de_DE/datenblatt.html?id=632006">Gira 142×75</a>, <a href="https://www.albert-leuchten.de/en/products/lights/energy-management/energy-columns-configurable/">Albert</a></span></td><td>ogród premium → konsument</td><td>profil alu / odlew alu / cienka V2A</td><td>Gira 588–645&nbsp;€ netto (3×Schuko!); Albert: do 7 wkładów, adapter EV</td></tr>
+<tr><td><b>Pawbol B.18</b> (PL) <span class="src"><a href="https://www.ceneo.pl/37720443">ceneo</a></span></td><td>ogród/budżet</td><td>słupek alu/tworzywo</td><td>2–6×230V, wersja z CEE16+CEE32; bez RCBO, bez liczników — jedyna „polska produkcja"</td></tr>
+</table>
+<p class="small">Nie mają kolumn zewnętrznych (sprawdzono): ABL (tylko osprzęt), TP Electric, Famatel (skrzynki), Hensel, Spelsberg (przenośne/naścienne), Legrand, F&amp;F, Elektro-Plast; Hager tylko przez szwajcarskie ESOCKET.</p>
+
+<h3>4.2. Karty najważniejszych wzorców (dane do naśladowania)</h3>
+
+<h4>GIFAS GAS 100 / 160 / 230 — platforma z profilu wytłaczanego</h4>
+<div class="kv">
+<div>Przekroje profilu</div><div>100×50 / 160×110 / <b>230×150&nbsp;mm</b> (płyta 330×250), wysokości 0,2–6&nbsp;m z jednego systemu</div>
+<div>Zabudowa</div><div>GAS160/230: czterostronna; gniazda na płytach urządzeniowych; przegrody między obwodami</div>
+<div>Aparatura</div><div>za uchylnymi klapkami z Makrolonu (reset bez otwierania całości); typowo FI 40/0,03 + LS B16/C16/C32</div>
+<div>Zaciski przelotowe</div><div>GAS100: 2,5–4&nbsp;mm²; GAS160: 16&nbsp;mm²; <b>GAS230: 70&nbsp;mm²</b> (magistrala przez ciąg kolumn); dławiki M40/M50, kabel do 5×50&nbsp;mm²</div>
+<div>Detale</div><div>zasilanie od dołu, płyta podstawy inox, opcja światła w głowicy, pollery RONDO z wkopywaną tuleją z blokadą obrotu</div>
+</div>
+<p class="src">Źródła: <a href="https://www.gifas.de/en/energy-columns/gas-230/">GAS 230</a>, <a href="https://www.gifas.de/wp-content/uploads/2023/01/GIFAS_2023_SV_7_Energiesaeulen_Energiepoller.pdf">katalog PDF 2023</a>, <a href="https://www.gifas.at/files/cms/12_6____Katalog_11.2_Energies%C3%A4ulen.pdf">katalog AT 11.2</a></p>
+
+<h4>Rolec Quantum / Classic — marina i kemping w jednej rodzinie z EV</h4>
+<div class="kv">
+<div>Quantum Pedestal</div><div>382,5×262,5&nbsp;mm, H 690–1690&nbsp;mm, 16–25&nbsp;kg, <b>IP66 / IK10</b>, korpus alu 6063 + soczewki poliwęglan FR-VS UV; 2-way 2×16A od <b>£545</b></div>
+<div>Classic Touring</div><div>205×205×1165&nbsp;mm, IP65, ocynk wewnątrz + panele kompozyt alu/304; gniazda 16A IP44 z interlockiem; £505</div>
+<div>Zabezpieczenia</div><div>konfiguracje z <b>RCBO 30&nbsp;mA na każde gniazdo</b> + LED 1&nbsp;W ze zmierzchówką na gniazdo</div>
+<div>Komory</div><div>„fully segregated": prąd / woda / oświetlenie oddzielnie</div>
+<div>Ekosystem</div><div>BerthVend: chmurowy odczyt energii+wody, pre/post-paid, OTA; <b>pedestal EV w tej samej obudowie</b> (spójny ciąg na kei)</div>
+</div>
+<p class="src">Źródła: <a href="https://www.rolecserv.com/marina-product-ranges/quantum-pedestal">Quantum</a>, <a href="https://www.rolecserv.com/caravan-hook-ups-products/classic-touring-pedestals">Classic</a>, <a href="https://tewltd.co.uk/product/rolec-4-x-16amp-230v-ip44-socket-4-x-16amp-30ma-rcbo-4-x-1watt-led-photocell-controlled-illumination-pedestal-lsai0040i/">konfiguracja 4×RCBO</a>, <a href="https://www.rolecserv.com/berthvend">BerthVend</a></p>
+
+<h4>Walther 84201050 — wzorzec elektryki wewnętrznej</h4>
+<div class="kv">
+<div>Obudowa</div><div>inox 1.4301 szczotkowany, ~1200×275×220&nbsp;mm, IP44, kołnierz z otworami do kotwienia</div>
+<div>Elektryka</div><div>2×CEE16/230V; <b>na każde gniazdo RCD 2P 25A/30&nbsp;mA typ A + LS B16</b>; wyłącznik główny 35A 4P</div>
+<div>Magistrala</div><div><b>zaciski 2×5×10&nbsp;mm² (loop-in/loop-out do następnej kolumny)</b></div>
+<div>Serwis</div><div><b>zdejmowana płyta czołowa</b>; „wyprowadzenie kabla możliwe przy zamkniętych drzwiach"</div>
+<div>Cena</div><div>1251,99&nbsp;€ netto / 1489,87&nbsp;€ brutto</div>
+</div>
+<p class="src">Źródło: <a href="https://www.elektronetshop.de/product/walther-werke-energiesaeule-84201050.282904.html">elektronetshop.de</a></p>
+
+<h4>edelboxx — detale niszowego mistrza</h4>
+<div class="kv">
+<div>Materiał</div><div>V2A 2&nbsp;mm kulowana szkłem; 100×100 do Ø154&nbsp;mm, H 1000–1200&nbsp;mm</div>
+<div>Elektryka</div><div>RCBO B6–B16 na gniazdo <b>z jawnie liczoną selektywnością do rozdzielnicy głównej</b>; legalizowane liczniki na gniazdo (LCD/bębenkowe)</div>
+<div>Magistrala</div><div>5×10&nbsp;mm², opcjonalnie podwajane do daisy-chain; zasilanie alternatywnie wtykiem CEE32</div>
+<div>Serwis</div><div><b>opatentowana zdejmowana ścianka TYLNA</b> — wymiana aparatów bez ruszania gniazd i plomb</div>
+<div>Dodatki</div><div>LED GU10 1,2&nbsp;W ze zmierzchówką i ściemniaczem; daszek przykręcany; RetroFit cudzych słupków</div>
+</div>
+<p class="src">Źródło: <a href="https://www.edelboxx.de/produkte/energiesaeulen/">edelboxx.de</a></p>
+
+<h3>4.3. Detale konstrukcyjne stanowiące o klasie produktu</h3>
+<table>
+<tr><th>Detal</th><th>Najlepsze wykonania</th></tr>
+<tr><td><b>Kondensacja / wentylacja</b></td><td>GIFAS: rozdzielnica z litej gumy kl. II „zapobiega kondensacji"; PCE TerraMo: grzałka 20&nbsp;W + odpływ DN40; Pop&nbsp;Up Power: świadomie „mokra studnia + aparaty IP67"; Gewiss: praca do 98% RH bez kondensacji</td></tr>
+<tr><td><b>Serwis</b></td><td>zdejmowany front (Walther), zdejmowany tył (edelboxx — patent), okienka Makrolon nad aparatami (GIFAS), samodomykająca klapa sztormowa (Tallykey), drzwiczki z zamkiem 5-kluczowym (GIFAS RONDO)</td></tr>
+<tr><td><b>Zabezpieczenie na gniazdo</b></td><td>norma 708 wymusza na kempingach; Walther: RCD+LS za frontem; GARO/Rolec/Palazzoli: RCBO na gniazdo; edelboxx: + selektywność</td></tr>
+<tr><td><b>Loop-in/loop-out</b></td><td>GIFAS 70&nbsp;mm² • Walther 2×5×10&nbsp;mm² • edelboxx 5×10&nbsp;mm² podwajane</td></tr>
+<tr><td><b>Posadowienie</b></td><td>GIFAS RONDO: tuleja wkopywana z blokadą obrotu; Gewiss: osobne płyty do betonu i pomostów pływających; Gira: tuleja ziemna; Seijsener: prefabrykowana ground base</td></tr>
+<tr><td><b>Zamki</b></td><td>cylinder 5 kluczy (GIFAS), trójkąt (Seijsener), kłódka na gniazdo z wtykiem lub bez (GARO), interlock albo przesłony SAFE-IN (Scame)</td></tr>
+<tr><td><b>Antywandal</b></td><td>IK10 + PC FR-VS UV (Rolec), technopolimer barwiony w masie — rysy niewidoczne (Gewiss), lita guma + stal 1,5–4&nbsp;mm (GIFAS), chowanie pod ziemię do 40&nbsp;t (Pop&nbsp;Up)</td></tr>
+<tr><td><b>Wyprowadzenie kabla odbiorcy</b></td><td>szczelina pod drzwiami przy ZAMKNIĘTEJ obudowie (GIFAS RONDO, Walther, Tallykey) — kluczowy detal eksploatacyjny</td></tr>
+<tr><td><b>Oświetlenie</b></td><td>LED 360° z fotokomórką (Rolec), głowice świetlne (Seijsener), doświetlenie komory aparatowej (Scame)</td></tr>
+<tr><td><b>Opomiarowanie</b></td><td>licznik legalizowany na gniazdo (edelboxx, GARO), eichrecht w kombinacji (Mennekes), chmura/pre-paid (Rolec BerthVend, Tallykey, Gewiss transponder)</td></tr>
+</table>
+
+<h2 id="s5"><span class="no">5.</span>Świat 2: słupki i stojaki EV (PL + EU)</h2>
+
+<h3>5.1. Zintegrowane stacje słupkowe (ładowarka = słupek) — sufit segmentu</h3>
+<table>
+<tr><th>Produkt</th><th>Konstrukcja</th><th>Kluczowe dane</th><th>Cena</th></tr>
+<tr><td><b>Enelion Vertica / Pro</b> <span class="src"><a href="https://enelion.com/pl/vertica/">enelion.com</a></span></td><td>anodowany profil alu (PL!), H&nbsp;1310&nbsp;mm</td><td><b>IP54 / IK10</b>; 2×22&nbsp;kW (2 gniazda T2 albo 2 kable spiralne 6&nbsp;m); RFID, OLED, RCM; wymiana modułu &lt;2&nbsp;min; podstawa fundamentowa 10&nbsp;kg / <b>140&nbsp;zł</b>; szpilki M12 120×120</td><td class="price">Pro 14&nbsp;197&nbsp;zł; sam słupek „Pole Duo" 5&nbsp;650&nbsp;zł</td></tr>
+<tr><td><b>Etrel INCH stojący</b> <span class="src"><a href="https://etrel.atlassian.net/wiki/spaces/EKC/pages/3371271188/INCH+Physical+Installation">instrukcja</a></span></td><td>słupek ze <b>strefą kontrolowanego łamania</b> przy najechaniu</td><td>interfejs ~120&nbsp;cm; kotwa podziemna inox 345×410×504&nbsp;mm zatapiana w betonie; wykop 500×420×600; dual plecami na wspólnym fundamencie z 2 rurami</td><td class="price">kanał instalatorski</td></tr>
+<tr><td><b>Autel AC Ultra pedestal</b> <span class="src"><a href="https://www.voltaev.co.uk/products/autel-maxicharger-ac-ultra-dual-socket-22kw-pedestal-incl-pay-term">volta</a></span></td><td>inox 430</td><td>2×22&nbsp;kW, 8" LCD, terminal płatniczy, IP54</td><td class="price">£3&nbsp;960</td></tr>
+</table>
+
+<h3>5.2. Pedestały producenckie pod wallboxy (vendor-lock)</h3>
+<table>
+<tr><th>Produkt</th><th>Materiał / wymiary</th><th>Co istotnego robi dobrze</th><th>Cena</th></tr>
+<tr><td><b>KEBA Pedestal</b> (P30/P40) <span class="src"><a href="https://www.keba.com/en/emobility/products/accessories">keba.com</a></span></td><td>aluminium lub inox; wysokość „barrier-free" wg EN&nbsp;301&nbsp;549</td><td>3 geometrie dual (single / plecami / „trójkątna"); <b>adapter plate P40 wykorzystuje otwory po P30</b>; górne wejście kabla; uchwyt wtyczki zawsze od strony użytkownika; opcja <b>KeContact R10 — zmotoryzowany bęben zwijający kabel</b> (do 11&nbsp;kW)</td><td class="price">3rd-party słup €229</td></tr>
+<tr><td><b>ABL POLEMH3</b> <span class="src"><a href="https://www.mobilityhouse.com/de_de/abl-standfuss-polemh3-fur-eine-emh3-wallbox.html">mobilityhouse</a></span></td><td>405×1647×180&nbsp;mm, 26&nbsp;kg, IP44</td><td>zintegrowana <b>LED z czujnikiem zmierzchu</b>; prefabrykat ABL 430×190×650 z kanałami kablowymi; „anschlussfertig"</td><td class="price">€999</td></tr>
+<tr><td><b>Mennekes Standfuß</b> 18592/18663 <span class="src"><a href="https://www.mennekes.de/emobility/produkt-details/18663/">mennekes</a></span></td><td>V2A, 1231×240×84&nbsp;mm</td><td>stela na 2 wallboxy (18595); osobna instrukcja fundamentowa</td><td class="price">€300–348</td></tr>
+<tr><td><b>Wallbox Eiffel Basic/Pro</b> <span class="src"><a href="https://support.wallbox.com/en/knowledge-base/eiffel-pedestal-accessory-overview/">support.wallbox</a></span></td><td>stal, <b>IK10</b></td><td>wersje mono/dual pod każdy model marki; szablon kotwienia Ø12, momenty 54/34&nbsp;Nm; zapas kabli ≥0,6&nbsp;m</td><td class="price">450–550&nbsp;USD</td></tr>
+<tr><td><b>Easee Base</b> <span class="src"><a href="https://easee.com/en/products/accessories/base/">easee.com</a></span></td><td>alu + inox, <b>1170×160×80&nbsp;mm</b></td><td><b>haki na kabel zintegrowane w profilu</b>; 1/2/do 4 ładowarek na słupie; „Power Rail" — szyna łącząca kolejne słupki; <b>adapter 45° na krzywe fundamenty</b></td><td class="price">od £83,50</td></tr>
+<tr><td><b>go-e Tower FBS</b> <span class="src"><a href="https://go-e.com/en/products/accessories">go-e.com</a></span></td><td>stal proszkowa</td><td><b>zamykane drzwiczki chroniące ładowarkę</b> (jedyne obok AMP-BOX podejście do ochrony urządzenia przenośnego)</td><td class="price">b.d.</td></tr>
+<tr><td>Webasto / Heidelberg / Alfen / Vestel / myenergi / Ohme / Hypervolt</td><td>stal/inox, 1,3&nbsp;m typowo</td><td>Alfen: prefabrykat 350×570×220&nbsp;mm 42&nbsp;kg €250; Ohme: wariant <b>wkopywany „root-in-ground"</b>; Hypervolt: podstawa 200×200×5&nbsp;mm, 10&nbsp;kg, £163; zappi pedestal 280×150×1310</td><td class="price">£163–€999</td></tr>
+</table>
+
+<h3>5.3. Tani / uniwersalny segment PL — bezpośredni punkt odniesienia cenowego</h3>
+<table>
+<tr><th>Produkt</th><th>Materiał</th><th>Wymiary / masa</th><th>Daszek</th><th>Kabel wewnątrz</th><th>Gniazda 230/400V</th><th>Aparatura</th><th>Cena</th></tr>
+<tr><td><b>FLOWEV (Feyree)</b> <span class="src"><a href="https://feyree.pl/feyree-slupek-do-ladowarek-EV">feyree.pl</a></span></td><td>aluminium, podstawa 12&nbsp;mm</td><td>146&nbsp;cm, 28×20&nbsp;cm, <b>5,9&nbsp;kg</b></td><td>tak (30×16&nbsp;cm)</td><td>tak</td><td>„możliwość" — samodzielnie, z wierceniem</td><td>nie</td><td class="price">694,90&nbsp;zł</td></tr>
+<tr><td><b>Green Wallbox</b> <span class="src"><a href="https://greenwallbox.pl/en/collections/slupek-do-stacji-ladowania">greenwallbox.pl</a></span></td><td>stal malowana</td><td>2-częściowy</td><td>nie</td><td>tak</td><td>nie</td><td>nie</td><td class="price">649 / dual 799&nbsp;zł + <b>fundament 399&nbsp;zł</b></td></tr>
+<tr><td><b>Green Cell EV Stand</b> <span class="src"><a href="https://www.x-kom.pl/p/1232081-green-cell-slupek-montazowy-gc-ev-stand.html">x-kom</a></span></td><td>stop metalu</td><td>149×12×5,5&nbsp;cm, 13&nbsp;kg</td><td>nie</td><td>tak</td><td>nie</td><td>nie</td><td class="price">749&nbsp;zł</td></tr>
+<tr><td><b>Platinet UNI</b> <span class="src"><a href="https://sklep.platinet.pl/pl/p/Uniwersalny-slupek-montazowy-do-ladowarek-EV-typu-Wallbox-z-daszkiem/214763">platinet</a></span></td><td>stal ocynk + adapter alu</td><td>130&nbsp;cm, 8×8&nbsp;cm, 8,4&nbsp;kg</td><td><b>tak, zintegrowany</b></td><td>tak</td><td>nie</td><td>nie</td><td class="price">1&nbsp;100&nbsp;zł</td></tr>
+<tr><td><b>Wallbox Discounter</b> (NL) <span class="src"><a href="https://www.wallboxdiscounter.com/en/accessories/mounting-post-charging-station/">wallboxdiscounter</a></span></td><td>stal czarna</td><td>149&nbsp;cm</td><td>nie</td><td>tak</td><td>nie</td><td>nie</td><td class="price"><b>€229 za KAŻDĄ z ~15 wersji</b> (płyty adaptera pod Easee/Zaptec/KEBA/go-e/…)</td></tr>
+<tr><td><b>Autel / Daze przez 3ev.pl</b> <span class="src"><a href="https://sklep.3ev.pl/Slupki-c32">3ev.pl</a></span></td><td>—</td><td>—</td><td>nie</td><td>tak</td><td>nie</td><td>nie</td><td class="price">1&nbsp;299–1&nbsp;799&nbsp;zł</td></tr>
+<tr><td><b>Allegro no-name</b> <span class="src"><a href="https://allegro.pl/listing?string=s%C5%82upek+monta%C5%BCowy+wallbox">listing</a></span></td><td>stal/alu malowane</td><td>140–150&nbsp;cm, 5–13&nbsp;kg</td><td>rzadko</td><td>różnie (bywa na zewnątrz!)</td><td>nie</td><td>nie</td><td class="price">~300–800&nbsp;zł</td></tr>
+</table>
+<div class="box"><b class="t">Najważniejsza obserwacja segmentu</b>Wallbox Discounter udowadnia, że <b>jeden słupek + kilkanaście płyt adaptera obsługuje cały rynek wallboxów</b> — dokładnie ta logika (płyta uniwersalna + płyty dedykowane) powinna być rdzeniem AP-T, rozszerzonym o to, czego nikt nie ma: gniazda z aparaturą i dock ładowarki przenośnej.</div>
+
+<h3>5.4. Zarządzanie kablem ładowania — dane do projektowania</h3>
+<table>
+<tr><th>Parametr</th><th>Wartość</th><th>Źródło / konsekwencja projektowa</th></tr>
+<tr><td>Kabel T2 32&nbsp;A 3-faz. (22&nbsp;kW)</td><td><b>Ø 16,8&nbsp;mm</b>; 5&nbsp;m = 3,5&nbsp;kg; 7,5&nbsp;m = 4,8&nbsp;kg; 10&nbsp;m = 6,1&nbsp;kg; IP55; −30…+50&nbsp;°C</td><td><a href="https://ev-extras.com/products/type-2-fast-charging-ev-cables-32-amp-22kw-three-phase-green-or-black-1-8-3-5-7-5-10-15-metres">EV Extras</a>; hak musi nieść ~10&nbsp;kg (kabel + szarpnięcie)</td></tr>
+<tr><td>Zwinięty kabel 7,5&nbsp;m</td><td>wiązka <b>Ø 30–35&nbsp;cm</b>, grubość 10–15&nbsp;cm (7–8 pętli)</td><td>geometria z OD 16,8&nbsp;mm; ramię haka ≥ 130–150&nbsp;mm, promień prowadzenia ≥ 80&nbsp;mm</td></tr>
+<tr><td>Długości rynkowe kabli</td><td>5&nbsp;m standard (Mamba 5&nbsp;m), 6&nbsp;m (KEBA, kabel AP), <b>7,5&nbsp;m</b> (Q37!), 10–15&nbsp;m aftermarket; Enelion: spirala 6&nbsp;m</td><td>projektować magazyn na 7,5&nbsp;m; dolna krawędź zwoju nie może dotykać gruntu → oś haka ≥ 900&nbsp;mm</td></tr>
+<tr><td>Holstery T2</td><td>dwa typy: „dummy socket" (szczelny, wtyk jak w aucie) i otwarta obejma; PL 40–200&nbsp;zł (VOLT kompozyt 139&nbsp;zł)</td><td><a href="https://www.midaevse.com/dummy-socket-type-2-ev-plug-holster-type-2-wall-holder-product/">MIDA</a>, <a href="https://allegro.pl/oferta/uchwyt-kabla-do-wallboxa-wieszak-typ-2-ev-gniazdo-12485000425">Allegro</a>; <b>styki w dół / pod kątem</b> — inaczej woda i lód na pinach</td></tr>
+<tr><td>Retraktory</td><td>KEBA R10 — jedyny zmotoryzowany bęben AC; balansery sprężynowe do ~2&nbsp;kg</td><td>balanser nie udźwignie kabla 22&nbsp;kW (4,8&nbsp;kg) → w AC wygrywają haki; retraktor = opcja premium later</td></tr>
+</table>
+
+<h2 id="s6"><span class="no">6.</span>Co słupek musi nosić — urządzenia AMPERE POINT (amperepoint.pl)</h2>
+<table>
+<tr><th>Urządzenie</th><th>Dane montażowe</th><th>Konsekwencja dla słupka</th></tr>
+<tr><td><b>Prime Wallbox 11 / 22&nbsp;kW</b> (z wtyczką) <span class="src"><a href="https://www.amperepoint.pl/products/ladowarka-ev-wallbox-prime-11-kw-wtyczka">karta</a></span></td><td>wallbox naścienny T2, zasilanie wtyczką CEE; IP65/66; RCD A+6mA DC wbudowane</td><td>płyta uniwersalna z siatką otworów + gniazdo CEE pod daszkiem, w które wpina się wtyk wallboxa (serwisowa wymiana bez elektryka)</td></tr>
+<tr><td><b>Ładowarki przenośne Q22/Q11/Q74/Q37</b> (1349–1549&nbsp;zł) <span class="src"><a href="https://www.amperepoint.pl/products/portable-charger-q22-32a-22kw-type-2-display-bag-included-wifi">Q22</a></span></td><td>wieża z RFID i wyświetlaczem; wtyk CEE 16/32A na krótkim ogonie; kabel T2 5&nbsp;m (Q37: 7,5&nbsp;m, Schuko)</td><td><b>dock/uchwyt z RFID na wprost twarzy (1,0–1,25&nbsp;m)</b>; gniazdo CEE skośne 150–250&nbsp;mm pod dockiem (ogon bez pętli); zdejmowanie ładowarki „na weekend" jednym ruchem</td></tr>
+<tr><td><b>Seria P / B</b> (np. P72: 32A 7,2&nbsp;kW CEE czerwone) <span class="src"><a href="https://www.amperepoint.pl/products/portable-charger-32a-7-2kw-type-2-display-bag-included-red-cee">P72</a></span></td><td>jak wyżej, różne wtyki (CEE16-1f/CEE32-1f/CEE 5p)</td><td>gniazda wymienne na panelu: CEE16 3f / CEE32 3f / CEE32 1f (niebieskie) — jedna geometria wycięcia?  → do rozstrzygnięcia w koncepcji</td></tr>
+<tr><td><b>AMP-BOX</b> — szafa ze słupkiem 999&nbsp;zł <span class="src"><a href="https://www.amperepoint.pl/products/metal-cabinet-for-ev-charger-amp-box-with-pole">karta</a></span></td><td>szafa 50×70×25&nbsp;cm (wewn. 43,7×63,7×18,2), słupek 80&nbsp;cm, podstawa 30×20&nbsp;cm, <b>rozstaw śrub 25×15&nbsp;cm</b>, 15&nbsp;kg, zamek szyfrowy, termo/higrometr</td><td>AP-T ma być alternatywą Premium (smuklejszy, otwarty) — ale interfejs 25×15&nbsp;cm warto przewidzieć w płycie, by słupek mógł nieść samą szafę (nośność ≥ 25&nbsp;kg)</td></tr>
+<tr><td><b>Dr. Storm</b> — gniazdo opancerzone 179&nbsp;zł <span class="src"><a href="https://www.amperepoint.pl/products/dr-socket-storm">karta</a></span></td><td>zewnętrzne 16&nbsp;A, głowica regulowana 90°, blokada na kłódkę, IP55</td><td>gotowy kandydat na panel „Schuko premium" — spójny z ofertą sklepu</td></tr>
+<tr><td><b>Kable Power Mamba 11/22</b> (499/599&nbsp;zł, 5&nbsp;m) + kabel 6&nbsp;m <span class="src"><a href="https://www.amperepoint.pl/products/bubble-free-mamba-22-premium-ac-ev-charging-cable-type-2-22kw-5m">karta</a></span></td><td>T2/T2, 5–6&nbsp;m</td><td>hak + holster na 5–7,5&nbsp;m; zestawy sprzedażowe „słupek + Mamba"</td></tr>
+<tr><td><b>Uchwyt wtyczki Typ 2 AP</b> (widoczny na zdjęciach słupków)</td><td>holster czarny z logo</td><td>przejąć do panelu P-HOLSTER; dodać odwodnienie i pochylenie styków w dół</td></tr>
+<tr><td><b>Adaptery, tester T2, przedłużka Q PRO</b> (55–499&nbsp;zł)</td><td>—</td><td>szuflada/koszyk na adaptery w wersji DUO-firmowej? (opcja niskiego priorytetu)</td></tr>
+</table>
+<div class="box green"><b class="t">Suma wymagań nośnych</b>Słupek musi przyjąć: wallbox (5–8&nbsp;kg) • ładowarkę przenośną w docku (2–4&nbsp;kg) • szafę AMP-BOX z zawartością (do 25&nbsp;kg) • zwój kabla (5–6&nbsp;kg, wysunięty na ramieniu — moment!) • gniazda CEE z siłą wpinania/wypinania (do 150&nbsp;N szarpnięcia). Wniosek: konstrukcja i kotwienie liczone na moment od 25&nbsp;kg na wysięgu 120&nbsp;mm + parcie wiatru + szarpnięcie 150&nbsp;N na 1,0&nbsp;m — a nie „na oko" jak w tanim segmencie.</div>
+
+<h2 id="s7"><span class="no">7.</span>Normy i przepisy — lista kontrolna wymagań</h2>
+<table>
+<tr><th>Wymaganie</th><th>Wartość</th><th>Podstawa</th></tr>
+<tr><td>Klasyfikacja prefabrykatu</td><td>zestaw AEVCS / ACCS (rozdzielnica dla stacji ładowania / kempingów) — deklaracja producenta</td><td>PN-EN IEC 61439-7 <span class="src"><a href="https://www.en-standard.eu/bs-en-iec-61439-7-2020-low-voltage-switchgear-and-controlgear-assemblies-assemblies-for-specific-applications-such-as-marinas-camping-sites-market-squares-electric-vehicle-charging-stations/">opis</a></span></td></tr>
+<tr><td>IP obudowy</td><td><b>min. IP44</b>; dla publicznych stacji praktyka przetargowa IP54</td><td>61439-7; spec. Enea Operator</td></tr>
+<tr><td>IK obudowy</td><td>min. IK07 (722), IK08 marina, <b>IK10 = 20&nbsp;J publicznie</b> (IK08 = 5&nbsp;J)</td><td>60364-7-722, EN 62262 <span class="src"><a href="https://en.wikipedia.org/wiki/EN_62262">tabela</a></span></td></tr>
+<tr><td>Obwód punktu ładowania</td><td><b>1 punkt = 1 dedykowany obwód</b>; RDF=1 bez zarządzania obciążeniem</td><td>722.314.101 / 722.311 <span class="src"><a href="https://cdn.standards.iteh.ai/samples/18235/db81b17e3a9947168fc4cec2ec54f900/IEC-60364-7-722-2015.pdf">IEC PDF</a></span></td></tr>
+<tr><td>RCD punktu EV</td><td>≤30&nbsp;mA: <b>typ B</b> LUB <b>typ A/F + RDC-DD 6&nbsp;mA DC (IEC 62955)</b>, osobno na każdy punkt; typ AC zakazany</td><td>722.531.2.101; 61851-1 §8.5</td></tr>
+<tr><td>RCD gniazd Schuko/CEE</td><td><b>każde gniazdo: własny RCD ≤30&nbsp;mA (min. typ A) + własne zabezpieczenie nadprądowe</b></td><td>60364-7-708 / -709</td></tr>
+<tr><td>Liczba gniazd w obudowie</td><td><b>max 4</b></td><td>708 / 709</td></tr>
+<tr><td>Wysokość gniazd</td><td><b>0,5–1,5&nbsp;m</b> nad terenem (dolna krawędź)</td><td>708.55.1.6; DIN VDE 0100-722 (zalecenie) <span class="src"><a href="https://www.holzmann-medienshop.de/media/8a/8a/00/1728476857/9783800763658_Excerpt_004.pdf">wyciąg</a></span></td></tr>
+<tr><td>Interfejs użytkownika (dostępność)</td><td><b>0,80–1,22&nbsp;m</b> (dostęp z przodu; bok do 1,37&nbsp;m); siła kabla ≤60&nbsp;N</td><td>poradnik UDT <span class="src"><a href="https://www.udt.gov.pl/images/uslugi/elektromobilnosc/o-elektromobilnosci/files/pdf/DOSTEEPNE_STACJE_lADOWANIA_EV_WCAG.pdf">PDF</a></span>; DIN SPEC 91504: 0,85–1,05&nbsp;m</td></tr>
+<tr><td>Gniazda przemysłowe</td><td>IEC 60309-2 (CEE), min. 16&nbsp;A, min. IP44; 1 gniazdo = 1 pojazd/odbiorca; przenośne gniazda zakazane</td><td>708/709/722.55.101.3</td></tr>
+<tr><td>PEN</td><td><b>zakaz PEN w obwodzie punktu ładowania</b> (TN → rozdział na TN-S przed słupkiem)</td><td>722.312</td></tr>
+<tr><td>SPD</td><td><b>typ 2 w słupku, gdy &gt;10&nbsp;m od ostatniego SPD</b>; Up ≤ 2,5&nbsp;kV; T1 12,5&nbsp;kA przy LPS/linii napowietrznej</td><td>DEHN <span class="src"><a href="https://www.dehn.pl/sites/default/files/media/files/elektroinfo-6-2022.pdf">PDF</a></span>, broszura UDT</td></tr>
+<tr><td>Zakaz przedłużaczy</td><td>bezwzględny (przewód ładowania)</td><td>§10 rozp. Dz.U. 2019/1316 <span class="src"><a href="https://www.infor.pl/akt-prawny/DZU.2019.135.0001316,ROZPORZADZENIE-MINISTRA-ENERGII-z-dnia-26-czerwca-2019-r-w-sprawie-wymagan-technicznych-dla-stacji-ladowania-i-punktow-ladowania-stanowiacych.html">tekst</a></span></td></tr>
+<tr><td>UDT</td><td>stacje ogólnodostępne/komercyjne: badanie wstępne (~800&nbsp;zł) + po naprawie/modernizacji; <b>prywatny wallbox zwolniony</b></td><td>art. 16 ustawy; <span class="src"><a href="https://www.udt.gov.pl/uslugi-udt/elektromobilnosc/kiedy-urzadzenie-podlega-badaniom">UDT</a></span></td></tr>
+<tr><td>Wyposażenie formalne stacji</td><td>tabliczka znamionowa, instrukcja PL widoczna, nr telefonu eksploatującego, ochrona przed uszkodzeniami mechanicznymi (odboje/słupki)</td><td>rozp. 1316 §4, §8, §11, §12</td></tr>
+<tr><td>Licznik do rozliczeń</td><td>komercyjnie: <b>MID (moduł B+D)</b>, pomiar per punkt; prywatny podlicznik — bez MID</td><td>dyr. 2014/32/UE; AFIR</td></tr>
+<tr><td>Temperatura pracy</td><td>−25…+40&nbsp;°C (61851-1 na zewnątrz); rynek −30…+50&nbsp;°C; <b>32&nbsp;A: derating w słońcu</b></td><td>61851-1; KEBA P30 dane techn.</td></tr>
+<tr><td>Korozja</td><td>PL typowo <b>C3</b>, nadmorskie/mariny <b>C4–C5</b>; duplex 25–40 lat; trwałość powłok klasa H</td><td>ISO 12944 <span class="src"><a href="https://swiatkorozji.pl/iso-12944.html">omówienie</a></span></td></tr>
+</table>
+<div class="box"><b class="t">Interpretacja dla produktu</b>Dla klienta prywatnego (dom): słupek = rozdzielnica 61439 + wallbox/dock — bez UDT, bez MID; wystarczy RCBO typ A na punkt (ładowarki AP mają RDC-DD). Dla firmy z rozliczaniem pracowników: + podlicznik (bez MID przy braku odsprzedaży komercyjnej). Dla stacji ogólnodostępnej: + MID, + UDT, + instrukcja/tel., IK10/IP54 — <b>przewidzieć w koncepcji wariant PRO, ale nie obciążać nim wersji domowej.</b></div>
+
+<h2 id="s8"><span class="no">8.</span>Materiały i technologia produkcji (PL, serie 20–500 szt.)</h2>
+
+<h3>8.1. Porównanie ścieżek (obudowa słupka ~1,4 m, bez aparatury; netto)</h3>
+<table>
+<tr><th>Ścieżka</th><th>Koszt/szt. @50</th><th>@200</th><th>Narzędzia</th><th>Korozja / trwałość</th><th>IK</th><th>Masa</th><th>Estetyka</th></tr>
+<tr><td><b>A. Stal S235 3&nbsp;mm duplex</b> (ocynk+proszek kl.2)</td><td class="price">600–1100&nbsp;zł</td><td class="price">500–850&nbsp;zł</td><td>~0</td><td>C4–C5, 25–40 lat</td><td>IK10+</td><td>~35&nbsp;kg</td><td>dobra</td></tr>
+<tr><td><b>B. Inox 316L 2&nbsp;mm szczotkowana</b></td><td class="price">1200–1800&nbsp;zł</td><td class="price">1000–1500&nbsp;zł</td><td>~0</td><td>C5-M, dekady</td><td>IK10</td><td>~20&nbsp;kg</td><td>premium</td></tr>
+<tr><td><b>C. Własny profil wytłaczany 6060&nbsp;T66</b> anodowany/proszek <b>(droga Enelion/GIFAS)</b></td><td class="price">650–1050&nbsp;zł (z amort. matrycy)</td><td class="price"><b>480–750&nbsp;zł</b></td><td><b>matryca 6–15&nbsp;tys.&nbsp;zł</b>, MOQ ~200–500&nbsp;kg</td><td>C4 b.dobra; C5 z anodą 25&nbsp;µm</td><td>IK10</td><td>10–14&nbsp;kg</td><td><b>najlepsza</b> (T-sloty, linie ciągłe)</td></tr>
+<tr><td><b>D. Blacha alu 5754 3&nbsp;mm gięta, skręcana, proszek kl.2</b></td><td class="price">750–1150&nbsp;zł</td><td class="price">600–900&nbsp;zł</td><td>~0</td><td>C4–C5 (stop „morski")</td><td>IK10</td><td>12–15&nbsp;kg</td><td>bardzo dobra</td></tr>
+<tr><td>E. T-slot systemowy (item 45×90)</td><td class="price">700–1100&nbsp;zł</td><td class="price">650–1000&nbsp;zł</td><td>~0</td><td>średnia (rowki, łączniki)</td><td>zal. od osłon</td><td>12–18&nbsp;kg</td><td>przemysłowa</td></tr>
+<tr><td>F. HDPE rotomoulding</td><td colspan="2" class="center">forma ~80–400&nbsp;tys.&nbsp;zł → nieopłacalne &lt;300&nbsp;szt.</td><td>forma</td><td>nie koroduje; UV tylko stabilizowany</td><td>odbija/rysuje się</td><td>8–12&nbsp;kg</td><td>przeciętna</td></tr>
+<tr><td>G. Gotowa obudowa SMC (adaptacja złącza ZK)</td><td class="price">700–1500&nbsp;zł</td><td class="price">j.w. − rabaty</td><td>0</td><td>sprawdzona w OSD, V0</td><td>IK10</td><td>25–45&nbsp;kg</td><td>„energetyczna", zero brandu</td></tr>
+</table>
+<p class="src">Podstawy cen: blacha S235 ~4,6&nbsp;zł/kg (<a href="https://www.metallco.pl/produkt/blacha-stalowa-czarna-3.0x1250x2500-gatunek-s235-6004">Metallco</a>), laser 3&nbsp;mm 5,5–7,5&nbsp;zł/mb (<a href="https://kb.pl/cenniki/ciecie-laserowe-stal-czarna/">kb.pl</a>), ocynk 3–10&nbsp;zł/kg, proszek od 55&nbsp;zł/m² (<a href="https://foseko.pl/strefa-wiedzy/malowanie-proszkowe-cena/">Foseko</a>), spaw alu 13–17&nbsp;zł/cm → konstrukcja skręcana; matryca: 5–10&nbsp;tys.&nbsp;zł PL (<a href="https://www.cnc.info.pl/zamowienie-profili-alu-wyciskanych-koszty-t109442.html">cnc.info.pl</a>), hollow die 800–2000&nbsp;USD (<a href="https://yajialuminum.com/aluminum-extrusion-die-cost-analysis/">Yajia</a>); tłocznie PL: Grupa Kęty, Hydro Trzcianka/Chrzanów, Final, Yawal; anodowanie 18–28&nbsp;zł/m² (<a href="https://zobaluslugi.pl/anodowanie-aluminium-cena-ile-kosztuje-anodowanie/">Zobal</a>). Sanity-check: gotowe złącze ZK SMC z wyposażeniem 1790&nbsp;zł brutto (<a href="https://onninen.pl/produkt/INCOBEX-Zlacze-kablowo-pomiarowe-ZK-1x-1P-R2D51-0002-001,246180">Onninen</a>); słup oświetleniowy alu anodowany 3&nbsp;m — 685&nbsp;zł.</p>
+
+<h3>8.2. Komponenty klimatyczno-serwisowe (ceny PL)</h3>
+<table>
+<tr><th>Komponent</th><th>Rozwiązanie / cena</th><th>Kiedy</th></tr>
+<tr><td>Wyrównywanie ciśnienia / antykondensacja pasywna</td><td>membrana STEGO DA&nbsp;084 IP55 ~23&nbsp;zł; dławnice membranowe IP68</td><td>zawsze w komorze aparatowej</td></tr>
+<tr><td>Wentylacja labiryntowa</td><td>kratki IP44 z żaluzją, komin dół→góra</td><td>wariant „wentylowany" jak złącza ZK; kondensat spływa</td></tr>
+<tr><td>Grzałka antykondensacyjna</td><td>15&nbsp;W 88&nbsp;zł / 30&nbsp;W 107&nbsp;zł + termostat/higrostat 49&nbsp;zł</td><td>tylko wersje z licznikiem/elektroniką pomiarową</td></tr>
+<tr><td>Uszczelki</td><td>EPDM profil D samoprzylepny 1–4&nbsp;zł/mb (FIPFG dopiero &gt;500&nbsp;szt.)</td><td>drzwiczki, panele, daszek</td></tr>
+<tr><td>Zamek</td><td>kaseta Euro-Locks F550 IP65 trójkąt 8&nbsp;mm ~30&nbsp;zł; wymienne wkładki (trójkąt→patent/kłódka); baskwil 3-punktowy 60–150&nbsp;zł</td><td>trójkąt = standard energetyki (serwisant ma klucz); patent dla klienta prywatnego</td></tr>
+<tr><td>Powłoka</td><td>proszek poliestrowy Qualicoat kl. 2, RAL 9005/7016 drobna struktura; opcja antygraffiti KABE PUR-156 (+20–40%)</td><td>struktura maskuje rysy i odciski</td></tr>
+<tr><td>Odbojnica (najazd)</td><td>IK10 = 20&nbsp;J, a najazd 1,5&nbsp;t @10&nbsp;km/h ≈ 5,8&nbsp;kJ → słupek odbojowy SD-50 od 149&nbsp;zł obok stanowiska</td><td>parkingi firmowe / publiczne</td></tr>
+</table>
+
+<h2 id="s9"><span class="no">9.</span>Montaż: kable, fundamenty, uziemienie, pomiary, koszty</h2>
+
+<h3>9.1. Dobór kabla zasilającego (YKY, spadek ≤3%, obciążalność wg TFK)</h3>
+<table>
+<tr><th>Moc / prąd</th><th>10&nbsp;m</th><th>25&nbsp;m</th><th>50&nbsp;m</th><th>80&nbsp;m</th></tr>
+<tr><td><b>11&nbsp;kW / 16&nbsp;A</b> (B16)</td><td>5×2,5 (min.) → praktycznie <b>5×4</b></td><td><b>5×4</b> (0,76%)</td><td><b>5×4</b> (1,5%) lub 5×6</td><td><b>5×6</b> (1,6%)</td></tr>
+<tr><td><b>22&nbsp;kW / 32&nbsp;A</b> (B32)</td><td><b>5×6</b></td><td><b>5×6</b> (1,0%)</td><td><b>5×10</b> (1,2%)</td><td><b>5×10</b> (1,95%); 5×16 gdy rezerwa na 2. słupek</td></tr>
+<tr><td><b>2 słupki na 1 WLZ</b> (DLB do 63&nbsp;A)</td><td colspan="4">5×16 (109&nbsp;A w ziemi) — uwaga: w rurze obciążalność spada do ~63&nbsp;A → przy długich przepustach 5×25 lub liczyć jak „w powietrzu"</td></tr>
+</table>
+<p class="small">Obciążalność YKY w ziemi: 5×2,5 = 36&nbsp;A; 5×4 = 47&nbsp;A; 5×6 = 59&nbsp;A; 5×10 = 79&nbsp;A; 5×16 = 109&nbsp;A (karta <a href="https://www.elektrykasklep.pl/file,470076,yky1.pdf">TFK</a>). YKXS: +20% obciążalności, żyła 90&nbsp;°C — brać przy długich trasach/rurach/rozbudowie (<a href="https://innotech.com.pl/kabel-ykxs-kiedy-warto-porownanie-z-yky-i-zastosowania-w-pv">porównanie</a>). Ceny: YKY 5×6 ≈ 24&nbsp;zł/m brutto. Metoda i przykład 22&nbsp;kW/80&nbsp;m → 10&nbsp;mm²: <a href="https://greenkick.com.pl/blog/dobor-przekroju-przewodow-do-stacji-ladowania-zasilanie-trojfazowe-spadki-napiec-i-praktyczne-wyliczenia/">Greenkick</a>.</p>
+
+<h3>9.2. Trasa kablowa i wejście w słupek (N SEP-E-004 + instrukcje producentów)</h3>
+<table>
+<tr><th>Parametr</th><th>Wartość zalecana</th><th>Źródło</th></tr>
+<tr><td>Głębokość ułożenia (≤1&nbsp;kV)</td><td><b>70&nbsp;cm</b>; 50&nbsp;cm pod chodnikiem (obw. oświetl.); 90–100&nbsp;cm użytki rolne; pod jezdnią ~100&nbsp;cm w rurze</td><td>N SEP-E-004 <span class="src"><a href="https://elportal.pl/blog/felietony/7392-ukladanie-kabli-w-ziemi-norma-n-sep-e-004">elportal</a></span></td></tr>
+<tr><td>Podsypka / obsypka</td><td>10&nbsp;cm piasku pod + 10&nbsp;cm nad kablem</td><td>N SEP-E-004</td></tr>
+<tr><td>Folia ostrzegawcza</td><td>niebieska, gr. ≥0,5&nbsp;mm, <b>25–35&nbsp;cm nad kablem</b></td><td>N SEP-E-004 / standard Enea</td></tr>
+<tr><td>Rura osłonowa</td><td>Ø wewn. ≥ 1,5×Ø kabla: <b>DVK&nbsp;50</b> dla 1 kabla ≤5×10; <b>DVK&nbsp;75</b> dla 5×16 / 2 kabli / pod wjazdem; łuki fabryczne</td><td><a href="https://onninen.pl/produkt/DURA-LINE-Rura-oslonowa-DVK-75-niebieska-3042559,27459">DVK75</a>, TT PLAST</td></tr>
+<tr><td>Promień gięcia YKY</td><td>≥12–20×D wg karty (5×6→~19&nbsp;cm; 5×10→~22&nbsp;cm; 5×16→~28&nbsp;cm); układanie od −5&nbsp;°C</td><td>karta TFK</td></tr>
+<tr><td>Rura ponad fundament</td><td><b>~25&nbsp;cm</b> ponad górną płaszczyznę</td><td>instrukcja KEBA <span class="src"><a href="https://www.keba.com/file/downloads/e-mobility/KeContactP20_P30_Stand_ih_multi_2.pdf">PDF</a></span></td></tr>
+<tr><td><b>Zapas kabla przy słupku</b></td><td><b>1,0–1,5&nbsp;m ponad fundament, chowany w cokole</b> (KEBA 1,5&nbsp;m; ABL 1,5&nbsp;m; Enelion 0,8&nbsp;m; Wallbox ≥0,6&nbsp;m + 1&nbsp;m komunikacja); dodatkowo „S" ~2&nbsp;m w trasie przy stanowisku (standard Enea)</td><td>instrukcje producentów</td></tr>
+<tr><td>DLB między słupkami</td><td>skrętka ekranowana 120&nbsp;Ω (F/UTP kat.5e żelowana) w <b>osobnej rurce</b>, terminacja 120&nbsp;Ω, ekran uziemiony jednostronnie, do 500&nbsp;m</td><td><a href="https://greenkick.com.pl/blog/czy-i-jak-podlaczyc-ladowarke-ev-z-inteligentnym-licznikiem-przez-rs%E2%80%91485-rj45-aby-nie-wybijalo-zabezpieczen-i-brac-nadwyzke-z-pv/">Greenkick RS-485</a></td></tr>
+</table>
+
+<h3>9.3. Fundamenty i kotwienie</h3>
+<table>
+<tr><th>Wariant</th><th>Dane</th><th>Źródło</th></tr>
+<tr><td><b>Prefabrykat (rynek)</b></td><td>Green Wallbox 399&nbsp;zł; Milivolt 599&nbsp;zł; Greenkick 50×50×14&nbsp;cm ~100&nbsp;kg 895&nbsp;zł; Alfen 350×570×220 42&nbsp;kg €250; ABL 430×190×650 z kanałami; Enelion: lekka podstawa 10&nbsp;kg 140&nbsp;zł; benchmark żelbetu: F100 (1000×300×200, 151&nbsp;kg) <b>328&nbsp;zł</b></td><td><a href="https://greenwallbox.pl/products/fundament-do-slupka">GW</a>, <a href="https://greenkick.com.pl/produkt/fundament-prefabrykowany-do-stacji-ladowania-ac/">Greenkick</a>, <a href="https://www.elektriko.pl/elektriko/fundamenty-prefabrykowane">Elektriko</a></td></tr>
+<tr><td><b>Wylewany</b></td><td>wykop ~400×400×600&nbsp;mm, beton C20/25 (Enelion); „pod gwarancję" KEBA: 650×500, głębiej niż przemarzanie (&gt;40&nbsp;cm), C25/30 XF; szpilki M12 rozstaw 120×120&nbsp;mm, momenty 40–45&nbsp;Nm</td><td>instrukcje Enelion/KEBA</td></tr>
+<tr><td><b>Kotwy chemiczne w istniejący beton</b></td><td>otwory Ø12, głębokość ≥110&nbsp;mm, wystawanie ≥40&nbsp;mm, momenty 54&nbsp;Nm (beton)/34&nbsp;Nm (mur); <b>w samą kostkę nie kotwić</b></td><td>Enelion, Wallbox Eiffel</td></tr>
+<tr><td><b>Śruby ziemne</b></td><td>KRINNER KSF U: 66/865&nbsp;mm — nośność 250–600&nbsp;kg/szt., ocynk 120&nbsp;µm, montaż w kilkanaście minut bez betonu</td><td><a href="https://www.sukces-zamocowania.pl/sklep/kategoria-1-Wkrety_do_ziemi_Krinner_KSF_U-759.html">sukces-zamocowania</a></td></tr>
+<tr><td><b>Poziomowanie</b></td><td>nakrętka pod i nad stopą (kontra) + podlewka niskoskurczowa; pion przed zasypaniem; strefy przemarzania PL: 0,8–1,4&nbsp;m (dla lekkiego słupka praktyka nie schodzi poniżej — wysadziny koryguje się nakrętkami)</td><td>praktyka + PN-81/B-03020</td></tr>
+</table>
+
+<h3>9.4. Uziemienie, ochrona, pomiary odbiorcze</h3>
+<table>
+<tr><th>Temat</th><th>Zalecenie</th></tr>
+<tr><td>PE słupka</td><td>korpus I klasy → linka 6&nbsp;mm² z oczkiem na śrubę M5/M6 + ciągłość do paneli/daszka; (obudowy II klasy NIE łączyć z PE)</td></tr>
+<tr><td>Uziom</td><td>TT: obowiązkowy (R ≤10&nbsp;Ω zwyczajowo, ambitnie ≤4&nbsp;Ω); TN-S: zalecany przy długiej linii (SPD, wyrównanie)</td></tr>
+<tr><td>SPD</td><td>typ 2 w słupku gdy &gt;10&nbsp;m od rozdzielnicy z SPD; Up ≤2,5&nbsp;kV</td></tr>
+<tr><td>Pomiary po montażu</td><td>ciągłość PE (też korpus), RISO &gt;1&nbsp;MΩ @500&nbsp;V, Zs w stanie C (adapter EVSE), test RCD + RDC-DD 6&nbsp;mA, rezystancja uziomu; protokół SEP; rynkowo ~750&nbsp;zł</td></tr>
+<tr><td>Klimat</td><td>praca −25…+40&nbsp;°C przy 32&nbsp;A <b>bez bezpośredniego słońca</b> (KEBA) → daszek/orientacja N; dół słupka z odpływem (nie uszczelniać!)</td></tr>
+</table>
+
+<h3>9.5. Koszty wdrożenia u klienta (PL 2026, netto)</h3>
+<table>
+<tr><th>Pozycja</th><th>Stawka</th></tr>
+<tr><td>Ułożenie kabla ziemnego kompleksowo (wykop+kabel+zasypka)</td><td>52–72&nbsp;zł/mb; samo ułożenie 15–35&nbsp;zł/mb</td></tr>
+<tr><td>Robocizna montaż+podłączenie+uruchomienie wallboxa/słupka</td><td>1000–1500&nbsp;zł</td></tr>
+<tr><td>Zabezpieczenia (RCD/MCB/SPD) z robocizną</td><td>800–1500&nbsp;zł</td></tr>
+<tr><td>Pomiary odbiorcze</td><td>~750&nbsp;zł brutto</td></tr>
+<tr><td><b>Typowy koszt całości: słupek na posesji, trasa 25&nbsp;m</b></td><td><b>~4,3–6,5&nbsp;tys.&nbsp;zł</b> (bez ładowarki i słupka)</td></tr>
+</table>
+<p class="small">Źródła: <a href="https://kb.pl/cenniki/ukladanie-kabli-energetycznych-w-ziemi/">kb.pl</a>, <a href="https://eviacharge.pl/blog/koszt-montazu-wallboxa">eviacharge</a>, <a href="https://www.oferteo.pl/artykuly/cennik-uslug-elektrycznych">Oferteo</a>, <a href="https://elektryk24-warszawa.pl/pomiar-ladowarki-ev-warszawa/">pomiary</a>. Wniosek sprzedażowy: <mark>koszt instalacji przewyższa cenę słupka 3–5×</mark> — wszystko, co skraca robociznę (prefabrykat, zaciski przelotowe, montaż od frontu, gotowa aparatura), realnie obniża cenę całkowitą dla klienta i jest wart marży.</p>
+
+<h2 id="s10"><span class="no">10.</span>Synteza: co robią najlepsi / luki rynkowe / pozycjonowanie ceny</h2>
+
+<h3>10.1. Skonsolidowana lista „co robią najlepsi" (do przejęcia w AP-T)</h3>
+<table>
+<tr><th style="width:36px">#</th><th>Praktyka</th><th>Kto</th><th>Przenosimy do AP-T?</th></tr>
+<tr><td>1</td><td>Profil wytłaczany jako platforma: jeden przekrój → wiele wysokości i konfiguracji, zabudowa wielostronna</td><td>GIFAS GAS, PCE MS, Rolec Quantum, Enelion</td><td><b>TAK</b> — etap 2 (seria); etap 1 blacha alu o tej samej geometrii</td></tr>
+<tr><td>2</td><td>RCBO na każde gniazdo + selektywność liczona do rozdzielnicy głównej</td><td>edelboxx, Walther, GARO, Rolec; wymusza 708</td><td><b>TAK</b> — komora aparatowa TH35</td></tr>
+<tr><td>3</td><td>Serwis bez demontażu: zdejmowany front/tył, okienka nad aparatami</td><td>Walther / edelboxx / GIFAS</td><td><b>TAK</b> — front zdejmowany + klapka aparatowa</td></tr>
+<tr><td>4</td><td>Wyprowadzenie kabla odbiorcy przy zamkniętej obudowie</td><td>GIFAS RONDO, Walther, Tallykey</td><td><b>TAK</b> — szczelina/przelotka przy docku ładowarki</td></tr>
+<tr><td>5</td><td>Świadoma filozofia szczelności: IP54+membrana ALBO wentylacja labiryntowa + „mokry dół"</td><td>Enelion / ZK-SMC / Pop&nbsp;Up / KEBA</td><td><b>TAK</b> — dół otwarty do fundamentu, komora aparatowa IP54 z membraną</td></tr>
+<tr><td>6</td><td>Zaciski przelotowe (magistrala) 10–70&nbsp;mm²</td><td>GIFAS, Walther, edelboxx</td><td><b>TAK</b> — 5×16&nbsp;mm² loop-in/out</td></tr>
+<tr><td>7</td><td>Licznik (MID) jako opcja fabryczna, okienko odczytu</td><td>edelboxx, GARO, Mennekes</td><td><b>TAK</b> — slot na liczniki DIN + okienko (wariant FIRMA/PRO)</td></tr>
+<tr><td>8</td><td>Fundament jako produkt + szablon/tuleja + poziomowanie</td><td>Gewiss, GIFAS, Seijsener, Green Wallbox, Alfen, Enelion</td><td><b>TAK</b> — prefabrykat AP-F ~399–499&nbsp;zł</td></tr>
+<tr><td>9</td><td>Haki na kabel zintegrowane w profilu, nie dokręcane</td><td>Easee Base</td><td><b>TAK</b> — hak w rastrze/T-slocie</td></tr>
+<tr><td>10</td><td>Adapter plates: jeden słup, wiele urządzeń</td><td>Wallbox Discounter (15 wersji po €229), Platinet, KEBA P30→P40</td><td><b>TAK</b> — panele P-xx; kompatybilność wstecz przy zmianie urządzenia</td></tr>
+<tr><td>11</td><td>Dual: single/plecami z jednej konstrukcji, wspólny fundament z 2 rurami</td><td>KEBA, Etrel, myenergi (1 SKU = single+dual)</td><td><b>TAK</b> — DUO przez drugi komplet paneli</td></tr>
+<tr><td>12</td><td>LED ze zmierzchówką (oświetlenie pola pracy + status)</td><td>Rolec, ABL POLEMH3, Seijsener, edelboxx</td><td><b>TAK</b> — listwa LED pod daszkiem (opcja)</td></tr>
+<tr><td>13</td><td>Interfejs na wysokości „barrier-free" 0,85–1,20&nbsp;m</td><td>KEBA (EN 301 549), Etrel (120&nbsp;cm), UDT</td><td><b>TAK</b> — dock RFID 1,05–1,20&nbsp;m</td></tr>
+<tr><td>14</td><td>Strefa kontrolowanego łamania przy najeździe / wymienność słupka na fundamencie</td><td>Etrel; Enelion (wymiana modułów &lt;2&nbsp;min)</td><td><b>CZĘŚCIOWO</b> — wymienny słupek na szpilkach + oferta odbojnicy</td></tr>
+<tr><td>15</td><td>Deklarowanie danych: IP, IK, grubość, masa, nośność haka</td><td>Rolec, Gewiss, Palazzoli (reszta ukrywa)</td><td><b>TAK</b> — pełna karta danych = pozycjonowanie ponad Allegro</td></tr>
+</table>
+
+<h3>10.2. Luki rynkowe (nikt nie robi dobrze) — nasza przestrzeń</h3>
+<table>
+<tr><th style="width:36px">#</th><th>Luka</th><th>Komentarz</th></tr>
+<tr><td>L1</td><td><b>Słupek łączący gniazda z aparaturą + dock ładowarki przenośnej + płytę wallbox &lt;1500&nbsp;zł</b></td><td>rdzeń koncepcji AP-T; „trzy światy w jednym"</td></tr>
+<tr><td>L2</td><td>Nośnik modelu „CEE + ładowarka przenośna"</td><td>nikt nie projektuje docka z gniazdem CEE pod spodem i prowadzeniem ogona CEE</td></tr>
+<tr><td>L3</td><td>Zarządzanie kablem policzone pod 22&nbsp;kW/7,5&nbsp;m</td><td>haki za małe, holstery „do góry"; my: ramię ≥150&nbsp;mm, styki w dół, odwodnienie</td></tr>
+<tr><td>L4</td><td>Ścieżka rozbudowy „gniazda dziś → EV jutro" bez wymiany konstrukcji</td><td>panele wymienne + rezerwa w komorze aparatowej + fundament raz na zawsze</td></tr>
+<tr><td>L5</td><td>Loop-in/loop-out w cenie konsumenckiej</td><td>łańcuchy stanowisk dla firm (parking 2–6 aut) bez rozdzielnicy zewnętrznej</td></tr>
+<tr><td>L6</td><td>Antykondensacja w słupkach naziemnych (grzałka/membrana jako opcja katalogowa)</td><td>znany problem zaparowanych okienek liczników</td></tr>
+<tr><td>L7</td><td>Deklarowane IK/grubości/nośności w segmencie ≤1500&nbsp;zł</td><td>tanie „b.d." vs nasza pełna karta</td></tr>
+<tr><td>L8</td><td>Polska produkcja klasy profesjonalnej (kemping/marina/firmy)</td><td>cały segment to import; Pawbol gra tylko w budżecie ogrodowym</td></tr>
+<tr><td>L9</td><td>Daszek chroniący GNIAZDA i WTYKI (nie szczyt słupka), uzasadniony deratingiem</td><td>przewaga funkcjonalna łatwa do komunikacji</td></tr>
+<tr><td>L10</td><td>Standard rozstawu kotew między generacjami produktu</td><td>obiecać klientom: „następny słupek wejdzie na ten sam fundament"</td></tr>
+</table>
+
+<h3>10.3. Pozycjonowanie cenowe rynku (obudowy/słupki bez ładowarek)</h3>
+<table>
+<tr><th>Półka</th><th>Produkty (ceny zaobserwowane)</th><th>Co dają</th></tr>
+<tr><td><b>&lt;800&nbsp;zł</b></td><td>Allegro no-name 300–800; GW 649; FLOWEV 695; GC 749; GW dual 799</td><td>rura z otworami, czasem daszek/haki; zero elektryki</td></tr>
+<tr><td><b>800–1500&nbsp;zł</b></td><td>WBD €229≈980; AMP-BOX 999 (szafa!); Platinet 1100; Autel 1299; <b>← TU WCHODZI AP-T</b></td><td>adaptery uniwersalne, daszek; nadal zero aparatury i gniazd</td></tr>
+<tr><td><b>1,5–5&nbsp;tys.&nbsp;zł</b></td><td>Autel Double 1799; Mennekes €348 (goły!); Rolec Classic £505 ≈ 2600; Gira €588–645 (ogród, 3×Schuko)</td><td>pierwsza aparatura per gniazdo (Rolec) lub marka premium</td></tr>
+<tr><td><b>&gt;5&nbsp;tys.&nbsp;zł</b></td><td>Enelion Pole Duo 5650 (sam słup!); Walther €1252 netto ≈ 6400 brutto; ABL €999 ≈ 4300; Vertica Pro 14&nbsp;197</td><td>pełna zgodność 61439-7, liczniki, loop-through, ekosystemy płatności</td></tr>
+</table>
+<div class="box red"><b class="t">Wniosek cenowy</b>Między 1000 a 2500&nbsp;zł jest <b>pustka funkcjonalna</b>: nikt nie daje gniazd + aparatury + uniwersalnego montażu. AP-T BASE (goły z panelami ślepymi) może stać na 899–999&nbsp;zł, wersje skonfigurowane (SOCKET/CHARGE) na 1290–1690&nbsp;zł, DUO/FIRMA do 2490&nbsp;zł — wciąż 2–4× taniej niż pierwszy porównywalny funkcjonalnie produkt z importu (Rolec/Walther), a z marżą pokrywającą koszt obudowy 600–1100&nbsp;zł + aparatura 150–400&nbsp;zł.</div>
+
+<h2 id="s11"><span class="no">11.</span>Tezy projektowe → wejście do koncepcji AP-T</h2>
+<ol class="exec">
+<li><b>Jedna platforma, trzy głowy:</b> panel uniwersalny pod wallboxy (siatka fasolowych otworów), panel docka Q/P/B z gniazdem CEE poniżej, panel gniazdowy (CEE+Schuko/Dr.&nbsp;Storm) — plus interfejs pod AMP-BOX (25×15&nbsp;cm, ≥25&nbsp;kg).</li>
+<li><b>Trzy komory pionowo:</b> cokół przyłączeniowy (zapas 1,5&nbsp;m kabla, zaciski przelotowe 5×16, PE, dół otwarty do fundamentu) → komora aparatowa (TH35 8–12 modułów, RCBO per punkt, SPD T2, opcja licznik, membrana/grzałka) → strefa urządzeń (raster/T-slot, panele).</li>
+<li><b>Wysokości z norm:</b> gniazda 0,9–1,1&nbsp;m; interfejs/RFID 1,05–1,20&nbsp;m; hak kabla ≥0,9&nbsp;m; wallbox środek ~1,25&nbsp;m; całość 1,4–1,5&nbsp;m + daszek.</li>
+<li><b>Montaż wyłącznie od frontu</b> (nitonakrętki/T-slot; zero nakrętek koszykowych, zero wiercenia); serwis: zdejmowany front, klapka aparatowa z okienkiem.</li>
+<li><b>Daszek 400×300+ chroniący gniazda i wtyki</b> — argument deratingu 32&nbsp;A; opcja listwa LED ze zmierzchówką.</li>
+<li><b>Materiał dwuetapowo:</b> pilot = blacha alu 5754/3&nbsp;mm skręcana; seria = własny profil 6060&nbsp;T66 z T-slotami (matryca 6–15&nbsp;tys.). Wariant marina: 316L / anoda 25&nbsp;µm. Powłoka: proszek Qualicoat kl.&nbsp;2 struktura, RAL 9005 + srebrny daszek + czerwone logo.</li>
+<li><b>Fundament AP-F jako produkt</b> (prefabrykat z przepustami DVK i szpilkami M12 120×120 — świadomie kompatybilny rozstaw z Enelion? do decyzji) + zestaw kotew chemicznych + opcja 2× śruba ziemna; „ten sam fundament na następne generacje".</li>
+<li><b>Elektryka:</b> RCBO typ A 30&nbsp;mA/B16 na punkt (ładowarki AP mają RDC-DD), C32+RCD 4P dla CEE32, SPD T2 standard w wersji &gt;10&nbsp;m, przygotowanie pod podlicznik/MID, max 4 gniazda, 1 punkt = 1 obwód.</li>
+<li><b>Cable management:</b> hak ramię 150&nbsp;mm/promień 80&nbsp;mm/nośność 10&nbsp;kg + holster T2 stykami w dół z odwodnieniem; prowadzenie ogona CEE ładowarki bez pętli.</li>
+<li><b>Karta danych pełna:</b> IP54 (komora aparatowa)/IP44 system, IK10, masa, nośności, momenty, wymiary wykopu — deklarowane liczby jako element marketingu.</li>
+<li><b>Rodzina SKU:</b> AP-T BASE / SOCKET / CHARGE (dock+CEE+holster — flagowy) / WALLBOX / DUO / FIRMA (licznik+loop-out) + akcesoria (AP-F, daszek LED, odbojnica, grzałka, panel Dr.&nbsp;Storm).</li>
+<li><b>Retrofit AP-R1</b> (obejmy na istniejące słupki) zostaje w planie jako monetyzacja bazy — do rozwinięcia po AP-T.</li>
+</ol>
+
+<footer>
+AMPERE POINT — research rynkowo-techniczny słupka uniwersalnego, v1, 25.07.2026. Dokument wewnętrzny; ceny i linki wg stanu na dzień badania; wartości normowe do potwierdzenia w aktualnych PN przed dokumentacją wykonawczą. Część 2 (projekt koncepcyjny AP-T z rysunkami wymiarowymi) — osobny plik w folderze Stojak.
+</footer>
+
+</div>
+</body>
+</html>

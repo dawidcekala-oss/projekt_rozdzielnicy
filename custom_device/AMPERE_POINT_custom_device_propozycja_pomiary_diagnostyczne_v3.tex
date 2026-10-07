@@ -1,0 +1,96 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\renewcommand{\tablename}{Tabela}
+\hyphenpenalty=3000 \tolerance=2000 \emergencystretch=2em
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{parskip}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\setlist{nosep,leftmargin=1.4em}
+\newcommand{\ohm}{$\Omega$}
+
+\title{\textbf{AMPERE POINT --- custom device}\\[4pt]
+\large PROPOZYCJA v3: diagnostyka zwrotów wyłącznie na stanowisku\\[2pt]
+\normalsize wersja 3 --- do zatwierdzenia; po uwagach z 2026-07-09 (bez pomiarów u klienta)}
+\author{Opracowanie wewnętrzne AMPERE POINT}
+\date{9 lipca 2026}
+
+\begin{document}
+\maketitle
+\vspace{-1.4em}
+
+\section{Uwagi do v2 --- przyjęte}
+Urządzenie pracuje \textbf{tylko w zakładzie} i diagnozuje \textbf{zwroty}: bez wypożyczania,
+bez wyjazdów, bez auta klienta. Wykreślone: D1 (rejestrator u klienta), D2 (przelot z autem
+klienta), D4 w wersji terenowej. Pozostaje pytanie: \emph{jak na stole rozgryźć zwrot, który
+,,u nas działa''} --- oraz zgłoszona potrzeba taniego zbierania danych sesji z szybkim zgraniem
+na laptopa (dawne D5).
+
+\section{S1 --- symulator środowiska klienta na stole (dawne D3, rdzeń pomiarowy)}
+Zwrot ,,sprawny'' przepuszczamy przez profile środowiskowe aż zawiedzie jak u klienta. W sekcji
+bench-test (DUT zasilany z panelu modułu A):
+\begin{itemize}
+\item \textbf{miękka sieć}: wtrącane odczepy impedancji linii 0,15 / 0,3 / 0,6~\ohm{} (rezystory
+drutowe z termikami w pętli -F11) --- napięcie siada pod prądem jak na słabej instalacji/przedłużaczu;
+\item \textbf{upływ tła}: istniejący generator -A3 z przełącznikiem strony --- dokłada regulowany
+upływ L$\to$PE ,,instalacji klienta'' (czy RCD/RDC-DD zwrotu wyzwala się w sumie upływów);
+\item \textbf{zapady i krótkie przerwy}: szybki stycznik z wyzwalaniem czasowym (50~ms--5~s);
+\item \textbf{zamiana L--N / przerwa PE}: 2 przekaźniki --- wyłącznie jako odtworzenie zgłoszenia;
+\item \emph{opcja etapu 2}: autotransformator 16~A (używany) --- pełna regulacja 190--260~V
+(sieć z PV w południe / słaba sieć).
+\end{itemize}
+Pomiar reakcji: istniejące tory (-U2, -B1, CP, opto faz, termowizja). Obciążeniem jest szafa~B
+albo auto testowe.
+
+\section{S2 --- nadzór długoterminowy zwrotu (nowe)}
+Usterki sporadyczne łapiemy \textbf{u nas, nocą}: zwrot pracuje na stanowisku wiele godzin/dni
+(obciążenie z szafy B, cyklicznie profile S1), a moduł A stempluje zdarzenia (zaniki, wstrzymania,
+upływy, temperatury, stany CP) z dokładnym czasem. Dodatkowo prosty test łączności na stanowisku:
+zwrot vs egzemplarz referencyjny obok (ten sam router) --- wychwytuje ,,głuchy'' moduł WiFi.
+Zero nowego sprzętu --- firmware (harmonogram, progi zdarzeń).
+
+\section{S3 --- sesje pomiarowe i szybkie zgrywanie (odpowiedź na pytanie o tanie rozwiązanie)}
+Nie potrzeba żadnego interfejsu ani aplikacji. Wszystko już jest w architekturze (ESP32-S3
+$+$ karta microSD $+$ USB-C $+$ WiFi):
+\begin{enumerate}
+\item \textbf{Sesja $=$ folder na karcie SD.} Operator wpisuje na HMI numer przypadku (RMA/serial)
+i naciska ,,Start sesji'' --- od tej chwili każdy pomiar, log telemetrii (CSV co 1~s), zdarzenia
+i wyniki testów zapisują się do \texttt{/SESJE/RMA-1234\_2026-07-09/}. Koniec sesji zamyka folder
+podsumowaniem JSON.
+\item \textbf{Zgranie $=$ pendrive.} ESP32-S3 ma sprzętowe USB OTG: po przełączeniu na HMI w tryb
+,,Zgrywanie'' urządzenie zgłasza się laptopowi jako \textbf{zwykła pamięć USB} (USB Mass Storage)
+--- wpinasz kabel USB-C, karta SD widoczna jak pendrive, przeciągasz folder przypadku. Zero
+instalowania czegokolwiek, działa na każdym komputerze. Koszt sprzętu: \textbf{0~zł} (gniazdo
+USB-C i SD są w projekcie od początku).
+\item \textbf{Alternatywa bez kabla:} wbudowana strona WWW (moduł A wystawia po WiFi listę sesji,
+przycisk ,,pobierz ZIP'') --- wystarczy przeglądarka na laptopie.
+\item \textbf{Etap 2 (opcjonalnie):} raport \texttt{.html} generowany na urządzeniu w folderze
+sesji (samowystarczalny plik z wykresami --- otwiera się na laptopie bez internetu) oraz
+automatyczny spływ sesji do zakładowego Home Assistant (już działa w firmie) --- baza przypadków
+sama się buduje; wpisy U-xxx dostają linki do danych.
+\end{enumerate}
+Formaty: CSV (otwiera Excel), JSON (podsumowanie), zdjęcia termowizyjne PNG (miniatury z MLX90640).
+
+\section{Wpływ na konstrukcję i decyzja}
+\begin{longtable}{@{}p{0.07\textwidth}p{0.55\textwidth}p{0.15\textwidth}p{0.13\textwidth}@{}}
+\toprule
+\textbf{Pak.} & \textbf{Zmiana} & \textbf{Koszt} & \textbf{Praca}\\
+\midrule
+S1 & odczepy R linii $+$ 2 przekaźniki $+$ szybki stycznik $+$ przełącznik strony -A3 (sekcja
+bench-test --- wymaga decyzji Z3); opcja: autotransformator & 200--400 zł (opcja $+$400--700) & 1 dzień\\
+S2 & bez zmian sprzętowych (firmware: harmonogram, progi, stemple) & 0 & 0,5--1 dzień\\
+S3 & bez zmian sprzętowych (firmware: sesje, USB-MSC, strona ZIP) & 0 & 2--3 dni\\
+\midrule
+ & \textbf{Razem (bez opcji)} & \textbf{200--400 zł} & \textbf{3,5--5 dni}\\
+\bottomrule
+\end{longtable}
+Bez zmian: tor mocy E1, łańcuch E2, szafa B, pomiary obowiązkowe. Dokumentacyjnie: drobny arkusz
+E4 (symulator $+$ przełączniki) po zatwierdzeniu. \textbf{Z20 (v3): zakres S1--S3, kolejność
+wdrożenia S3 $\to$ S1 $\to$ S2.} Propozycje v1/v2 pozostają w folderze jako odrzucone.
+
+\end{document}

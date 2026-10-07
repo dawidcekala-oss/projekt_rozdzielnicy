@@ -1,0 +1,351 @@
+\documentclass[10pt,a4paper,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.8cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta}
+\usepackage{booktabs}
+\usepackage{parskip}
+\pagestyle{empty}
+\renewcommand{\familydefault}{\sfdefault}
+\definecolor{cWLZ}{RGB}{106,27,154}
+\definecolor{c3F}{RGB}{183,28,28}
+\definecolor{cGN}{RGB}{21,101,192}
+\definecolor{cOSW}{RGB}{230,126,0}
+\definecolor{cSPEC}{RGB}{46,125,50}
+\definecolor{cN}{RGB}{21,101,192}
+\definecolor{cPE}{RGB}{85,139,47}
+\definecolor{cL1}{RGB}{121,72,32}
+\definecolor{cL2}{RGB}{40,40,40}
+\definecolor{cL3}{RGB}{120,124,130}
+\tikzset{
+ lbl/.style={font=\tiny, fill=white, inner sep=1.5pt, rounded corners=1pt},
+ pok/.style={draw=black!70, thick, rounded corners=3pt, fill=black!3},
+ pokn/.style={font=\small\bfseries},
+ poki/.style={font=\tiny, align=center},
+ szafa/.style={draw, very thick, fill=yellow!12, rounded corners=2pt, font=\scriptsize\bfseries, align=center, inner sep=3pt},
+ nr/.style={draw, circle, fill=white, font=\tiny\bfseries, inner sep=1.1pt, minimum size=9pt},
+ ap/.style={draw=black!75, fill=white, font=\tiny, align=center, inner sep=1.5pt},
+ tr/.style={line width=1.6pt},
+ trg/.style={line width=2.6pt},
+ kier/.style={-{Stealth[length=6pt]}}
+}
+\newcommand{\obw}[3]{\node[nr, draw=#2, text=#2] at (#1) {#3};}
+
+\begin{document}
+
+% ================= STRONA 1: TYTUL + LEGENDA OBWODOW =================
+\begin{center}
+{\LARGE\bfseries Instalacja elektryczna --- schematy powykonawcze (rys. poglądowy)}\\[2pt]
+{\large arkusz 1/5: legenda i spis obwodów \hfill 12 lipca 2026, wersja 1}\\[4pt]
+\begin{minipage}{0.94\textwidth}\small
+Opracowano na podstawie zdjęć z folderu \texttt{instalacja} i odręcznego rzutu. Arkusze:
+\textbf{2} --- schemat główny (rzut z trasami), \textbf{3} --- szafa X (złącze + licznik, podwórze tył),
+\textbf{4} --- szafa O (rozdzielnica główna, korytarz), \textbf{5} --- szafa AMPERE (słupek na podwórzu).
+Kolory tras: \textcolor{cWLZ}{\rule{18pt}{2.4pt}}~zasilanie (przyłącze/WLZ)\;
+\textcolor{c3F}{\rule{18pt}{2.4pt}}~obwody 3-fazowe (siła)\;
+\textcolor{cGN}{\rule{18pt}{2.4pt}}~gniazda 230 V\;
+\textcolor{cOSW}{\rule{18pt}{2.4pt}}~oświetlenie\;
+\textcolor{cSPEC}{\rule{18pt}{2.4pt}}~teren/brama/domofon.
+Numer w kółku $=$ obwód wg opisu na drzwiach szafy O (pisownia oryginalna w nawiasach, odczyt z rękopisu).
+Linie przerywane $=$ trasa orientacyjna (przebieg w ścianach nieudokumentowany zdjęciem).
+\end{minipage}
+\end{center}
+\vspace{2pt}
+\begin{center}\scriptsize
+\begin{tabular}{@{}c l l l c l@{}}
+\toprule
+\textbf{Nr} & \textbf{Aparat (szafa O)} & \textbf{Grupa RCD} & \textbf{Obwód (wg opisu tablicy)} & \textbf{Kolor} & \textbf{Dokąd}\\
+\midrule
+1 & CKN6-10/1N/B/003 (RCBO B10 30 mA) & własny & rolety & \textcolor{cSPEC}{$\bullet$} & okna pokoje\\
+2 & CLS6-B10 & RCD I (CF16-25/2/003) & oświetlenie: pokój + sypialnia & \textcolor{cOSW}{$\bullet$} & pokój 1, pokój 2\\
+3 & CLS6-B16 & RCD I & gniazda kuchnia & \textcolor{cGN}{$\bullet$} & kuchnia\\
+4 & CLS6-B16 & RCD I & pralka & \textcolor{cGN}{$\bullet$} & łazienka\\
+5 & CLS6-B10 & RCD II (CF16-25/2/003) & oświetlenie: salon + jadalnia & \textcolor{cOSW}{$\bullet$} & pokój 1\\
+6 & CLS6-B16 & RCD II & gniazda kuchnia & \textcolor{cGN}{$\bullet$} & kuchnia\\
+7 & CLS6-B16 & RCD II & gniazda sypialnia & \textcolor{cGN}{$\bullet$} & pokój 2\\
+8 & CKN6-16/1N/B/003 (RCBO B16 30 mA) & własny & oświetlenie piwnicy & \textcolor{cOSW}{$\bullet$} & piwnica ($-1$)\\
+9 & CLS6-B16/3 (3P) & RCD III (CF16-25/4/003, 4P) & siła: kuchnia + kotłownia + \textbf{skrzynka (AMPERE)} & \textcolor{c3F}{$\bullet$} & kuchnia, kotłownia, słupek\\
+10 & CLS6-B16 & RCD III & piekarnik + gniazda kotłowni & \textcolor{cGN}{$\bullet$} & kuchnia, kotłownia\\
+11 & CLS6-B10 & RCD IV (CF16-25/2/003) & oświetlenie: wejście, kotłownia, łazienka, kuchnia (+in.) & \textcolor{cOSW}{$\bullet$} & wg opisu\\
+12 & CLS6-B16 & RCD IV & zmywarka & \textcolor{cGN}{$\bullet$} & kuchnia\\
+13 & CLS6-B16 & RCD IV & gniazda salon & \textcolor{cGN}{$\bullet$} & pokój 1\\
+14 & CLS6-B16 & RCD IV & bojler (kotłownia) & \textcolor{cGN}{$\bullet$} & kotłownia\\
+15 & GE 100 A, 3P (AST M) & --- & \textbf{wyłącznik główny budynku} & --- & ---\\
+16 & 4$\times$ Eaton SPCT2-280 & --- & ochronniki przepięciowe (T2, L1L2L3+N) & --- & ---\\
+17 & CLS6-C20/3 (3P) & --- & zasilanie tablicy pieca (podrozdzielnica kotłowni) & \textcolor{c3F}{$\bullet$} & kotłownia\\
+18 & CKN6-16/1N/B/003 (RCBO) & własny & gniazda: korytarz + łazienka (+in.) & \textcolor{cGN}{$\bullet$} & korytarz, łazienka\\
+19 & CKN6-10/1N/B/003 (RCBO) & własny & brama wjazdowa & \textcolor{cSPEC}{$\bullet$} & front posesji\\
+20 & CLS6-B10 (tablica dolna) & --- & domofon (zasilacz Vidos 14,5 V DC) & \textcolor{cSPEC}{$\bullet$} & front posesji\\
+21 & CKN6-10/1N/B/003 (tabl. dolna) & własny & oświetlenie terenu zewnętrznego & \textcolor{cSPEC}{$\bullet$} & podwórze\\
+\bottomrule
+\end{tabular}
+\end{center}
+\newpage
+% ================= STRONA 2: SCHEMAT GLOWNY (RZUT) =================
+\noindent{\small\textbf{Arkusz 2/5 --- schemat główny: rzut z trasami obwodów} \hfill front posesji $=$ góra rysunku}\par\vspace{1mm}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+% ---- obrys budynku ----
+\draw[very thick] (1,3) -- (17,3) -- (17,10.5) -- (14.2,10.5) -- (14.2,15) -- (1,15) -- cycle;
+\draw[pok] (1.05,8.5) rectangle (2.8,14.95);  \node[pokn] at (1.9,12.2) [rotate=90]{POKÓJ 3};
+\draw[pok] (2.8,8.5) rectangle (12.5,14.95);
+\node[pokn] at (7.0,12.6) {POKÓJ 1};
+\node[poki] at (7.0,12.0) {(komputery, router, oświetlenie)\\ u~domowników: salon $+$ jadalnia};
+\draw[pok] (2.8,3.05) rectangle (8,8.5);
+\node[pokn] at (5.4,6.9) {POKÓJ 2};
+\node[poki] at (5.4,6.35) {(oświetlenie)\\ u~domowników: sypialnia};
+\draw[pok] (8,3.05) rectangle (12.5,8.5);
+\node[pokn] at (10.2,7.6) {KUCHNIA};
+\node[poki] at (10.2,7.0) {(płyta indukcyjna 3F,\\ lodówka, oświetlenie)};
+\draw[pok] (12.5,3.05) rectangle (14.2,14.95);
+\node[pokn, rotate=90] at (12.72,6.2) {KORYTARZ};
+\draw[pok] (14.2,3.05) rectangle (16.95,7);
+\node[pokn] at (15.6,6.3) {ŁAZIENKA};
+\node[poki] at (15.6,5.8) {(pralka, oświetlenie)};
+\draw[pok, dashed, fill=black!6] (14.2,7) rectangle (16.95,10.5);
+\node[poki] at (15.6,9.0) {pomieszczenie\\ nieujęte na rzucie\\ (obok łazienki)};
+% ---- szafy ----
+\node[szafa, minimum width=10mm, minimum height=6mm] (O) at (12.15,12.3) {O};
+\node[lbl, anchor=east] at (11.72,11.45) {SZAFA O --- rozdzielnica główna (ark. 4)};
+\node[szafa] (X) at (4.6,2.15) {X};
+\node[lbl] at (4.6,1.4) {SZAFA X --- złącze $+$ licznik (ark. 3)};
+\node[szafa, fill=orange!20] (AMP) at (15.8,13.6) {SZAFA\\ AMPERE};
+\node[lbl] at (15.8,14.55) {słupek na podwórzu (ark. 5)};
+\node[szafa, fill=black!8] (BW) at (15.8,11.4) {BOX\\ Z WENT.};
+% ---- przylacze i WLZ ----
+\draw[trg, cWLZ, dashed, kier] (0.6,0.85) -- (4.45,0.85) -- (4.45,1.83);
+\node[lbl, anchor=west] at (0.6,0.58) {przyłącze z sieci (podwórze tył)};
+\draw[trg, cWLZ] (4.45,2.45) -- (4.45,3.0);
+\draw[trg, cWLZ, dashed] (4.45,3.0) -- (4.45,3.45) -- (12.95,3.45) -- (12.95,11.9) -- (12.45,11.9);
+\node[lbl, rotate=90] at (12.72,9.9) {WLZ (trasa orientacyjna)};
+% ---- kanaly obwodow: pion korytarz + polnoc + poludnie ----
+\draw[tr, cOSW] (12.45,12.5) -- (13.35,12.5) -- (13.35,14.6) -- (2.2,14.6);
+\draw[tr, cGN]  (12.45,12.1) -- (13.55,12.1) -- (13.55,14.4) -- (2.4,14.4);
+\draw[tr, cOSW] (13.35,12.5) -- (13.35,3.8) -- (3.4,3.8);
+\draw[tr, cGN]  (13.55,12.1) -- (13.55,3.6) -- (3.2,3.6);
+\draw[tr, cGN]  (13.55,4.6) -- (16.3,4.6);
+\draw[tr, cOSW] (13.35,5.9) -- (14.55,5.9);
+% ---- 3F: kuchnia + do slupka AMPERE + kotlownia/TP ----
+\draw[tr, c3F] (12.45,12.7) -- (15.35,12.7) -- (15.35,12.95);
+\draw[tr, c3F] (13.85,12.7) -- (13.85,6.6) -- (10.6,6.6);
+\draw[tr, c3F, dashed] (13.85,6.6) -- (13.85,2.3) node[lbl, pos=.55, rotate=90, xshift=0pt, yshift=6pt]{obw.\ 9 i 17: kotłownia ($-1$)};
+% ---- specjalne: teren/brama/domofon ----
+\draw[tr, cSPEC] (12.45,12.9) -- (13.15,12.9) -- (13.15,14.8) -- (2.6,14.8);
+\draw[tr, cSPEC, dashed] (2.6,14.8) -- (2.6,15.9);
+\draw[tr, cSPEC, dashed] (13.15,3.45) -- (13.15,1.05) -- (2.9,1.05);
+% ---- numerki przy odbiorach ----
+\draw[tr, cSPEC] (5.0,14.8) -- (5.0,15.0);
+\obw{5.0,15.14}{cSPEC}{1} \node[lbl] at (6.35,15.14) {rolety okien};
+\obw{7.0,13.9}{cOSW}{2} \obw{7.6,13.9}{cOSW}{5} \node[lbl] at (9.0,13.9) {oświetlenie};
+\obw{7.0,13.2}{cGN}{13} \node[lbl] at (8.2,13.2) {gniazda};
+\obw{1.9,10.9}{cOSW}{2}
+\obw{5.4,5.5}{cOSW}{2} \obw{5.4,4.7}{cGN}{7}
+\obw{10.0,5.4}{cGN}{3} \obw{10.6,5.4}{cGN}{6} \node[lbl] at (10.3,4.95) {gniazda kuchni};
+\obw{9.2,4.2}{cGN}{10} \node[lbl] at (9.2,3.75) {piekarnik};
+\obw{11.4,4.2}{cGN}{12} \node[lbl] at (11.4,3.75) {zmywarka};
+\obw{10.6,6.15}{c3F}{9} \node[lbl] at (9.5,6.15) {płyta indukcyjna};
+\obw{10.2,8.0}{cOSW}{11}
+\obw{15.5,4.2}{cGN}{4} \node[lbl] at (15.5,3.75) {pralka};
+\obw{16.3,5.05}{cGN}{18}
+\obw{14.72,5.9}{cOSW}{11}
+\obw{13.35,9.3}{cOSW}{11} \obw{13.55,8.7}{cGN}{18}
+\obw{2.6,15.35}{cSPEC}{19} \obw{3.3,15.35}{cSPEC}{20} \node[lbl] at (4.6,15.35) {brama, domofon (front)};
+\obw{2.62,1.05}{cSPEC}{21} \node[lbl] at (4.45,0.72) {oświetlenie terenu};
+\obw{14.6,12.7}{c3F}{9} \node[lbl] at (14.62,12.32) {zasilanie słupka};
+% ---- box went zasilanie nieustalone ----
+\draw[tr, black!45, dashed] (15.8,10.52) -- (15.8,10.9) node[lbl, right, pos=.5]{?};
+\node[lbl, text width=26mm, anchor=west] at (17.15,11.35) {zasilanie BOX z went.: nieustalone (do weryfikacji)};
+% ---- piwnica callout ----
+\node[ap, text width=44mm, anchor=north west] at (8.8,2.62) {\textbf{PIWNICA / KOTŁOWNIA (poziom $-1$, brak na rzucie):}\\ obwody: 8 (oświetlenie), 9 (siła), 10 (gniazda), 11 (oświetlenie), 14 (bojler), 17 (tablica pieca TP)};
+% ---- otoczenie ----
+\node[font=\small\bfseries] at (9,16.6) {PODWÓRZE --- FRONT};
+\node[font=\small\bfseries] at (9,0.35) {PODWÓRZE --- TYŁ};
+\end{tikzpicture}
+\end{center}
+\newpage
+% ================= STRONA 3: SZAFA X =================
+\noindent{\small\textbf{Arkusz 3/5 --- szafa X: złącze kablowo-licznikowe (podwórze tył, za ścianą pokoju 2)} \hfill obudowa PCV Sakspol, 2 drzwi}\par\vspace{1mm}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+% obudowa
+\draw[very thick, rounded corners=3pt] (3,0.6) rectangle (15,17.2);
+\draw[thick] (3.3,9.2) rectangle (14.7,16.9); \node[lbl] at (5.2,16.6) {część górna (okienko odczytowe)};
+\draw[thick] (3.3,0.9) rectangle (14.7,8.8); \node[lbl] at (5.4,8.5) {część dolna (NIE DOTYKAĆ)};
+% przylacze z gory
+\draw[trg, cWLZ, kier] (9,18.6) -- (9,16.5) node[lbl, pos=.25, right]{przyłącze z sieci (kabel w peszlu, z góry)};
+% licznik
+\draw[ap, fill=black!4] (6.2,11.0) rectangle (11.8,16.3);
+\node[font=\scriptsize\bfseries] at (9,15.9) {APATOR NORAX 3};
+\draw[fill=black!85] (6.9,14.6) rectangle (11.1,15.4); \node[font=\scriptsize, text=green!60!black] at (9,15.0) {\texttt{12266 kWh}};
+\node[ap, align=left, anchor=north west, draw=none] at (6.4,14.3) {licznik OSD, trójfazowy\\ 3$\times$230/400 V, 0,25--5(80) A\\ dwukierunkowy pomiar, DLMS\\ plomba OSD (innogy) na osłonie};
+\node[lbl] at (9,11.3) {zaciski pod osłoną plombowaną};
+% C25/3
+\draw[ap, fill=white] (6.9,4.6) rectangle (11.1,7.6);
+\node[font=\scriptsize\bfseries] at (9,7.25) {Moeller/F\&G xClear CLS6-C25/3};
+\foreach \x in {7.6,9.0,10.4}{\draw[thick] (\x-0.35,5.2) rectangle (\x+0.35,6.8); \draw[fill=black!80] (\x-0.18,5.9) rectangle (\x+0.18,6.6);}
+\node[lbl] at (9,4.9) {zabezpieczenie zalicznikowe C25, 3-bieg.}
+;
+% N i PE bloki + mostek
+\draw[ap, fill=cN!25] (4.0,5.2) rectangle (5.5,7.2); \node[font=\tiny\bfseries, text=cN] at (4.75,6.9) {blok N};
+\draw[ap, fill=yellow!50] (12.5,5.2) rectangle (14.0,7.2); \node[font=\tiny\bfseries] at (13.25,6.9) {blok PE};
+\draw[tr, cPE] (4.75,5.15) .. controls (4.75,3.2) and (13.25,3.2) .. (13.25,5.15);
+\node[lbl] at (9,3.35) {mostek żółto-zielony N--PE $=$ \textbf{punkt rozdziału PEN (układ TN-C-S)}};
+% przewody licznik->C25
+\draw[tr, cL1] (8.2,11.0) -- (8.2,9.0) -- (7.6,9.0) -- (7.6,7.6);
+\draw[tr, cL2] (9.0,11.0) -- (9.0,7.6);
+\draw[tr, cL3] (9.8,11.0) -- (9.8,9.2) -- (10.4,9.2) -- (10.4,7.6);
+\draw[tr, cN]  (6.6,11.0) -- (6.6,8.4) -- (4.75,8.4) -- (4.75,7.2);
+% wyjscie WLZ dol
+\draw[trg, cWLZ, kier] (9,4.55) -- (9,1.4) -- (9,1.35);
+\node[lbl] at (9,1.42) {WLZ do szafy O (5 żył: L1 L2 L3 $+$ N $+$ PE), wyjście dołem przez ścianę}
+;
+\draw[tr, cN, kier] (4.75,5.15) -- (4.75,2.05) -- (7.95,2.05);
+\draw[tr, cPE, kier] (13.25,5.15) -- (13.25,2.05) -- (10.05,2.05);
+% opisy bokiem
+\node[ap, text width=52mm, anchor=north west] at (16.0,16.5) {\textbf{Rola szafy X:}\\[1pt]
+1. przyjęcie przyłącza z sieci (dochodzi jako TN-C: L1 L2 L3 $+$ PEN);\\
+2. pomiar energii (licznik OSD, plombowany);\\
+3. zabezpieczenie zalicznikowe C25/3;\\
+4. \textbf{rozdział PEN na N i PE} (bloki $+$ mostek) --- od tego punktu instalacja jest 5-przewodowa;\\
+5. wyprowadzenie WLZ do szafy O.\\[3pt]
+\textbf{Uwaga:} uziom punktu rozdziału (bednarka) niewidoczny na zdjęciach --- do potwierdzenia przy oględzinach.};
+\end{tikzpicture}
+\end{center}
+\newpage
+% ================= STRONA 4: SZAFA O =================
+\noindent{\small\textbf{Arkusz 4/5 --- szafa O: rozdzielnica główna (korytarz)} \hfill aparaty Eaton xClear; numeracja $=$ opisy na drzwiach}\par\vspace{0.5mm}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\newcommand{\apar}[6]{% x, y, szer(mm->cm/10), tag, opis, kolor
+ \draw[ap, fill=white] (#1,#2) rectangle ({#1+#3},{#2+1.5});
+ \draw[fill=black!80] ({#1+#3/2-0.09},{#2+0.82}) rectangle ({#1+#3/2+0.09},{#2+1.28});
+ \node[font=\tiny, align=center] at ({#1+#3/2},{#2+0.52}) {#4};
+ \node[nr, draw=#6, text=#6, minimum size=8pt] at ({#1+#3/2},{#2-0.32}) {#5};}
+% szyny zasilania (od WLZ)
+\draw[trg, cWLZ, kier] (0.6,2.0) -- (0.6,3.4) node[lbl, pos=0, below]{WLZ z szafy X};
+% ------- RZAD DOLNY (zasilanie): 15,16,17,18,19 -------
+\node[font=\scriptsize\bfseries, anchor=west] at (1.9,5.72) {RZĄD DOLNY};
+\draw[ap, fill=white] (0.9,3.4) rectangle (3.1,4.9);
+\foreach \x in {1.3,2.0,2.7}{\draw[fill=red!75!black] (\x-0.16,4.05) rectangle (\x+0.16,4.62);}
+\node[font=\tiny, align=center] at (2.0,3.75) {GE 100 A 3P};
+\node[nr] at (2.0,3.08) {15};
+\node[lbl] at (2.0,5.15) {wyłącznik główny};
+\draw[ap, fill=white] (3.5,3.4) rectangle (6.2,4.9);
+\foreach \x in {3.85,4.52,5.19,5.86}{\draw[fill=green!60!black] (\x-0.2,3.9) rectangle (\x+0.2,4.5);}
+\node[font=\tiny] at (4.85,3.65) {4$\times$ SPCT2-280};
+\node[nr] at (4.85,3.08) {16};
+\node[lbl] at (4.85,5.15) {ochronniki T2};
+\apar{6.6}{3.4}{1.35}{CLS6\\C20/3}{17}{c3F}
+\node[lbl] at (7.3,5.15) {tablica pieca};
+\apar{8.5}{3.4}{0.9}{CKN6-16\\RCBO}{18}{cGN}
+\apar{9.9}{3.4}{0.9}{CKN6-10\\RCBO}{19}{cSPEC}
+% tablica dolna (osobne drzwiczki)
+\draw[thick, rounded corners=2pt] (11.6,3.0) rectangle (16.4,5.5);
+\node[lbl] at (13.9,5.25) {TABLICA DOLNA (drzwiczki dolne)};
+\draw[ap, fill=white] (11.9,3.4) rectangle (13.4,4.9); \node[font=\tiny, align=center] at (12.65,3.9) {zasilacz\\ Vidos 14,5 V};
+\apar{13.7}{3.4}{0.7}{CLS6\\B10}{20}{cSPEC}
+\apar{14.9}{3.4}{0.9}{CKN6-10\\RCBO}{21}{cSPEC}
+% ------- RZAD SRODKOWY: RCD III (4P) 9,10 | RCD IV 11-14 -------
+\node[font=\scriptsize\bfseries, anchor=west] at (1.9,10.75) {RZĄD ŚRODKOWY};
+\draw[ap, fill=cWLZ!8] (0.9,8.3) rectangle (2.7,9.8); \node[font=\tiny, align=center] at (1.8,9.05) {CF16-25/4/003\\ RCD 4P 30 mA\\ \textbf{grupa III}};
+\apar{3.0}{8.3}{1.35}{CLS6\\B16/3}{9}{c3F}
+\apar{4.75}{8.3}{0.7}{CLS6\\B16}{10}{cGN}
+\draw[ap, fill=cWLZ!8] (6.6,8.3) rectangle (8.2,9.8); \node[font=\tiny, align=center] at (7.4,9.05) {CF16-25/2/003\\ RCD 30 mA\\ \textbf{grupa IV}};
+\apar{8.5}{8.3}{0.7}{CLS6\\B10}{11}{cOSW}
+\apar{9.6}{8.3}{0.7}{CLS6\\B16}{12}{cGN}
+\apar{10.7}{8.3}{0.7}{CLS6\\B16}{13}{cGN}
+\apar{11.8}{8.3}{0.7}{CLS6\\B16}{14}{cGN}
+\draw[tr, c3F] (2.7,9.05) -- (3.0,9.05); \draw[tr, cGN] (4.35,9.05) -- (4.75,9.05);
+\draw[tr, cOSW] (8.2,9.05) -- (8.5,9.05);
+\draw[tr, cGN] (9.2,9.05) -- (9.6,9.05); \draw[tr, cGN] (10.3,9.05) -- (10.7,9.05); \draw[tr, cGN] (11.4,9.05) -- (11.8,9.05);
+% ------- RZAD GORNY: 1 | RCD I 2,3,4 | RCD II 5,6,7 | 8 -------
+\node[font=\scriptsize\bfseries, anchor=west] at (1.9,15.55) {RZĄD GÓRNY};
+\apar{0.9}{13.3}{0.9}{CKN6-10\\RCBO}{1}{cSPEC}
+\draw[ap, fill=cWLZ!8] (2.2,13.3) rectangle (3.8,14.8); \node[font=\tiny, align=center] at (3.0,14.05) {CF16-25/2/003\\ RCD 30 mA\\ \textbf{grupa I}};
+\apar{4.1}{13.3}{0.7}{CLS6\\B10}{2}{cOSW}
+\apar{5.2}{13.3}{0.7}{CLS6\\B16}{3}{cGN}
+\apar{6.3}{13.3}{0.7}{CLS6\\B16}{4}{cGN}
+\draw[ap, fill=cWLZ!8] (7.9,13.3) rectangle (9.5,14.8); \node[font=\tiny, align=center] at (8.7,14.05) {CF16-25/2/003\\ RCD 30 mA\\ \textbf{grupa II}};
+\apar{9.8}{13.3}{0.7}{CLS6\\B10}{5}{cOSW}
+\apar{10.9}{13.3}{0.7}{CLS6\\B16}{6}{cGN}
+\apar{12.0}{13.3}{0.7}{CLS6\\B16}{7}{cGN}
+\apar{13.4}{13.3}{0.9}{CKN6-16\\RCBO}{8}{cOSW}
+\draw[tr, cOSW] (3.8,14.05) -- (4.1,14.05);
+\draw[tr, cGN] (4.8,14.05) -- (5.2,14.05); \draw[tr, cGN] (5.9,14.05) -- (6.3,14.05);
+\draw[tr, cOSW] (9.5,14.05) -- (9.8,14.05);
+\draw[tr, cGN] (10.5,14.05) -- (10.9,14.05); \draw[tr, cGN] (11.6,14.05) -- (12.0,14.05);
+% ------- magistrala zasilajaca miedzy rzedami -------
+\draw[trg, cWLZ] (0.6,3.4) -- (0.6,4.15) -- (0.9,4.15);
+\draw[trg, cWLZ] (3.1,4.15) -- (3.5,4.15);
+\draw[trg, cWLZ] (6.2,4.15) -- (6.45,4.15) -- (6.45,6.6) -- (0.6,6.6) -- (0.6,9.05) -- (0.9,9.05);
+\node[lbl] at (4.3,6.88) {za wyłącznikiem głównym i ochronnikami: zasilanie rzędów};
+\draw[trg, cWLZ] (0.6,9.05) -- (0.6,14.05) -- (0.9,14.05);
+\draw[trg, cWLZ] (0.6,14.05) -- (0.6,15.05) -- (13.85,15.05);
+\foreach \x in {1.35,3.0,8.7,13.85}{\draw[trg, cWLZ] (\x,15.05) -- (\x,14.82);}
+\draw[trg, cWLZ] (0.6,9.05) -- (0.6,10.12) -- (7.4,10.12);
+\draw[trg, cWLZ] (7.4,10.12) -- (7.4,9.82);
+\draw[trg, cWLZ] (6.45,6.6) -- (15.6,6.6);
+\foreach \x in {7.3,8.95,10.35}{\draw[trg, cWLZ] (\x,6.6) -- (\x,4.92);}
+\draw[trg, cWLZ] (13.9,6.6) -- (13.9,5.52);
+\end{tikzpicture}
+\end{center}
+\newpage
+% ================= STRONA 5: SZAFA AMPERE =================
+\noindent{\small\textbf{Arkusz 5/5 --- szafa AMPERE: słupek na podwórzu (biała skrzynka $+$ gniazdo CEE)} \hfill zasilanie: obwód 9 z szafy O}\par\vspace{1mm}
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+% sylwetka slupka
+\draw[very thick, rounded corners=4pt, fill=black!85] (2.2,6.0) rectangle (8.2,16.8);
+\node[font=\scriptsize\bfseries, text=white] at (5.2,7.0) {AmperePoint};
+\node[font=\tiny, text=white] at (5.2,6.55) {SMART CHARGING};
+\draw[fill=black!70] (4.6,1.2) rectangle (5.8,6.0);
+\draw[fill=black!50] (3.9,0.7) rectangle (6.5,1.2);
+\node[lbl] at (5.2,0.4) {słup stalowy na fundamencie (kotwy)};
+\node[lbl] at (5.2,17.1) {obudowa słupka --- czarny front szklany, drzwi boczne};
+% biala skrzynka wewnatrz (detal z prawej)
+\draw[very thick, rounded corners=2pt, fill=white] (11.0,8.6) rectangle (26.6,13.6);
+\node[lbl] at (13.6,13.3) {BIAŁA SKRZYNKA (rozdzielniczka wewnątrz słupka)};
+% podlicznik
+\draw[ap, fill=black!4] (11.6,9.4) rectangle (15.6,12.8);
+\node[font=\scriptsize\bfseries] at (13.6,12.45) {ADELID L3F-RS};
+\draw[fill=black!85] (12.0,11.3) rectangle (15.2,12.0); \node[font=\scriptsize, text=green!60!black] at (13.6,11.65) {\texttt{2752.7 kWh}};
+\node[font=\tiny, align=center] at (13.6,10.4) {podlicznik 3-fazowy\\ 3$\times$230/400 V, 10(100) A\\ 1000 imp/kWh, wyjście RS-485\\ LED L1 L2 L3};
+% RCD
+\draw[ap, fill=white] (16.4,9.4) rectangle (20.0,12.8);
+\node[font=\scriptsize\bfseries] at (18.2,12.45) {DOKTORVOLT DV-5576};
+\draw[fill=cN!70] (17.0,10.6) rectangle (17.7,11.6);
+\draw[fill=orange!80!black] (18.4,11.7) circle (0.22);
+\node[font=\tiny, align=center] at (18.2,10.0) {RCD 40 A / 30 mA, 4P\\ EN 61008-1 $+$ EN 62423\\ (typ wg piktogramu --- do\\ potwierdzenia na aparacie)};
+% B16/3
+\draw[ap, fill=white] (20.8,9.4) rectangle (24.2,12.8);
+\node[font=\scriptsize\bfseries] at (22.5,12.45) {SIEMENS 5SL, B16 3P};
+\foreach \x in {21.5,22.5,23.5}{\draw[thick] (\x-0.3,10.4) rectangle (\x+0.3,11.9); \draw[fill=red!75!black] (\x-0.15,11.05) rectangle (\x+0.15,11.7);}
+\node[font=\tiny] at (22.5,10.0) {MCB, 400 V};
+% polaczenia w skrzynce
+\draw[tr, c3F] (15.6,11.1) -- (16.4,11.1);
+\draw[tr, c3F] (20.0,11.1) -- (20.8,11.1);
+\draw[tr, c3F, kier] (24.2,11.1) -- (25.6,11.1) -- (25.6,8.62);
+% gniazdo CEE
+\draw[ap, fill=red!80!black, rounded corners=3pt] (24.7,5.4) rectangle (26.5,8.6);
+\draw[fill=red!60!black] (25.6,6.6) circle (0.62);
+\foreach \a in {60,120,200,270,340}{\draw[fill=black!80] ($(25.6,6.6)+(\a:0.36)$) circle (0.07);}
+\node[font=\tiny, align=center, text=white] at (25.6,5.8) {MENNEKES};
+\node[lbl, text width=30mm] at (22.6,6.6) {gniazdo CEE 16 A, 400 V, 5p --- po prawej stronie, pod skrzynką};
+% zasilanie z dolu slupem
+\draw[trg, c3F, kier] (4.9,-0.6) -- (4.9,10.6) -- (11.0,10.6);
+\node[lbl, rotate=90] at (4.55,3.6) {kabel zasilający w słupie};
+\node[lbl] at (8.3,-0.6) {obwód 9 z szafy O (B16/3 za RCD 4P gr. III), 3F};
+% drugi kabel z wtykiem
+\draw[tr, black!80] (5.6,1.4) .. controls (7.6,2.2) and (9.4,2.6) .. (11.2,3.4);
+\draw[ap, fill=red!80!black, rounded corners=2pt] (11.2,3.0) rectangle (12.4,4.0);
+\node[lbl, text width=44mm] at (15.6,3.5) {drugi kabel od dołu: przewód zakończony \textbf{wtykiem CEE 16 A} --- do wpięcia w gniazdo (zasilanie ładowarki/urządzenia w słupku)};
+\draw[black!50, dashed] (8.2,12.4) -- (11.0,12.4); \node[lbl] at (9.6,12.62) {powiększenie wnętrza};
+% opis roli
+\node[ap, text width=56mm, anchor=north west] at (11.0,7.9) {\textbf{Tor zasilania w słupku:}\\ kabel w słupie (obwód 9) $\to$ podlicznik ADELID (pomiar energii słupka) $\to$ RCD 40/0,03 4P $\to$ B16 3P $\to$ gniazdo CEE 16 A 5p.\\[2pt]
+Gniazdo CEE $=$ punkt przyłączenia ładowarki (wtyk CEE drugiego kabla). Podlicznik pozwala rozliczać energię słupka niezależnie od licznika OSD w szafie X.};
+\end{tikzpicture}
+\end{center}
+
+\end{document}

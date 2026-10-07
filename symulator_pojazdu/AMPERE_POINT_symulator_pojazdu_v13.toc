@@ -1,0 +1,85 @@
+\babel@toc {polish}{}\relax 
+\contentsline {section}{\numberline {1}Po co to urządzenie}{3}{section.1}%
+\contentsline {section}{\numberline {2}Liczby z normy IEC 61851-1}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Rezystory pojazdu (Tab. A.2)}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Poziomy stanów (Tab. A.3, okna $\pm 1\,\mathrm {V}$)}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Wypełnienie a oferowany prąd (Tab. A.6)}{4}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Kodowanie kabla (Tab. B.3)}{4}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Czasy (Tab. A.7)}{4}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Co już jest w puszce, a co dochodzi}{4}{section.3}%
+\contentsline {section}{\numberline {4}Rdzeń pilota --- gałęzie stanów}{5}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Dlaczego rezystor stanu ,,podłączony'' nie ma styku}{5}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Gałąź stanu ,,ładowanie''}{5}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Pozostałe gałęzie i usterki wstrzykiwane}{5}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Czego tu nie ma: stan ,,ładowanie z wentylacją''}{6}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Moc tracona w rezystorach pojazdu}{6}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Dlaczego przekaźniki muszą być sygnałowe, a nie mocy}{7}{subsection.4.6}%
+\contentsline {section}{\numberline {5}Sterowanie przekaźnikami --- stan wykonany}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Mechanizm}{7}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Margines zadziałania przekaźnika}{7}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Przypisanie wyprowadzeń --- stan faktyczny}{8}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Potwierdzanie zadziałania przez program}{8}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Tor pomiarowy pilota}{10}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Przesunięcie zakresu $\pm 12\,\mathrm {V}$ w okno $0\ldots 5\,\mathrm {V}$}{10}{subsection.6.1}%
+\contentsline {paragraph}{Węzeł pomiarowy i co się w nim schodzi.}{10}{section*.2}%
+\contentsline {paragraph}{Skąd bierze się wzór.}{11}{section*.3}%
+\contentsline {subsection}{\numberline {6.2}Ile ten tor obciąża linię pilota}{11}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Dlaczego diody zabezpieczające nigdy nie przeszkadzają}{12}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Rozgałęzienie: droga wygładzona i droga ostra}{12}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Drugi podział przez dwa}{12}{subsection.6.5}%
+\contentsline {subsection}{\numberline {6.6}Próg i dlaczego leży akurat tam}{12}{subsection.6.6}%
+\contentsline {subsection}{\numberline {6.7}Rezystor podciągający wyjście}{13}{subsection.6.7}%
+\contentsline {subsection}{\numberline {6.8}Histereza --- ile i po co}{13}{subsection.6.8}%
+\contentsline {subsection}{\numberline {6.9}Wyprowadzenia komparatora --- co z czym}{13}{subsection.6.9}%
+\contentsline {paragraph}{Kondensator odsprzęgający --- i ile naprawdę zależy od jego miejsca.}{13}{section*.4}%
+\contentsline {paragraph}{Dlaczego nóżka 6 idzie do masy, a nie do zasilania.}{14}{section*.5}%
+\contentsline {paragraph}{Sprawdzenie po zmontowaniu.}{15}{section*.6}%
+\contentsline {subsection}{\numberline {6.10}Co program z tego liczy}{15}{subsection.6.10}%
+\contentsline {section}{\numberline {7}Miernik panelowy pilota --- detektor szczytu}{15}{section.7}%
+\contentsline {paragraph}{Opadanie między impulsami.}{15}{section*.7}%
+\contentsline {paragraph}{Spadek na rezystorze szeregowym.}{16}{section*.8}%
+\contentsline {paragraph}{Dobór.}{16}{section*.9}%
+\contentsline {paragraph}{Warunek do sprawdzenia.}{16}{section*.10}%
+\contentsline {section}{\numberline {8}Tor obecności wtyku i kodowania kabla}{16}{section.8}%
+\contentsline {section}{\numberline {9}Maszyna decyzyjna}{17}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Warunki zamknięcia styku pojazdu}{17}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Przebieg sesji}{17}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Kierunek bezpieczny}{17}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Rola testera --- co mierzymy ładowarce}{17}{section.10}%
+\contentsline {section}{\numberline {11}Tor mocy 3$\times $32~A}{18}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Dlaczego w puszce nie ma zabezpieczeń}{18}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Bilans cieplny}{18}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Wyjście}{19}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}Ograniczenie przyjęte świadomie}{19}{subsection.11.4}%
+\contentsline {section}{\numberline {12}Magazyn energii --- samochód bez baterii}{19}{section.12}%
+\contentsline {section}{\numberline {13}Zasilanie elektroniki i bezpieczeństwo pracy}{19}{section.13}%
+\contentsline {paragraph}{Źródło.}{19}{section*.11}%
+\contentsline {paragraph}{Bilans prądu na szynie $5\,\mathrm {V}$ (najgorszy przypadek, wszystko naraz).}{19}{section*.12}%
+\contentsline {paragraph}{Połączenie --- dwa przewody.}{20}{section*.13}%
+\contentsline {paragraph}{Rysunek szczegółowy.}{20}{section*.14}%
+\contentsline {paragraph}{Programowanie.}{20}{section*.15}%
+\contentsline {paragraph}{Kierunek bezpieczny bez zmian.}{20}{section*.16}%
+\contentsline {section}{\numberline {14}Ograniczenia przyjęte świadomie}{21}{section.14}%
+\contentsline {section}{\numberline {15}Wybór mikrokontrolera}{21}{section.15}%
+\contentsline {section}{\numberline {16}Zestawienie rezystorów}{21}{section.16}%
+\contentsline {paragraph}{Do sprawdzenia: ile jest sztuk.}{22}{section*.17}%
+\contentsline {paragraph}{Rezerwa, która się przyda: komplet rezystorów kodujących do prób.}{22}{section*.18}%
+\contentsline {paragraph}{Czego zestawienie nie obejmuje.}{22}{section*.19}%
+\contentsline {section}{\numberline {17}Schemat}{24}{section.17}%
+\contentsline {section}{\numberline {18}Co trzeba zmierzyć i otwarte kwestie}{25}{section.18}%
+\contentsline {paragraph}{Pomiary na istniejącej puszce (blokują ostateczną listę części).}{25}{section*.20}%
+\contentsline {paragraph}{Do rozstrzygnięcia.}{25}{section*.21}%
+\contentsline {section}{\numberline {19}Dziennik iteracji}{25}{section.19}%
+\contentsline {paragraph}{Iteracja 1 (3 IX 2026, wydanie 1).}{25}{section*.22}%
+\contentsline {paragraph}{Iteracja 2 (11 IX 2026, wydanie 2).}{25}{section*.23}%
+\contentsline {paragraph}{Iteracja 3 (17 IX 2026, schemat v3).}{25}{section*.24}%
+\contentsline {paragraph}{Iteracja 4 (17--18 IX 2026, to wydanie).}{25}{section*.25}%
+\contentsline {paragraph}{Iteracja 5 (18 IX 2026).}{26}{section*.26}%
+\contentsline {paragraph}{Iteracja 6 (18 IX 2026, to wydanie).}{26}{section*.27}%
+\contentsline {paragraph}{Iteracja 7 (18 IX 2026, to wydanie).}{26}{section*.28}%
+\contentsline {paragraph}{Iteracja 8 (19 IX 2026, to wydanie).}{26}{section*.29}%
+\contentsline {paragraph}{Iteracja 9 (19 IX 2026, to wydanie).}{27}{section*.30}%
+\contentsline {paragraph}{Iteracja 10 (22 IX 2026, wydanie 10).}{27}{section*.31}%
+\contentsline {paragraph}{Iteracja 11 (23 IX 2026, wydanie 11).}{27}{section*.32}%
+\contentsline {paragraph}{Iteracja 12 (23 IX 2026, wydanie 12).}{27}{section*.33}%
+\contentsline {paragraph}{Iteracja 13 (23 IX 2026, to wydanie).}{28}{section*.34}%

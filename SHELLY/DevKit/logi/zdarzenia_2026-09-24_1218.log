@@ -1,0 +1,18 @@
+12:18:57  Monitor DevKitu na COM5. Ustawienia na starcie:
+12:18:57      Symulacja: samochód: A, odłączony
+12:18:57      Symulacja: awaria uziemienia: nie
+12:18:57      Ładowanie włączone: nie
+12:18:57      Limit prądu: 7 A
+12:18:57      Tryb ładowania: Według harmonogramu
+12:18:57      Energia docelowa: 10 kWh
+12:18:57      Początek harmonogramu: 22 h
+12:18:57      Koniec harmonogramu: 6 h
+12:18:57      Stan ładowarki: Wolna
+12:18:57      Sygnał Control Pilot: 12 V, brak auta
+12:18:57      Błędy: brak
+12:18:57      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 0,06 kWh | temperatura 23,1 °C
+12:19:21      odczyty: moc 0 kW | energia sesji 0 kWh | licznik całkowity 0,06 kWh | temperatura 23 °C
+12:21:02  [Bluetooth] polecenie Cloud.SetConfig
+12:21:05  [Bluetooth] polecenie WiFi.SetConfig
+12:23:30  [Bluetooth] polecenie Cloud.SetConfig
+12:23:33  [Bluetooth] polecenie WiFi.SetConfig
