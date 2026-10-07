@@ -25,6 +25,10 @@ for run, remap in runs:
                 if remap is not None:
                     if i not in remap: continue
                     i = remap[i]
+                if i in (2, 3, 11, 13, 14, 23, 24, 25, 49): continue  # RCD z magazynu; SPD i licznik skreślone; montażowe poza kosztorysem; obudowa – linki ręczne
                 out[i] = o
+mp = os.path.join(ROOT, "bom", "linki_reczne.json")
+if os.path.exists(mp):
+    for k, v in json.load(open(mp, encoding="utf-8")).items(): out[int(k)] = v
 json.dump({str(k): v for k, v in sorted(out.items())}, open(os.path.join(ROOT, "bom", "linki.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print("linki:", len(out), "ids:", sorted(out))
