@@ -22,3 +22,6 @@ desktop.ini
 SHELLY/DevKit/kopie_konfiguracji/
 komputer_HA/kopia_HA_*.tar
 komputer_HA/*.tar
+
+# Projekt rozdzielnicy
+PROJEKT_ROZDZIELNICY/schemat/_tmp/
