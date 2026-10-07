@@ -1,0 +1,391 @@
+{
+ "findings": [
+  {
+   "topic": "Standards – switching PE",
+   "claim": "IEC 61851-1 sub-clause 8.4 states that for Modes 3 and 4 'protective earthing conductors shall not be switched'; the UK has a national derogation (BS 7671 722.411.4.1) allowing open-PEN devices to disconnect PE.",
+   "detail": "BEAMA paper 'Protective earth disconnection when carrying out EV charging' quotes 8.4 verbatim. Ecoharmony/Zaptec UK pages confirm IEC 61851-1 does not permit interrupting PE and that the UK implemented a local derogation. Consequence for the test switchboard: opening the DUT's PE is a TEST-MODE-ONLY function, never part of a normal installation.",
+   "source_urls": [
+    "https://www.beama.org.uk/static/794d3387-de78-49cb-9d89639c4aea5310/PROTECTIVE-EARTH-DISCONNECTION-WHEN-CARRYING-OUT-ELECTRIC-VEHICLE-CHARGING.pdf",
+    "https://help.zaptec.com/hc/en-001/articles/11717771376145-Integrated-PEN-fault-protection-for-Zaptec-Go-UK-7kW-open-PEN-fault-version",
+    "https://ecoharmony.co.uk/blogs/understanding-pen-protection-for-ev-charging/pen-protection-101-what-it-is-and-why-it-matters"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Standards – switching PE",
+   "claim": "IEC/HD 60364-5-54:2011 clause 543.3.3: no switching device shall be inserted in the protective conductor; only joints that can be disconnected for test purposes by use of a tool are permitted (plus plug/socket connections of class I equipment).",
+   "detail": "This is why a PE-fault simulator is legitimate only as electrical test equipment (EN 50191), with a tool/key-enabled test mode, and never as a fixed-installation feature. PN-HD 60364-5-54 is the Polish adoption.",
+   "source_urls": [
+    "https://standards.iteh.ai/catalog/standards/clc/54efd8bd-4a4d-437d-8e74-b5408da8c336/hd-60364-5-54-2011",
+    "https://www.asutpp.com/protective-conductor-pe-what-is-it-designation-cross-section-requirements.html"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Standards – test benches",
+   "claim": "EN 50191 (DIN EN 50191:2011-10 / VDE 0104) 'Erection and operation of electrical test equipment' is the applicable standard for a bench/switchboard that deliberately produces hazardous conditions (test benches, test areas, non-stationary test installations); a 2026 draft revision exists.",
+   "detail": "Metrel publishes a 'Guide working place according to EN 50191' (PDF). Typical EN 50191 measures (from the standard's scope, exact clauses not retrievable): test station with/without automatic protection against direct contact, emergency-stop, red/green signal lamps, key switch, barriers, qualified-person operation. The fault switchboard should be documented as an EN 50191 test installation, not as a PN-HD 60364 distribution board.",
+   "source_urls": [
+    "https://www.dinmedia.de/de/norm/din-en-50191/141098213",
+    "https://www.metrel.si/assets/Metrel/PDF_dokumentacija/Handbook/Ang/MI_3394_CE_MultiTesterXS/Guide%20working%20place%20acording%20to%20EN%2050191_Ang_2021.pdf",
+    "https://www.vde-verlag.de/standards/1101023/e-din-en-50191-vde-0104-2026-02.html"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Standards – open-PEN / voltage window",
+   "claim": "BS 7671 722.411.4.1(iv) open-PEN device: trips when L-N utilisation voltage is >253 V rms or <207 V rms for more than 5 s and disconnects all live conductors AND the PE from the supply within 5 s.",
+   "detail": "207/253 V = 230 V -10%/+10%. Zaptec Go UK O-PEN version and PlugStream/Ecoharmony installer pages give the same numbers. Option (iii) of 722.411.4.1 (PE-to-true-earth > 70 V via earth electrode) is recalled from the regulation but was not confirmed by a retrieved source.",
+   "source_urls": [
+    "https://help.zaptec.com/hc/en-001/articles/11717771376145-Integrated-PEN-fault-protection-for-Zaptec-Go-UK-7kW-open-PEN-fault-version",
+    "https://support.plugstream.co.uk/installers/pen-fault-detection/",
+    "https://www.elec-mate.com/guides/section-722-ev-charging-a4-2026-changes",
+    "https://electrical.theiet.org/wiring-matters/years/2023/96-july-2023/how-voltage-drop-can-affect-ev-charging-point-open-pen-detection-devices/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Standards – open-PEN / voltage drop interaction",
+   "claim": "IET Wiring Matters (July 2023) warns that cable voltage drop on long EV circuits can push the L-N voltage at the charge point below the 207 V threshold under load, causing nuisance O-PEN trips – i.e. undersized/long cable and under-voltage detection interact.",
+   "detail": "Article title: 'How voltage drop can affect EV charging point open PEN detection devices'. Full text could not be fetched (proxy blocked). Useful demo: combine the 'undersized cable' resistor with 32 A load to show a 207 V-type trip.",
+   "source_urls": [
+    "https://electrical.theiet.org/wiring-matters/years/2023/96-july-2023/how-voltage-drop-can-affect-ev-charging-point-open-pen-detection-devices/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Standards – IEC 61851-1 supply tolerance",
+   "claim": "IEC 61851-1:2017 test reports specify the mains supply tolerance for EVSE as ±10 % of rated voltage (i.e. 207–253 V at 230 V); the standard itself does not define mandatory under/over-voltage trip thresholds.",
+   "detail": "Figure taken from a published IEC 61851-1:2017 CB test report snippet; exact clause number not retrieved. Practical wallbox windows (Easee, UK O-PEN devices) coincide with 207–253 V; Wallbox (brand) uses a much lower under-voltage error threshold (<150 V, error #112).",
+   "source_urls": [
+    "https://file.globalso.com/file_manage/1042/20240724/dss_shes231102165001.pdf",
+    "https://support.easee.com/hc/en-gb/articles/22997749677201-Understanding-Voltage-Supply-Issues",
+    "https://support.wallbox.com/en/knowledge-base/cosmos-troubleshooting-guide-b-end-user-charger-online/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Standards – RDC-DD / IEC 62955",
+   "claim": "IEC 62955:2018 RDC-DD must detect smooth residual DC ≥ 6 mA and remove supply so an upstream Type A/F RCD is not impaired; maximum break time at 6 mA is 10 s; Table 2 also specifies break times at 60 mA and 200 mA.",
+   "detail": "Bender RDC104 datasheet: commissioning check must use IEC 62955 Table 2 trip times at 6/60/200 mA. Values of 300 ms (60 mA) and 100 ms (200 mA) are recalled, NOT confirmed by retrieved text. RDC-PD variant combines 6 mA DC detection with 30 mA Type A/F protection and isolates contacts. Smooth DC above ~6 mA can reduce or eliminate a Type A RCD's ability to trip.",
+   "source_urls": [
+    "https://viox.com/ev-charger-rcd-selection-type-b-vs-type-f-vs-type-ev-iec-62955-iec-62423/",
+    "https://www.bender-group.com/fileadmin/content/Products/m/d/RDC104-4_D00402_VDE_L_DEEN.pdf",
+    "https://theuniteststandard.com/articles/rcd-rdc-dd-trip-testing-ev-chargers.html",
+    "https://www.heyiele.com/blogs/why-do-ev-chargers-require-6ma-dc-residual-current-detection-according-to-iec-62955/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Standards – RCD Type A trip behaviour (IEC 61008)",
+   "claim": "Type A RCD: no trip at 0.5 IΔn, must trip ≤300 ms at 1 IΔn, ≤40 ms at 5 IΔn; pulsating-DC test current is half-wave rectified with 1.4× multiplier (so 42 mA pulsating for a 30 mA device); Type A tolerates up to 6 mA smooth DC.",
+   "detail": "Hence: 6 mA smooth DC injected downstream of a wallbox trips the wallbox RDC-DD but NOT a Type A upstream; a half-wave 6 mA pulse also will not trip Type A (needs ≥ ~42 mA). Type AC trips on neither. Fluke KA-01292 and IPD technical page.",
+   "source_urls": [
+    "https://my.fluke.com/en-us/article/KA-01292",
+    "https://www.ipd.com.au/insights/what-are-the-technical-characteristics-of-rcds"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Standards – Poland PN-HD 60364-7-722",
+   "claim": "PN-HD 60364-7-722 requires each EV connection point to be individually protected by an RCD IΔn ≤ 30 mA of at least Type A (with 6 mA DC detection, RDC-DD) or Type B, plus its own overcurrent device (dedicated circuit); Type AC is not acceptable; SPD protection is required for publicly accessible charging points (722.443).",
+   "detail": "Sources: elektro.info.pl (two articles), kanalelektryczny.pl, greenkick, e-elektryczna.pl (ochrona przepięciowa). Most frequent Polish error: Type A RCD installed without confirming the wallbox contains an RDC-DD 6 mA. Polish version cited: PN-HD 60364-7-722:2019-03.",
+   "source_urls": [
+    "https://www.elektro.info.pl/artykul/ochrona-przeciwporazeniowa/203812,stosowanie-wylacznikow-roznicowopradowych-w-instalacjach-ladowania-pojazdow-elektrycznych",
+    "https://elektro.info.pl/artykul/id5882,stacje-ladowania-zrodel-energii-pojazdow-elektrycznych?p=3",
+    "https://kanalelektryczny.pl/jaka-roznicowka-do-stacji-ladowania/",
+    "https://e-elektryczna.pl/technika-i-technologie/ochrona-odgromowa-i-przepieciowa-punktow-ladowania-samochodow-elektrycznych/",
+    "https://plugbox.eu/sklep/zabezpieczenie-rcd-do-ladowarki-ev/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Standards – voltage drop limits",
+   "claim": "IEC/HD 60364-5-52 Annex G: recommended max voltage drop 3 % (lighting) and 5 % (other uses) for installations fed from public LV network; 6 %/8 % for private LV supply.",
+   "detail": "5 % of 230 V = 11.5 V. Used as the pass/fail reference for the 'undersized conductor' demo.",
+   "source_urls": [
+    "https://www.electrical-installation.org/enwiki/Maximum_voltage_drop_limit"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Wallbox PE-loss detection – methods",
+   "claim": "Wallboxes detect loss of installation PE mainly by (a) measuring N-PE (and L-PE) voltage/impedance – a floating PE shows abnormal N-PE voltage or too-high L-N/L-PE relation, (b) 'PEN-fault' voltage-window logic (207/253 V), and (c) at the EV side via the CP/PP circuit whose return path is PE (patents: PE loss detected from the PP DC level dropping to ≤40–60 %, charging stopped within 30 ms).",
+   "detail": "CP-only monitoring can miss an open PE because CP return current then flows through the PP resistors in the connector, so PP monitoring is added (WO2019211233A1 / US 11,933,862). go-e: 'Erdungsprüfung' blocks charging in TN/TT grids with insufficient earth, enabled by default, can be disabled in the app for IT grids (Norway); 4 red LEDs at 3/6/9/12 o'clock indicate the disabled state. Wallbox-brand troubleshooting: charger detects too-high resistance/voltage between L1 and N when PE is disconnected.",
+   "source_urls": [
+    "https://patents.google.com/patent/WO2019211233A1/en",
+    "https://patents.justia.com/patent/11933862",
+    "https://go-e.com/fileadmin/user_upload/go-e-charger-home-installations-und-bedienungsanleitung.pdf",
+    "https://support.wallbox.com/en/knowledge-base/cosmos-troubleshooting-guide-b-end-user-charger-online/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Wallbox voltage windows – brand data",
+   "claim": "Easee stops charging if supply <207 V or >253 V and auto-resumes when voltage is stable in window; Wallbox (Pulsar) error #112 'Undervoltage' when L1-N <150 V; Wallbox error 09 = phase loss/imbalance; go-e E03 = phase loss/imbalance; Mercedes E12, BMW E13 = phase loss; Alfen: when set to 3-phase on a 1-phase supply reports error 212.",
+   "detail": "Chargers measure L1-N, L2-N, L3-N and expect 207–253 V. Some 3-phase chargers keep charging after L2/L3 loss with a warning but need a power cycle to return to 3-phase. techfaultfix.com is an aggregator – verify codes against manuals before printing on the HMI.",
+   "source_urls": [
+    "https://support.easee.com/hc/en-gb/articles/22997749677201-Understanding-Voltage-Supply-Issues",
+    "https://support.wallbox.com/en/knowledge-base/cosmos-troubleshooting-guide-b-end-user-charger-online/",
+    "https://techfaultfix.com/ev-home-chargers/wallbox/error-error-09-wallbox-displays-error-09-charging",
+    "https://techfaultfix.com/ev-home-chargers/go-e/error-e03-charger-reports-e03-and-refuses",
+    "https://aceservice.alfen.com/en-us/knowledgebase/article/KA-01223",
+    "https://github.com/evcc-io/evcc/discussions/4763"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Wallbox phase-sequence detection",
+   "claim": "IEC 61851-1 does not require phase-rotation checking; most wallboxes and EV on-board chargers ignore phase order. Exception: Mennekes AMTRON has a phase-sequence relay requiring a clockwise (right-hand) rotating field; wrong rotation or a missing phase gives Error 10 'installation error'.",
+   "detail": "Phase order DOES matter for 3-phase meters/DLB CT mapping (CT on wrong phase or reversed = wrong balancing) – an installer error worth simulating for the AC500 DLB. Mennekes installation manual p.33 error table; goingelectric forum thread.",
+   "source_urls": [
+    "https://www.manualslib.de/manual/446206/Mennekes-Amton-Premium.html?page=33",
+    "https://www.goingelectric.de/forum/viewtopic.php?t=53671"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Precedent – commercial EVSE test adapters switch PE in test mode",
+   "claim": "Metrel A 1532 XA and Kewtech KEWEVSE/KT66 adapters deliberately simulate 'PE open', 'diode short' and 'CP short (state E)' faults and run a 'PE pre-test' (touch-voltage check on PE before connecting); XA version supports 3-phase load test up to 13 A.",
+   "detail": "This is the industry precedent for switching the DUT's PE inside dedicated test equipment. Output BNC for CP monitoring; banana outputs to a 3-phase installation tester. Price not found.",
+   "source_urls": [
+    "https://www.metrel.si/en/shop/EIS/other-instruments-adapters-accessories/a-1532-xa-evse-adapter.html",
+    "https://www.replenishh.com/metrel-a1532-xa-evse-adapter-load-testing-pe-open-fault-diode-fault-simulator-65-4106",
+    "https://www.kewtechcorp.com/media/uploads/2021/10/KEWEVSE-manual.pdf",
+    "https://www.kewtechcorp.com/products/kt66eva/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Mode 2 portable charger (IC-CPD, IEC 62752)",
+   "claim": "IEC 62752 IC-CPDs 'check supply conditions and prevent charging in case of supply faults' and 'may have a switched protective conductor' – relevant to testing the P35 portable charger: it is expected to refuse to start on missing PE / L-N swap in TN configuration.",
+   "detail": "Exact clause text and PE-voltage threshold not retrieved. IEC 62752 Ed.2 2024 exists.",
+   "source_urls": [
+    "https://www.iso.org/obp/ui/#iso:std:iec:62752:ed-1:v1:en:fig:E.1",
+    "https://webstore.iec.ch/en/publication/66220"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Fault physics – open neutral (neutral shift)",
+   "claim": "With N open in a 3-phase 4-wire system, the star point floats: loads on two phases share the 400 V line voltage in proportion to their resistances; lightly loaded phase can approach 400 V, heavily loaded phase toward 0 V.",
+   "detail": "Computed (resistive loads, V1 = 400·R1/(R1+R2)): 1 kW/1 kW → 200/200 V; 1 kW/1.5 kW → 240/160 V; 1 kW/2 kW → 267/133 V; 1 kW/3 kW → 300/100 V; 0.5 kW/2 kW → 320/80 V. A single-phase wallbox simply loses supply; a 3-phase wallbox whose electronics is fed L1-N sees the shifted voltage. Demo needs two unequal auxiliary resistive loads (heaters) on L1-N and L2-N downstream of the N contactor.",
+   "source_urls": [
+    "https://trilux.com/en/lighting-practice/lighting-equipment/luminaires/luminaire-operation/overvoltage-protection/neutral-conductor-interruption",
+    "https://forum.etechnophiles.com/basic-electronics-theoretical-questions/whats-the-real-impact-of-a-broken-neutral-in-a-3-phase-4-wire-system/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Fault physics – N-PE swap / N-PE bridge",
+   "claim": "Swapping PE and N at a socket/device: with an upstream RCD the circuit trips repeatedly as soon as load current flows (returns via PE); without RCD it 'works' but exposed parts/car body sit at N potential and become 230 V if the N conductor opens.",
+   "detail": "elektroda.pl thread 'Konsekwencje zamiany przewodu PE z N w gniazdku'. N-PE bridge at the device (TN-C style) splits return current between N and PE by impedance ratio – a 30 mA Type A RCD trips at a few hundred mA of load. Touch voltage on PE equals the N-conductor voltage drop (e.g. 32 A × 0.3 Ω ≈ 10 V). PE conductor must be rated for full load current in these tests (6 mm² available – OK).",
+   "source_urls": [
+    "https://www.elektroda.pl/rtvforum/topic3986529.html",
+    "https://www.elektroda.pl/rtvforum/topic3401085.html"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Polish installer mistakes – frequency list",
+   "claim": "Polish sources list as the most frequent wallbox installation errors: connecting to an existing socket/circuit instead of a dedicated circuit; missing or wrong-type RCD (Type AC; Type A without verified 6 mA RDC-DD in the charger); undersized conductor cross-section; no analysis of connection power; no post-installation measurements/protocol; wrong PEN split point / mixing TN-C and TN-S; old installations without PE; missing SPD on public points.",
+   "detail": "eviacharge.pl, elbud-impex, 3ev.pl PDF, powerbox.ac (two articles, blocked for fetch), elektroda threads 'Błędny podział PEN', 'Spółdzielnia i brak PE'. Not found in sources (own knowledge, flag as unverified): aluminium conductors in copper terminals, wrong torque, shared ('borrowed') neutral between circuits.",
+   "source_urls": [
+    "https://eviacharge.pl/blog/instalacja-elektryczna-a-wallbox",
+    "https://eviacharge.pl/blog/co-sprawdzic-przed-montazem-wallboxa",
+    "https://www.elbud-impex.com.pl/instalacja-do-ladowania-samochodu-elektrycznego-przewod-zabezpieczenia-wallbox/",
+    "https://powerbox.ac/najczestsze-bledy-przy-montazu-wallboxa-praktyczny-przewodnik-dla-elektrykow-i-firm-instalacyjnych,b66.html",
+    "https://powerbox.ac/bezpieczenstwo-ladowania-pojazdow-elektrycznych-w-polsce-wymagania-prawne-normy-i-najczestsze-bledy-instalacyjne,b70.html",
+    "https://www.elektroda.pl/rtvforum/topic4096669.html",
+    "https://www.elektroda.pl/rtvforum/topic3211555.html",
+    "https://3ev.pl/wp-content/uploads/2021/11/Jak-zamontowac-stacje-ladowania-samochodow-elektrycznych.pdf"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Fault physics – glowing (burnt) contact",
+   "claim": "A glowing contact (high-resistance copper-oxide junction at a loose screw terminal) reaches >1250 °C at its core (above copper melting point) and can develop with as little as ~0.3 A; heat ∝ I²·R_contact.",
+   "detail": "Patents US 7,187,529 / US 6,948,846 citing NRIPS research. Justifies the 'burnt contact' demo as a thermal-camera demonstration, but real glowing contacts are an open fire hazard – simulate with a defined power resistor, not a loosened real terminal.",
+   "source_urls": [
+    "https://patents.google.com/patent/US7187529",
+    "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/6948846"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Computation – burnt/high-resistance contact dissipation",
+   "claim": "Series resistance power: 0.25 Ω → 64 W @16 A / 256 W @32 A; 0.5 Ω → 128 W @16 A / 512 W @32 A; 1 Ω → 256 W @16 A / 1024 W @32 A. Voltage drop: 0.5 Ω = 8 V @16 A, 16 V @32 A; 1 Ω = 16 V @16 A, 32 V @32 A (13.9 %).",
+   "detail": "Computed, P = I²R. A continuous 1 Ω at 32 A (1 kW) is impractical in a wall enclosure; practical demo = 0.25–0.5 Ω at 16 A (64–128 W) time-limited, or 0.25 Ω at 32 A (256 W) for ≤10 s. Heatsink for 128 W continuous at ΔT 60 K needs Rth ≤ 0.47 K/W (fan-cooled). Allegro: 100 W 1 Ω aluminium-housed resistors from ~16.85 PLN, 200 W 1 Ω available; 2× 1 Ω/100 W in parallel = 0.5 Ω/200 W, 4× = 0.25 Ω/400 W.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=rezystor+mocy+1ohm",
+    "https://allegro.pl/kategoria/rezystory-duzej-mocy-powyzej-2w-67263?string=Rezystor+du%C5%BCej+mocy+100W",
+    "https://allegro.pl/listing?string=rezystor+200w"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Computation – undersized conductor voltage drop (1-phase, Cu, loop 2L)",
+   "claim": "2.5 mm² / 30 m / 32 A: loop R = 0.42 Ω (20 °C) – 0.51 Ω (70 °C), drop 13.4–16.4 V (5.8–7.1 %), heat 430–526 W in the cable; 1.5 mm² / 20 m / 32 A: 0.47–0.57 Ω, 14.9–18.3 V (6.5–7.9 %); 6 mm² / 30 m / 32 A: 0.175–0.214 Ω, 5.6–6.8 V (2.4–3.0 %); 4 mm² / 30 m / 32 A: 8.4–10.3 V (3.7–4.5 %).",
+   "detail": "Computed with ρ = 0.0175 (20 °C) and 0.0214 Ω·mm²/m (70 °C). To emulate '2.5 mm² × 30 m' in the switchboard insert ~0.42 Ω per conductor (L and N each) or 0.84 Ω in L only; same resistor bank as burnt contact. Alternatively use the buck transformer (-16/-24 V) to mimic the drop with zero heat.",
+   "source_urls": [
+    "https://www.electrical-installation.org/enwiki/Maximum_voltage_drop_limit"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Computation – buck/boost series toroid VA",
+   "claim": "Series secondary carries full load current, so VA = V_sec × I_load: 24 V → 384 VA @16 A / 768 VA @32 A (gives 206/254 V – right on the 207/253 thresholds, too marginal); 30 V → 480 VA @16 A / 960 VA @32 A (200/260 V – clear trip); 40 V → 1280 VA @32 A (190/270 V); 48 V → 768 VA @16 A only.",
+   "detail": "Computed. Key winding nuance: a '2×24 V 800 VA' toroid has two 16.7 A windings – series (48 V) is only good for 16 A, parallel (24 V) for 33 A. For a 32 A path pick 2×30 V 1000 VA wired in parallel (30 V @ 33 A) or two toroids (e.g. 2×12 V/500 VA + 2×30 V/1000 VA) each with its own polarity changeover → steps ±12/±18/±30/±42 V. Primary current of a 1000 VA unit ≈ 4.3 A. Polarity reversal of the series winding by a 2-pole changeover contactor gives buck or boost; a bypass contactor (shorting the DUT path around the winding, NOT shorting the winding itself) must be closed before any changeover so the load is never fed through an un-energised secondary (magnetising impedance would saturate/drop the voltage).",
+   "source_urls": [
+    "https://www.ato.com/500va-toroidal-transformer",
+    "http://www.nordtek.com/index.php?m=products&id=119"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Hardware – toroid sizes/weights 500–1000 VA",
+   "claim": "500 VA 230 V/2×24 V toroid: Ø136 × 65 mm, 5 kg (ATO). 800 VA 230 V dual secondary: ≈Ø162 × 60 mm, 5.1 kg (Nordtek). 1000 VA: height 70 mm, 6.5 kg (Nordtek) ; Breve TTS1000/D 230/24 V: Ø155 × 82 mm (TME lists 158 × 84 mm), 7.5 kg, secondary 41.7 A, IP00, M6 centre bolt.",
+   "detail": "Polish makers: Breve Tufvassons (TTS series) and Indel (TST series) – both buyable on Allegro. Allegro prices seen: Indel TST 450/008 2×24 V 487.71 PLN; TST600 24 V 600 VA ≈534 PLN; TST 100/014 2×24 V 202 PLN; a TST 800 variant ≈1007 PLN. Breve TTS1000/D 230/24 V code 17124-9980 (price not captured). For a 3-phase (3 toroid) solution budget ~3 × 7.5 kg = 22 kg and ~3 × Ø160 × 85 mm.",
+   "source_urls": [
+    "https://www.ato.com/500va-toroidal-transformer",
+    "http://www.nordtek.com/index.php?m=products&id=119",
+    "http://www.nordtek.com/index.php?m=products&id=120",
+    "https://www.elektrykasklep.pl/towar/17124-9980-breve-transformator-toroidalny-tts/",
+    "https://www.breve.pl/produkt/tts1000-d-230-24-v",
+    "https://allegro.pl/listing?string=indel+transformator+toroidalny+tst",
+    "https://allegro.pl/kategoria/zasilanie-transformatory-67373?string=transformator+toroidalny+2x24v"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Hardware – toroid inrush / soft start",
+   "claim": "Toroids above ~300 VA draw inrush currents in the order of 100+ A for a few ms and nuisance-trip C-type MCBs; standard fix is an NTC inrush limiter (e.g. CL-90 class) or series resistor in the primary, bypassed by a relay after ~0.5 s.",
+   "detail": "For the test switchboard: feed each buck/boost primary via its own B/C6 MCB + soft-start (NTC + bypass relay, or a 10–22 Ω/50 W resistor bypassed after 300–500 ms by a Shelly/relay contact). Keep the primary permanently energised during a test session; switch only secondary polarity/bypass.",
+   "source_urls": [
+    "https://www.diyaudio.com/community/threads/the-ultimate-inrush-current-limiter-solution-for-large-toroidal-transformers.161419/latest",
+    "https://www.mycncuk.com/archive/index.php/t-3437.html",
+    "https://www.pcbway.ru/project/shareproject/Soft_Start_Circuit_for_Toroidal_Transformers_9982aed8.html"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Hardware – variac vs electronic AC source (alternatives)",
+   "claim": "Allegro variacs: 5 kVA 260 V 20 A ≈ 2 048.50 PLN; 3 kVA 260 V 12 A 1 821 PLN (250×200×210 mm); 2 kVA 0–250 V ≈ 589 PLN, 4 kg. Electronic programmable AC source: Chroma 61605 4 kVA/300 V list ≈ 16 400 USD (≈10 000 USD clearance), 2 kVA ≈ 8 790 USD.",
+   "detail": "A 20 A variac covers only a 16 A single-phase path (not 32 A) and needs a motor drive for ESP32 control; a 32 A/3-phase electronic source would be >50 kPLN. The fixed-step buck/boost toroid (±30 V) is the only option that is cheap, controller-switchable and 32 A capable.",
+   "source_urls": [
+    "https://allegro.pl/oferta/autotransformator-regulowany-3000va-3kva-260v-12a-10907717537",
+    "https://allegro.pl/listing?string=autotransformator+regulowany",
+    "https://archiwum.allegro.pl/oferta/autotransformator-regulowany-0-250v-ac-2kva_x-05-i7200699040.html",
+    "https://www.tequipment.net/Chroma/series_61600-series",
+    "https://www.datatec.eu/at/en/chroma-61605"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Hardware – SSR for loose-contact chopping",
+   "claim": "Genuine Fotek SSR-40DA: 40 A, on-state drop ≤1 V; widespread counterfeits contain BTA12/BTA16 triacs (12–16 A) – buy a 40 A part for a 16–20 A duty or use a reputable brand; dissipation 1.0–1.6 V × 32 A = 32–51 W per SSR (heatsink mandatory).",
+   "detail": "Allegro has many 'SSR-40 DA 90-480 VAC' listings (Fotek-style), e.g. offers 5902249141, 6474682729, 7706122642. For random 50–500 ms interruptions use zero-cross SSR driven from ESP32 GPIO (3–32 V DC input); electromechanical contactors (10–30 ms operate time, AC-1 endurance ~10^5 ops) wear out quickly under 32 A chopping. Note: zero-cross SSR chopping produces no arc signature – it will not trigger an AFDD.",
+   "source_urls": [
+    "https://protosupplies.com/inferior-counterfeit-fotek-ssr-25-solid-state-relays-on-the-market/",
+    "https://www.eevblog.com/forum/reviews/warning-dont-buy-fotek-solid-state-relays/msg2631723",
+    "https://allegro.pl/oferta/przekaznik-polprzewodnikowy-ssr-40a-dc-ac-480vac-5902249141",
+    "https://allegro.pl/oferta/przekaznik-ssr-40a-st-80-250vac-upracy-90-480vac-6699967657"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Hardware – Shelly fit",
+   "claim": "Shelly Pro 4PM: 4 relays 16 A each, 40 A total, 96×53×59 mm (3 DIN modules). Shelly Pro 3EM-120A: 3 CTs up to 120 A + N, voltage/current accuracy ±1 % (2–120 A), 94×19×69 mm (1 DIN module).",
+   "detail": "Fit for the fault lens: Pro 3EM = independent per-phase V/I/power monitor (shows the simulated under/over-voltage, phase loss, imbalance on the HMI via local HTTP/MQTT); Pro 4PM/Plus 1PM = switching of leakage resistors (<1 A) and contactor coils; NOT suitable for 32 A load paths, PE switching (no positively-driven/mirror contacts) or safety interlocks. Per-fault results may be logged via Shelly scripting.",
+   "source_urls": [
+    "https://www.shelly.com/de/blogs/documentation/shelly-pro-4pm",
+    "https://us.shelly.com/blogs/documentation/shelly-pro-3em",
+    "https://thepihut.com/products/shelly-pro-3em-120a"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Computation – earth-leakage injection resistors",
+   "claim": "AC leakage from L to PE at 230 V: 6 mA → 38 kΩ (1.4 W); 10 mA → 23 kΩ (2.3 W); 15 mA → 15.3 kΩ (3.4 W); 30 mA → 7.7 kΩ (6.9 W); 60 mA → 3.8 kΩ (13.8 W). Smooth DC via bridge rectifier + smoothing capacitor (≈325 V DC): 6 mA → 54 kΩ (2 W); 10 mA → 32.5 kΩ (3.2 W); 30 mA → 10.8 kΩ (9.8 W).",
+   "detail": "Computed. Use wirewound resistors rated ≥3× dissipation (e.g. 25 W for the 30 mA AC step), switched by small relays/Shelly channels. Injection point A (downstream of the DUT, i.e. at the Type 2 socket / test plug L→PE): current passes through the wallbox's RDC-DD AND the upstream RCD → 6 mA DC trips only the RDC-DD (≤10 s), 30 mA AC trips both (race). Injection point B (between the switchboard RCD and the DUT input): bypasses the wallbox sensor → demonstrates the upstream RCD alone: Type A trips on 30 mA AC, does not trip on 6 mA smooth DC; Type AC trips on neither pulsating nor smooth DC. 'Blinding' demo: hold 10–30 mA smooth DC at point B, then add 30 mA AC – Type A may fail or trip late; Type B / RDC-DD still trips.",
+   "source_urls": [
+    "https://my.fluke.com/en-us/article/KA-01292",
+    "https://viox.com/ev-charger-rcd-selection-type-b-vs-type-f-vs-type-ev-iec-62955-iec-62423/",
+    "https://theuniteststandard.com/articles/rcd-rdc-dd-trip-testing-ev-chargers.html"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Computation – high-impedance PE / loop impedance",
+   "claim": "Max Zs for magnetic trip (230 V): B16 2.88 Ω, B32 1.44 Ω, C16 1.44 Ω, C32 0.72 Ω (×0.95 Cmin: 2.73/1.37/1.37/0.68 Ω). With a series PE resistor of 50/100/200 Ω a bolted L-PE fault gives only 4.6/2.3/1.1 A → MCB never trips, only the RCD (<40 ms at 5 IΔn); 40 ms pulse energy in the resistor = 42/21/11 J; max earth resistance for 50 V touch limit with 30 mA RCD = 1 667 Ω.",
+   "detail": "Computed. A 50–200 Ω, 50 W wirewound resistor inserted in the DUT PE path survives installation-tester loop tests and RCD tests (30 mA × 100 Ω = 3 V) and shows 'TT-like' high Zs on the AmpCheck / installation tester. Never combine the PE-resistor mode with the N-PE bridge or L-PE leakage modes above a few mA (power in the resistor). 1–3 Ω PE resistors (TN loop-limit demos) would see 77–230 A on a real fault → only with low-current tester measurements, interlocked.",
+   "source_urls": [
+    "https://www.electrical-installation.org/enwiki/Maximum_voltage_drop_limit",
+    "https://my.fluke.com/en-us/article/KA-01292"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Parts – PE / N switching precedent and hardware requirement",
+   "claim": "To switch the DUT PE or N safely use a contactor whose NC (normally closed) main pole carries PE so that PE is restored on loss of control power (fail-safe), with a positively-driven/mirror auxiliary contact fed back to the controller, coil enabled only through a key switch ('TEST MODE') and a hardware timer; never switch the switchboard's own PE bar – only the single DUT PE conductor.",
+   "detail": "Design rule derived from IEC 60364-5-54 543.3.3, IEC 61851-1 8.4 and EN 50191 practice; the Metrel/Kewtech adapters show the same 'PE open' switch is acceptable only inside test equipment. Mirror-contact definition: IEC 60947-4-1 Annex F (recalled, not retrieved). Modular NC contactors 25–40 A are available (e.g. 'stycznik modułowy NC' on Allegro) – part numbers to be confirmed by the parts lens.",
+   "source_urls": [
+    "https://standards.iteh.ai/catalog/standards/clc/54efd8bd-4a4d-437d-8e74-b5408da8c336/hd-60364-5-54-2011",
+    "https://www.beama.org.uk/static/794d3387-de78-49cb-9d89639c4aea5310/PROTECTIVE-EARTH-DISCONNECTION-WHEN-CARRYING-OUT-ELECTRIC-VEHICLE-CHARGING.pdf",
+    "https://www.metrel.si/en/shop/EIS/other-instruments-adapters-accessories/a-1532-xa-evse-adapter.html"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Fault simulation matrix (per fault: mistake → implementation → expected DUT reaction → hazard/interlock)",
+   "claim": "PE OPEN: mistake = PE not connected / broken at junction box. Implement: NC contactor pole in DUT PE, key-enabled. Expect: go-e/Easee/Zaptec/UK O-PEN units refuse or stop (N-PE monitoring); plain EVSE without PE monitoring charges normally; the IEC 61851-1 PE-continuity check covers only EVSE→EV cable; upstream RCD still trips on an L→chassis fault but only when current flows (e.g. through a person). Hazard: DUT exposed parts float; interlock = DUT on insulated panel, no-touch rule, 'PE OPEN' red lamp, auto-restore after ≤60 s.",
+   "detail": "PE HIGH-IMPEDANCE: 50/100/200 Ω 50 W wirewound in PE path (relay-selected). Expect: tester shows high Zs/RA; wallbox usually unaffected; RCD-test still passes. PE LIVE (touch voltage): never connect L to PE directly – feed DUT PE through ≥100 kΩ from L (≤2.3 mA, 0.5 W) or through an isolated 24–50 V/≤10 VA transformer secondary + ≥4.7 kΩ (≤10 mA) in series with the open PE pole; wallbox N-PE monitor (MΩ input) sees 24–230 V and faults; AmpCheck/tester shows PE voltage. Hazard: even 2–10 mA is perceptible – treat as live. N OPEN: 1 NO pole of a 40 A contactor in N; 1-phase DUT dies; 3-phase DUT: add two unequal heaters (e.g. 1 kW L1-N, 2 kW L2-N) downstream → 267/133 V; hazard: DUT overvoltage damage – time-limit ≤5 s, remove SPD, use sacrificial DUT. N-PE SWAP: 2-pole changeover contactor (break-before-make) on DUT N/PE; expect: RCD trips as soon as the DUT draws current; 'no RCD' + swap: works, body at N potential – interlock: swap allowed only when RCD is in circuit. N-PE BRIDGE: 1 relay 16 A N→PE at DUT terminal; expect RCD trip at ~60–100 mA load; without RCD PE carries up to half of 32 A (6 mm² OK). L-N SWAP (1-ph socket): 2-pole changeover; expect EVSE/IC-CPD with N-PE monitoring to refuse ('wiring error'); hazard: single-pole devices leave L connected. PHASE LOSS: NO poles on L2/L3; expect error 09/E03/E12/E13 or 1-phase fallback. WRONG SEQUENCE: two interlocked contactors swapping L2/L3 with ≥50 ms dead time; expect no reaction except Mennekes-type units (Error 10) and wrong DLB/meter per-phase mapping. UNDER/OVER-VOLTAGE: ±30 V series toroid on L1 (200/260 V), optional second ±12 V step; expect Easee-class stop at <207/>253 V after ≤5 s and auto-resume, Wallbox-brand only <150 V; hazard: 260–270 V on DUT electronics – limit to +15 % and ≤30 s. LOOSE CONTACT: zero-cross SSR 40 A (genuine) in L1 with bypass contactor, random 50–500 ms OFF, 0.5–5 s ON; expect EV/EVSE restart or 'relay/mains dropout' error; no AFDD trip. BURNT CONTACT: 0.25/0.5 Ω resistor bank (100 W Al-housed units in parallel) on fan-cooled heatsink with 90 °C bimetal cut-out in the coil circuit + DS18B20/NTC to ESP32, duty ≤60 s @16 A, ≤10 s @32 A, or use buck toroid for heat-free voltage-drop mimic. UNDERSIZED CABLE: same bank at 0.42–0.84 Ω → 5.8–7 % drop vs 5 % Annex G limit. MISSING/WRONG RCD: selectable AC/A/B RCD + bypass via key switch; non-bypassable backstop RCD on the switchboard supply (see recommendations).",
+   "source_urls": [
+    "https://patents.google.com/patent/WO2019211233A1/en",
+    "https://go-e.com/fileadmin/user_upload/go-e-charger-home-installations-und-bedienungsanleitung.pdf",
+    "https://support.easee.com/hc/en-gb/articles/22997749677201-Understanding-Voltage-Supply-Issues",
+    "https://www.manualslib.de/manual/446206/Mennekes-Amton-Premium.html?page=33",
+    "https://trilux.com/en/lighting-practice/lighting-equipment/luminaires/luminaire-operation/overvoltage-protection/neutral-conductor-interruption",
+    "https://www.elektroda.pl/rtvforum/topic3986529.html",
+    "https://my.fluke.com/en-us/article/KA-01292"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "recommendations": [
+  "Classify and label the switchboard as an EN 50191 electrical test installation (not a PN-HD 60364 distribution board): key switch 'TRYB TESTOWY' enabling all PE/N/L manipulation coils, red lamp 'USTERKA AKTYWNA / PE ROZŁĄCZONE', green 'NORMALNY', emergency-stop that drops the main contactor and restores PE, DUT mounted on an insulated panel, signage 'nie dotykać urządzenia podczas testu'.",
+  "Switch PE only in the single DUT PE conductor, with the NC pole of a 25–40 A contactor (PE closed when coil de-energised) and a mirror/positively-driven auxiliary contact read by the ESP32; add a hardware watchdog timer (≤60 s) independent of firmware; never switch the enclosure PE bar or the installation PE.",
+  "Under/over-voltage: one 230 V/2×30 V 1000 VA toroid (Breve TTS or Indel TST, ~Ø160×85 mm, ~7.5 kg) with the two windings in parallel (30 V @ 33 A) in series with L1, polarity reversed by a 2-pole changeover contactor, plus a bypass contactor around the winding; sequence: bypass ON → changeover → bypass OFF. Optional second toroid 2×12 V 500 VA for ±12/18/42 V steps. Primary via B6 MCB + NTC/resistor soft start (inrush >100 A). Do it on L1 only: wallbox electronics and O-PEN logic are L-N based; three toroids would add ~22 kg and ~3× cost with little demo value.",
+  "Burnt contact / undersized cable: build one resistor bank from 4× 1 Ω/100 W aluminium-housed resistors (Allegro ~17 PLN each) on a fan-cooled heatsink (≤0.5 K/W) giving 0.25/0.5/1 Ω by relay selection; protect with a 90 °C bimetal thermostat (KSD301 class) in series with the enabling coil and a DS18B20 to the controller; firmware limits 0.5 Ω to ≤60 s at 16 A and 0.25 Ω to ≤10 s at 32 A; thermal camera visible through a window is the teaching payoff. Use the buck toroid when only the voltage drop (not heat) matters.",
+  "Loose contact: genuine zero-cross SSR 40 A (derate to ≤20 A continuous, or use two in parallel/one per phase with heatsinks; 32–51 W loss each) in series with a bypass contactor; firmware generates pseudo-random 50–500 ms gaps with 0.5–5 s ON; limit total chopping time per session; do not advertise it as an AFDD demo (no arc signature).",
+  "Earth leakage: resistor ladder 38k/23k/15k/7.7k/3.8k Ω (6/10/15/30/60 mA AC, ≥3× power rating) and DC ladder 54k/32.5k/10.8k Ω after a bridge rectifier + 10–47 µF/400 V capacitor (6/10/30 mA smooth DC); two injection points selectable by relay: A = DUT output (trips wallbox RDC-DD, shows 10 s/6 mA behaviour), B = between RCD and DUT (shows Type AC vs A vs B difference and DC blinding). Shelly Pro 4PM channels (16 A) are adequate to switch these ladders.",
+  "RCD selection block: Type AC, Type A, Type B 30 mA in parallel branches with a 4-position break-before-make selector + 'brak RCD' position only via key; keep a NON-bypassable backstop RCD on the switchboard feed – 30 mA Type B if you accept occasional simultaneous tripping during leakage demos, or 100–300 mA Type A/B as fire/backstop with no personal protection (document this choice).",
+  "N-PE swap, N-PE bridge, L-N swap, phase loss, phase sequence: use 2-pole changeover modular contactors (AC-1 ≥40 A for L/N paths, 16–25 A for PE bridge) with electrical interlock and ≥50 ms dead time; software interlocks: (a) N-PE swap/bridge allowed only when an RCD is in circuit, (b) PE resistor mode excluded while any L→PE leakage or N-PE bridge is active, (c) N-open with neutral-shift heaters limited to ≤5 s and only with the 'sacrificial DUT' flag set.",
+  "Touch voltage on PE: implement only the high-impedance variants (≥100 kΩ from L, or isolated 24–50 V source + ≥4.7 kΩ) so that the worst-case current into a person is ≤2–10 mA; show the result on the AmpCheck / installation tester and on the wallbox fault LED; still treat the DUT as live.",
+  "Use the Shellys you have: Pro 3EM (1 module, 120 A CTs, ±1 %) as the independent 'what the installer's meter sees' per-phase monitor on the HMI and for logging each demo; Pro 4PM / Plus 1PM / Pro 1PM relays only for coils and <1 A leakage ladders; Shelly Plus Add-on + DS18B20 for the resistor-bank temperature if you do not want it on the ESP32; do not use Shelly relays in 32 A paths, for PE switching or as safety interlocks.",
+  "Add an 'installer mistake' demo specific to the AC500 DLB: CT on wrong phase / reversed CT polarity via a small changeover on the CT secondary (safe, mA level) – this is the DLB error most likely to occur in the field and it costs nothing.",
+  "Firmware state machine: every fault is a timed state with a maximum duration, exclusive-group logic (voltage ×, PE ×, N ×, leakage ×) and a mandatory 'return to normal' transition verified by mirror contacts and Pro 3EM readings before the HMI shows 'OK'."
+ ],
+ "open_questions_for_user": [
+  "Which Shelly models and how many (Pro 3EM, Pro 4PM, Plus 1PM, Pro 1PM, Add-on, Uni)? This decides metering vs relay roles.",
+  "Will people be able to touch the DUT (training room) during PE-open / N-PE swap demos, or is it a hands-off demo behind a window? This decides whether a 30 mA Type B backstop RCD is mandatory on the feed.",
+  "Are the DUTs (WB500, P35) sacrificial engineering units? Over-voltage (260–270 V) and neutral-shift (300 V+) tests can damage electronics.",
+  "Do you need a real thermal (I²R) burnt-contact demo for a thermal camera, or is a voltage-drop mimic via the buck toroid enough? (Saves ~400 W heat, heatsink and fan.)",
+  "Is under/over-voltage on L1 only acceptable, or do you need all three phases (adds ~2× 7.5 kg toroids, 3× contactors)?",
+  "Does the WB500 / P35 have N-PE (PEN-fault) monitoring, phase-sequence detection and an RDC-DD 6 mA? Their documented thresholds should be printed on the HMI 'expected reaction' field.",
+  "What is the supply earthing system at the demo venue (TN-C-S with PEN split in the building vs TN-S)? It affects whether the 'touch voltage on PE' demo can reference true earth.",
+  "Is an AFDD demo wanted? If yes a separate carbonised-cable arc generator per IEC 62606 is needed; the SSR chopper will not trip an AFDD."
+ ],
+ "gaps": [
+  "IET Wiring Matters article, BEAMA PE-disconnection PDF, Metrel EN 50191 guide, Breve and Indel catalog pages, Easee/Zaptec support pages, elektroda.pl threads, powerbox.ac and elektro.info.pl articles could not be fetched (network proxy blocked); facts from them rely on search snippets only.",
+  "IEC 62955 Table 2 break times at 60 mA and 200 mA (recalled as 300 ms / 100 ms) not confirmed; only the 10 s at 6 mA is confirmed.",
+  "BS 7671 722.411.4.1 option (iii) '70 V PE-to-earth' criterion and IEC 61851-1 clause 6.3.1 'continuous protective conductor continuity checking' wording not confirmed by retrieved text (search budget exhausted).",
+  "IEC 62752 (IC-CPD) exact PE-monitoring and PE-voltage requirements for the P35-class portable charger not retrieved.",
+  "Whether IEC 61851-1 requires the EVSE contactor to switch N (relevant to L-N swap hazard) not established.",
+  "Exact Indel TST 800/1000 dimensions and Breve TTS1000 2×30 V variant price not captured; only TTS1000/D 230/24 V dimensions (Ø155–158 × 82–84 mm, 7.5 kg).",
+  "Installation-tester loop-impedance test currents/durations (for sizing the PE series resistor pulse rating) not retrieved; 40 ms/2.3 A estimate is conservative engineering judgement.",
+  "5 kVA variac mass not found (only price ≈2 048 PLN); 3 kVA dimensions 250×200×210 mm found.",
+  "Wallbox fault codes from techfaultfix.com are aggregator data – verify against each manufacturer's manual before use on the HMI.",
+  "Web search budget for this turn was exhausted before the last batch (IEC 61851-1 6.3.1, 722.411.4.1(iii), 50 V touch-voltage source, Shelly Add-on, Metrel loop current); a follow-up run can close these."
+ ]
+}

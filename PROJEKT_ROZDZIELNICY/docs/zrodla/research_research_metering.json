@@ -1,0 +1,219 @@
+{
+ "findings": [
+  {
+   "topic": "TOOLING / coverage note",
+   "claim": "WebSearch budget for this turn was already exhausted (200/turn shared) before this agent ran; every shop/manufacturer domain tried via WebFetch was EGRESS_BLOCKED (amperepoint.pl, rheidon.com, shelly-api-docs.shelly.cloud, eastroneurope.com, fif.com.pl, orno.pl, ceneo.pl, home-assistant.io, findernet.com, se.com, conrad.pl, docs.evcc.io, pl.farnell.com, pl.rs-online.com, shelly-forum.com). Only GitHub code search was reachable.",
+   "detail": "Consequence: Allegro PLN prices in this report are unverified estimates (marked low). Shelly API facts, Eastron/ORNO/Finder meter facts and CT apertures were taken from public GitHub fixtures/drivers/docs and are marked per item.",
+   "source_urls": [],
+   "confidence": "high"
+  },
+  {
+   "topic": "Ampere Point AC500 Smart Load Balancer – connection to WB500",
+   "claim": "Could NOT be established in this run (all Ampere Point / Rheidon / MediaMarkt sources blocked, no search budget). Interface (RS485 Modbus vs WiFi/proprietary), CT rating, CT cable length, supply and mounting remain unknown.",
+   "detail": "Two architectures are typical for this class of OEM DLB module: (a) a 'CT box' with 3 split-core CTs that talks to the wallbox over RS485 (2-wire A/B) or a proprietary radio; (b) the wallbox reads a standard RS485 Modbus RTU energy meter (Eastron SDM630 / SDM72D-M V2, Chint DTSU666). Evidence that OEM ecosystems standardise on these meters: Tinkerforge WARP load management uses 'SDM630 oder SDM72 V2' as retrofit phase-current meters; a Chinese inverter/EMS protocol lists meter type options '正泰三相 (DTSU666)' and '东鸿三相 (SDM630)'. Which one AC500 uses must come from its manual (user has it in the AMPERE_POINT folder).",
+   "source_urls": [
+    "https://api.github.com/repositories/317513814/contents/firmwares/warp_firmware_2_1_3_64959d82_changelog_de.txt?ref=02a19f9f3d43963753aa7037fcfe1329d721a4b5",
+    "https://api.github.com/repositories/340930420/contents/Protocol/_extracted_protocol_text.txt?ref=216a4bd46b42daf5976853e8241a3831e9f6f464"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "Shelly Pro 3EM / 3EM as DLB meter for wallboxes",
+   "claim": "Whether Rheidon/Ampere Point firmware accepts Shelly 3EM/Pro 3EM is unknown. Shelly Pro 3EM IS accepted as a grid meter by open energy-management stacks (evcc, OpenEMS, GEMS, Tinkerforge WARP via Modbus TCP), so a wallbox that supports 'Modbus TCP meter' can read a Pro 3EM.",
+   "detail": "evcc docs ship templates 'shelly-pro-3em', 'shelly-3em-63t-w-gen3', 'eastron-sdm630-modbus', 'orno-or-we-516', 'finder-7m-24', 'finder-7m-38'. Tinkerforge esp32-firmware has a 'Shelly Pro 3EM' register struct inside its meters_modbus_tcp module (Pro 3EM exposes Modbus TCP, port 502, must be enabled in device settings). GEMS manual: 'Shelly 3EM / Pro 3EM / Gen3 3EM-63T: Templates shelly_3em, shelly_pro_3em. Host IP, Port 80'.",
+   "source_urls": [
+    "https://api.github.com/repositories/408576787/contents/templates/release/en/meter/shelly-pro-3em.yaml?ref=b9199bc94e3889949e8f467b97710786f1676c97",
+    "https://api.github.com/repositories/427352500/contents/software/src/modules/meters_modbus_tcp/meter_modbus_tcp.h?ref=3b3ace5dd493219787cea20e2e5635e517f05253",
+    "https://api.github.com/repositories/1349008423/contents/docs/user_manual.md?ref=4f3e6890b0542243feda3cf051ed94678ecc8383"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shelly Pro 3EM family – model IDs and variants",
+   "claim": "Pro 3EM exists in 120 A (default), 400 A and 63 A-CT variants; Pro EM-50 is the single-phase 2-clamp DIN sibling; Gen3 non-DIN siblings are Shelly EM Gen3 (2x50 A) and 3EM-63 Gen3.",
+   "detail": "aioshelly const.py: MODEL_PRO_EM = 'SPEM-002CEBEU50'; MODEL_PRO_EM3 = 'SPEM-003CEBEU'; MODEL_PRO_EM3_120 = 'SPEM-003CEBEU120'; MODEL_PRO_EM3_3CT63 = 'SPEM-003CEBEU63'; MODEL_PRO_EM3_400 = 'SPEM-003CEBEU400'. ShellyUSA catalog: 'Shelly Pro 3EM – DIN-rail energy meter (3-phase, 120A CT, contactor)'; 'Pro 3EM-400 (3-phase, 400A CT)'; 'Pro 3EM-3CT63 (3-phase, 63A CT, no relay)'; 'Pro EM-50 (1-phase, 2ch, 50A CT, contactor)'; 'Shelly EM Gen3 – Energy meter (1-phase, 2ch, 50A CT)'; 'Shelly 3EM-63 Gen3 – Energy meter (3-phase, 63A CT)'. 'contactor' = built-in relay output (2 A class) intended to drive a contactor coil – usable as an extra trip output in the test board. DIN width of Pro 3EM: 3 modules (~53 mm) – from memory, NOT verified this run.",
+   "source_urls": [
+    "https://api.github.com/repositories/289633130/contents/aioshelly/const.py?ref=9d9ad7f601e10ecff399df95c20d83aeefbac7ff",
+    "https://api.github.com/repositories/273346815/contents/shelly-product-catalog.md?ref=61f59b1b01590b9fdfcaa37a204dca9d6cf3c02c"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Pro 3EM local RPC – EM.GetStatus fields for the HMI",
+   "claim": "EM.GetStatus (GET http://<ip>/rpc/EM.GetStatus?id=0) returns per phase a/b/c: voltage, current, act_power, aprt_power, pf, freq, errors; plus n_current, total_current, total_act_power, total_aprt_power, errors[].",
+   "detail": "Field names from real device fixture (Pro 3EM fw 1.1.0): a_current 2.392, a_freq 50.0, a_pf 0.76, ...; n_current: null; total_act_power 558.965. Per-phase error strings: 'out_of_range:active_power', 'out_of_range:apparent_power' (plus voltage/current variants); neutral error 'out_of_range:current'; device errors 'power_meter_failure', 'phase_sequence', 'ct_type_not_set'. EM.GetConfig keys: name, blink_mode_selector, phase_selector ('a'|'b'|'c'|'all'), monitor_phase_sequence (bool), ct_type ('50A'|'120A'|'400A'|'2000A'; Gen3 reports '3x63A'/'3EMG3'), reverse {a,b,c} (flip CT direction in software). Energy totals via EMData.GetStatus / EMData.GetRecords (records have ts, period, count).",
+   "source_urls": [
+    "https://api.github.com/repositories/289633130/contents/fixtures/gen2_Shelly%20Pro%203EM_SPEM-003CEBEU_20231219-134001-1.1.0-g34b5d4f.json?ref=9d9ad7f601e10ecff399df95c20d83aeefbac7ff",
+    "https://api.github.com/repositories/956145800/contents/src/components/EM.ts?ref=357bef2b5c6dae98122a179c921b870b46296538",
+    "https://api.github.com/repositories/898342116/contents/src/main/java/com/deigmueller/uni_meter/common/shelly/Rpc.java?ref=1c61022d11ad68eb419104cb67f5ba1f37ae49",
+    "https://api.github.com/repositories/1114152625/contents/gen2/components/emdata.go?ref=a4917ab9c729d120f1472d5e7c557ef96d827f72",
+    "https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/EM"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Pro 3EM – neutral current",
+   "claim": "Standard Pro 3EM (120 A) does NOT measure neutral current: n_current is reported as null on real devices (Pro 3EM and 3EM-63 Gen3 alike). The API reserves the field/neutral errors for hardware that has an N clamp input, but none of the stocked-type Shelly 3-phase meters do.",
+   "detail": "n_current: null in aioshelly fixture (Pro 3EM 1.1.0) and in matterbridge-shelly mocks for shellypro3em (ct_type 120A) and shelly3em63g3. For N (and PE!) current display use a separate 2-clamp device: Shelly Pro EM-50 (DIN, 2x50 A) or Shelly EM Gen3 (2x50 A) – one clamp on N, one on PE of the output – or an SCT-013-000 100 A/50 mA CT into an ESP32 ADC with burden resistor.",
+   "source_urls": [
+    "https://api.github.com/repositories/798959266/contents/src/mock/shellypro3em-A0DD6CA0C27C.json?ref=fb056ec652893d295d3ba7b6fe97137a62716",
+    "https://api.github.com/repositories/798959266/contents/src/mock/shelly3em63g3-84FCE6367400.json?ref=fb056ec652893d295d3ba7b6fe97137a62716"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Pro 3EM – phase sequence detection",
+   "claim": "Pro 3EM CAN detect wrong phase sequence: set EM.SetConfig {monitor_phase_sequence:true}; status.errors then contains 'phase_sequence'.",
+   "detail": "OpenEMS driver text: 'PHASE_SEQUENCE_ERROR ... Incorrect phase sequence. Expected A-B-C but found A-C-B.' mapped to error string 'phase_sequence'. Requires all three voltage inputs (L1,L2,L3 + N) wired to the device. Good as a software cross-check of fault F9; keep an independent hardware relay (F&F CKF-B) as the primary feedback.",
+   "source_urls": [
+    "https://api.github.com/repositories/71057302/contents/io.openems.edge.io.shelly/src/io/openems/edge/io/shelly/common/component/ShellyEnergyMeter.java?ref=3240f7bce797ee3acebf2c976585571164173bf9",
+    "https://api.github.com/repositories/1288652393/contents/packages/profile-sdk/src/__fixtures__/shelly-pro-3em.ts?ref=7324b5589f3a7adc66a1891121fa4309ae25dd6f"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Pro 3EM – N-PE voltage / PE monitoring",
+   "claim": "Pro 3EM has no PE terminal; all voltages are L-N. It cannot see N-PE voltage, open PE, or N-PE swap. Needs an external sensor.",
+   "detail": "Options for ESP32: (1) ZMPT101B AC voltage-transformer module (isolated, ~5 mA, ESP32 ADC, 0-250 V RMS range, Allegro ~10-25 PLN est.) wired N->PE of the output through a fuse and 2x100 kΩ series resistors – shows N-PE RMS (healthy TN-S: <2 V; broken PEN / F16: tens to 230 V); (2) 230 V AC optocoupler input (e.g. H11AA1 + 2x47 kΩ) as a binary 'PE live > ~60 V' flag; (3) F&F CP-721 single-phase voltage relay between N and PE set to U> ~50 V as a hardware flag. Open-PE detection: inject the 220 kΩ/1 mA path (F3) and measure PE-to-remote-earth with the same ZMPT101B.",
+   "source_urls": [],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shelly Pro 3EM – update rate on local network",
+   "claim": "Pro 3EM pushes NotifyStatus over its WebSocket when EM values change (≈ once per second for power values); Home Assistant polls only secondary RPC sensors every 60 s. For the HMI, poll /rpc/EM.GetStatus at 1 Hz over HTTP or subscribe over ws://<ip>/rpc.",
+   "detail": "HA core const.py: 'RPC_SENSORS_POLLING_INTERVAL: Final = 60' (refresh for polled sensors), 'UPDATE_PERIOD_MULTIPLIER = 2.2'. Power/voltage values arrive as push events, not polling. 1 Hz HTTP polling of one device is well within Shelly's RPC capacity (ESP32-based Pro device). Energy records (EMData) are stored per 60 s period.",
+   "source_urls": [
+    "https://api.github.com/repositories/12888993/contents/homeassistant/components/shelly/const.py?ref=d8e015598059791bbb09bf217b62b6d477a1c88a"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Split-core CT geometry (generic 100-120 A class)",
+   "claim": "Typical 100 A split-core CT (YHDC SCT-013-000) has a 13 mm window and 1 m lead; 120 A class (YHDC SCT-016) has a 16 mm window; 80 A (SCT-010) 10 mm; 200 A (SCT-024) 24 mm.",
+   "detail": "CircuitSetup README: 'SCT-013-000 100A/50mA CT – 13mm opening, 3.5mm plug'; 'SCT-016 120A/40mA CT – 16mm opening'; 'SCT-010 80A/26.6mA – 10mm opening'; 'SCT-024 200A/50mA – 24mm opening'. BOM elsewhere: 'SCT-013-000 ... 13mm bore, 1m cable'. Shelly's own 120 A clamp is of the same class (hole ≈16 mm, body ≈45x35x30 mm, lead ≈0.5-1 m) – Shelly-specific numbers NOT verified this run. A 16 mm window takes a single 6 mm² (OD ≈5 mm) or 16 mm² (OD ≈8 mm) core easily, but NOT a 5x6 mm² YKY cable (OD ≈17 mm) – and clamping the whole cable would read ~0 A anyway (currents cancel), which is itself a nice 'installer error' demo.",
+   "source_urls": [
+    "https://api.github.com/repositories/214842098/contents/README.md?ref=52da3d29e661c01459de80800fff069a7fb50f5e",
+    "https://api.github.com/repositories/1370908876/contents/docs/product/industrial_bom.md?ref=a9f04b9a407228b4715880135f207edffe333077"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Conductor diameters for CT loops",
+   "claim": "H07V-K 6 mm²: overall Ø ≈ 4.5-5.3 mm (conductor Ø ≈ 3.4 mm); H07V-K 2.5 mm²: Ø ≈ 3.4-4.0 mm; H07V-K 10 mm²: Ø ≈ 5.7-6.5 mm; H07V-K 16 mm²: Ø ≈ 7.2-8.0 mm. YKY 5x6 mm²: Ø ≈ 16-18 mm; YKY 5x10: ≈ 19-21 mm; YKY 5x16: ≈ 22-25 mm.",
+   "detail": "From standard HD 21.3 / manufacturer tables (memory, not fetched this run). Design consequence: a 16 mm CT window fits any single core up to 16-25 mm². Required straight run per phase: CT body length (30-45 mm) + 20 mm each side => ≥ 80 mm, recommend 100-120 mm straight, parallel conductors spaced ≥ 40 mm centre-to-centre so three clamps sit side by side; add a 4th loop for N.",
+   "source_urls": [],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Eastron SDM630-Modbus V2 (DIN smart meter, RS485)",
+   "claim": "3-phase, 100 A direct connection, 4 DIN modules (72 mm), RS485 Modbus RTU (default 9600 8N1, addr 1, input registers 30001+), per-phase V/I/P/PF/Hz, import/export energy; MID variant exists. The de-facto 'universal' wallbox meter.",
+   "detail": "Aliexpress title quoted in OpenEnergyMonitor archive: 'SDM630 ... Four Module Three Phase 100A Direct Connection Digital Din Rail Power Meter'; evcc template 'eastron-sdm630-modbus' (brand Eastron, description SDM630-Modbus); Tinkerforge WARP uses SDM630 as the retrofit meter that 'misst Phasenströme'. Register map: Voltage [0,2,4], Current [6,8,10], Power [12,14,16], Frequency 70, Import 72, Export 74 (same map as SDM72D-M per Tasmota config). Allegro price estimate: 320-480 PLN non-MID, 400-550 PLN MID (UNVERIFIED).",
+   "source_urls": [
+    "https://api.github.com/repositories/82744281/contents/node/6314.html?ref=e0a42e321b9faca872ff9ef3f617757c3d97ef12",
+    "https://api.github.com/repositories/408576787/contents/templates/release/en/meter/eastron-sdm630-modbus.yaml?ref=b9199bc94e3889949e8f467b97710786f1676c97",
+    "https://api.github.com/repositories/80286288/contents/tasmota/energy_modbus_configs/configurations.md?ref=0427a73d083fb4a151f9aac4ad9a94e50b619e6c"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Eastron SDM72D-M vs SDM72D-M-2 (V2)",
+   "claim": "SDM72D-M: 3-phase 100 A direct, 4 modules, Modbus; the original V1 reports totals/energy only, the V2 ('SDM72D-M-2') adds per-phase voltage, current, power, PF – buy the V2 if the ESP32 or DLB needs phase currents.",
+   "detail": "Tasmota changelog: 'Support for Eastron SDM72D-M three phase 100A Modbus energy meter'. Tinkerforge: load management efficiency improved 'wenn ... Stromzähler ... der Phasenströme misst (SDM630 oder SDM72 V2)' – implies V1 has no phase currents. Homey driver: 'The SDM72D-M-2 is very similar to the SDM630 but supports direct connection up to 100A and has a built-in LCD display. The Modbus registers are mostly compatible with the SDM630'. OpenEMS supports 'SDM630, SDM72D-M-2'. Meter code register 0xFC02 = 0x0089 for SDM72D-M. Allegro estimate: V2 220-320 PLN, V1 180-260 PLN (UNVERIFIED).",
+   "source_urls": [
+    "https://api.github.com/repositories/80286288/contents/CHANGELOG.md?ref=0427a73d083fb4a151f9aac4ad9a94e50b619e6c",
+    "https://api.github.com/repositories/1107232899/contents/drivers/eastron-sdm72.ts?ref=d1914fa7d06a0289d01b8c55cc7ebbe3e8c3677b",
+    "https://api.github.com/repositories/71057302/contents/io.openems.edge.meter.eastron/readme.adoc?ref=3240f7bce797ee3acebf2c976585571164173bf9",
+    "https://api.github.com/repositories/1201147262/contents/SDM72D-M_MODBUS_REGISTER.md?ref=020a32d3f27f9df1e5d1d1b4d6af6d646b91ad10"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "ORNO OR-WE-516 / OR-WE-517 (Polish-brand DIN meters)",
+   "claim": "OR-WE-516: 3-phase energy meter, 80 A direct, RS-485 Modbus RTU, MID; default address 1, 9600 bps; width listed by ORNO as 4.5 modules on the current product page (older listing said 3 modules). OR-WE-517: 3-phase 80 A RS-485 Modbus MID, supported by Tasmota ('Orno WE517-Modbus').",
+   "detail": "ya-modbus driver README: 'ORNO OR-WE-516 – 3-Phase Energy Meter with RS-485, 80A, MID – Modbus RTU'. homy driver comment: '3-phase energy meter with RS-485, 80A, MID, 3 modules, DIN TH-35mm ... Defaults: address=1 baudRate=9600 dataBits=8 parity=odd stopBits=1' (parity in ORNO manual is given as even in other sources – check meter menu). ORNO URL slug: '3-phase-energy-meter-with-rs-485-80a-mid-4-5-modules-din-th-35mm-5902560322415'. Allegro estimates: OR-WE-516 230-330 PLN, OR-WE-517 260-350 PLN (UNVERIFIED). Easy to buy in PL; register map is float32 holding registers, differs from Eastron.",
+   "source_urls": [
+    "https://api.github.com/repositories/1121196413/contents/packages/driver-or-we-516/README.md?ref=e2373d069ac66cdcbb7c3c0a9bf8561466ebcfd5",
+    "https://api.github.com/repositories/228153202/contents/docker/modbus-serial/devices/or-we-516.js?ref=a2df40be5576eefc1aeb3539b2acfb30159e484e",
+    "https://api.github.com/repositories/427902622/contents/chester/supported-devices/modbus/orno-or-we-516.md?ref=9d914b24422f499e5053761ee28cf36a05e7a776",
+    "https://www.orno.pl/en/energy-meters-with-mid/349-3-phase-energy-meter-with-rs-485-80a-mid-4-5-modules-din-th-35mm-5902560322415.html"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Finder 7M series",
+   "claim": "Finder 7M.38 = 3-phase 80 A direct, bidirectional, Modbus RTU (RS485), MID; 7M.24 = single-phase 40 A Modbus. Both have evcc templates. Module widths not verified (7M.38 ≈ 4 modules, 7M.24 1 module from memory).",
+   "detail": "evcc docs templates: finder-7m-24 ('Finder 7M.24', usage grid, 'RS485 via adapter (Modbus RTU)'), finder-7m-38 ('Finder 7M.38'). evcc changelog: 'Add Finder 7M.24 & 7M.38'. Premium price class – Allegro estimate 600-900 PLN for 7M.38.8.400.0212 (UNVERIFIED). Not recommended when price is secondary but availability matters: fewer Allegro sellers than Eastron/ORNO.",
+   "source_urls": [
+    "https://api.github.com/repositories/408576787/contents/templates/release/en/meter/finder-7m-38.yaml?ref=b9199bc94e3889949e8f467b97710786f1676c97",
+    "https://api.github.com/repositories/408576787/contents/templates/release/en/meter/finder-7m-24.yaml?ref=b9199bc94e3889949e8f467b97710786f1676c97"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Chint DTSU666 (alternative DLB meter)",
+   "claim": "Chint DTSU666: 3-phase 80 A direct (or 1.5/6 A CT version), RS485 Modbus, 4 DIN modules – the second meter Chinese OEM chargers/inverters typically list next to SDM630; cheap on Allegro.",
+   "detail": "Protocol dump lists meter options '正泰三相 (DTSU666)' and '东鸿三相 (SDM630)'; GEMS manual: 'Chint DTSU666 / DTSU666-H 3-Phase Meter'. Allegro estimate 150-250 PLN (UNVERIFIED). Only relevant if the AC500/WB500 manual names it.",
+   "source_urls": [
+    "https://api.github.com/repositories/340930420/contents/Protocol/_extracted_protocol_text.txt?ref=216a4bd46b42daf5976853e8241a3831e9f6f464",
+    "https://api.github.com/repositories/1349008423/contents/docs/user_manual.md?ref=4f3e6890b0542243feda3cf051ed94678ecc8383"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "What 'smart licznik' means in a Polish EV context – plausible interpretations",
+   "claim": "Five readings are plausible; the switchboard should reserve space/wiring that covers 1-3.",
+   "detail": "(1) 'Licznik Modbus dla DLB' – RS485 meter the wallbox/DLB polls for building load (Eastron SDM630/SDM72D-M-2, ORNO OR-WE-516/517, Chint DTSU666); needs 4-5 modules + RS485 terminal pair. (2) 'Licznik MID do rozliczeń' – legally approved sub-meter for billing charging sessions (same devices in MID version; ORNO 516/517 are MID, Eastron SDM630 MID, Finder 7M.38 MID). (3) 'Licznik dwukierunkowy' – prosumer import/export meter (PV context); Pro 3EM, SDM630, SDM72D-M-2 all read bidirectionally. (4) 'Licznik OSD z portem HAN/P1' – utility AMI meter customer interface (in PL rarely usable; Dutch/Belgian P1-DSMR style readers do not apply to most Polish OSD meters) – not something to put in a test board. (5) 'Shelly Pro 3EM jako smart meter' – WiFi/Modbus-TCP meter read by HEMS/evcc; fits the HMI role here.",
+   "source_urls": [],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Phase-sequence / voltage monitoring relays on DIN (hardware feedback for F8/F9/F10)",
+   "claim": "F&F (Pabianice, PL) line is the cheapest and most available on Allegro: CKF-B (1 module, 3x400 V, phase sequence + phase loss + fixed asymmetry ≈55 V, 1 changeover contact ≈8-10 A), CKF-BR (1 module, with N terminal), CKF-317 (1 module, adjustable asymmetry 40-80 V and delay), CP-730 / CP-731 (3-phase under/overvoltage + asymmetry, 3 modules, adjustable thresholds), CP-721 (1-phase U< 150-210 V / U> 230-260 V, 1 module). Alternatives: Schneider RM4TR32 (22.5 mm, 3-phase sequence/loss/under-over, 2 C/O), Finder 70.31 (3-phase monitor, 35 mm), Zamel CKF/CZF family (codes not verified).",
+   "detail": "Allegro price ESTIMATES (unverified, typical 2024-25): CKF-B 55-85 PLN; CKF-BR 60-90; CKF-317 80-120; CP-721 70-100; CP-730 150-220; CP-731 170-250; Schneider RM4TR32 450-800; Finder 70.31.8.400.2022 250-400. Use: CKF-B on the OUTPUT (after K_SEQa/b and K_L3) – its contact (via optocoupler or a Shelly digital input) tells the ESP32 that the simulated wrong sequence / phase loss is really present; CP-730 on the output confirms F10a/F10b voltages are outside 207-253 V. All specs from memory of F&F catalogue – fif.com.pl was blocked.",
+   "source_urls": [],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shelly prices (Allegro, estimates)",
+   "claim": "Unverified Allegro price ranges for planning only: Shelly Pro 3EM 120A 430-550 PLN; Pro 3EM-400 550-700; Pro EM-50 300-380; Shelly EM Gen3 220-280; Shelly 3EM-63 Gen3 450-550; Shelly 120 A spare clamp 60-90.",
+   "detail": "No live prices could be fetched (allegro.pl blocked, search budget exhausted). Since the company already stocks 'many Shelly', prices matter only for a missing Pro EM-50/EM Gen3 (N/PE current) if not in stock.",
+   "source_urls": [],
+   "confidence": "low"
+  },
+  {
+   "topic": "Space allocation summary for metering zone (per this lens)",
+   "claim": "Reserve on the TH35 rail: Shelly Pro 3EM 3 modules + 1 module gap for clamp leads; optional Pro EM-50 2-3 modules; DIN smart meter 4-5 modules (Eastron 4 / ORNO 4.5) + 2 modules of RS485 + supply terminals; CKF-B 1 module; CP-730 3 modules. Off-rail: 'CT bar' 4 x ≥100 mm straight conductors (L1 L2 L3 N) spaced ≥40 mm, 150 x 60 mm area, located right after the input terminals; plus a 5-core cable loop (~150 mm) for the 'clamp around the cable' demo.",
+   "detail": "Total ≈ 14-17 modules (vs. 7 assumed in 02_dobor_obudowy.md) if both a DIN meter and Pro 3EM + EM-50 are fitted. CT leads (AC500 to external module): route via a M25 gland or a split cable bushing; ≥ 3 m lead length may be needed to reach the external module – unknown until AC500 CT cable length is known.",
+   "source_urls": [],
+   "confidence": "medium"
+  }
+ ],
+ "recommendations": [
+  "Treat the AC500 interface as the single most important unknown: ask the user to drop the AC500 manual / box photos (CT labels, connector, 'RS485 A/B' or 'WiFi pairing') into materialy/ before Etap 2; design the metering zone so it works for either architecture (RS485 meter OR CT box).",
+  "Build a dedicated 'CT bar' between the input terminals and the main switch: four parallel straight runs (L1, L2, L3, N) of H07V-K 6 mm² (OD ≈5 mm) or 10 mm², ≥100 mm straight each, ≥40 mm pitch, labelled with K/L (source/load) arrows. This hosts the AC500 CTs AND the Shelly Pro 3EM clamps (16 mm-class windows), and lets trainers demonstrate CT faults: wrong phase, reversed direction (Pro 3EM 'reverse' config can be shown), clamp on N, clamp around the whole 5-core cable (= 0 A).",
+  "Use the stocked Shelly Pro 3EM as the HMI's live meter: ESP32 polls http://<ip>/rpc/EM.GetStatus?id=0 at 1 Hz and shows a/b/c_voltage, a/b/c_current, a/b/c_act_power, a/b/c_pf, a/b/c_freq, total_act_power; enable monitor_phase_sequence and display errors['phase_sequence'] as the F9 confirmation; use its 'contactor' relay as an extra hardware trip for the main contactor coil chain.",
+  "Add a 2-clamp Shelly (Pro EM-50 if the stock has one, else Shelly EM Gen3) with clamp 1 on output N and clamp 2 on output PE: it visualises N current (Pro 3EM cannot – n_current is null) and, with the RCD bypassed (F13), the fault current flowing through PE during N-PE swap/bridge (F5/F6/F16).",
+  "For N-PE voltage (PEN break, PE live, open PE) add a ZMPT101B isolated AC voltage module between output N and PE feeding an ESP32 ADC (through fuse + series resistors); show it as a numeric 'U N-PE' tile with a 50 V alarm threshold. Shelly cannot provide this value.",
+  "Reserve 4-5 modules + 2 terminal modules for a DIN RS485 meter and buy the Eastron SDM630-Modbus V2 (or SDM72D-M-2 if cheaper) as the default 'smart licznik' – it is the meter most wallbox/DLB firmwares and evcc/OpenEMS understand; wire its RS485 A/B to a 3-position selector: ESP32 (MAX485/RS485 transceiver) OR wallbox/DLB terminal pair, never both masters at once. If the user wants a Polish-brand MID sub-meter instead, ORNO OR-WE-516 (80 A, 4.5 modules, Modbus) is the drop-in.",
+  "Install F&F CKF-B (1 module) and CP-730 (3 modules) on the OUTPUT side as independent hardware feedback for phase sequence/loss and over/undervoltage; bring their changeover contacts to ESP32 inputs via optocouplers (or to spare Shelly Pro inputs) so the HMI shows 'fault really present' rather than 'relay commanded'.",
+  "Correct the enclosure estimate: metering zone grows from ~7 to ~14-17 DIN modules plus a 150 x 60 mm off-rail CT bar; add an M25 gland or split bushing for the AC500 CT leads to the external module.",
+  "When the search budget is restored, verify in one pass: Allegro prices (SDM630 V2, SDM72D-M-2, OR-WE-516, CKF-B, CP-730, Pro EM-50), Shelly 120 A clamp window/lead length, Pro 3EM DIN width, and the AC500 datasheet on mediamarkt.pl/amperepoint.pl."
+ ],
+ "open_questions_for_user": [
+  "Which Shelly models and how many are in stock (Pro 3EM 120A? Pro EM-50? Shelly EM / EM Gen3? Pro 4PM / Pro 3 / Pro 1PM / Plus Uni)? The metering layout depends on whether a 2-clamp unit exists for N/PE current.",
+  "AC500 Smart Load Balancer: how does it talk to the WB500 – RS485 (A/B terminals), WiFi, or other? What are the CT ratings (e.g. 100 A / 120 A), the CT lead length, and the CT window size (please photograph the CT and the label)? Is the AC500 mains-powered (230 V) or powered from the wallbox?",
+  "Does the WB500 app/manual list supported external meters (Eastron SDM630 / SDM72D-M / Chint DTSU666 / Shelly 3EM)? This decides whether a 'smart licznik' slot should host an Eastron (RS485) or whether the Pro 3EM alone suffices.",
+  "What is meant by 'smart licznik' for this board: (a) RS485 meter read by the wallbox/DLB, (b) MID sub-meter for billing demo, (c) just a display meter read by the ESP32? Should it also be readable by the ESP32 over RS485?",
+  "Supply cable to the board: type and cross-section (e.g. YKY 5x10 mm², OD ≈20 mm)? Needed to size the gland and the CT bar conductors (6 vs 10 mm²).",
+  "Should the CT bar also carry the DUT output phases (so the AC500 CTs can be deliberately placed on the wrong side – load instead of supply – as a demonstrated installer error)?"
+ ],
+ "gaps": [
+  "Ampere Point AC500 Smart Load Balancer: no technical data obtained (interface, CT type/rating/lead length, supply, mounting) – all vendor and retailer domains blocked, WebSearch budget exhausted.",
+  "Whether Rheidon/Ampere Point WB500 firmware accepts Shelly Pro 3EM or Shelly EM as the DLB meter – unknown.",
+  "Shelly Pro 3EM 120 A clamp exact geometry (window diameter, body size, lead length) and Pro 3EM DIN width – not verified (values given from memory, medium/low).",
+  "All Allegro PLN prices – not verified; only estimate ranges given.",
+  "F&F CKF-B / CP-730 / CP-721, Schneider RM4TR32, Finder 70.31 exact specs (thresholds, contact ratings) – from memory, manufacturer pages blocked.",
+  "Finder 7M.38 / 7M.24 module widths and ORNO OR-WE-517 width – not verified.",
+  "H07V-K and YKY overall diameters – from standard tables in memory, not fetched."
+ ]
+}

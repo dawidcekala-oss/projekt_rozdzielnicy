@@ -1,0 +1,359 @@
+{
+ "findings": [
+  {
+   "topic": "HMI board - Waveshare ESP32-S3-Touch-LCD-7 (Allegro)",
+   "claim": "The Waveshare ESP32-S3-Touch-LCD-7 (7\", 800x480, capacitive 5-point touch) is stocked by several Allegro sellers at roughly 188-229 PLN.",
+   "detail": "Offers: 18176697600 ('Wyswietlacz IPS 7 800x480 ESP32 WiFi CAN RS485'), 17913798935 ('Plytka rozwojowa ESP32-S3 7 Capacitive Touch Display 800x480'), product page aa9b262b... Price band in snippets 188-229 PLN. Non-touch variant ESP32-S3-LCD-7 also listed (offer 17790525630).",
+   "source_urls": [
+    "https://allegro.pl/oferta/wyswietlacz-ips-7-800x480-esp32-wifi-can-rs485-esp32-s3-touch-lcd-7-18176697600",
+    "https://allegro.pl/oferta/plytka-rozwojowa-esp32-s3-7-capacitive-touch-display-800x480-17913798935",
+    "https://allegro.pl/produkt/wyswietlacz-waveshare-esp32-s3-touch-lcd-7-aa9b262b-e31f-48f8-8447-e2080903d039"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "HMI board - Waveshare ESP32-S3-Touch-LCD-7 specs",
+   "claim": "7\" IPS 800x480, ST7262 RGB panel, GT911 5-point touch, ESP32-S3 dual-core 240 MHz with 8 MB octal PSRAM; onboard CAN, RS485, I2C, UART, TF slot, Li-ion charger (PH2.0); power only via USB-C 5 V (no wide-range DC input on this model).",
+   "detail": "Dimensions: touch version 192.96 x 110.76 mm; non-touch 164 x 97 mm. Flash: ESPHome community package sets flash_size 8MB (module N8R8) while Allegro listings claim 16 MB - treat as 8 MB until verified. Waveshare wiki lists 'Power supply: TypeC 5V'. Power draw: not published in sources reached; comparable 7\" boards draw ~500-600 mA at 5 V (Sunton ~500 mA, Makerfabs >600 mA) - budget >=1 A.",
+   "source_urls": [
+    "https://www.waveshare.com/wiki/ESP32-S3-Touch-LCD-7",
+    "https://www.waveshare.com/esp32-s3-touch-lcd-7.htm",
+    "https://github.com/inytar/waveshare-esp32-s3-touch-lcd-7-esphome"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "HMI board - Waveshare 7 pin map / free GPIO",
+   "claim": "The RGB bus consumes 20 GPIOs, touch/expander I2C 3 more, SD 3 more; only about 4 GPIOs remain, and they are already routed to the RS485, CAN, UART0 and sensor headers.",
+   "detail": "From ESP32_Display_Panel board file + ESPHome package: RGB DATA0-15 = GPIO 14,38,18,17,10,39,0,45,48,47,21,1,2,42,41,40; HSYNC 46, VSYNC 3, DE 5, PCLK 7; PCLK 16 MHz; timings hpw4/hbp8/hfp8, vpw4/vbp8-16/vfp8-16; bounce buffer = width x 10 (8000 px). Touch GT911 on I2C SDA GPIO8 / SCL GPIO9, INT GPIO4, addr 0x5D/0x14. IO expander CH422G @0x20 on same I2C: EXIO1 = touch reset, EXIO2 = backlight ON/OFF, EXIO3 = LCD reset (SD CS and USB/CAN select also on expander per Waveshare docs - medium). Backlight PWM dimming is NOT available without soldering a test point to a GPIO (ESPHome package defaults to GPIO16). atomic14 review: '~4 free GPIO'. Remaining GPIOs 6 (sensor/ADC header), 15/16 (RS485 UART), 19/20 (CAN, shared with native USB), 43/44 (UART0 header) - medium confidence on exact header assignment.",
+   "source_urls": [
+    "https://raw.githubusercontent.com/esp-arduino-libs/ESP32_Display_Panel/master/src/board/supported/waveshare/BOARD_WAVESHARE_ESP32_S3_TOUCH_LCD_7.h",
+    "https://raw.githubusercontent.com/inytar/waveshare-esp32-s3-touch-lcd-7-esphome/main/waveshare-esp32-s3-touch-lcd-7.yaml",
+    "https://www.atomic14.com/esp32/boards/7-inch-displays/",
+    "https://www.atomic14.com/esp32/boards/waveshare-esp32-s3-touch-lcd-7/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "HMI board - Waveshare ESP32-S3-Touch-LCD-7B (1024x600)",
+   "claim": "The 7B variant has the same outline (192.96 x 110.76 mm with touch; 165.72 x 97.60 mm without) and interfaces (CAN, RS485, I2C, TF, USB) but 1024x600 resolution and 16 MB flash / 8 MB PSRAM; on Allegro at ~195-402 PLN depending on seller.",
+   "detail": "Allegro offer 18116782086 'ESP32-S3 Waveshare LCD 1024x600 dotykowy Wi-Fi BLE CAN RS485 I2C'. 1024x600 at 16-bit needs 1.2 MB per framebuffer vs 0.77 MB for 800x480, so less PSRAM headroom and higher PCLK (5B board file uses 21 MHz) - more sensitive to flicker.",
+   "source_urls": [
+    "https://www.waveshare.com/wiki/ESP32-S3-Touch-LCD-7B",
+    "https://www.waveshare.com/esp32-s3-lcd-7b.htm",
+    "https://allegro.pl/oferta/esp32-s3-waveshare-lcd-1024x600-dotykowy-wi-fi-ble-can-rs485-i2c-18116782086"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "HMI board - Waveshare ESP32-S3-Touch-LCD-5 / 5B",
+   "claim": "5\" boards exist in 800x480 (LCD-5) and 1024x600 (LCD-5B) versions with CAN, RS485, I2C, USB, TF, 16 MB flash / 8 MB PSRAM, 550 cd/m2, 5 V ~450 mA; both have Allegro product pages.",
+   "detail": "Allegro offer 17254531650 'ESP32-S3-Touch-LCD-5 z Wi-Fi, BLE, CAN, RS485 i ekranem dotykowym 1024x600'. 5B board file: same RGB pin set as the 7\", PCLK 21 MHz, GT911 touch, CH422G expander. Board outline in mm NOT established (search snippet mixed in 4.3B dimensions). Isolated DI/DO on the 5\" is unconfirmed (that feature is confirmed only for 4.3B).",
+   "source_urls": [
+    "https://www.waveshare.com/wiki/ESP32-S3-Touch-LCD-5",
+    "https://allegro.pl/oferta/esp32-s3-touch-lcd-5-z-wi-fi-ble-can-rs485-i-ekranem-dotykowym-1024-600-17254531650",
+    "https://raw.githubusercontent.com/esp-arduino-libs/ESP32_Display_Panel/master/src/board/supported/waveshare/BOARD_WAVESHARE_ESP32_S3_TOUCH_LCD_5_B.h"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "HMI board - Waveshare ESP32-S3-Touch-LCD-4.3B (panel-ready alternative)",
+   "claim": "The 4.3B is the only Waveshare S3 touch board with industrial power and I/O: 7-36 V DC input, 2x isolated digital inputs (5-36 V, bidirectional opto), 2x isolated outputs (opto, up to 450 mA sink), RS485, CAN, I2C, RTC, TF, terminal blocks, optional case.",
+   "detail": "800x480, 4.3\"; 112.4 x 75.1 mm (case version 116.3 x 79 mm); 0-65 C. Allegro offer 18116802669 'ESP32-S3 Waveshare LCD dotykowy 4.3 800x480 Wi-Fi BLE antena RTC CAN RS485'. Trade-off: small screen for a demo board.",
+   "source_urls": [
+    "https://docs.waveshare.com/ESP32-S3-Touch-LCD-4.3B",
+    "https://www.cnx-software.com/2024/07/22/4-3-inch-esp32-s3-wireless-touchscreen-display-terminal-block-rs485-can-bus-i2c-dio/",
+    "https://allegro.pl/oferta/esp32-s3-waveshare-lcd-dotykowy-4-3-800x480-wi-fi-ble-antena-rtc-can-rs485-18116802669"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "HMI board - Waveshare 10.1\"",
+   "claim": "There is no 'ESP32-S3-Touch-LCD-10.1'; Waveshare's 10.1\" HMI is the ESP32-P4-WIFI6-Touch-LCD-10.1 (ESP32-P4 RISC-V, 32 MB PSRAM, 800x1280 portrait-native panel, 10-point touch, Wi-Fi 6 via co-processor). Not found on Allegro.",
+   "detail": "Same family offers 7\" (720x1280) and 8\". ESP32-P4 toolchain is ESP-IDF-first; Arduino support is immature compared with S3. Elecrow also sells a CrowPanel Advance 7\" ESP32-P4 variant at 1024x600.",
+   "source_urls": [
+    "https://www.waveshare.com/esp32-p4-wifi6-touch-lcd-7-8-10.1.htm",
+    "https://www.makerguides.com/crowpanel-advance-7-esp32-p4-display/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "HMI board - Elecrow CrowPanel 7\" and CrowPanel Advance 7\"",
+   "claim": "Elecrow CrowPanel 7\" ESP32 HMI (800x480 RGB TFT) is on Allegro at ~199 PLN; CrowPanel 5\" with acrylic case at 148-180 PLN. The Advance 7\" (ESP32-S3, 800x480 IPS, 16 MB flash / 8 MB PSRAM) measures 181.26 x 108.36 x 16 mm, active area 156 x 87 mm, 5 V/2 A via USB-C or UART terminal, I2C on GPIO15/16, two UART headers, mic + speaker, swappable wireless-module socket; Allegro presence of the Advance not confirmed.",
+   "detail": "Allegro product page cd65e562... (7\" basic, 199.00 PLN, 'po zwrocie' listing); offer 18185025514 (5\" with case). Advance specs from Elecrow wiki / espboards / electronics-lab. Basic CrowPanel 7 has fewer free GPIO and (per community) a 4 MB-flash module - low confidence on that detail.",
+   "source_urls": [
+    "https://allegro.pl/produkt/elecrow-ekran-dotykowy-monitor-esp32-hmi-7-calowy-800x480-rgb-tft-lcd-cd65e562-2dec-47cb-8305-47e3631dfe98",
+    "https://allegro.pl/oferta/crowpanel-5-0-hmi-wyswietlacz-hmi-z-modulem-esp32-s3-z-obudowa-18185025514",
+    "https://www.elecrow.com/crowpanel-advance-7-hmi-esp32-ai-display-800x480-ai-ips-touch-screen.html",
+    "https://www.espboards.dev/esp32/elecrow-crowpanel-advance-7-esp32-s3/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "HMI board - Sunton ESP32-8048S070",
+   "claim": "Sunton ESP32-8048S070: 7\" 800x480 (ST7262 RGB, GT911 touch), ESP32-S3-WROOM-1 16 MB flash / 8 MB PSRAM, 181.0 x 108.0 mm, ~500 mA, MAX98357 audio, TF slot, -20..70 C; 'RGB bus consumes nearly every GPIO'. Cheapest abroad ($21-28) but NOT found on Allegro under its model name.",
+   "detail": "openHASP notes the 7\" Sunton uses a TN panel (4.3/5\" are IPS). Headers expose I2C (GPIO19/20), SPI/SD (10-13) and a few spare pins. Documentation thin (atomic14).",
+   "source_urls": [
+    "https://www.atomic14.com/esp32/boards/sunton-esp32-8048s070/",
+    "https://www.openhasp.com/0.7.0/hardware/sunton/esp32-8048s0xx/",
+    "https://github.com/arendst/Tasmota/issues/20341"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "HMI board - Guition JC8048W550",
+   "claim": "Guition JC8048W550: 5\" 800x480 IPS, capacitive single-touch, ESP32-S3-N16R8 (16 MB / 8 MB), mounting-hole spacing 128.00 x 74.00 mm, active area 108.00 x 64.80 mm, TF slot, GPIO header on the back; not found on Allegro.",
+   "detail": "Supported by openHASP and ESPHome community YAMLs (agillis repo).",
+   "source_urls": [
+    "https://www.openhasp.com/0.7.0/hardware/guition/jc8048w550/",
+    "https://github.com/agillis/esphome-modular-lvgl-buttons/blob/main/hardware/guition-esp32-jc8048w550.yaml",
+    "https://www.surenoo.com/products/23291185"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "HMI board - Makerfabs MaTouch ESP32-S3 Parallel TFT 7\"",
+   "claim": "Makerfabs 7\": 800x480 or 1024x600 IPS, GT911 5-point touch, ESP32-S3-WROOM-1 16 MB / 8 MB, dual USB-C (CP2104 + native), 5 V (4.0-5.25 V) >600 mA, I2S audio, microSD, 1x Mabee I2C + 1x GPIO, 164.90 x 100.00 mm, -40..85 C; not found on Allegro.",
+   "detail": "Sold via makerfabs.com / Tindie only.",
+   "source_urls": [
+    "https://www.makerfabs.com/esp32-s3-parallel-tft-with-touch-7-inch.html",
+    "https://wiki.makerfabs.com/MaTouch_ESP32_S3_7_Paralle_%20TFT_with_Touch.html"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "HMI board - 7\" comparison summary",
+   "claim": "Independent comparison: Sunton $21-28, Waveshare $32-40, Elecrow Advance $30-40; all 800x480 ESP32-S3 with 8 MB PSRAM; Waveshare wins on documentation, ESPHome package and RS485/CAN; Elecrow adds mic/speaker and a module socket; Sunton is the budget option with thin docs.",
+   "detail": "Only Waveshare and Elecrow are actually purchasable on Allegro (Sunton/Guition/Makerfabs are not), which matches the client's constraint.",
+   "source_urls": [
+    "https://www.atomic14.com/esp32/boards/7-inch-displays/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Software support - LVGL / SquareLine / ESPHome / Arduino / ESP-IDF",
+   "claim": "Waveshare 7\" has the widest software support: official Arduino and ESP-IDF LVGL demos, a Waveshare SquareLine Studio wiki, ESP32_Display_Panel board definition, a maintained ESPHome package (needs ESPHome >=2025.8, ESP-IDF, octal PSRAM 120 MHz, mipi_rgb driver) and a long Home Assistant megathread.",
+   "detail": "SquareLine workflow that worked for a community user: SquareLine 'Arduino with TFT_eSPI' template + LVGL 8.3.8 + ESP32_Display_Panel + ESP32_IO_Expander (CH422G), PlatformIO board esp32s3box, memory_type qio_opi - but 'yellow artifacts during animations' and no rotation reported. Recommendation: ESP-IDF + LVGL 9 via esp_lcd RGB driver for production firmware; ESPHome only if Home-Assistant-style automation is acceptable (it is not a good fit for a safety-interlocked state machine).",
+   "source_urls": [
+    "https://github.com/inytar/waveshare-esp32-s3-touch-lcd-7-esphome",
+    "https://github.com/mattlalumiere/Waveshare-ESP32-S3-Touch-LCD-7.0",
+    "https://www.waveshare.com/wiki/Waveshare_SquareLine_Studio",
+    "https://community.home-assistant.io/t/waveshare-esp32-s3-touch-lcd-7/789584"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Known issues - RGB LCD flicker / tearing / PSRAM bandwidth",
+   "claim": "All ESP32-S3 800x480 RGB boards share one failure mode: the framebuffer lives in PSRAM and Flash+PSRAM share one SPI bus, so flash writes (NVS, OTA), Wi-Fi bursts or too-high PCLK starve the LCD DMA and cause tearing/drift/jitter.",
+   "detail": "Proven mitigations: Octal PSRAM at >=80 MHz (120 MHz used by ESPHome package); PCLK 12-16 MHz (Tasmota user: 12 MHz optimal, <10 MHz display fails, higher = more jitter); RGB bounce buffer = width x 10 lines together with CONFIG_ESP32S3_DATA_CACHE_LINE_64B; CONFIG_SPIRAM_XIP_FROM_PSRAM so code executes from PSRAM during flash writes (fixes NVS-write tearing); draw buffers in MALLOC_CAP_DMA; pause LVGL rendering around flash writes; Tasmota 'libesp_lcd not built for OPI PSRAM' bug fixed in platform 2025.02.30+. Panel needs periodic backlight-off 'antiburn' (ESPHome package enforces).",
+   "source_urls": [
+    "https://github.com/espressif/arduino-esp32/discussions/12339",
+    "https://github.com/arendst/Tasmota/discussions/22553",
+    "https://docs.espressif.com/projects/esp-faq/en/latest/software-framework/peripherals/lcd.html",
+    "https://files.waveshare.com/wiki/ESP32-S3-Touch-LCD-7/Performance.pdf",
+    "https://forum.lvgl.io/t/display-glitching-while-connecting-to-wifi-esp32s3-8048s043/12075"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Mounting / enclosure for Waveshare 7\"",
+   "claim": "No official Waveshare case for the 7\" was found; several free 3D-printable wall-mount/bezel cases exist (M3 screw mounting, 4x M3x10 in one design), suitable as a door-cutout bezel for the switchboard.",
+   "detail": "MakerWorld 3284100 (flush wall mount, 3 parts, M3x8 screws), Thingiverse 7273339 (one-piece), MakerWorld 1858825 (all ports accessible), Printables 1030369 (4x M3x10), Printables 1306944, Printables 1524435 (cable pass-through). Board outline to cut: 192.96 x 110.76 mm (glass).",
+   "source_urls": [
+    "https://makerworld.com/en/models/3284100-wall-mount-for-waveshare-esp32-s3-touch-lcd-7",
+    "https://www.thingiverse.com/thing:7273339",
+    "https://www.printables.com/model/1030369-waveshare-esp32-s3-7inch-capacitive-touch-display",
+    "https://makerworld.com/en/models/1858825-waveshare-esp32-s3-lcd-touch-7-case"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Networking - ESP32-S3 as access point for Shelly stations",
+   "claim": "ESP-IDF allows up to 15 associated stations on ESP32-S3 soft-AP (ESP_WIFI_MAX_CONN_NUM = 15; ESP32-C2 = 4), older docs state 10 for S3; Arduino WiFi.softAP() defaults to 4 (parameter adjustable). 5-10 Shelly devices are within limits, but AP duty on the same chip that drives an RGB LCD adds Wi-Fi interrupt load that is a known flicker trigger.",
+   "detail": "Soft-AP and ESP-NOW share encryption key slots (CONFIG_ESP_WIFI_ESPNOW_MAX_ENCRYPT_NUM reduces usable stations). Practical: keep <=8 stations, give Shelly devices static IPs, disable power save on stations. Prefer a separate AP/router in the enclosure; keep ESP32 soft-AP as a 'portable demo' fallback mode.",
+   "source_urls": [
+    "https://raw.githubusercontent.com/espressif/esp-idf/master/components/esp_wifi/include/local/esp_wifi_types_native.h",
+    "https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/network/esp_wifi.html",
+    "https://docs.espressif.com/projects/arduino-esp32/en/latest/api/wifi.html"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Networking - Shelly RPC from the HMI",
+   "claim": "Shelly Gen2/Gen3 devices accept local RPC over HTTP (GET /rpc/Switch.Set?id=0&on=true or POST JSON {method,params}), WebSocket, MQTT and UDP; Switch.Set supports toggle_after (auto-revert timer) and Switch.GetStatus returns output, apower, voltage, current, temperature. Gen1 devices use /relay/0?turn=on&timer=N and /status. No vendor latency figure is published; vendor/community describe local control as 'reacts in milliseconds'.",
+   "detail": "Design implication: issue every fault-relay command with toggle_after (e.g. 30-60 s) and have the HMI re-arm it periodically - if the HMI or Wi-Fi dies, the Shelly reverts the fault on its own (dead-man watchdog independent of the ESP32). Expect ~20-100 ms per HTTP call on a clean LAN (TCP handshake dominated); a persistent WebSocket per device is faster and gives NotifyStatus push events. Mechanical relay operate time ~10 ms; Shelly relays are not suited to high-cycle 'chattering contact' simulation (endurance) - use a dedicated relay for that.",
+   "source_urls": [
+    "https://shelly-api-docs.shelly.cloud/gen2/General/RPCProtocol/",
+    "https://shelly-api-docs.shelly.cloud/gen2/General/RPCChannels/",
+    "https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/Switch/",
+    "https://shelly.guide/webhooks-https-requests/",
+    "https://shelly-api-docs.shelly.cloud/gen1/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Networking - ESP32 Ethernet boards on Allegro",
+   "claim": "Ethernet-capable ESP32 boards available on Allegro: WT32-ETH01 (ESP32 classic + LAN8720 RMII, 4 MB flash, no USB), Olimex ESP32-POE / ESP32-POE-ISO-16MB / ESP32-POE-EA (ESP32 classic, LAN8710, PoE, 3000 V isolation on ISO), LilyGO T-ETH-Lite ESP32-S3 (W5500 SPI, 16 MB / 8 MB, microSD, 59 x 28 x 11 mm), Waveshare ESP32-S3-ETH (W5500, optional PoE module, camera), and Waveshare ESP32-S3-ETH-8DI-8RO / ESP32-S3-POE-ETH-8DI-8RO(-C) (ESP32-S3 + Ethernet + 8 relays 10 A + 8 DI 5-36 V + isolated RS485, -C adds CAN and PoE).",
+   "detail": "Offers: WT32-ETH01 12306246070, 15134125967, 16460722323; Olimex ESP32-POE-ISO-16MB product 4a472233..., ESP32-POE-EA 14244888680; T-ETH-Lite product 90116798...; ESP32-S3-ETH 17794062591; 8DI-8RO 17740023274, POE 17740191762, POE-C 17740590198. Prices not captured in snippets. Architectural note: ESP32-S3 has no Ethernet MAC, so S3 Ethernet is always SPI W5500; the 7\" HMI exposes no free SPI header, so Ethernet cannot be bolted onto the HMI - put it on a separate I/O node (e.g. ESP32-S3-ETH-8DI-8RO as a DIN-mount fault-relay node) or use a switch + Shelly Pro (LAN).",
+   "source_urls": [
+    "https://allegro.pl/oferta/wt32-eth01-iot-esp32-lan8720-ethernet-arduino-12306246070",
+    "https://allegro.pl/produkt/sterownik-olimex-esp32-poe-iso-16mb-4a472233-0d16-4856-81e4-cd8a4edaa69c",
+    "https://allegro.pl/produkt/elektroweb-t-eth-lite-esp32-s3-lilygo-wifi-bt-ethernet-w5500-90116798-9671-43e6-afde-5bb37c884bba",
+    "https://allegro.pl/oferta/plytka-rozwojowa-esp32-s3-eth-z-ethernet-10-100mbs-i-kamera-waveshare-28770-17794062591",
+    "https://allegro.pl/oferta/esp32-s3-przekaznik-esp32-s3-eth-8di-8ro-sku-31130-17740023274",
+    "https://allegro.pl/oferta/esp32-s3-przekaznik-esp32-s3-poe-eth-8di-8ro-c-can-zasilanie-poe-sku-31284-17740590198"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Networking - small switch / travel router in the enclosure",
+   "claim": "TP-Link LS105G 5-port gigabit switch costs ~55-69 PLN on Allegro, TL-SG105 ~106 PLN; GL.iNet GL-SFT1200 travel router ~256 PLN. GL-MT300N-V2 not found in results.",
+   "detail": "LS105G: 5x 1 GbE, external 5 V/9 V adapter (can be fed from the panel PSU), plastic, ~100 x 98 x 25 mm class. A travel router gives both the LAN for Shelly Pro and a 2.4 GHz SSID for Shelly Plus devices and the HMI, with DHCP reservations - removes the AP burden from the ESP32.",
+   "source_urls": [
+    "https://allegro.pl/produkt/tp-link-przelacznik-switch-ls105g-5x1gbe-litewave-e8726510-9a36-477a-b3dc-f5640375e7a4",
+    "https://allegro.pl/oferta/tp-link-tl-sg105-switch-przelacznik-5-portowy-gigabit-17902066202",
+    "https://allegro.pl/produkt/router-mobilny-gl-inet-gl-sft1200-4g-lte-b2d5b2e0-5c88-4028-a557-2777c145ca63"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Alternative - Raspberry Pi + official 7\" touchscreen",
+   "claim": "Raspberry Pi Touch Display 2 (7\", 720x1280, 5-point touch, DSI, GPIO-powered) is ~282 PLN on Allegro; Raspberry Pi 5 from ~481 PLN (4 GB) and Pi 4B from ~295-469 PLN. Total HMI ~800-1000 PLN vs ~200 PLN for ESP32-S3.",
+   "detail": "Pros: Linux, Python/web stack, Ethernet onboard, unlimited I/O via USB/RS485 adapters, easy web mirror. Cons: 20-30 s boot, SD-card wear and corruption on power loss (needs UPS or read-only FS), no deterministic real-time, not a 'microcontroller' as required, bigger power budget (5 V/3-5 A), the display is portrait-native 720x1280 (rotation needed).",
+   "source_urls": [
+    "https://allegro.pl/oferta/raspberry-pi-touch-display-2-ekran-dotykowy-7-1280x720px-pojemnosciowy-17135472433",
+    "https://allegro.pl/produkt/mikrokomputer-raspberry-pi-5-7251ae8b-35a2-4650-924d-91541a1be735"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Alternative - Nextion 7\" HMI",
+   "claim": "Nextion Intelligent NX8048P070-011C (7\", 800x480, capacitive, 128 MB flash, 512 KB RAM, 5 V TTL serial) is ~620-650 PLN on Allegro; Nextion Basic NX8048T070 (resistive) and Enhanced NX8048K070 are also listed.",
+   "detail": "Pros: GUI built in Nextion Editor, offloads rendering from the MCU, any ESP32 (e.g. ESP32-S3-ETH-8DI-8RO) drives it over one UART. Cons: 3x the price of the Waveshare 7\", proprietary editor, weaker graphics/fonts, still needs a separate controller for Wi-Fi/Shelly logic.",
+   "source_urls": [
+    "https://allegro.pl/produkt/wyswietlacz-dotykowy-lcd-nx8048p070-011c-nextion-hmi-7-800x480-pojemnoscio-60336311-939d-4859-a858-014dddc5fcae",
+    "https://allegro.pl/oferta/nextion-nx8048t070-modul-hmi-z-dotykowym-wyswietlaczem-lcd-tft-7-16005157753"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Alternative - Android tablet + Shelly app",
+   "claim": "A tablet running the Shelly app can switch each Shelly manually but cannot enforce interlocks, sequencing, time-limited faults or logging, so it fails the 'microcontroller-controlled fault scenarios' requirement; it is useful only as a read-only web-mirror client of the ESP32's web UI.",
+   "detail": "No Allegro price captured (search budget exhausted).",
+   "source_urls": [
+    "https://shelly.guide/webhooks-https-requests/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "I/O expansion - RS485 Modbus relay modules (DIN)",
+   "claim": "Waveshare Modbus RTU Relay (D) - 8 relays + 8 digital inputs, RS485 Modbus RTU, DIN-rail (TS35) housing, optocoupled - is on Allegro at 148.98 PLN; Modbus RTU Relay (C) (8 bistable relays, DIN) and Modbus POE ETH Relay 8-ch/16-ch (Modbus TCP/RTU over Ethernet, PoE) are also listed, plus a generic 8-relay RS485 Modbus board.",
+   "detail": "Offers: RTU Relay (D) product 9844da02... (offer 15193520373); RTU Relay (C) product e7b9353f...; POE ETH Relay 16CH 18116845635; generic 8-ch 12888761383; 8-ch PoE 14172278948. These connect straight to the Waveshare HMI's RS485 header (galvanically isolated bus, long-wire tolerant) and are the preferred way to get 8-16 'fault' relays plus aux-contact feedback inputs without using Shelly or fragile I2C.",
+   "source_urls": [
+    "https://allegro.pl/produkt/przemyslowy-8-kanalowy-modul-przekaznikowy-modbus-rtu-d-rs485-waveshare-9844da02-13af-45c2-acce-8c070f267f1d?offerId=15193520373",
+    "https://allegro.pl/produkt/przekaznik-waveshare-modbus-rtu-relay-c-e7b9353f-38f5-42b7-95eb-8287d9926ff3?fromVariant=17740616755",
+    "https://allegro.pl/oferta/modul-przekaznikow-16-kanalowy-waveshare-modbus-poe-eth-relay-16ch-izolacja-18116845635",
+    "https://allegro.pl/oferta/modul-z-8-przekaznikami-sterowany-rs485-modbus-rtu-12888761383"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "I/O expansion - I2C expanders and relay boards",
+   "claim": "MCP23017 16-bit I2C expander modules cost 11.99-30.90 PLN on Allegro (Waveshare board 30.90 PLN, bare IC 11.99 PLN, generic module 16.90 PLN); PCF8574 8-bit modules are listed by Waveshare resellers; 16-channel 12 V opto relay boards exist but no price was captured.",
+   "detail": "MCP23017: 25 mA per pin, 3 address jumpers = 8 boards per bus. Caveat for this project: the HMI's only I2C bus is shared with the GT911 touch and CH422G at 400 kHz and is a 2-wire unisolated bus - runs >30 cm inside a 400 V panel next to contactors are unreliable; if used, keep the expander on the HMI PCB side and drive relay boards through it, or prefer RS485 Modbus / Shelly.",
+   "source_urls": [
+    "https://allegro.pl/oferta/mcp23017-io-expansion-board-modul-z-ekspanderem-12853846157",
+    "https://allegro.pl/oferta/waveshare-mcp23017-ekspander-wyprowadzen-16-pin-8231946298",
+    "https://allegro.pl/produkt/mcp23017-e-sp-ekspander-ic-16bit-i-o-i2c-dip-28-2864c5cd-6de5-441e-ac20-9fb5fa73a9ce",
+    "https://allegro.pl/oferta/pcf8574-i-o-ekspander-portow-arduino-7238539250"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Power - Mean Well HDR DIN-rail PSUs",
+   "claim": "Mean Well HDR-15-5 (5 V / 2.4 A / 12 W, 17.5 x 90 x 54 mm = 1 DIN module), HDR-30-24 (24 V / 1.5 A / 36 W, 35 x 90 x 54.4 mm = 2 modules), HDR-60-24 (24 V / 2.5 A / 60 W, adjustable 21.6-29 V, 3 modules) and HDR-30-12 (12 V / 2 A) are all stocked by multiple Allegro sellers.",
+   "detail": "Offers: HDR-30-24 12800612755, 18672740164; HDR-15-5 13857296253 + product f30c3ffa...; HDR-60-24 product 6e1349f7...; HDR-30-12 17036103245, 13182343499. Prices not captured in snippets (typical market 50-110 PLN - low confidence). For the HMI: HDR-15-5 -> USB-C cable or 5V header; if 12 V relay boards or 24 V Modbus/DI circuits are used add HDR-30-24 (Waveshare Modbus RTU Relay (D) and 4.3B accept 7-36 V).",
+   "source_urls": [
+    "https://allegro.pl/oferta/zasilacz-na-szyne-din-24v-1-5a-36w-mean-well-12800612755",
+    "https://allegro.pl/oferta/zasilacz-na-szyne-din-15w-hdr-15-5-meanwell-5v-13857296253",
+    "https://allegro.pl/produkt/zasilacz-din-mean-well-hdr-60-24-24v-dc-2-5a-60w-6e1349f7-0b3b-4a46-9556-e157206bc607",
+    "https://allegro.pl/oferta/zasilacz-impulsowy-na-szyne-din-hdr-30-12-mean-well-12vdc-2a-30w-17036103245"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Signal wiring - cable availability on Allegro",
+   "claim": "Shielded control cable LiYCY 2x0.5 (HELUKABEL) is ~2.57 PLN/m, LiYCY 2x0.75 ~2.70-2.74 PLN/m (HELUKABEL, BITNER), LAPP UNITRONIC LiYCY 2x0.5 also listed; multi-core LiYY 12x0.5 and 10x0.75 available; insulated ferrule (tulejki) assortments with crimper are available in 1200-2000-piece kits.",
+   "detail": "Offers: LiYCY 2x0.5 18006812053, 2x0.75 16415192338 and 17051491756, UNITRONIC 7078921293, LiYY 12x0.5 5792598173, LiYY 10x0.75 product e6f61820.... Ferrule kit price in snippet (4.95 PLN) is implausible - verify.",
+   "source_urls": [
+    "https://allegro.pl/oferta/kabel-przewod-liycy-2x0-5-sterowniczy-w-ekranie-helukabel-na-metry-18006812053",
+    "https://allegro.pl/oferta/kabel-przewod-sterowniczy-liycy-2x0-75-ekranowany-helukabel-16415192338",
+    "https://allegro.pl/oferta/przewod-kabel-sterowniczy-linka-liyy-12x0-5-5792598173",
+    "https://allegro.pl/listing?string=tulejki+zaciskowe+do+kabli"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Signal wiring - RS485 cabling rules",
+   "claim": "RS485/Modbus should run on twisted pair, ideally 120 ohm shielded (Belden 3105A class, 22 AWG); CAT5e (100 ohm) is acceptable for short in-panel runs; terminate 120 ohm only at the two bus ends; ground the shield at one end only; carry a signal-reference (GND) conductor with A/B.",
+   "detail": "Inside a 1-2 m switchboard LiYCY 3x0.5 (A, B, GND) or one CAT5e pair + a second pair for GND is fine; keep the cable away from contactor coils and the 6 mm2 power conductors, cross at 90 degrees.",
+   "source_urls": [
+    "https://industrialmonitordirect.com/blogs/knowledgebase/selecting-rs-485-cable-for-modbus-rtu-networks",
+    "https://industrialmonitordirect.com/blogs/knowledgebase/modbus-rtu-termination-resistor-troubleshooting-guide",
+    "https://docs.chipkin.com/articles/modbus-rs485-physical-layer-wiring-and-termination-reference/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Signal wiring - conductor sizes (engineering guidance, not web-sourced in this run)",
+   "claim": "230 V coil/control circuits: 0.75-1.0 mm2 fine-stranded (H05V-K/H07V-K) with crimped ferrules, protected by a 2-6 A MCB or fuse; low-voltage logic/RS485: 0.5 mm2 LiYY/LiYCY (0.25-0.34 mm2 acceptable for <1 A signals); the available 2.5 mm2 is usable but oversized for coil wiring and may not fit Shelly Plus screw terminals comfortably; Arduino Dupont jumper wires are not acceptable inside a 400 V panel (vibration, no strain relief, no insulation rating).",
+   "detail": "Keep SELV (5/24 V, RS485, I2C) physically segregated from 230/400 V: separate trunking or >=10 mm air gap / insulated sleeve, per IEC 60204-1 / IEC 61140 double-insulation separation; use JST-XH/PH or screw-terminal adapters on the HMI headers; label both ends. Ferrules: 0.5 mm2 white, 0.75 mm2 grey, 1.0 mm2 red, 1.5 mm2 black, 2.5 mm2 blue (DIN 46228 colour code). Buy: 1 x 100 m H05V-K 1.0 mm2 (two colours), 10-20 m LiYCY 2x0.5 or 4x0.5, 1 ferrule kit + crimper.",
+   "source_urls": [
+    "https://industrialmonitordirect.com/blogs/knowledgebase/din-rail-terminal-blocks-for-modbus-rtu-wiring-guide"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Firmware architecture sketch (ESP32-S3 + LVGL + Shelly/Modbus)",
+   "claim": "Recommended structure: FreeRTOS tasks - UI (LVGL, core 1), Comms (HTTP/WebSocket to Shelly + Modbus RTU master, core 0), Supervisor (state machine + interlocks + watchdog), Logger (SD CSV + ring buffer), WebMirror (HTTP server + WebSocket JSON broadcast).",
+   "detail": "State machine per scenario: IDLE -> ARMED (operator selected fault, preconditions checked: charger idle/current < X A from Shelly apower or DLB, all other faults off) -> APPLYING (sequence of relay commands with inter-step delays and read-back) -> ACTIVE (timer-limited, e.g. 10-120 s; HMI re-arms Shelly toggle_after every 10 s) -> RESTORING (reverse sequence, verify) -> IDLE / FAULT_ERROR (read-back mismatch -> force-safe all). Interlock matrix in a table: mutually exclusive combos (open-N with N-PE swap, L-N swap with phase-sequence swap, PE-open while load > 0, etc.); 'master safe' contactor dropped by hardware watchdog output (TWDT reset -> GPIO low -> contactor opens) so a hung firmware removes all faults. Feedback: Shelly Switch.GetStatus (output, apower, voltage, current) polled at 1 Hz or via WebSocket NotifyStatus; auxiliary contacts of contactors read by Shelly Input components or Modbus RTU Relay (D) DIs; compare commanded vs actual within 500 ms. Watchdogs: ESP-IDF task watchdog on all tasks; comms heartbeat - if any Shelly unreachable >5 s while a fault is ACTIVE -> RESTORING; Shelly-side toggle_after/timer as independent revert. Logging: SPI SD (board slot) append-only CSV (timestamp, scenario, step, readings), write in bursts and pause LVGL flush during writes (flash/PSRAM bus contention). Web mirror: same JSON state model as LVGL, served over the panel's Wi-Fi/LAN; read-only by default, optional PIN for remote arm. Settings in NVS, written only in IDLE. Discovery: mDNS (_shelly._tcp for Gen2, Shelly.GetDeviceInfo) to map models to roles at commissioning; store static IPs.",
+   "source_urls": [
+    "https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/Switch/",
+    "https://shelly-api-docs.shelly.cloud/gen2/General/RPCChannels/",
+    "https://github.com/espressif/arduino-esp32/discussions/12339"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "recommendations": [
+  "Primary HMI: Waveshare ESP32-S3-Touch-LCD-7 (800x480), ~188-229 PLN on Allegro, several PL sellers. Choose it over 7B (1024x600) unless the extra resolution is really wanted - 800x480 leaves more PSRAM bandwidth and is less flicker-prone. Buy 2 (one spare / dev unit).",
+  "Do NOT plan any I/O on the HMI's GPIOs (only ~4 are free and they are the RS485/CAN/UART/ADC headers). Use the RS485 header as the panel fieldbus: Waveshare Modbus RTU Relay (D) (8 relays + 8 DI, DIN, 148.98 PLN) for high-cycle / timing-critical fault relays (intermittent contact, phase-loss pulses) and for aux-contact read-back; use the in-stock Shelly devices (over Wi-Fi/LAN) for the slower on/off fault paths and for power metering feedback.",
+  "Network: put a small switch (TP-Link LS105G, ~55-69 PLN) or a travel router in the enclosure and give every Shelly a static IP; use ESP32 soft-AP only as a fallback 'standalone demo' mode (<=8 stations). If the stock contains Shelly Pro (DIN, LAN) models, wire them to the switch and let the HMI talk HTTP/WebSocket over the same LAN via the travel router's Wi-Fi.",
+  "Safety pattern: every fault command to a Shelly goes out with toggle_after (Gen2) / timer (Gen1) so the fault self-clears if the HMI dies; add a hardware 'master safe' contactor driven from a watchdog-supervised output; read back every command (Switch.GetStatus or aux contact) within 500 ms.",
+  "Firmware: ESP-IDF + LVGL 9 (esp_lcd RGB driver). sdkconfig: Octal PSRAM 80-120 MHz, PCLK 12-16 MHz, bounce buffer = 10 lines + 64 B cache line, CONFIG_SPIRAM_XIP_FROM_PSRAM, draw buffers in DMA RAM; write NVS/SD only in IDLE or with LVGL paused. Use SquareLine Studio only for layout export, not as the project skeleton.",
+  "Power: Mean Well HDR-15-5 (5 V 2.4 A, 1 DIN module) dedicated to the HMI via USB-C or 5V header; HDR-30-24 if 24 V is needed for the Modbus relay module / DI loops. Keep the HMI PSU on its own 2 A MCB upstream of the fault-simulation section so faults never brown-out the controller.",
+  "Mounting: cut a 193 x 111 mm aperture in the enclosure door (or a blank DIN cover plate) and use one of the free 3D-printed Waveshare 7\" bezels (M3 hardware) - no official case exists.",
+  "Wiring purchase: H05V-K 1.0 mm2 for 230 V coil circuits (ferruled), LiYCY 2x0.5 / 4x0.5 (~2.6 PLN/m) for RS485 and DI loops, insulated ferrule kit + crimper; keep SELV wiring segregated from the 6 mm2 power section. Do not use Dupont jumper wires in the panel.",
+  "Alternatives to keep in the back pocket: Waveshare ESP32-S3-Touch-LCD-4.3B if the design needs 7-36 V input and isolated DI/DO on the HMI itself; Waveshare ESP32-S3-ETH-8DI-8RO as a DIN-mounted Ethernet I/O node if Shelly stock turns out unsuitable; Raspberry Pi + Touch Display 2 only if a Linux web stack becomes a requirement (~4x cost, boot time, SD wear)."
+ ],
+ "open_questions_for_user": [
+  "Which Shelly models and generations are in stock (Gen1 like Shelly 1/2.5, Plus Gen2/Gen3 Wi-Fi, Pro DIN with LAN, i4 inputs, EM meters)? This decides HTTP API dialect, whether a switch/LAN is useful, and which devices can give power read-back.",
+  "Is 800x480 (Waveshare 7) acceptable or is 1024x600 (7B) wanted? Any preference for a bigger 10.1\" (only ESP32-P4, ESP-IDF-only, not on Allegro)?",
+  "Will the switchboard always be used where a Wi-Fi router exists, or must it be fully standalone (then a travel router or ESP32 soft-AP mode must be built in)?",
+  "Do you have access to a 3D printer for the HMI bezel, or should the HMI be mounted in a commercial 7\" panel-mount frame / door cutout only?",
+  "Preferred firmware stack: ESP-IDF (recommended), Arduino/PlatformIO, or ESPHome? Who will maintain the code?",
+  "Is high-cycle 'chattering / intermittent contact' simulation needed (hundreds of operations per session)? If yes, a dedicated relay/SSR driven over RS485 is required rather than a Shelly relay.",
+  "Should a remote web mirror (phone/tablet view of the HMI state) be in scope for v1?"
+ ],
+ "gaps": [
+  "Allegro PLN prices not captured (search budget exhausted, allegro.pl fetch blocked): Mean Well HDR-15-5 / HDR-30-24 / HDR-60-24, Nextion NX8048T070 Basic, WT32-ETH01, Olimex ESP32-POE(-ISO), LilyGO T-ETH-Lite, Waveshare ESP32-S3-ETH and ESP32-S3-ETH-8DI-8RO, 16-ch 12 V relay boards, PCF8574 modules, GL.iNet GL-MT300N-V2, Android tablets.",
+  "Sunton ESP32-8048S070, Guition JC8048W550 and Makerfabs 7\" were not found on Allegro under their model names; they may exist under generic 'ESP32-S3 7 cali 800x480' titles from Chinese sellers - unverified.",
+  "Waveshare ESP32-S3-Touch-LCD-5 / 5B board outline in mm and whether it has isolated DI/DO - not established (manufacturer wiki blocked).",
+  "Waveshare 7\" exact header-to-GPIO assignment for RS485 (GPIO15/16), CAN (GPIO19/20), sensor ADC (GPIO6) and the CH422G EXIO4/EXIO5 functions (SD CS, USB/CAN select) is from memory/medium confidence; verify on the Waveshare wiki schematic before PCB/harness design.",
+  "Waveshare 7\" flash size (8 MB vs 16 MB) conflicts between ESPHome package (8MB) and Allegro listings (16 MB); power consumption of the 7\" board not found.",
+  "No measured Shelly local RPC latency figures found; the 20-100 ms HTTP estimate is engineering judgement, not a sourced benchmark. Shelly API docs (shelly.cloud) were blocked, so toggle_after/timer parameter names are from prior knowledge.",
+  "ESP32-S3 soft-AP station cap conflicts between sources (15 in current ESP-IDF header, 10 in older ESP32-S3 docs) - depends on IDF version.",
+  "Elecrow CrowPanel Advance 7\" availability on Allegro not confirmed (only the basic 7\" at 199 PLN and the 5\" were found); basic CrowPanel 7 flash size and free-GPIO count unverified.",
+  "Wire-size and segregation guidance is standards-based engineering practice, not re-verified against a fetched copy of IEC 60204-1 in this run."
+ ]
+}

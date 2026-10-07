@@ -1,0 +1,337 @@
+{
+ "findings": [
+  {
+   "topic": "METODA / ZASTRZEŻENIE",
+   "claim": "Żadna cena ani numer katalogowy w tym raporcie NIE został zweryfikowany na żywo w tym przebiegu: budżet WebSearch (200 zapytań/turę, wspólny dla agentów) był wyczerpany przed pierwszym zapytaniem, a WebFetch zwrócił EGRESS_BLOCKED dla wszystkich 23 domen (se.com, hager.com, eaton.com, findernet.com, fif.com.pl, indel.pl, ceneo.pl, pl.rs-online.com, pl.mouser.com, pl.farnell.com, conrad.pl, elfadistrelec.pl, tim.pl, onninen.pl, noark-electric.pl, legrand.pl, eti.pl, breve.pl, toroidy.pl, wago.com, phoenixcontact.com, zamel.com).",
+   "detail": "Dane poniżej pochodzą z wiedzy modelu o rynku PL (stan 2024/2025). Ceny brutto Allegro podane jako przedziały; realny rozrzut +/-30 %. Numery katalogowe oznaczone 'verify' trzeba sprawdzić w ofercie przed zakupem. Podane URL to adresy wyszukiwania Allegro do weryfikacji, nie pobrane źródła.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=stycznik+modu%C5%82owy+40A+4NO"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Stycznik modułowy 4P 40A - szerokości",
+   "claim": "Stycznik modułowy 40 A 4NO z cewką 230 V AC ma u wszystkich głównych producentów szerokość 3 modułów (54 mm); 25 A 4NO = 2 moduły (36 mm); 25 A 2NO = 1 moduł (18 mm); 40 A 2NO = 2 moduły (36 mm); 63 A 4NO = 3 moduły (54 mm). Głębokość montażowa od szyny ok. 60-70 mm.",
+   "detail": "Dotyczy: Schneider Acti9 iCT, Hager ESC, Eaton Z-SCH230, Noark Ex9CH, Legrand CX3, ETI R, F&F ST. Wyjątek: Finder 22.34 (25 A 4P) = 35 mm (2 mod.), Finder 22.44 (40 A 4P) prawdopodobnie 35 mm, Finder 22.64 (63 A 4P) 52,5 mm (3 mod.) - verify. Zaciski 40 A przyjmują 10-16 mm2 (6 mm2 bez problemu), 25 A do 10 mm2.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=stycznik+modu%C5%82owy+40A+4NO",
+    "https://allegro.pl/listing?string=stycznik+modu%C5%82owy+25A+4NO"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Stycznik 4P 40A - Schneider Acti9 iCT",
+   "claim": "A9C20844 = iCT 40 A, 4NO, cewka 220-240 V AC, 3 moduły (54 mm). Rodzina: A9C20732 (25 A 2NO, 1 mod), A9C20834 (25 A 4NO, 2 mod), A9C20842 (40 A 2NO, 2 mod), A9C20864 (63 A 4NO, 3 mod), A9C20838 (25 A 2NO+2NC, 2 mod), A9C20848 (40 A 2NO+2NC, 3 mod), A9C22712 (16 A 2NO, 1 mod).",
+   "detail": "Ceny Allegro (pamięć 2024/25): A9C20844 ok. 190-270 PLN; A9C20834 ok. 110-160; A9C20732 ok. 60-95; A9C20842 ok. 120-180. Trwałość: mechaniczna ok. 1x10^6, elektryczna AC-7a przy In ok. 1x10^5 cykli (verify w karcie). Cewka: pobór trzymania ok. 2-4 VA, załączenie ok. 20-35 VA (<0,2 A przy 230 V) -> każdy przekaźnik Shelly 16 A wystarczy. Wersje 'silent' (cewka DC przez prostownik) istnieją dla 16/25 A, numerów nie potwierdzam. Cewki 24 V AC: seria A9C201xx (verify).",
+   "source_urls": [
+    "https://allegro.pl/listing?string=A9C20844",
+    "https://allegro.pl/listing?string=A9C20834",
+    "https://allegro.pl/listing?string=A9C20732"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Stycznik 4P 40A - Hager ESC",
+   "claim": "Hager ESC440 = 40 A 4NO 230 V, 3 moduły; ESC425 = 25 A 4NO, 2 mod; ESC240 = 40 A 2NO, 2 mod; ESC225 = 25 A 2NO, 1 mod; ESC463 = 63 A 4NO, 3 mod; ESC428 = 25 A 2NO+2NC (2 mod); ESC448 = 40 A 2NO+2NC (3 mod); ESC227 = 25 A 1NO+1NC (1 mod); ESC228 = 25 A 2NC (1 mod). Wersje ciche (bezbrzęczące, wbudowany prostownik, cewka zasilana DC): ESC225S, ESC240S, ESC425S, ESC440S.",
+   "detail": "Ceny Allegro (pamięć): ESC440 ok. 200-290 PLN; ESC425 ok. 120-180; ESC240 ok. 120-170; ESC225 ok. 60-95; wersje S ok. +30-50 %. Trwałość elektryczna AC-7a przy In rzędu 1x10^5 cykli, mechaniczna 1x10^6 (verify). Styk pomocniczy do sygnalizacji położenia: ESC080 (1 mod, verify).",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Hager+ESC440",
+    "https://allegro.pl/listing?string=Hager+ESC425",
+    "https://allegro.pl/listing?string=Hager+ESC225"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Stycznik 4P 40A - Eaton Z-SCH",
+   "claim": "Eaton Z-SCH230/40-40 (nr art. 248856) = 40 A 4NO 230 V AC, 3 moduły; Z-SCH230/25-40 (248847) = 25 A 4NO, 2 mod; Z-SCH230/25-20 (248845, verify) = 25 A 2NO, 1 mod; Z-SCH230/40-20 = 40 A 2NO, 2 mod; Z-SCH230/63-40 = 63 A 4NO, 3 mod; warianty -22 (2NO+2NC) i -31 (3NO+1NC). Z-SCH24/xx = cewka 24 V AC. Wersje 'Z-SCH230/1/..' mają przełącznik ręczny Ręka-0-Auto (przydatny do trybu serwisowego/mostkowania).",
+   "detail": "Ceny Allegro (pamięć): Z-SCH230/40-40 ok. 180-270 PLN; Z-SCH230/25-40 ok. 110-160; Z-SCH230/25-20 ok. 60-90. Eaton opisuje serię Z-SCH jako 'brummfrei/hum-free' (cicha praca cewki AC) - low confidence, verify. Trwałość elektr. AC-1 rzędu 1x10^5, mech. 1x10^6 (verify).",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Z-SCH230%2F40-40",
+    "https://allegro.pl/listing?string=Z-SCH230%2F25-40"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Stycznik 4P 40A - Noark Ex9CH (budżet)",
+   "claim": "Noark Ex9CH40 40 230V = 40 A 4NO 230 V AC, 3 moduły; Ex9CH25 40 = 25 A 4NO, 2 mod; Ex9CH25 20 = 25 A 2NO, 1 mod; Ex9CH20 xx = 20 A, 1 mod; Ex9CH63 40 = 63 A 4NO, 3 mod. Konfiguracje 20/11/02 (2P) i 40/31/22 (4P).",
+   "detail": "Najtańsza marka z normalną dystrybucją w PL (ceny Allegro, pamięć): Ex9CH40 40 ok. 85-130 PLN; Ex9CH25 40 ok. 55-85; Ex9CH25 20 ok. 35-55. Numery zamówieniowe 1024xx (np. Ex9CH40 40 230V ~102413) - verify. Trwałość: mech. 1x10^6, elektr. AC-7a 1x10^5 (verify). Dobry kandydat na 'zużywalny' stycznik do F11 (luźny styk) i na liczne styczniki usterek, gdzie cena x ilość ma znaczenie.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Noark+Ex9CH40+40",
+    "https://allegro.pl/listing?string=Noark+Ex9CH25"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Stycznik 4P 40A - Legrand CX3, ETI, F&F, Zamel",
+   "claim": "Legrand CX3: 25 A 4NO 230 V = 412544 (2 mod), 25 A 2NO = 4125xx 1 mod, 40 A 4NO = 4125xx 3 mod (numer verify), są wersje ciche i z przełącznikiem ręcznym. ETI: seria R (R 25-20 1 mod, R 25-40 2 mod, R 40-20 2 mod, R 40-40 3 mod, R 63-40 3 mod) i starsza RBS; cewki 230 V AC i 24 V. F&F (Pabianice): ST25-20/ST25-11 (1 mod), ST25-40/ST25-31/ST25-22 (2 mod), ST40-20 (2 mod), ST40-40/ST40-31/ST40-22 (3 mod), ST63-40 (3 mod); dostępne cewki 24 V AC/DC (np. 'ST25-40 24V'). Zamel: nie ma styczników modułowych 40 A w ofercie (tylko przekaźniki PEM) - low.",
+   "detail": "Ceny Allegro (pamięć): Legrand 412544 ok. 120-180 PLN, 40 A 4NO ok. 220-320; ETI R 25-40 ok. 70-110, R 40-40 ok. 120-170; F&F ST25-40 ok. 55-80, ST40-40 ok. 90-130, ST25-20 ok. 35-50. F&F i ETI mają oficjalne sklepy na Allegro (F&F: 'F&F Filipowski', verify nazwę). F&F ST: trwałość mech. 1x10^6, elektr. AC-1 1x10^5 (verify).",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Legrand+CX3+stycznik+25A+4NO",
+    "https://allegro.pl/listing?string=ETI+stycznik+R+25-40",
+    "https://allegro.pl/listing?string=F%26F+ST25-40",
+    "https://allegro.pl/listing?string=F%26F+ST40-40"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "Stycznik 2P 25A 1 moduł - Finder 22.32 / 22.34",
+   "claim": "Finder 22.32 = stycznik modułowy 2-biegunowy 25 A, 17,5 mm (1 moduł); 22.34 = 4-biegunowy 25 A, 35 mm (2 moduły). Kod cewki: .0.230 = 230 V AC, .0.024 = 24 V DC (bezbrzęczący, do sterowania z Shelly 1/ESP32 przez zasilacz 24 V); końcówka .4320 = 2NO (AgSnO2), .4420 = 1NO+1NC, .4340 = 2NC (dla 22.32); dla 22.34 kody konfiguracji 4NO/2NO+2NC - verify w karcie. Finder 22.44 (40 A 4P) i 22.64 (63 A 4P, 52,5 mm) - verify.",
+   "detail": "Ceny Allegro (pamięć): 22.32.0.230.4320 ok. 70-110 PLN; 22.34.0.230.4340 ok. 130-190 PLN; wersje 24 V DC podobnie. Trwałość elektr. AC-1 przy 25 A rzędu 1x10^5 cykli, mechaniczna 1x10^6 (verify). Zaleta: wskaźnik położenia styków i opcja ręcznego wysterowania w niektórych wersjach.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Finder+22.32.0.230.4320",
+    "https://allegro.pl/listing?string=Finder+22.34"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "Czy stycznik modułowy 230 V AC nadaje się do 'brzęczenia' (F11)",
+   "claim": "Tak, z ograniczeniami: trwałość elektryczna AC-7a (~AC-1) przy prądzie znamionowym wynosi dla wszystkich marek rzędu 1x10^5 cykli (mechaniczna 1x10^6). Pokaz 'luźnego styku' 20-30 cykli daje ok. 3000-5000 pokazów na jednym styczniku 40 A przy 32 A. Katalogowa częstość łączeń to zwykle 60-600 cykli/h (verify per marka) - serie 'brzęczenia' po 20-30 cykli z przerwą kilkuminutową są OK termicznie dla cewki (prąd załączania ok. 10x trzymania), ale nie należy brzęczeć ciągle.",
+   "detail": "Minimalny czas impulsu/przerwy >= 100 ms (czas zadziałania 10-20 ms + drgania styków). Przy 32 A i cos fi ~1 (ładowarka) łuk gaśnie w zerze prądu - obciążenie zgodne z AC-7a. Zalecenie: osobny, tani stycznik 'zużywalny' do F11 (Noark Ex9CH40 ok. 100 PLN lub stycznik przemysłowy Chint NC1-2510/NC1-3210 ok. 45-75 PLN, AC-1 trwałość 1-2x10^6), licznik cykli w firmware, wymiana po ok. 5x10^4 cykli. Alternatywa bez łuku: SSR 40 A (Fotek SSR-40DA ok. 30-50 PLN + radiator; realnie ciągle 20-25 A) lub Carlo Gavazzi RGC1A60D42KKE (42 A, zintegrowany radiator, DIN, ok. 250-400 PLN) - ale SSR nie 'iskrzy', mniejsza wartość pokazowa. Przy sterowaniu cewek z styków Shelly dodać gasik RC (100 R + 100 nF X2) lub warystor S10K275 równolegle do cewki.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Chint+NC1-3210",
+    "https://allegro.pl/listing?string=przeka%C5%BAnik+SSR+40A+radiator+DIN"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Stycznik 2P 40A - uwaga do koncepcji",
+   "claim": "Łączenie równoległe dwóch biegunów stycznika modułowego (jak w 01_koncepcja: '2P 40 A, oba bieguny równolegle') nie jest sankcjonowane przez producentów - styki nie dzielą prądu równo, zamykają się z różnicą ms. Jeden biegun 40 A AC-7a wystarcza na 32 A; drugi biegun użyć jako styk sygnalizacji położenia do ESP32 (24 V) albo wziąć 2P 25 A/1 moduł do torów 1-fazowych 16 A.",
+   "detail": "Pozwala to zmniejszyć liczbę modułów: K_N, K_PE, K_L3, K_INT, K_R, K_Tbyp/boost/buck -> każdy 2P 40 A (2 mod) z jednym biegunem w torze mocy i drugim jako feedback; K_LNa/b -> 2P 25 A (1 mod). Pary krzyżujące (F5 N-PE, F7 L-N) najlepiej na stycznikach z konfiguracją 2NO+2NC (np. Hager ESC428 25 A 2NO+2NC, 2 mod; Schneider A9C20838; Eaton Z-SCH230/25-22; F&F ST25-22; Noark Ex9CH25 22) - jeden stycznik realizuje 'normalnie' i 'zamienione' plus blokadę sprzętową.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=stycznik+modu%C5%82owy+25A+2NO%2B2NC",
+    "https://allegro.pl/listing?string=Hager+ESC428"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Przekaźniki instalacyjne 16 A, 1 moduł (tory małoprądowe F2/F3/F6/F14)",
+   "claim": "F&F PK-1P 230V: 1 styk przełączny 16 A AC-1, cewka 230 V AC (wersja 24 V AC/DC: PK-1P 24V), 1 moduł 17,5 mm. Zamel PEM-01/230: 1 styk przełączny 16 A, 1 moduł; PEM-01/024 na 24 V. Finder 22.22/22.23: przekaźniki 2-biegunowe 20 A, 17,5 mm (konfiguracje 2NO, 2NC, 1NO+1NC; cewka 230 V AC lub 24 V DC) - różnice między 22.22 i 22.23 verify. Eaton Z-R230/SS: 2 styki przełączne 16 A, 1 moduł. Hager EPN510/ERD: przekaźniki 16 A 1 mod (verify).",
+   "detail": "Ceny Allegro (pamięć): F&F PK-1P ok. 25-40 PLN; Zamel PEM-01 ok. 30-45; Finder 22.23 ok. 60-90; Eaton Z-R230/SS ok. 90-130. Dla toru 6,8 kOhm (34 mA), 100 Ohm/PE, 220 kOhm i mostka N-PE (F6, prąd do zadziałania RCD w ms) 16 A spokojnie wystarcza. F&F i Zamel mają oficjalne sklepy Allegro (ZAMEL SA; F&F) - jeden koszyk na przekaźniki + styczniki F&F.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=F%26F+PK-1P+230V",
+    "https://allegro.pl/listing?string=Zamel+PEM-01%2F230",
+    "https://allegro.pl/listing?string=Finder+22.23"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "RCD 4P 40A 30 mA typ A (4 moduły, 72 mm)",
+   "claim": "Kandydaci: Hager CDA440D (4P 40 A 30 mA typ A), Eaton PF7-40/4/003-A, Schneider Acti9 iID A9Z21440 (typ A), Noark Ex9L-N 4P 40A 30mA A, ETI EFI-4 A 40/0.03, Legrand TX3 4P 40A 30mA A (4030xx, verify). Wszystkie 4 moduły. Uwaga: Eaton PF6-40/4/003 i Schneider A9Z11440 to typ AC - do ładowarek EV wymagany min. typ A (norma HD 60364-7-722).",
+   "detail": "Ceny Allegro (pamięć): Noark Ex9L-N A ok. 110-170 PLN; ETI EFI-4 A ok. 150-220; Hager CDA440D ok. 240-330; Eaton PF7-40/4/003-A ok. 250-350; Schneider A9Z21440 ok. 280-400; Legrand TX3 A ok. 230-320. 'Strażnik' selektywny 300 mA typ S 4P 63 A: Noark Ex9L-N 4P 63A 300mA S ok. 180-260, Hager CDS463D/CFA? (verify), Eaton PF7-63/4/03-S-A ok. 400-550, Schneider A9Z2x463-S (verify) ok. 450-650.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Hager+CDA440D",
+    "https://allegro.pl/listing?string=Eaton+PF7-40%2F4%2F003-A",
+    "https://allegro.pl/listing?string=Noark+Ex9L-N+4P+40A+30mA+A",
+    "https://allegro.pl/listing?string=Schneider+A9Z21440"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "RCD 4P 40A 30 mA typ B (4 moduły)",
+   "claim": "Typ B (DC-czuły) 4P 40 A 30 mA: Eaton FRCdM-40/4/003-B, Doepke DFS 4 040-4/0,03-B SK (art. 09134998), Schneider Acti9 iID typ B A9Z6xxxx (verify), Noark Ex9L-B 4P 40A 30mA (verify dostępność), ETI EFI-4 B 40/0.03, Hager typ B (CDB4xx, verify). Wszystkie ok. 4 moduły (Doepke/Eaton 72 mm). Cena wielokrotnie wyższa niż typu A.",
+   "detail": "Ceny Allegro (pamięć): Noark Ex9L-B ok. 600-950 PLN; ETI EFI-4 B ok. 800-1200; Eaton FRCdM-B ok. 1200-1800; Doepke DFS4 B SK ok. 1500-2100; Schneider iID B ok. 1500-2200. Sens w tym projekcie: tylko jeśli stanowisko ma pokazywać 'ładowarka bez RDC-DD wymaga typu B'; wallbox WB500 z RDC-DD 6 mA potrzebuje typu A. Rekomendacja: zaplanować 4 moduły rezerwy, kupić później lub kupić Noark/ETI jako najtańsze.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=wy%C5%82%C4%85cznik+r%C3%B3%C5%BCnicowopr%C4%85dowy+4P+40A+30mA+typ+B",
+    "https://allegro.pl/listing?string=Doepke+DFS+4+040-4%2F0%2C03-B+SK",
+    "https://allegro.pl/listing?string=Eaton+FRCdM-40%2F4%2F003-B"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "RCBO, MCB, rozłącznik główny",
+   "claim": "RCBO 1P+N B16 30 mA typ A (2 moduły): Hager ADA516D ok. 150-210 PLN; Eaton PFL7-16/1N/B/003-A ok. 150-200 (PFL6 = typ AC, unikać); Noark Ex9NL-N/Ex9CBL 1P+N B16 30mA A ok. 70-110 (verify oznaczenie); Schneider iDPN N Vigi A9D3xx16 ok. 200-280. MCB 1P B16 (1 mod): Noark Ex9BN 1P B16 ok. 10-14; Eaton CLS6-B16 ok. 16-24; Hager MBN116 ok. 14-22; ETI ETIMAT 10 B16 ok. 14-22; Schneider iC60N A9F03116 ok. 40-55. MCB 3P C32 (3 mod): Noark Ex9BN 3P C32 ok. 40-60; Hager MBN332 ok. 65-90; Eaton CLS6-C32/3 ok. 75-100; ETI ETIMAT 10 3P C32 ok. 65-90; Schneider iC60N A9F04332 ok. 160-220. Rozłącznik 4P 63 A (4 mod): Noark Ex9I40 4P 63A ok. 45-65; ETI SV463 ok. 55-75; Hager SBN463 ok. 60-90; Eaton IS-63/4 ok. 80-120; Schneider iSW A9S65463 ok. 120-170.",
+   "detail": "Zalecenie spójności: wybrać jednego producenta dla MCB/RCD/rozłącznika/styczników (Hager albo Eaton = premium, Noark = budżet, oba z pełną linią), bo wtedy pasują mostki grzebieniowe (szyny łączeniowe 10/16 mm2, 1P/3P, ok. 15-35 PLN/m) i mają spójną głębokość. Dla F17 (wymienny MCB B16 vs C32) przewidzieć 3 moduły 'slotu' z zaciskami mostkowanymi.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Hager+ADA516D",
+    "https://allegro.pl/listing?string=Noark+Ex9BN+3P+C32",
+    "https://allegro.pl/listing?string=Hager+SBN463",
+    "https://allegro.pl/listing?string=Eaton+IS-63%2F4"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "SPD typ 2 (4 moduły)",
+   "claim": "Ogranicznik przepięć T2 3P+N / 4+0, Uc 275-280 V, In 20 kA, Imax 40 kA, 4 moduły (72 mm): Noark Ex9UE2 40 4P 275 ok. 180-260 PLN; ETI ETITEC M T2 275/20 4+0 ok. 230-330; Eaton SPCT2-280/4 ok. 380-500; Hager SPN440D (verify literę) ok. 420-560; Schneider iPRD40r 3P+N A9L16482 ok. 550-800; Dehn DEHNguard M TNS 275 FM ok. 800-1000. Wkładki wymienne; wersja 'FM/R' ma styk sygnalizacyjny (do ESP32).",
+   "detail": "Zasilić SPD przez własny MCB/rozłącznik wg DTR (zwykle C32-C40 3P) lub z zacisków przed rozłącznikiem głównym; dodać 3-4 moduły. Dla pokazu 'brak SPD' wystarczy rozłącznik 4P przed SPD (Noark Ex9I40 4P 40A ok. 40 PLN).",
+   "source_urls": [
+    "https://allegro.pl/listing?string=ogranicznik+przepi%C4%99%C4%87+typ+2+4P+40kA",
+    "https://allegro.pl/listing?string=Eaton+SPCT2-280%2F4",
+    "https://allegro.pl/listing?string=Noark+Ex9UE2+40+4P"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Złączki szynowe TH35 6 mm2 i 10 mm2 (sprężynowe)",
+   "claim": "WAGO TOPJOB S: 2006-1201 (6 mm2 nominalnie, zakres 0,75-10 mm2, 41 A, szer. ok. 7,5-8 mm), 2010-1201 (10 mm2 nom., zakres 0,5-16 mm2, 57 A, szer. 10 mm), 2016-1201 (16 mm2 nom., 0,5-25 mm2, 76 A, szer. 12 mm). Końcówka -1201 = szczelina na wkrętak, -1301 = przycisk, -1401 = dźwigienka; PE (żółto-zielona, z stykiem do szyny): -1207 / -1307 / -1407. Phoenix Contact UT 6 (3044131): 6 mm2, 0,2-10 mm2, 41 A, szer. 8,2 mm; UT 10 (3044160): 10 mm2, 0,5-16 mm2, 57 A, szer. 10,2 mm; UT 6-PE 3044144, UT 10-PE 3044173; UT 16 (3044186) 76 A, 12,2 mm. Weidmüller WDU 6 (1020200000), WDU 10 (1020300000), WPE 6 (1010200000), WPE 10 (1010300000).",
+   "detail": "Ceny Allegro za sztukę (pamięć): WAGO 2006-1201 ok. 6-10 PLN, 2010-1201 ok. 10-15, 2016-1201 ok. 13-19, PE ok. +50-80 %; Phoenix UT 6 ok. 5-9, UT 10 ok. 9-14, UT 6-PE ok. 15-25; Weidmüller podobnie do Phoenix. Do każdego rzędu: płytka końcowa (WAGO 2006-1291 / Phoenix D-UT 6, ok. 2-4 PLN) i blokady końcowe (WAGO 249-117 ok. 3-5 PLN). Przewody wejściowe 10 mm2 -> WAGO 2010/2016 lub UT 10; odpływ 6 mm2 -> 2006/UT 6. Tani polski zamiennik śrubowy na jeden koszyk z elektro-hurtowni: Simet ZJU-6 (ok. 2-3 PLN), ZJU-10 (ok. 3-4 PLN), ZJU-16, oraz Pawbol/Elektro-Plast.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=WAGO+2006-1201",
+    "https://allegro.pl/listing?string=WAGO+2016-1201",
+    "https://allegro.pl/listing?string=Phoenix+UT+6+3044131",
+    "https://allegro.pl/listing?string=z%C5%82%C4%85czka+szynowa+ZJU-6"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Bloki rozdzielcze 125 A, listwy N/PE",
+   "claim": "Blok rozdzielczy na TH35 4P 125 A, 7 otworów na biegun (typowo 4x 4-10 mm2 + 2x 16 mm2 + 1x 25 mm2 lub 2x25+5x10): Elektro-Plast Opatówek, Pawbol, Simet, F&F (BR-), Legrand 004880 (4P 125 A), Hager K.. Szerokość ok. 4-5 modułów (72-90 mm). Wersja 1P 125 A 7 otworów (ok. 1 mod, 18 mm) pozwala zrobić osobne szyny L1/L2/L3/N/PE. Listwa zaciskowa N i PE na szynę (np. 7x16 + 1x25 mm2 lub 12x4-16 mm2) - do przyłączenia wielu PE/N.",
+   "detail": "Ceny Allegro (pamięć): blok 4P 125 A ok. 25-50 PLN (polskie marki), Legrand ok. 60-90; blok 1P 125 A ok. 8-14 PLN; listwa N/PE 7x16+1x25 ok. 8-15 PLN; złączka PE/N na szynę 'KSN' ok. 1-2 PLN/szt. W tym projekcie potrzebne: osobny blok N 'sieciowy' i N 'wyjściowy' oraz PE 'sieciowy' i PE 'wyjściowy' (bo PE/N wyjścia są przełączane) - minimum 4 bloki 1P 125 A lub 2 bloki 4P.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=blok+rozdzielczy+125A+4P+7+otwor%C3%B3w",
+    "https://allegro.pl/listing?string=blok+rozdzielczy+1P+125A",
+    "https://allegro.pl/listing?string=listwa+zaciskowa+N+PE+na+szyn%C4%99"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Transformator toroidalny 230 V / 2x24 V - wymiarowanie",
+   "claim": "Uzwojenie wtórne pracuje w szereg z L1 i przenosi CAŁY prąd obciążenia, więc moc transformatora = Usec x Iload: 2x24 V przy 16 A = 768 VA (-> 800 VA), przy 32 A = 1536 VA (-> 1500 VA, ok. fi 180 x 80 mm, 10-12 kg). Standardowy toroid 500 VA 2x24 V daje tylko 2x10,4 A, 800 VA = 2x16,7 A, 1000 VA = 2x20,8 A. Alternatywa dla 32 A: 1000 VA 2x12 V = 2x41,7 A (korekcja +/-12 V lub +/-24 V, czyli 206/218/242/254 V - mieści się w sensownych progach).",
+   "detail": "Standardowe moce katalogowe PL: 300, 400, 500, 630, 800, 1000, 1200, 1500 VA. Orientacyjne wymiary/wagi (Indel TST, +/-10 %): 400 VA fi 125 x 55 mm, 3,4 kg; 500 VA fi 136 x 60, 4,1 kg; 630 VA fi 142 x 65, 4,9 kg; 800 VA fi 152 x 70, 6,0 kg; 1000 VA fi 165 x 70, 7,3 kg; 1500 VA fi 180 x 80, 10,5 kg. Montaż: śruba centralna M8 + podkładki gumowe i metalowe (w komplecie u większości sprzedawców). Zabezpieczenie pierwotnego: MCB B6/B10 1P + w serii NTC lub softstart przy >=800 VA (prąd załączania toroidu 20-50x In).",
+   "source_urls": [
+    "https://allegro.pl/listing?string=transformator+toroidalny+2x24V+800VA",
+    "https://allegro.pl/listing?string=transformator+toroidalny+2x12V+1000VA"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Transformator toroidalny - producenci i ceny Allegro",
+   "claim": "Indel S.A. (Bielsko-Biała) seria TST xxx/yyy (sufiks katalogowy zależny od napięć, verify w ofercie): 230 V / 2x24 V dostępne w 300-1000 VA; dystrybutorzy sprzedają na Allegro. Breve Tufvassons (Łódź) seria TTS/TTS-Z (ekranowane, 'TTS 500/Z 230/2x24V') - droższe, pełna karta katalogowa. Telto (Toroidy TELTO, Ożarów Maz.) seria TTO - sprzedaż na Allegro. Nawijacze na zamówienie (Allegro: 'transformator toroidalny na zamówienie', Toroidy Lachowski/toroidy.pl, Tronic, Trafo-Elektro i inni) wykonują niestandardowe 2x24 V @ 32 A lub 2x12 V @ 42 A w 2-3 tygodnie.",
+   "detail": "Ceny Allegro brutto (pamięć 2024/25): 400 VA ok. 220-290 PLN; 500 VA ok. 260-350; 630 VA ok. 300-390; 800 VA ok. 360-470; 1000 VA ok. 420-550; 1500 VA ok. 600-800; Breve TTS-Z +30-50 %; wykonanie na zamówienie 1200-1500 VA ok. 600-950 PLN. Numery katalogowe TST nie zostały potwierdzone - szukać frazą 'Indel TST 800 2x24V'.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Indel+TST+2x24V",
+    "https://allegro.pl/listing?string=Breve+TTS+2x24V",
+    "https://allegro.pl/listing?string=Telto+transformator+toroidalny+2x24V",
+    "https://allegro.pl/listing?string=transformator+toroidalny+na+zam%C3%B3wienie"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "Rezystory mocy w obudowie Al (RX24 / Arcol HS)",
+   "claim": "Rezystory drutowe w aluminiowej obudowie radiatorowej, typ 'RX24' (import) lub Arcol HS: moce 50/100/200/300/500 W, wartości 0,5 Ohm, 1 Ohm, 100 Ohm itd. Orientacyjne gabaryty: 50 W ok. 50 x 30 x 16 mm; 100 W ok. 70-97 x 40-60 x 30 mm; 200 W ok. 165 x 60 x 30 mm; 300 W ok. 215 x 60 x 30 mm; 500 W ok. 215 x 60 x 50 mm (low confidence, verify w ofercie). KLUCZOWE: moc znamionowa obowiązuje tylko na radiatorze (HS100: 100 W przy radiatorze ok. 0,5 K/W, w wolnym powietrzu ok. 40-50 %).",
+   "detail": "Ceny Allegro (pamięć): RX24 100 W 1 Ohm ok. 15-28 PLN; 200 W 0,5/1 Ohm ok. 30-50; 300 W ok. 45-75; 500 W ok. 70-110; Arcol HS100 ok. 70-110, HS200 ok. 130-190, HS300 ok. 200-280; 100 Ohm 50 W ok. 10-18; 6,8 kOhm 10 W (ceramiczny 'SQP'/RX27 lub RX24-10W) ok. 3-9; 220 kOhm 1-2 W ok. 1-2. Dla F12 (0,5 Ohm; 32 A = 512 W, 16 A = 128 W): 2 x 1 Ohm/300 W równolegle na wspólnym radiatorze lub 1 x 0,5 Ohm/500 W + radiator profil Al ok. 150-200 x 100 x 40 mm (ok. 30-70 PLN) + wentylator 120 mm 230 V AC ok. 30-50 PLN, limit 30-60 s w firmware. Tolerancja 5 %, do temperatury obudowy 200 C.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=rezystor+mocy+aluminiowy+300W+1+ohm",
+    "https://allegro.pl/listing?string=rezystor+mocy+100W+1R+aluminiowy",
+    "https://allegro.pl/listing?string=rezystor+6.8k+10W",
+    "https://allegro.pl/listing?string=radiator+aluminiowy+150mm+profil"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Wyłączniki termiczne KSD301 i akcesoria termiczne",
+   "claim": "KSD301 85 C NC (bimetal, 250 V AC / 10 A, obudowa metalowa z uchem M4, 2 wyprowadzenia): ok. 3-6 PLN/szt, paczki 5 szt. ok. 12-18 PLN; dostępne progi 40-150 C co 5 C, wersje NC i NO, warianty 16 A. KSD9700 (mniejszy, 5 A) ok. 2-4 PLN. Montaż: przykręcić do radiatora rezystora/płyty, włączyć styk NC w szereg z cewkami styczników usterki F12 (K_R) i wentylatora przez przekaźnik; dodatkowo termostat 60 C NO do startu wentylatora.",
+   "detail": "Alternatywa na szynę: termostat DIN do szaf (np. Alfa/'termostat panelowy KTO 011 NC / KTS 011 NO', 0-60 C, 1 moduł, ok. 20-40 PLN) do sterowania wentylatorem obudowy. Czujnik do ESP32: NTC 10k lub DS18B20 w metalowej tulei na radiatorze (ok. 5-10 PLN).",
+   "source_urls": [
+    "https://allegro.pl/listing?string=KSD301+85C+NC+10A",
+    "https://allegro.pl/listing?string=termostat+do+szaf+sterowniczych+DIN+KTO+011"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Osprzęt wyjściowy: gniazda CEE 32 A, Schuko IP44, Type 2",
+   "claim": "Gniazdo stałe (tablicowe/natynkowe) CEE 32 A 5P 400 V IP44: PCE 125-6 ok. 50-80 PLN; Bals ok. 60-90; Mennekes 1242/1250 ok. 120-190; polskie Elektro-Plast Opatówek / Pawbol / Elektromet ok. 30-55 PLN. Zestaw 'gniazdo 32 A 5P z wyłącznikiem 0-1 i blokadą' ok. 180-300 PLN. Gniazdo Schuko 16 A natynkowe hermetyczne IP44 z klapką: Elektro-Plast/Pawbol/Kanlux ok. 12-25 PLN; Legrand Plexo ok. 40-60. Gniazdo Type 2 32 A 3-faz. (z klapką, do montażu w panelu, Duosida/Besen) ok. 150-350 PLN; Phoenix Contact EV-T2M3SE12-3AC32A ok. 500-700 - potrzebne tylko, jeśli stanowisko ma zasilać przewód Type 2 (np. tester AmpCheck), dla wallboxa wystarczy CEE 32 A lub puszka zaciskowa.",
+   "detail": "Gniazdo CEE 32 A otwór montażowy ok. 70 x 70 mm (4 śruby), wysokość ok. 100-110 mm; przewód 5x6 mm2 YKY fi ok. 17-19 mm -> dławnica M25 (13-18) lub M32 (18-25). Zasilanie 5x10 mm2 fi ok. 20-24 mm -> M32 lub M40.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=gniazdo+sta%C5%82e+32A+5P+400V+IP44",
+    "https://allegro.pl/listing?string=PCE+125-6",
+    "https://allegro.pl/listing?string=gniazdo+natynkowe+hermetyczne+16A+IP44",
+    "https://allegro.pl/listing?string=gniazdo+Type+2+32A+panelowe"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Dławnice kablowe M25 / M32 / M40",
+   "claim": "Dławnice poliamidowe IP68 z nakrętką: M25 (kabel fi 13-18 mm) ok. 2-5 PLN/szt; M32 (fi 18-25 mm) ok. 4-8 PLN; M40 (fi 22-32 mm) ok. 6-12 PLN; M20 (fi 6-12 mm, kable przekładników DLB, sterowanie, LAN) ok. 1,5-3 PLN. Paczki 5-10 szt. tańsze. Metalowe (mosiądz nikl.) 2-3x drożej.",
+   "detail": "Do przekładników DLB (3 cienkie kable) jedna dławnica M25 z wkładką wielootworową (3x fi 5-6 mm) ok. 8-15 PLN. Do otworów w blasze: wiertło stopniowe lub wycinak 25,4/32,5 mm.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=d%C5%82awnica+kablowa+M32+IP68",
+    "https://allegro.pl/listing?string=d%C5%82awnica+M25+IP68+poliamid"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Osprzęt drzwiowy 22 mm: kluczyk, E-STOP, lampki",
+   "claim": "Przełącznik kluczykowy 22 mm 2-pozycyjny (kluczyk wyjmowany w 0), 1NO: import (XB2-BG21 klon) ok. 15-30 PLN; Spamel seria ST22 (polski, oficjalny sklep Allegro) ok. 40-70; Eaton M22-WRS + M22-K10 ok. 130-180; Schneider XB4BG21 ok. 140-200. Grzybek E-STOP 22 mm fi 40 z ryglowaniem i odblokowaniem przez obrót, 1NC+1NO: import (XB2-BS542/LAY5) ok. 15-30 PLN; Spamel ST22-B ok. 45-80; Eaton M22-PV + M22-K01 ok. 100-140; Schneider XB4BS8442 ok. 150-220. Lampki LED 22 mm 230 V AC: AD16-22DS / AD22-22DS ok. 4-9 PLN (zielona/czerwona/żółta/biała); Spamel KLP-22 ok. 25-40; Eaton M22-L + M22-LED230 ok. 70-100.",
+   "detail": "Otwór montażowy 22,3 mm, grubość blachy do 6 mm; głębokość za płytą ok. 40-60 mm (E-STOP z 2 blokami styków ok. 60 mm). E-STOP powinien przerywać wspólny obwód cewek 230 V (lub 24 V) sprzętowo, a drugi styk zgłaszać stan do ESP32. Przy drzwiach transparentnych lampki można zastąpić diodami stanu na stycznikach (Finder/Hager mają wskaźniki położenia).",
+   "source_urls": [
+    "https://allegro.pl/listing?string=prze%C5%82%C4%85cznik+kluczykowy+22mm+2+pozycje+1NO",
+    "https://allegro.pl/listing?string=przycisk+bezpiecze%C5%84stwa+grzybek+22mm+NC+NO",
+    "https://allegro.pl/listing?string=Spamel+ST22+kluczykowy",
+    "https://allegro.pl/listing?string=lampka+kontrolna+22mm+230V+LED+AD16-22DS"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Para styczników nawrotnych 3P 32 A (F9, kolejność faz) - nie modułowe",
+   "claim": "Najtaniej: 2 x Chint NC1-3210 230V (32 A AC-3 / 50 A AC-1, 1NO pomocniczy) ok. 55-80 PLN/szt + blokada mechaniczna Chint F4-xx/NC1 ok. 25-45 PLN -> zestaw ok. 150-210 PLN; gabaryt pary z blokadą ok. 100 x 85 x 95 mm, montaż na TH35 lub śrubami. Premium: Schneider LC1D32P7 ok. 300-420/szt + LAD9R1 ok. 100-150 (zestaw nawrotny LC2D32P7 ok. 800-1100 PLN); Eaton DILM32-10(230V50HZ) ok. 250-350/szt + DILM32-XRL; Siemens 3RT2027-1AP00 ok. 300-380/szt; Lovato BF3210A230 ok. 150-200/szt.",
+   "detail": "Styczniki przemysłowe mają trwałość elektryczną AC-1 rzędu 1-2x10^6 cykli (10-20x więcej niż modułowe) i wyższą dopuszczalną częstość łączeń (zwykle 600-1200 cykli/h) - to lepszy wybór także dla K_INT (F11). Cewka 230 V AC: załączanie ok. 70 VA (0,3 A), trzymanie ok. 8 VA - OK dla przekaźników Shelly, dodać gasik RC. Blokady elektryczne: styki NC pomocnicze (Chint F4-11 blok 1NO+1NC ok. 10-15 PLN).",
+   "source_urls": [
+    "https://allegro.pl/listing?string=Chint+NC1-3210+230V",
+    "https://allegro.pl/listing?string=stycznik+nawrotny+32A+blokada+mechaniczna",
+    "https://allegro.pl/listing?string=Schneider+LC1D32P7"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Zasilanie cewek: 230 V AC vs 24 V DC",
+   "claim": "Opcja 24 V DC dla wszystkich cewek (styczniki F&F 'ST.. 24V' AC/DC, Finder 22.32/22.34 .0.024 DC, przekaźniki PK-1P 24V / PEM-01/024, Chint NC1 24V DC lub 24 V AC) pozwala sterować z Shelly Plus 1 / Shelly 1 (styk bezpotencjałowy) lub bezpośrednio z modułów przekaźnikowych ESP32, eliminuje brzęczenie i 230 V na drzwiach HMI. Koszt: zasilacz DIN 24 V / 5-10 A (Mean Well HDR-150-24 ok. 150-200 PLN, 150 W, ok. 5 modułów; MDR-60-24 ok. 110-150) + ewentualnie dublowanie dla E-STOP.",
+   "detail": "Pobór: stycznik modułowy 24 V DC trzymanie ok. 2-3 W, stycznik przemysłowy 32 A DC ok. 5-7 W; przy 12 cewkach jednocześnie ok. 40-80 W -> zasilacz 150 W. Jeśli Shelly w magazynie to głównie Pro 4PM / 1PM (styki 16 A przełączające 230 V), zostać przy 230 V AC z gasikami - prostsze okablowanie i pomiar mocy cewki jako potwierdzenie zadziałania.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=F%26F+ST25-40+24V",
+    "https://allegro.pl/listing?string=Mean+Well+HDR-150-24",
+    "https://allegro.pl/listing?string=Finder+22.32.0.024.4320"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Sprzedawcy Allegro z szeroką ofertą (jeden koszyk)",
+   "claim": "Hurtownie elektrotechniczne prowadzące oficjalne sklepy na Allegro i mające zarówno aparaturę (Eaton/Hager/Schneider/Legrand/Noark/ETI), styczniki, złączki WAGO/Phoenix, bloki rozdzielcze, obudowy, gniazda CEE i dławnice: TIM S.A. (sklep 'TIM_SA' / tim.pl), Onninen, Grodno S.A., EL12, Kaczmarek Electric, Alfa Elektro/Elektroskandia-Rexel (dostępność na Allegro verify). Producenci z oficjalnymi sklepami Allegro: F&F (styczniki ST, przekaźniki PK, zasilacze), Zamel (PEM), Spamel (osprzęt 22 mm), Elektro-Plast Opatówek (gniazda, bloki rozdzielcze, obudowy), Noark (przez dystrybutorów np. 'elektro-hurt', verify).",
+   "detail": "Nazwy kont Allegro należy potwierdzić wyszukując na allegro.pl/uzytkownik/<nazwa>; nie udało się ich zweryfikować w tym przebiegu. Praktycznie: koszyk 1 (aparatura + złączki + bloki + CEE + dławnice) u jednej hurtowni (TIM/Onninen/Grodno), koszyk 2 (toroid) u Indel/Telto/nawijacza, koszyk 3 (rezystory, KSD301, lampki 22 mm, kluczyk, E-STOP, SSR) u importera elektroniki (Botland ma sklep Allegro; także Kamami, Maritex, liczni importerzy), koszyk 4 (Chint NC1 + blokada) u dystrybutora Chint.",
+   "source_urls": [
+    "https://allegro.pl/uzytkownik/TIM_SA",
+    "https://allegro.pl/listing?string=hurtownia+elektryczna+stycznik+modu%C5%82owy+Hager",
+    "https://allegro.pl/listing?string=F%26F+Filipowski+sklep"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "Macierz części - podsumowanie ilościowe (styczniki wg koncepcji 01)",
+   "claim": "Przy zachowaniu koncepcji z 01_koncepcja (K_N, K_PE, K_L3, K_INT, K_R, K_Tbyp, K_Tboost, K_Tbuck = 8 x 2P 40 A po 2 mod = 16 mod; K_NPEa/b -> 1 x 2NO+2NC 25 A lub 40 A = 2-3 mod; K_LNa/b -> 1 x 2NO+2NC 25 A = 2 mod; K_RCDin/byp 2 x 4P 40 A = 6 mod; przekaźniki 16 A x 4 = 4 mod) wychodzi ok. 30-31 modułów styczników/przekaźników, czyli zgodnie z szacunkiem 28 w 02_dobor_obudowy.",
+   "detail": "Koszt orientacyjny (Allegro, pamięć): wariant Noark/F&F ok. 8 x 90 + 2 x 70 + 2 x 110 + 4 x 35 = ok. 1200-1400 PLN; wariant Hager/Eaton ok. 8 x 150 + 2 x 130 + 2 x 230 + 4 x 90 = ok. 2300-2700 PLN; wariant Schneider podobny do Hager. Para nawrotna Chint +200 PLN. Zabezpieczenia (rozłącznik 63 A, RCD 300 mA S, RCD 30 mA A, SPD T2, MCB 3P C32, 4 x MCB 1P): Noark/ETI ok. 650-900 PLN; Hager/Eaton ok. 1400-1900 PLN. Złączki/bloki/listwy: ok. 250-450 PLN. Toroid 800 VA 2x24 V ok. 360-470 PLN (lub 1000 VA 2x12 V ok. 420-550). Rezystory + radiator + wentylator + KSD301: ok. 150-250 PLN. CEE 32 A + Schuko + dławnice: ok. 80-150 PLN. Osprzęt 22 mm (kluczyk, E-STOP, 3 lampki): import ok. 60-90 PLN, Spamel ok. 150-250 PLN.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=stycznik+modu%C5%82owy+40A+2NO",
+    "https://allegro.pl/listing?string=stycznik+modu%C5%82owy+2NO+2NC+25A"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "recommendations": [
+  "Zweryfikować w kolejnym przebiegu (gdy budżet WebSearch będzie dostępny) w pierwszej kolejności: (1) aktualne ceny Allegro i numery katalogowe Noark Ex9CH40 40 / Ex9CH25 22, Hager ESC440/ESC428/ESC440S, Eaton Z-SCH230/40-40 i Z-SCH230/1/25-40 (z przełącznikiem ręcznym), Finder 22.34 kody konfiguracji styków; (2) karty katalogowe z trwałością elektryczną AC-7a i maks. częstością łączeń (Hager ESC, Noark Ex9CH, F&F ST); (3) oferty Indel TST 800 VA 2x24 V i 1000 VA 2x12 V (model, wymiary, waga, cena); (4) nazwy kont Allegro hurtowni TIM/Onninen/Grodno/EL12.",
+  "Wybrać JEDNĄ rodzinę aparatury DIN dla całej rozdzielnicy (rekomendacja: Noark jako budżet z pełną gamą - styczniki Ex9CH, RCD Ex9L-N typ A i B, MCB Ex9BN, rozłącznik Ex9I40, SPD Ex9UE2 - lub Hager/Eaton jako premium), żeby mostki grzebieniowe i głębokości pasowały, a większość koszyka była u jednej hurtowni.",
+  "Do torów przełączanych nie łączyć równolegle biegunów stycznika; użyć jednego bieguna 40 A na tor mocy, drugi biegun jako feedback położenia do ESP32. Pary krzyżujące N-PE (F5) i L-N (F7) zrealizować na pojedynczych stycznikach 2NO+2NC (Hager ESC428 / Eaton Z-SCH230/25-22 / Noark Ex9CH25 22 / F&F ST25-22) - mniej modułów i blokada 'never both' wbudowana mechanicznie.",
+  "Do F11 (luźny styk) i F9 (kolejność faz/stycznik główny) użyć styczników przemysłowych AC-3 (Chint NC1-3210 lub NC1-2510, ok. 50-80 PLN) zamiast modułowych: trwałość AC-1 1-2 mln cykli i wyższa częstość łączeń; traktować K_INT jako element zużywalny z licznikiem cykli w firmware, impulsy >= 100 ms, serie <= 30 cykli z przerwą.",
+  "Transformator F10 dobrać wg prądu obciążenia, nie wg mocy ładowarki: 800 VA 2x24 V (2x16,7 A) wystarcza tylko dla testów 1-fazowych 16 A; dla 32 A wybrać 1000 VA 2x12 V (2x41,7 A, korekcja +/-12/+/-24 V) albo nawinięcie na zamówienie 2x24 V @ 32 A (ok. 1500 VA, 10-12 kg). Dodać softstart/NTC na pierwotnym i MCB B6-B10.",
+  "Rezystor F12: 2 x 1 Ohm / 300 W (RX24 lub Arcol HS300) równolegle na wspólnym radiatorze profilowym ok. 200 x 100 x 40 mm z wentylatorem 120 mm i KSD301 85 C NC w obwodzie cewki K_R; w firmware limit 30-60 s przy 32 A (512 W), bez limitu przy 16 A (128 W) poza nadzorem termicznym.",
+  "Przy sterowaniu cewek 230 V AC ze styków Shelly dodać gasik RC (100 R + 100 nF X2) lub warystor S10K275 równolegle do każdej cewki; prąd cewek (<0,3 A) jest pomijalny dla przekaźników 16 A. Jeśli posiadane Shelly to głównie Shelly 1/Plus 1 (styk bezpotencjałowy), rozważyć architekturę 24 V DC (F&F ST 24V, Finder .0.024, PK-1P 24V, zasilacz Mean Well HDR-150-24).",
+  "Zaplanować rezerwę 4 modułów na RCD typu B (Noark Ex9L-B / ETI EFI-4 B ok. 600-1200 PLN) i 3-4 modułów na SPD T2 + jego zabezpieczenie; kupić później, jeśli budżet etapu 3 ma być zamknięty.",
+  "Na drzwi wybrać osprzęt 22 mm jednej marki: budżet import (kluczyk + E-STOP + 3 lampki ok. 60-90 PLN) lub Spamel ST22 (polski, oficjalny sklep Allegro, ok. 150-250 PLN, lepsza powtarzalność i certyfikaty)."
+ ],
+ "open_questions_for_user": [
+  "Jakie dokładnie modele Shelly są w magazynie (Pro 4PM / Pro 1PM / Pro 3 / Plus 1 / Plus 1PM / Pro 3EM / Plus 2PM)? Od tego zależy, czy cewki styczników mają być 230 V AC (styki Shelly z pomiarem mocy) czy 24 V DC (styk bezpotencjałowy Shelly 1) i ile wyjść mamy bez dokupowania.",
+  "Czy symulacja pod/przepięcia (F10) ma działać przy pełnym obciążeniu 32 A, czy wystarczy przy 16 A (1-faza)? Decyduje o toroidzie: 800 VA 2x24 V (ok. 400 PLN, 6 kg) vs 1000 VA 2x12 V lub 1500 VA na zamówienie (ok. 600-950 PLN, 10-12 kg).",
+  "Poziom marki aparatury: budżet (Noark/ETI/F&F/Chint, aparatura ok. 2000-2500 PLN) czy premium (Hager/Eaton/Schneider, ok. 4000-5000 PLN)? Cena 'drugorzędna', ale różnica jest 2x przy identycznej funkcji.",
+  "Przekrój i rodzaj przewodu zasilającego rozdzielnicę (5x10 mm2? 5x6 mm2?) oraz zabezpieczenie przed nią - wpływa na złączki wejściowe (WAGO 2010/2016 vs 2006) i dławnicę (M32 vs M40).",
+  "Czy wyjście do ładowarki ma być gniazdem CEE 32 A 5P (wygoda podłączania różnych DUT), czy zaciskami/puszką na stałe? Czy potrzebne gniazdo Type 2 (np. do AmpCheck)?",
+  "Czy RCD typu B ma być kupione teraz (600-2000 PLN) czy tylko zarezerwowane miejsce 4 modułów?"
+ ],
+ "gaps": [
+  "Brak jakiejkolwiek weryfikacji na żywo: budżet WebSearch tej tury był wyczerpany przed pierwszym zapytaniem, a wszystkie 23 próby WebFetch (producenci, hurtownie, dystrybutorzy katalogowi, Ceneo, Allegro) zakończyły się EGRESS_BLOCKED. Wszystkie ceny PLN to przedziały z wiedzy modelu (2024/2025), rozrzut realny +/-30 %.",
+  "Numery katalogowe oznaczone 'verify' (Noark 1024xx, Legrand 4125xx dla 40 A, ETI R xx-xx, Finder 22.34 kody styków, Finder 22.44, Hager ESC080/ESC..S, Eaton Z-SCH230/1/.., Schneider wersje silent i 24 V, Hager/Schneider RCD typ B, Hager SPN440x) nie zostały potwierdzone.",
+  "Trwałość elektryczna AC-7a (ok. 1x10^5) i maks. częstość łączeń styczników modułowych podane jako wartości typowe dla klasy, nie z kart katalogowych konkretnych modeli.",
+  "Indel TST: nie potwierdzono sufiksów katalogowych dla wariantów 2x24 V / 2x12 V ani aktualnej oferty Allegro; wymiary i wagi toroidów orientacyjne (+/-10 %).",
+  "Wymiary rezystorów RX24/Arcol HS podane w przybliżeniu (low confidence).",
+  "Nazwy kont Allegro hurtowni (TIM_SA, Onninen, Grodno, EL12, Kaczmarek Electric) i producentów (F&F, Zamel, Spamel, Elektro-Plast) nie zostały zweryfikowane; URL allegro.pl/uzytkownik/TIM_SA jest przykładem do sprawdzenia.",
+  "Nie zbadano wyłączników RCBO 3P+N 32 A typ A ani kompaktowych RCBO 1-modułowych.",
+  "Nie zbadano modeli Shelly (poza zakresem tej soczewki) - potrzebna lista posiadanych urządzeń od użytkownika."
+ ]
+}

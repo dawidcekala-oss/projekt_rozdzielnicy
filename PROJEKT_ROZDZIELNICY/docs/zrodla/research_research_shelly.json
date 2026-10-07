@@ -1,0 +1,417 @@
+{
+ "findings": [
+  {
+   "topic": "Shelly Pro 4PM - electrical/mechanical",
+   "claim": "Pro 4PM is a single-phase 4-channel DIN relay with per-channel power metering; outputs are NOT potential-free (all 4 outputs fed from a common L).",
+   "detail": "4 relays, 16 A per channel, 40 A total device max, 110-240 VAC supply, <3 W; size 96x53x59 mm (= 3 DIN modules, 53 mm) with 1.8 in colour display + nav keys; LAN (RJ45) + Wi-Fi + BT. Terminals: N, L (V1 had 4 bridged L terminals, V2 SPSW-104PE16EU has 1 N + 1 L + 5 individual screw terminals), O1-O4, S1-S4 switch inputs. Shelly community confirms multiple L terminals are internally connected and the device must not be used across more than one phase/breaker. Power-metering devices expose overpower/overvoltage/overcurrent protection (Switch config power_limit, voltage_limit max 280 V, undervoltage_limit 0 = disabled, current_limit) that must be set to limits or disabled for fault-simulation use.",
+   "source_urls": [
+    "https://www.shelly.com/blogs/documentation/shelly-pro-4pm",
+    "https://us.shelly.com/blogs/documentation/shelly-pro-4pm-v2",
+    "https://community.shelly.cloud/topic/72-clarification-of-the-purposes-for-the-multiple-%E2%80%9Cl%E2%80%9D-terminals-on-shelly-1pm-25-and-shelly-4-pro/",
+    "https://shellyparts.de/en/products/shelly-pro-4pm",
+    "https://shelly-api-docs.shelly.cloud/gen2/0.14/ComponentsAndServices/Switch/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Pro 3 - electrical/mechanical",
+   "claim": "Pro 3 is the only Pro relay with three fully independent potential-free (dry) 16 A channels, usable on three different phases.",
+   "detail": "3 relays, 16 A AC per channel, 48 A total, max switching voltage 240 VAC / 30 VDC, supply 110-240 VAC, <3 W; size 96x53x59 mm (3 DIN modules), LAN + Wi-Fi + BT, display; 3 switch/button inputs S1-S3 on screw terminals. Marketed as 3-phase/3 independent circuits relay. 16 A limit means 32 A/phase EV current needs an external contactor; Pro 3 then drives 3 contactor coils or interrupts individual phases directly for <=16 A loads.",
+   "source_urls": [
+    "https://shelly.com/en/products/shop/shelly-pro-3",
+    "https://us.shelly.com/blogs/documentation/pro-3",
+    "https://shellyparts.de/en/products/shelly-pro-3",
+    "https://www.domadoo.fr/en/objets-communicants/6357-shelly-3-channels-din-rail-relay-switch-with-wi-fi-dry-contact-3800235268094.html?domid=14"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Pro 1 / Pro 1PM / Pro 2 / Pro 2PM",
+   "claim": "Pro 1 and Pro 2 have dry contacts; Pro 1PM does not (official spec 'Dry contacts: No'); Pro 2PM most likely does not either; all are 1 DIN module wide with LAN.",
+   "detail": "Common housing 94x19x69 mm (1 module, 19 mm), DIN rail, LAN+Wi-Fi+BT, 110-240 VAC supply, <3 W. Pro 1: 1 relay 16 A, dry contacts, inputs SW1/SW2, max switching 240 VAC. Pro 1PM: 1 relay 16 A, power metering, Dry contacts: No, 65 g. Pro 2: 2 relays 16 A each / 25 A total, potential-free outputs, 'two-phase' (channels may sit on different phases). Pro 2PM: 2 relays 16 A each / 25 A total, metering per channel; one retailer copy says 'potential-free' but that text is copied from Pro 2 - by analogy with Pro 1PM (metering needs L-N reference) treat as single-phase common-L, not dry (medium confidence, verify on datasheet).",
+   "source_urls": [
+    "https://us.shelly.com/products/shelly-pro-1",
+    "https://www.shelly.com/blogs/documentation/shelly-pro-1-v1",
+    "https://shellystore.co.uk/product/shelly-pro-1pm/",
+    "https://thepihut.com/products/shelly-pro-2",
+    "https://www.shelly.com/blogs/documentation/shelly-pro-2pm-v1",
+    "https://thepihut.com/products/shelly-pro-2pm"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shelly Pro 3EM 120A - meter specs",
+   "claim": "Pro 3EM is a 1-module (19 mm) 3-phase DIN meter with 4 CT inputs (L1, L2, L3 + optional N), per-phase voltage 100-260 V, Class B accuracy and built-in phase-sequence error detection.",
+   "detail": "Size 94x19x69 mm, 62 g, DIN rail; supply 100-260 VAC, <3 W; voltmeters RMS per phase 100-260 V +/-1 %; ammeters via CT 0-120 A, +/-1 % (2-120 A), +/-2 % (1-2 A), +/-5 % (0-1 A); Accuracy Class B IEC 62053-21; LAN+Wi-Fi+BT; phase-sequence detection on voltage zero crossings (reports phase_sequence error when enabled: A-C-B order). 4 CT inputs: 3 phase + 1 neutral (N clamp optional accessory). Variants: Pro 3EM-120A, Pro 3EM-3CT63 (63 A), Pro 3EM-400. Also reports under/over-voltage and missing phase directly from per-phase voltage, so it doubles as the reference meter for the fault simulator and fits the 'optional DIN smart meter' slot in 1 module.",
+   "source_urls": [
+    "https://us.shelly.com/blogs/documentation/shelly-pro-3em",
+    "https://www.shelly.com/products/shelly-pro-3em-x1",
+    "https://www.shelly.com/blogs/documentation/shelly-pro-3em-fourth-neutral-clamp",
+    "https://shelly-forum.com/thread/31110-shelly-pro-3em-and-4th-clamp-ct-on-n-pen",
+    "https://life365.s3.eu-central-1.amazonaws.com/IT/p/26039/file/40.Shelly%20PRO%203EM.pdf"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly CT 120A (for Pro 3EM / 3EM / EM)",
+   "claim": "CT 120A is a split-core, snap-on screwless clamp with 15 mm aperture and 650 mm lead.",
+   "detail": "Size 45x40x36 mm (without cable), aperture Ø15 mm, rated 120 A primary, ratio 3000:1, ferrite core, 3000 VAC/60 s electrical strength, accuracy 1 %, cable 650 mm. Fits 6 mm2 and 10 mm2 EV supply conductors easily, but 3-4 of them plus the DLB module's own CTs need ~45x40 mm each of free space on the supply conductors.",
+   "source_urls": [
+    "https://www.shelly.com/blogs/documentation/ct-120a",
+    "https://shellyparts.de/en/products/induktionsklemme-fur-shelly-pro-3em-120a",
+    "https://kb.shelly.cloud/knowledge-base/ct-120a"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Pro 3EM-3CT63 (63 A variant)",
+   "claim": "3CT63 variant uses much smaller 63 A split-core CTs (Ø9 mm aperture), sufficient for 3x32 A charging.",
+   "detail": "Meter 94x19x69 mm, DIN 19 mm; ammeter 0-63 A, +/-1 % (2-63 A), +/-2 % (1-2 A), +/-5 % (0-1 A); CT 14x54x26 mm, aperture Ø9 mm (fits 6 mm2 insulated wire ~4.5-5 mm OD and 10 mm2). Allegro price ~461 PLN.",
+   "source_urls": [
+    "https://manuals.plus/m/c329b6c577239d1273dd7ce24a9e72658c5fe8f132ae77e26c2864fff4815e36",
+    "https://kb.shelly.cloud/knowledge-base/shelly-pro-3em-3ct63",
+    "https://allegro.pl/oferta/shelly-pro-3em-3ct63-modul-pomiaru-energii-63a-wifi-18502240652"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Pro 3EM Switch Add-on (= 'Pro Output Add-on' in API docs)",
+   "claim": "The only Pro output add-on is the Pro 3EM Switch Add-on: one galvanically isolated 2 A dry-contact relay clipped to the Pro 3EM (API addon_type 'prooutput', peripheral digital_out linked to a Switch component).",
+   "detail": "Max 240 VAC / 30 VDC, 2 A AC/DC; size 94x19x69 mm (1 module); 0.5-2.5 mm2 terminals; -20..40 C. Not compatible with Pro 4PM (Pro 4PM has no add-on bus). Useful for driving one contactor coil (e.g. main contactor) from the Pro 3EM. Allegro 64.99-93 PLN (one listing 228 PLN).",
+   "source_urls": [
+    "https://shelly-api-docs.shelly.cloud/gen2/Addons/ShellyProOutputAddon/",
+    "https://www.shelly.com/blogs/documentation/pro-3em-switch-add-on",
+    "https://kb.shelly.cloud/knowledge-base/shelly-pro-3em-switch-add-on",
+    "https://allegro.pl/produkt/dodatek-do-shelly-pro-3em-314acec8-9532-4dee-9322-e9054654b0da"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Pro EM-50",
+   "claim": "Pro EM-50 is a 1-module single-phase 2-channel CT meter with one 2 A dry contact.",
+   "detail": "Size 94x19x69 mm, 63 g, DIN; 2 included CTs 0-50 A; relay 2 A / 240 VAC dry contact for contactor control; Class B (IEC 62053-21) +/-1 %; 0.5-2.5 mm2 terminals; LAN+Wi-Fi+BT. Suitable for monitoring the single-phase 16 A branch (P35 portable charger) and for the N-conductor current.",
+   "source_urls": [
+    "https://shelly.com/blogs/documentation/shelly-pro-em-50",
+    "https://thepihut.com/products/shelly-pro-em-50",
+    "https://www.shelly.com/en/products/shop/shelly-pro-em-2x50-a"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Plus 1 / Shelly 1 Gen3 (flush-mount, dry contact)",
+   "claim": "Plus 1 and 1 Gen3 are 16 A single-relay modules with potential-free NO contact, 37x42x16 mm, Wi-Fi+BT (no LAN), with one SW input.",
+   "detail": "Shelly 1 Gen3 (S3SW-001X16EU): 16 A @ 240 VAC, 10 A @ 30 VDC, dry contacts, 37x42x16 mm, 110-240 VAC or 12/24-48 VDC supply (Plus 1 similar). Not DIN-native (needs DIN adapter/box). Allegro: Shelly 1 Gen3 52.97-58.50 PLN; Shelly 1PM Gen3 ~56.99 PLN.",
+   "source_urls": [
+    "https://www.shelly.com/blogs/documentation/shelly-plus-1",
+    "https://www.shelly.com/blogs/documentation/shelly-1-gen3",
+    "https://shellymadrid.com/en/pages/shelly-1-gen3-especificaciones",
+    "https://allegro.pl/oferta/shelly-1-gen3-przekaznik-wifi-bezpotencjalowy-styk-beznapieciowy-18281829002",
+    "https://allegro.pl/oferta/shelly-1-gen3-17930508581"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Plus 1PM / 1PM Gen3 / Plus 2PM / 2PM Gen3 (flush-mount, metering, NOT dry)",
+   "claim": "PM flush modules are single-phase with common L and power metering; Plus 1PM/1PM Gen3 16 A, Plus 2PM/2PM Gen3 10 A per channel (16 A total).",
+   "detail": "Plus 1PM (SNSW-001P16EU): 16 A, Dry contacts: No, 37x42x16 mm. 1PM Gen3: 16 A @ 240 VAC, 37x42x16 mm, 27 g. Plus 2PM / 2PM Gen3: 10 A per channel, 16 A total, 18 A peak, 37x42x16 mm, terminal torque 0.4 Nm. Allegro: Plus 1PM 54.99-~90 PLN (2-pack listings exist), Plus 1PM Mini 69.99 PLN, Plus 2PM 94-151 PLN new (59.99 PLN used).",
+   "source_urls": [
+    "https://www.shelly.com/blogs/documentation/shelly-plus-1pm",
+    "https://shellymadrid.com/en/pages/shelly-plus-2pm-especificaciones",
+    "https://shellymadrid.com/en/pages/shelly-2pm-gen3-especificaciones",
+    "https://allegro.pl/oferta/shelly-plus-1pm-przekaznik-wifi-bl-z-pomiarem-mocy-11451305104",
+    "https://allegro.pl/oferta/shelly-plus-2pm-2-kanalowy-rolety-swiatlo-wifi-13620050691",
+    "https://allegro.pl/produkt/sterownik-shelly-plus-2pm-wifi-3c5f1430-6bd5-403e-ad7e-e64a67caa5ee"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly 1 Mini Gen3 / 1PM Mini Gen3",
+   "claim": "Mini Gen3 modules are 8 A relays in 29x34x16 mm; the 1 Mini has a dry NO contact, the 1PM Mini meters and is not dry.",
+   "detail": "1 Mini Gen3: 8 A / 240 VAC, 5 A / 30 VDC, dry NO 1-pole contact, 110-240 VAC supply, external protection B/C 10 A. 1PM Mini Gen3: 8 A, NO 1-pole micro-gap contact, 29x34x16 mm, 18 g, 0.5-1.5 mm2 terminals, 110-240 VAC / 24-30 VDC. Pilot-duty only (contactor coils, PE/N relay coils).",
+   "source_urls": [
+    "https://www.shelly.com/de/blogs/documentation/shelly-1-mini-gen3",
+    "https://www.shelly.com/de/blogs/documentation/shelly-1pm-mini-gen3",
+    "https://shellyparts.de/en/products/shelly-mini-plus-1pm"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Plus Uni (low-voltage I/O module)",
+   "claim": "Plus Uni gives 2 potential-free solid-state outputs (250 mA), 2 digital inputs, 1 analog input (0-15 / 0-30 VDC) and a 1 kHz counter input - a natural low-voltage bridge between an ESP32 and the Shelly ecosystem.",
+   "detail": "OUT1/OUT2 SSR dry contacts max 250 mA; analog input 2 ranges 0-15 V, 0-30 V; counter trigger 1.5 V active-low, max 1 kHz; 37x42x16 mm (PCB 40x21x7 mm), Wi-Fi+BT, ESP32-based. Not for mains switching; good for driving SSRs/relay boards or reading dry feedback contacts.",
+   "source_urls": [
+    "https://www.shelly.com/products/shelly-plus-uni",
+    "https://www.smart-secure.co.uk/product/shelly-plus-uni-smart-wifi-operated-module-for-low-voltage-applications/",
+    "https://botland.store/shelly-automatyka-domowa/25065-shelly-plus-uni-uniwersalny-modul-wifibluetooth-esp32-aplikacja-androidios-3800235265710.html"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Plus Add-on (sensor add-on)",
+   "claim": "Plus Add-on is an input-only galvanically isolated sensor interface for Plus/Gen3 flush modules; it has NO switching outputs.",
+   "detail": "1 analog in (0-10 V, +/-5 %, 0-100 % report, 1 % threshold), 1 digital in (-15..0.5 V true / 2.5..15 V false), 1-wire bus for up to 5x DS18B20 or 1x DHT22, VREF out 1 mA, VCC 10 mA; 3.3 VDC from host; 37x42x15 mm; max 1 mm2 wire. Compatible: Plus 1/1PM, Plus 2PM, Plus i4/i4DC, 1/1PM Gen3, 2PM Gen3 etc. Could read a thermistor on a 'burnt contact' heater or a 0-10 V signal from the ESP32.",
+   "source_urls": [
+    "https://www.shelly.com/fr/blogs/documentation/shelly-plus-add-on",
+    "https://shelly.com/products/shelly-plus-add-on",
+    "https://thepihut.com/products/shelly-plus-add-on"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly EM Gen3, 3EM Gen1, 3EM-63 Gen3",
+   "claim": "EM Gen3 (1-phase, 2 CT, 2 A relay) and 3EM-63 Gen3 (3-phase, integrated 63 A CTs) are flush-mount Gen3 meters; 3EM Gen1 is a legacy Gen1 (CoIoT/REST, no RPC/scripting) 3x120 A meter with a 10 A relay.",
+   "detail": "EM Gen3: 37x42x16 mm, 23 g, up to 2 CT (one 50 A CT included, 50 g; 120 A clamps compatible per Gen1 EM lineage), 2 A dry relay for contactor control, Wi-Fi+BT. 3EM-63 Gen3 (3EM-63T): 31x54x42 mm, integrated wire-through CTs 63 A per phase, 110-260 VAC, <1 W, Class B, 4-quadrant, 7-day local log. 3EM Gen1: 3x120 A CTs factory-calibrated, 10 A relay, 110-230 VAC per phase, dims listed by retailers as 73x57x22 mm (low confidence).",
+   "source_urls": [
+    "https://www.shelly.com/products/shelly-em-gen3",
+    "https://support.shelly.cloud/en/support/solutions/articles/103000400874-what-is-the-difference-between-shelly-em-gen1-and-shelly-em-gen3-",
+    "https://us.shelly.com/products/shelly-3em-63w-gen3",
+    "https://www.netxl.com/shelly/docs/shelly-3em-63t-gen3-data-sheet.pdf",
+    "https://us.shelly.com/products/shelly-3em",
+    "https://galaxus.at/en/s4/product/shelly-3em-energy-monitors-13175233"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Gen2+ local RPC - HTTP",
+   "claim": "All Gen2/Gen3/Pro devices expose JSON-RPC 2.0 locally without cloud via HTTP GET/POST on /rpc/<Component.Method>.",
+   "detail": "Examples: GET http://<ip>/rpc/Switch.Set?id=0&on=true ; POST /rpc/Switch.Set with body {\"id\":0,\"on\":true}; Switch.Toggle?id=0; Switch.GetStatus; Shelly.GetStatus; Input.GetStatus. HTTP is one-shot, no keep-alive, cannot deliver notifications. toggle_after (seconds) flips the relay back automatically (min value not documented). Max 6 simultaneous non-persistent RPC channels per device. Also works on Wall Display relay (/rpc/Switch.Set?id=0&on=true, /rpc/switch.toggle?id=0).",
+   "source_urls": [
+    "https://shelly-api-docs.shelly.cloud/gen2/General/RPCChannels/",
+    "https://shelly-api-docs.shelly.cloud/gen2/General/RPCProtocol/",
+    "https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/Switch/",
+    "https://community.shelly.cloud/topic/1793-walldisplay-list-for-useful-rpc-commands/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Gen2+ local RPC - WebSocket, outbound WebSocket, MQTT, UDP",
+   "claim": "Besides HTTP, each device offers an inbound WebSocket at ws://<ip>/rpc, an outbound WebSocket client (device connects to YOUR server, e.g. on the ESP32), MQTT (<shelly-id>/rpc) and a raw UDP RPC channel.",
+   "detail": "WS inbound: ws://<ip>/rpc, persistent, supports NotifyStatus/NotifyEvent push (send one frame with valid 'src' first). Outbound WS (Ws.SetConfig {server:'ws://host:port/...'}): device initiates, full RPC + unsolicited full status on connect - ideal for an ESP32 hub without mDNS/discovery. MQTT: request topic <shelly-id>/rpc (e.g. shellypro4pm-f008d1d8b8b8/rpc), needs a broker (could run on ESP32 or a Pi). UDP: Sys.SetConfig rpc_udp {dst_addr:'ip:port', listen_port:N} - lowest overhead, fire-and-forget, used e.g. by Loxone integrations.",
+   "source_urls": [
+    "https://shelly-api-docs.shelly.cloud/gen2/General/RPCChannels/",
+    "https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/Ws",
+    "https://shelly-api-docs.shelly.cloud/gen2/General/Notifications",
+    "https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/Mqtt/",
+    "https://loxwiki.atlassian.net/wiki/spaces/LOX/pages/1633419658/Shelly+Plus+per+UDP?focusedCommentId=1778909185"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Gen2+ RPC - authentication",
+   "claim": "Local auth is optional digest authentication (RFC 7616, SHA-256) on HTTP and WebSocket; MQTT, UART, outbound WS and Shelly.GetDeviceInfo are exempt.",
+   "detail": "When enabled, every HTTP/WS call needs digest auth (user 'admin'); on an isolated test-bench network it can be left disabled for simplest ESP32 code (plain GET). BLE RPC: since firmware 2.0.0 pairing is mandatory outside initial setup; before that, BLE RPC was open to anyone in range.",
+   "source_urls": [
+    "https://shelly-api-docs.shelly.cloud/gen2/General/Authentication/",
+    "https://shelly-api-docs.shelly.cloud/gen2/changelog/",
+    "https://github.com/hmsta/esphome-shelly-ble-rpc"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Gen2+ RPC over Bluetooth (BLE) from ESP32",
+   "claim": "Gen2+ devices accept RPC over BLE, and Allterco publishes ESP32 firmware/libraries to control Shellies over BLE - an alternative to Wi-Fi for the ESP32 HMI.",
+   "detail": "ALLTERCO/shelly-ble-rpc (ESP32 firmware), matthias-bs/esp32-shelly-ble-rpc (Arduino lib), hmsta/esphome-shelly-ble-rpc (reads inputs over BLE; MTU up to 517 B). Pairing required from FW 2.0.0. BLE is slower/less deterministic than LAN/Wi-Fi; prefer Wi-Fi/LAN for the switching commands.",
+   "source_urls": [
+    "https://github.com/ALLTERCO/shelly-ble-rpc",
+    "https://github.com/matthias-bs/esp32-shelly-ble-rpc",
+    "https://github.com/hmsta/esphome-shelly-ble-rpc"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Latency",
+   "claim": "No official or measured RPC round-trip figures were found; Shelly only states local control 'reacts in milliseconds' and event processing '<10 ms'.",
+   "detail": "Engineering estimate (not sourced): LAN HTTP GET round trip ~10-40 ms, Wi-Fi ~20-100 ms, plus ~10 ms relay mechanical time. For deterministic sequences (e.g. N-break 50 ms before L) use a single Shelly script with Timer.set or do the fast switching with ESP32-driven relays/SSRs; use Shelly for slow states.",
+   "source_urls": [
+    "https://shelly.guide/webhooks-https-requests/",
+    "https://shelly-api-docs.shelly.cloud/gen2/General/RPCChannels/"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "Scripting (mJS) and pulsed/chattering relay",
+   "claim": "Pro, Plus and Gen3 devices run on-device mJS scripts with Timer.set(period_ms, repeat, cb) and Shelly.call('Switch.Set',...) - a script can chatter a relay with ~tens-of-ms periods, independent of network latency.",
+   "detail": "Timer.set(period, repeat, callback[, userdata]) period in ms; community tutorial: ~10 ms is the practical minimum. Example blink scripts (1 s on / 2 s off) exist in Shelly forums/GitHub. Scripts can be started/stopped via Script.Start/Script.Stop RPC from the ESP32 and parameterised via KVS (key max 16 B, value max 1024 B, max 12 items... per script storage) or Script.Eval. Script count/size limits are device dependent (forum reports ~15 kB code limit on early FW); exact per-device limit not retrieved. Caveat: Shelly relays are general-purpose 16 A electromechanical relays (typical electrical life ~1e5 ops); chattering under a 16-32 A EV load will erode contacts fast - use the Shelly to pulse a contactor coil or a sacrificial relay, or chatter at low current.",
+   "source_urls": [
+    "https://shelly-api-docs.shelly.cloud/gen2/Scripts/APIs/Timer/",
+    "https://af3556.github.io/IoT/Shelly/1-Shelly-Scripting---Intro",
+    "https://shelly-forum.com/thread/26452-shelly-plug-s-skript-zeitgesteuert-blinken/",
+    "https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/Script",
+    "https://shelly-forum.com/thread/22490-size-limit-of-15000-bits",
+    "https://my.avnet.com/abacus/resources/article/modern-electromechanical-relays-meet-todays-reliability-demands/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Input terminals as feedback",
+   "claim": "Pro-series S1..S4 inputs and Plus SW inputs are mains-level (same potential as L) switch/button inputs readable over RPC (Input.GetStatus, NotifyStatus) - they can sense presence of a phase or an auxiliary contact state.",
+   "detail": "Pro 4PM: 4 inputs S1-S4; Pro 3: S1-S3; Pro 1: SW1/SW2; Plus 1/1PM: SW (mains or 24-30 VDC depending on supply). Input component modes: switch/button, detached mode so the input does not control the relay. Pro inputs are referenced to the device L, so an input fed from another phase is NOT allowed. For low-voltage feedback use Plus Uni (2 DI + counter) or Plus Add-on (1 DI).",
+   "source_urls": [
+    "https://www.shelly.com/blogs/documentation/shelly-pro-4pm",
+    "https://us.shelly.com/blogs/documentation/pro-3",
+    "https://www.shelly.com/blogs/documentation/shelly-pro-1-v1",
+    "https://www.shelly.com/products/shelly-plus-uni"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Wi-Fi topology without a router",
+   "claim": "Gen2+ Shellies are ordinary 2.4 GHz Wi-Fi stations and also run their own AP (default open, SSID = device ID, 192.168.33.1), with AP+STA 'range extender' mode; an ESP32 softAP or a Shelly AP can replace a router.",
+   "detail": "WiFi component: Wifi.SetConfig sta {ssid, pass}, ap {ssid (<=29 chars), pass, range_extender}; Wifi.ListAPClients lists clients on the device AP. Shelly's own guide describes Shelly-to-Shelly operation with one Shelly as AP and no router. Pro devices additionally have Ethernet - an ESP32 with W5500/LAN8720 or a small 5-port switch gives the most deterministic bench network. No official statement about ESP32 softAP compatibility, but WPA2-PSK 2.4 GHz is standard; ESP32 softAP supports ~4-10 stations (plan for Pro 4PM + Pro 3 + Pro 3EM + Wall Display = 4 clients).",
+   "source_urls": [
+    "https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/WiFi/",
+    "https://shelly.guide/application-guide/shelly-to-shelly-standalone-without-wi-fi-but-with-wi-fi/",
+    "https://support.shelly.cloud/en/support/solutions/articles/103000222505-range-extender-functionality",
+    "https://www.shelly.com/pl/blogs/documentation/network-design-guide-for-shelly-gen2-devices"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Shelly Wall Display (original, 4.3 in)",
+   "claim": "Original Wall Display is an 85x85x30 mm Android 7 (32-bit) panel with 1 GB RAM / 8 GB flash, 230 VAC supply and one 5 A relay, controllable via Gen2-style RPC.",
+   "detail": "Size 85x85x30 mm, 180 g, 4 in touch display, CPU MTK6580, 1 GB RAM, 8 GB flash, Wi-Fi 802.11 b/g/n, BT 4.2, 230 VAC, <1 W, relay 5 A; built-in T/H/light sensors; webhooks 20 (2 URLs each), schedules 20, MQTT. RPC: http://<ip>/rpc/Switch.Set?id=0&on=true works. Allegro: 400-499.99 PLN (some 615 PLN).",
+   "source_urls": [
+    "https://www.shelly.com/blogs/documentation/shelly-wall-display",
+    "https://kb.shelly.cloud/knowledge-base/shelly-wall-display-web-interface-guide",
+    "https://github.com/ShellyGroup/Wall-Display-Changelog",
+    "https://community.shelly.cloud/topic/1793-walldisplay-list-for-useful-rpc-commands/",
+    "https://allegro.pl/produkt/shelly-wall-display-panel-scienny-z-wyswietlaczem-4ab6f138-0193-4408-ae93-2c5e8a6217a8?fromInactiveOffer=archived&offerId=18830379973",
+    "https://allegro.pl/oferta/shelly-wall-display-smart-panel-z-ekranem-do-automatyki-domu-18159002755"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Shelly Wall Display X2 / X2i / XL",
+   "claim": "X2 family is a 6.9 in (X2i 1440x720) Android 11+ 64-bit panel, 86x173x33 mm, 230 VAC or USB-C 5 V/1 A, with relay, sensors and (X2i/XL) an on-device AppStore.",
+   "detail": "X2: 86x173x33 mm incl. PSU, 256 g, 5-point touch, speaker 0.8 W, T/H/light sensors, 230 VAC 50/60 Hz, <1 W, USB-C 5 V 1 A. X2i: 1440x720 px. XL: 10.1 in, Wi-Fi 6, 4 physical buttons. Changelog: FW 2.6.0 added AppStore (browse/install/run apps) for X2i, XL 'and newer' with auto-start of last app; original Wall Display and X2 (non-i) excluded. Allegro: X2 + BLU H&T 736 PLN; X2i 598-877 PLN; XL 915-1149 PLN.",
+   "source_urls": [
+    "https://www.shelly.com/blogs/documentation/shelly-wall-display-x2",
+    "https://github.com/ShellyGroup/Wall-Display-Changelog",
+    "https://raspberry.tips/en/smart-home/shelly-wall-display-x2i-home-assistant-dashboard",
+    "https://allegro.pl/oferta/shelly-wall-display-x2-czujnik-blu-h-t-czarny-panel-scienny-do-sterowania-18070265500",
+    "https://allegro.pl/produkt/sterownik-shelly-57734-0-wall-display-x2i-dotykowy-ekran-550668d3-f8a4-43eb-8230-164d8fec06fe",
+    "https://allegro.pl/oferta/shelly-wall-display-xl-panel-sterowania-10-1-wifi6-bluetooth-czarny-18080592725"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Wall Display as custom HMI - limits",
+   "claim": "Officially the Wall Display UI is Shelly's own (rooms/scenes/thermostat/dashboards); the only built-in way to show external content is the 'Home Assistant' page, a WebView pointed at a user-editable URL with kiosk mode. Arbitrary custom pages are possible only via that WebView (unverified for non-HA URLs), sideloaded APKs over ADB, the X2i/XL AppStore, or the ShellyElevate replacement firmware.",
+   "detail": "Settings -> Network -> Home Assistant: list of discovered HA servers, address editable, kiosk mode; FW 2.6.0 deprecated the HA page in favour of an app, FW 2.7.0 un-deprecated it and added 'clear WebView cache'; 2.7.0 multiple dashboards, 2.8.0 reorder dashboards. Community: enable Developer options + ADB over Wi-Fi, 'adb install' APKs (e.g. Fully Kiosk Browser, HA app); a system update can remove/break sideloaded apps; early firmware WebView crashed, improved later. ShellyElevate (GitHub) replaces stock software for a HA kiosk WebView. Conclusion: usable as a secondary status panel or if the ESP32 serves an HTML page the WebView can load; not a dependable primary HMI for a product.",
+   "source_urls": [
+    "https://github.com/ShellyGroup/Wall-Display-Changelog",
+    "https://community.home-assistant.io/t/installing-3rd-party-apps-firmware-on-shelly-wall-display/657440",
+    "https://community.home-assistant.io/t/shelly-wall-display/632948",
+    "https://github.com/RapierXbox/ShellyElevate",
+    "https://community.shelly.cloud/topic/2401-home-assistant-in-wall-display/",
+    "https://www.smarthome.com.au/how-to-use-shelly-wall-display-with-home-assistant/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Allegro prices - Pro 4PM",
+   "claim": "Pro 4PM sells on Allegro for ~330-574 PLN; V2 ~439 PLN.",
+   "detail": "Listings: 330.00 PLN, 359.51 PLN, 422.47 PLN, 439.00 PLN (V2), 573.67 PLN. Official store SHELLY_POLSKA (Super Sprzedawca) carries Pro 4PM, Pro 3, Pro 3EM.",
+   "source_urls": [
+    "https://allegro.pl/oferta/shelly-4pm-pro-4-obwody-din-z-pomiarem-wifi-11981091903",
+    "https://allegro.pl/oferta/shelly-pro-4pm-v2-modul-automatyki-4-16a-din-pomiar-energii-17262247277",
+    "https://allegro.pl/oferta/inteligentny-przelacznik-shelly-pro-4pm-lan-wi-fi-i-bt-czterokanalowy-40a-17737348480",
+    "https://allegro.pl/listing?string=shelly+pro+4pm",
+    "https://allegro.pl/uzytkownik/SHELLY_POLSKA"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Allegro prices - Pro 3",
+   "claim": "Pro 3 sells for ~254-320 PLN (typical 263 PLN).",
+   "detail": "Listings: 254.06 PLN, 263.05 PLN, 319.84 PLN.",
+   "source_urls": [
+    "https://allegro.pl/produkt/sterownik-shelly-pro-3-wifi-37b7d334-9bed-4867-b53a-5b4b3fd646fa",
+    "https://allegro.pl/oferta/shelly-pro-3-przekaznik-3-kanalowy-wi-fi-lan-bluetooth-din-48a-18186698531"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Allegro prices - Pro 3EM",
+   "claim": "Pro 3EM 120A sells for ~410-630 PLN (most 417-517 PLN); Pro 3EM-3CT63 ~461 PLN; V2 (Matter) listing exists.",
+   "detail": "Listings: 409.90, 416.55, 437.50, 454.46, 516.82, 629.00 PLN; 3CT63 461.20 PLN.",
+   "source_urls": [
+    "https://allegro.pl/produkt/shelly-pro-3em-120-a-miernik-zuzycia-energii-z-3-zaciskami-120a-wifi-lan-4749f7ca-a27b-4495-b7e5-284c98f80f83",
+    "https://allegro.pl/oferta/shelly-pro-3em-120a-3-fazowy-licznik-energii-na-szyne-din-14908702157",
+    "https://allegro.pl/oferta/licznik-energii-elektrycznej-shelly-pro-3em-wi-fi-fazy-3-x-120-a-17964524697",
+    "https://allegro.pl/oferta/shelly-pro-3em-3ct63-17964526447",
+    "https://allegro.pl/oferta/licznik-energii-elektrycznej-shelly-pro-3em-v2-wifi-bluetooth-matter-18670648293"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Allegro prices - Pro 1PM / Pro 2PM",
+   "claim": "Pro 1PM ~234-349 PLN; Pro 2PM ~247-299 PLN.",
+   "detail": "Pro 1PM: 234.04 PLN new, 239.99 used, 257.20, 347.57 outlet, 348.74. Pro 2PM v.1: 246.87 (outlet), 269.99, 299.00 PLN.",
+   "source_urls": [
+    "https://allegro.pl/oferta/inteligentny-przelacznik-shelly-pro-1pm-lan-wi-fi-i-bt-jednokanalowy-16-a-17240162150",
+    "https://allegro.pl/produkt/sterownik-shelly-pro-1pm-wifi-bcb8ac6a-897a-417b-9a2c-d0aea7b25d38",
+    "https://allegro.pl/oferta/shelly-pro-2pm-v-1-przelacznik-din-do-rolet-i-obwodow-z-pomiarem-energii-18185490153",
+    "https://allegro.pl/oferta/j8-shelly-pro-2pm-wifi-i-lan-2-kanalowy-inteligentny-przelacznik-17833170818"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Which Shelly models an EV-charger installer typically stocks",
+   "claim": "EV/PV installers most commonly stock Pro 3EM (120A or 3CT63) and legacy 3EM for dynamic load balancing / PV-surplus with wallboxes, EM Gen3 / Pro EM-50 for single-phase sites, and Pro 1 / Plus 1 / 1 Gen3 as contactor/enable relays; Shelly also sells its own 11 kW portable charger.",
+   "detail": "Pro 3EM is integrated by AMPECO (OCPP backend DLB), evcc, clever-PV, Homey and Shelly's own 'Wallbox surplus charging' page (Pro 3EM or Pro 3EM CT63 retrofitted at the grid point, wallbox controlled by scene). Rheidon AC500 Smart Load Balancer is proprietary (only WB500/HC720/HC800-820) and Ampere Point's DLB module for PRIME wallbox uses its own 3-phase CTs - no evidence either uses Shelly, so the company's Shelly stock is most likely Pro 3EM/3EM/EM meters plus generic relays. In-design roles: Pro 3EM = supply reference meter + phase-sequence/voltage monitor (1 module) + 2 A add-on relay; Pro 3 = 3x independent dry 16 A (per-phase loss, pilot for 3 contactors); Pro 4PM = 4x single-phase 16 A metered outputs (16 A socket, test loads, 230 V coil drivers; cannot split phases); Pro 1/Pro 2/1 Gen3/1 Mini = pilot relays for PE/N/L-N-swap contactors (NO only -> 'normal' wiring must be the de-energised path or use NC auxiliary relays); EM Gen3/Pro EM-50 = single-phase branch (P35 16 A) current + N current; Plus Uni = low-voltage glue (SSR outputs, feedback inputs); Wall Display = secondary panel only.",
+   "source_urls": [
+    "https://www.ampeco.com/ev-charging-apps-marketplace/shelly-3em-pro/",
+    "https://asia.shelly.com/pages/wallbox-surplus-charging",
+    "https://github.com/evcc-io/evcc/discussions/15282",
+    "https://kb.shelly.cloud/knowledge-base/kbuca-pv-surplus-charging-for-evs-using-shelly-3em",
+    "https://www.shelly.com/products/topac-portable-ev-charger-11kw-eve01-11r",
+    "https://rheidon.com/products/rheidon-ac500-smart-load-balancer",
+    "https://www.amperepoint.com/products/dlb-module-for-prime-wallbox"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Pro-series common facts",
+   "claim": "All Pro relays/meters (Pro 1, 1PM, 2, 2PM, 3, 4PM, 3EM, EM-50, Switch Add-on) are DIN-rail, 110-240 VAC supplied, <3 W, -20..40 C, with Ethernet LAN + Wi-Fi + BT, and all Gen2+ support HTTP/WS/MQTT/UDP RPC, webhooks, schedules and mJS scripts; simultaneous LAN + Wi-Fi is supported as backup.",
+   "detail": "Widths: 1-module (19 mm): Pro 1, 1PM, 2, 2PM, 3EM, EM-50, 3EM Switch Add-on (94x19x69 mm). 3-module (53 mm): Pro 3, Pro 4PM (96x53x59 mm, with display). Terminal cross-section Pro 1-module devices 0.5-2.5 mm2 (so 6 mm2 supply conductors cannot land on them - use CTs/pilot wiring).",
+   "source_urls": [
+    "https://www.shelly.com/en-pl/products/professional-series",
+    "https://shelly.com/blogs/documentation/shelly-pro-em-50",
+    "https://us.shelly.com/blogs/documentation/shelly-pro-3em",
+    "https://shellyparts.de/en/products/shelly-pro-3"
+   ],
+   "confidence": "high"
+  }
+ ],
+ "recommendations": [
+  "Use Shelly only as pilot/low-current switching and metering; every path carrying charger current (3x32 A) must go through 40 A+ contactors or 32 A relays whose coils are driven by Shelly dry contacts (Pro 3 for 3 phases, Pro 1/Pro 2/1 Gen3/1 Mini for PE/N/L-N swap). Shelly relays are 16 A general-purpose NO contacts.",
+  "Shelly Pro 3EM (prefer the 3CT63 variant: Ø9 mm CTs, 14x54x26 mm, ~461 PLN; or the 120A one if already in stock) as the supply-side reference meter in the 'optional DIN smart meter' slot: 1 module, per-phase V/I/PF, phase-sequence error flag, optional 4th CT on N, LAN; add the Pro 3EM Switch Add-on (2 A dry, ~65-93 PLN) to drive the main contactor coil.",
+  "Pro 3 (3x16 A independent dry contacts, 254-320 PLN) is the best stock Shelly for per-phase interruption / phase-loss / wrong-sequence pilot switching; Pro 4PM only if a single-phase 16 A metered output or 230 V coil drivers are needed (cannot be split across phases).",
+  "Network: give the ESP32 HMI an Ethernet interface (W5500) and use a small unmanaged switch to the Pro devices' LAN ports, or let the ESP32 softAP host the Shellies (Wifi.SetConfig sta); configure outbound WebSocket (Ws.SetConfig) from each Shelly to the ESP32 so status/events are pushed without polling; disable digest auth on the isolated bench network.",
+  "For intermittent/chattering-contact simulation run an mJS script on the Shelly (Timer.set in ms, start/stop via Script.Start/Stop from the ESP32) but pulse a sacrificial relay/contactor coil, not the 16-32 A load path through the Shelly's own contact; or use an SSR driven by ESP32 GPIO for sub-50 ms patterns.",
+  "On PM devices set Switch config power_limit/current_limit/voltage_limit (max 280 V) and undervoltage_limit=0 so protections do not auto-trip during under/over-voltage simulation.",
+  "Do not plan the Wall Display as the primary HMI; use the ESP32 touchscreen. If a Wall Display is already in stock, use it as a secondary status panel (RPC-controlled 5 A relay, T/H sensors) or try pointing its 'Home Assistant' WebView page at the ESP32-hosted HTML page (unverified).",
+  "Buy all Shelly items from the official Allegro store SHELLY_POLSKA (Super Sprzedawca) to keep to one seller.",
+  "Use Shelly Plus Uni (if stocked) as the low-voltage bridge: 2x 250 mA SSR outputs and 2 DI + 1 kHz counter for feedback from auxiliary contacts; Plus Add-on only for sensors (no outputs).",
+  "Because Shelly outputs are NO only, design the 'correct installation' state so that fault insertion (PE open, N open) is done by NC contacts of contactors/relays that the Shelly energises - loss of control power then returns the bench to a safe, correct wiring."
+ ],
+ "open_questions_for_user": [
+  "Which Shelly models and quantities are actually in stock (Pro 3EM 120A vs 3CT63, legacy 3EM, Pro 3, Pro 4PM, Plus 1/1PM, Wall Display)? The role assignment above depends on this.",
+  "Is an isolated bench network acceptable (no Internet, no Shelly cloud), so digest auth and cloud can stay off and the ESP32 can act as AP/WS server?",
+  "Should the Shelly Pro 3EM be the 'optional DIN smart meter' or do you want a separate MID-certified meter in addition?",
+  "Do you want the N-conductor current measured (4th CT on Pro 3EM) to show N-PE swap / N-open effects on the display?",
+  "Is Ethernet on the ESP32 HMI acceptable (adds a W5500 module) or must everything be Wi-Fi?"
+ ],
+ "gaps": [
+  "Pro 2PM potential-free status not confirmed from an official spec table (retailer text copied from Pro 2); treat as not dry until datasheet checked.",
+  "No measured RPC latency figures (HTTP/WS/UDP) found; only qualitative 'milliseconds' statements.",
+  "Exact per-device scripting limits (number of scripts, max script size, concurrent scripts) not retrieved - shelly-api-docs.shelly.cloud is blocked by the proxy.",
+  "Minimum value of Switch.Set toggle_after and auto_off_delay not confirmed.",
+  "Whether the Wall Display 'Home Assistant' WebView page accepts an arbitrary non-HA URL is unverified.",
+  "Relay type/electrical endurance (cycles at 16 A) is not published by Shelly for any model.",
+  "Shelly 3EM Gen1 outer dimensions uncertain (retailers list 73x57x22 mm).",
+  "Input voltage range of Pro 4PM/Pro 3 S-inputs (110-240 VAC vs L reference) inferred from manuals, not read from the API device page (blocked).",
+  "Allegro prices are snippet-based snapshots (October 2026) and vary 20-40 % between sellers; seller names other than SHELLY_POLSKA were not captured."
+ ]
+}

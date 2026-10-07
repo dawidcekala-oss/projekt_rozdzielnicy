@@ -1,0 +1,517 @@
+{
+ "findings": [
+  {
+   "topic": "A/ETI GT 80-60-25 (001102133)",
+   "claim": "ETI GT 80-60-25 is a steel IP66/IK10 wall enclosure 800x600x250 with mounting plate; weight 30.14 kg; Allegro current listings not found (archived 2021 listing 1141 zl), Polish wholesaler price ~858 zl brutto.",
+   "detail": "HxWxD 800x600x250 mm; net 30.14 kg; IP66 IK10; full metal door; 2 locks ('2Z'); mounting plate included (galvanized, 2 mm per ETI series data); body sheet 1.2-2 mm (series statement); plate dimensions not published in accessible sources; Allegro archive price 1141 zl (2021-06); kontaktuj.pl 857.51 zl brutto; TIM lists product 001102133.",
+   "source_urls": [
+    "https://www.etigroup.eu/products-services/001102133",
+    "https://archiwum.allegro.pl/oferta/gt-80-60-25-obudowa-hermetyczna-metalowa-ip65-z-pl-i9470929173.html",
+    "https://www.kontaktuj.pl/rozdzielnia-eti-gt-800x600x250-ip65-ik10-0011021,29,19342,16718",
+    "https://www.tim.pl/obudowa-metalowa-800x600x250mm-ip66-z-plyta-etibox-gt-80-60-25-001102133/p/0001-00000-72045",
+    "https://www.etipolam.com.pl/katalog-elektroniczny/system-obudow-metalowych-solid-gsx/obudowy-hermetyczne-gt-ip66"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "A/ETI GT 80-60-30 (001102134) on Allegro",
+   "claim": "ETI GT 80-60-30 (800x600x300, IP66 IK10, with plate) is offered on Allegro at about 1084 zl.",
+   "detail": "Price 1084.05 zl (Allegro snippet, exact offer URL not captured - use listing URL); other ETI GT Allegro prices: GT 60-60-20 706.11 zl, GT 60-40-20 563.08 zl, GT 30-30-25 429.90 zl.",
+   "source_urls": [
+    "https://allegro.pl/listing?string=obudowa+metalowa+p%C5%82yt%C4%85+etibox",
+    "https://www.etigroup.eu/products-services/solid-gsx-enclosure-system-and-accessories/wall-mounted-ip66-gt-type/001102134-enclosure-gt-indoor-use-ip66-ik10-800mm-600mm-300mm",
+    "https://allegro.pl/produkt/rozdzielnica-eti-polam-0-v-ip66-0-a-669c8717-e793-431d-ab34-7db622039355"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "A/ETI GT 100-60-30 (001102143)",
+   "claim": "ETI GT 100-60-30 (1000x600x300) weighs 39.77 kg, IP66 IK10, 3-point lock with double-bit insert, RAL7035, with mounting plate; Polish shop prices 1175-1419 zl brutto; no current Allegro offer found.",
+   "detail": "HxWxD 1000x600x300; 39.77 kg; IP66; IK10; class I; 3-point lock; steel 1.2-2 mm powder coated; mounting plate galvanized 2 mm (series); prices: Onninen from 1174.76 zl, Kwant 1290.75 zl, Elus 1306.31 zl, Morele/elektrykasklep 1418.85 zl.",
+   "source_urls": [
+    "https://www.etipolam.com.pl/katalog-elektroniczny//001102143-gt-indoor-use-ip66-ik10-1000mm-600mm-300mm",
+    "https://onninen.pl/produkt/ETI-Obudowa-hermetyczna-IP66-GT-100-60-30-001102143,49505",
+    "https://sklep.elus.pl/obudowa-hermetyczna-metalowa-ip65-gt-100-60-30,3,411925,74139",
+    "https://www.morele.net/eti-polam-obudowa-hermetyczna-natynkowa-gt100-60-30-z-plyta-1000x600x300mm-ip65-szara-001102143-3111680/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "A/Eaton CS-86/250 (111707)",
+   "claim": "Eaton CS-86/250 800x600x250: 32.72 kg, mounting plate 770x550 mm 3 mm thick, door 1.5 mm, door reversible by user, 120 deg opening, IP66 IK10, foamed PU gasket; on Allegro about 800-892 zl (medium), wholesalers 1453-2155 zl.",
+   "detail": "HxWxD 800x600x250; 32.72 kg; plate 770 (H) x 550 (W) x 3 mm; door 1.5 mm, load 25 kg; IK10; IP66; transparent doors sold separately as accessory (steel frame + glass, IP65 when fitted); Allegro ~800.00 zl and 891.91 zl (offer IDs not captured; one archived listing 5330946202); TIM 1453.13 zl; sklep.polska-energia 2154.96 zl.",
+   "source_urls": [
+    "https://www.eaton.com/us/en-us/skuPage.111707.html",
+    "https://www.electricautomationnetwork.com/en/eaton-moeller/wall-enclosure-mounting-plate-hxwxd800x600x250mm-eaton-moeller-111707-cs-86-250",
+    "https://datasheet.eaton.com/datasheet.php?model=111707&locale=pl_PL",
+    "https://www.tim.pl/obudowa-cs-800x600x250mm-ip66-z-plyta-montazowa-cs-86250-111707/p/1115-133AA-KM064",
+    "https://allegro.pl/listing?string=obudowa+metalowa+eaton"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "A/Eaton CS-86/300 (111708) on Allegro",
+   "claim": "Eaton CS-86/300 800x600x300 IP66 with mounting plate is on Allegro at 935-1000 zl.",
+   "detail": "Allegro product page price 935.38 zl; another offer 999.97 zl (offerId 17739059022); listing claims 20 kg (likely wrong; CS-86/250 is 32.7 kg).",
+   "source_urls": [
+    "https://allegro.pl/produkt/rozdzielnica-eaton-1000-v-ip66-0-a-797b7cf2-e441-4b8b-81f3-97d57ac3e147",
+    "https://allegro.pl/produkt/rozdzielnica-eaton-1000-v-ip66-0-a-797b7cf2-e441-4b8b-81f3-97d57ac3e147?offerId=17739059022",
+    "https://datasheet.eaton.com/datasheet.php?model=111708"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "A/Eaton CS-106/300 (111713)",
+   "claim": "Eaton CS-106/300 1000x600x300: 44.8-45.4 kg; body 1.5 mm, door 2 mm, mounting plate 3 mm (970x550 mm), bottom gland plate 2 mm with foamed gasket; IP66 IK09; PL shop prices 809-1462 zl; no Allegro offer found.",
+   "detail": "Plate 970 x 550 mm; max load plate 350 kg, door 40 kg; IP66 (IP23 with vent plates); prices: DOKO 809 zl, Mezoko/Budujesz 991.98 zl, TIM 1216.86 zl, iVolta 1337.16 zl, Morele 1418.98 zl, elektro-team 1462.13 zl.",
+   "source_urls": [
+    "https://datasheet.eaton.com/datasheet.php?model=111713&locale=uk_EN",
+    "https://www.tim.pl/obudowa-cs-1000x600x300mm-ip66-z-plyta-montazowa-cs-106300-111713",
+    "https://sklep.doko.pl/pl/p/Obudowa-metalowa-CS-106300-111713-EATON/4246",
+    "https://www.morele.net/eaton-obudowa-cs-z-plyta-montazowa-cs-106-300-1000x600x300mm-111713-3153095/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "A/Eaton CS-108/300 (111715) on Allegro",
+   "claim": "Eaton CS-108/300 1000x800x300 IP66 with plate on Allegro at 2269-2479 zl.",
+   "detail": "Allegro offer 17130395404: 2269.17 zl (another capture 2478.67 zl).",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-cs-1000x800x300mm-ip66-z-plyta-montazowa-cs-108-300-111715-17130395404"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "A/Legrand Atlantic 036931 (800x600x250)",
+   "claim": "Legrand Atlantic 036931: IP66 IK10, 30.9 kg, body sheet 1.0 mm, door 1.8 mm, reversible door, double-bar lock, one gland-plate opening, mounting plate useful area ~737x543 mm, inner depth 230 mm; price ~2343-2354 zl at TIM/elektrycznie.pl; not found on Allegro.",
+   "detail": "Plate dims A 737 / D 543 mm (B 725 / C 525 fixing); glazed-door variants: 036948 (1000x600x300 window), 036949 (1000x800x300 window, promo 2112.96 zl, catalogue 4437 zl); plain 036939 1000x800x300 2774.96 zl; 036937 800x600x300.",
+   "source_urls": [
+    "https://www.tim.pl/obudowa-metalowa-atlantic-800x600x250-ip66-z-plyta-036931/p/0004-00011-71410",
+    "https://elektrycznie.pl/produkt/obudowa-metalowa-atlantic-800x600x250-ip66-z-plyta-036931.html",
+    "https://www.legrand.com/ecatalogue/036931-atlantic-metal-cabinet-vertical-version.html",
+    "https://www.klinkmann.com/hubfs/e-Catalogue/Legrand/Legrand_en_ATLANTIC_IP66_cabinets--F02118EN-03.pdf?hsLang=en",
+    "https://sklep.elektrospark.pl/337300,obudowa-metalowa-z-oknem-atlantic-1000x800x300-ip66-z-plyta-036949-legrand.html",
+    "https://www.electricautomationnetwork.com/en/legrand/036939-legrand-arm-met-atlantic-1000x800x300"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "A/Schneider Spacial S3D NSYS3D8625P (800x600x250)",
+   "claim": "Spacial S3D 800x600x250 with galvanized plate: 27.8 kg, IP66 IK10, reversible door (120 deg), 3-point closure with 3 mm double-bar insert, 1 cable gland plate included; PL prices 1056-1521 zl brutto; Allegro listing exists (price not captured).",
+   "detail": "Device composition: body, mounting plate, door with lock, cable gland plate; prices: Morele 1056.66 zl, 865.89 net/1065.05 gross, 1236.36 net/1520.72 gross, kwant 1410.37 net; Allegro has S3D 600x600x250 (13664784710) and 800x600x250 NSYS3D8625P listing; sheet thickness not found.",
+   "source_urls": [
+    "https://www.se.com/us/en/product/NSYS3D8625P/wall-mounted-steel-enclosure-panelset-s3d-plain-door-with-mounting-plate-800x600x250mm-ip66-ik10/",
+    "https://www.morele.net/schneider-obudowa-s3d-800-x-600-x-250mm-ip66-z-plyta-montazowa-nsys3d8625p-3362551/",
+    "https://sklep.elektrospark.pl/rozdzielnice-szafy-obudowy/rozdzielnica-obudowa-pusta/93100,spacial-obudowa-wiszaca-s3d-z-plyta-montazowa-ocynkowana-ip66-800x-600x-250mm-nsys3d8625p-schneider.html",
+    "https://allegro.pl/listing?string=obudowa+nsys3d",
+    "https://allegro.pl/oferta/obudowa-s3d-600x600x250mm-ip66-z-plyta-montazowa-n-13664784710"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "A/Schneider Spacial CRN",
+   "claim": "Spacial CRN 800x600x250 (NSYCRN86250, no plate) weighs 20 kg; CRN 1000x600x300 with plate (NSYCRN106300P) 38.2 kg; CRN86250P about EUR 306 net (~1300 zl); IP66 IK10; not found on Allegro.",
+   "detail": "CRN is the economy line (no gland plate, simpler lock) vs S3D; NSYCRN86250 ~USD 186-249; NSYCRN106300 ~USD 311 / GBP 294.",
+   "source_urls": [
+    "https://www.se.com/ww/en/product/NSYCRN86250/spacial-crn-plain-door-w-o-mount-plate-h800xw600xd250-ip66-ik10-ral7035-/",
+    "https://us.rs-online.com/product/schneider-electric/nsycrn106300p/74661587/",
+    "https://prof-elec.com/all-categories/enclosures-en/steel-enclosures-en/spacial-crn-1183-en/nsycrn106300p-en/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "A/Rittal AX 1180.000 (W800xH1000xD300) on Allegro",
+   "claim": "Rittal AX 1180.000 (800 wide x 1000 high x 300 deep, i.e. the 1000x800x300 class) is on Allegro at 1582 zl; 52 kg; galvanized plate 745x975x2.5 mm; two bottom gland plates; IP66 IK10; two cam locks.",
+   "detail": "Allegro offer 16422788244: 1582.41 zl; Morele 1604.90 zl; megawat 1599.27 zl; e-polimet 1299.62 zl brutto; weight 52 kg (another source ~60 kg); RAL7035.",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-kompaktowa-800x1000x300mm-ax-1180-000-16422788244",
+    "https://www.rittal.com/us-en_US/products/PG20231215SCH101/PG20231512SCH301/PRO70743?variantId=1180000",
+    "https://e-polimet.com.pl/obudowa-kompakt-ax-1180-000-1000x800x300-wxsxg-stalowa-ip66-z-plyta-montazowa-rittal-1180000",
+    "https://www.morele.net/rittal-ax-obudowa-kompaktowa-800x1000x300-mm-blacha-stalowa-z-pl-mont-jednodrzwiowa-2-zamki-dzwigienkowe-1180-000-7563834/"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "A/Rittal AE 1058.500 and AX 1058.000 (W600xH800xD250)",
+   "claim": "Rittal's 800x600x250-class boxes are AE 1058.500 (older line, 34 kg, 3 mm plate, 809-999 zl) and AX 1058.000 (32 kg, IK10, 1203-1584 zl); an AE 1058.500 Allegro listing exists (7559131695).",
+   "detail": "AE 1058.500: 600W x 800H x 250D, 34 kg, plate 3 mm, 998.64 zl brutto (elektrykasklep), Allegro ~809-859 zl; AX 1058.000: TIM 1203-1251 zl, iVolta 1332 zl, Morele 1584 zl, 32 kg, IP66 IK10, with plate and gland plate.",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-ppoz-600x800x250mm-1058500-rittal-7559131695",
+    "https://www.elektrykasklep.pl/towar/1058-500-rittal-obudowa-ae-kompakt/",
+    "https://www.tim.pl/ax-obudowa-kompaktowa-600x800x250-mm-blacha-stalowa-1058-000/p/0001-00013-93448",
+    "https://e-polimet.com.pl/obudowa-kompakt-ax-1058-000-800x600x250-wxsxg-stalowa-ip66-z-plyta-montazowa-rittal-1058000"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "A/Adelid OM806025 (800x600x250) - generic PL brand on Allegro",
+   "claim": "Adelid OM806025 800x600x250: IP66 IK09, sheet 1.2 mm (1.2-1.5 mm stated), 26.73 kg, mounting plate + cable-entry (gland) plate included, door direction changeable; Allegro 799-849 zl.",
+   "detail": "Allegro offer 4877631306: 799.00 zl (another 849.00 zl, offer 7769074421); RAL7035; -25..+40 C; manufacturer ADELID Sp. z o.o., Bielawa (own catalogue PDF); also sold by Falkor 799 zl.",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-rozdzielnica-metalowa-800x600x250-mm-ip66-4877631306",
+    "https://allegro.pl/oferta/skrzynka-elektryczna-rozdzielnia-obudowa-metalowa-80x60x25-szafa-natynkowa-7769074421",
+    "https://falkor.com.pl/obudowy-metalowe-puste/3442-obudowa-metalowa-natynkowa-800x600x250-ip66-om806025.html",
+    "https://adelid.pl/wp-content/uploads/obudowymetaloweb.pdf"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "A/Adelid OM806030, OM1008030 and related sizes on Allegro",
+   "claim": "Adelid 800x600x300 is 899 zl; 1000x800x300 (OM1008030) is 1649 zl, 48.6 kg with packaging, 1.2-1.5 mm sheet, plate + gland plate; 600x800x300 (W800) 949 zl; 1200x800x300 and 1200x1000x300 also listed.",
+   "detail": "OM806030 Allegro 4877631140: 899.00 zl; OM1008030 Allegro 7684269351: 1649.00 zl, 48.6 kg (shipping), IP66; 600x800x300 Allegro 7360982767: 949 zl; 1200x800x300 Allegro 7684266067; 800x800x200 Allegro 7047203368.",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-szafa-rozdzielnica-metalowa-800x600x300-mm-elektryczna-natynkowa-4877631140",
+    "https://allegro.pl/oferta/obudowa-szafa-rozdzielnica-metalowa-1000x800x300-7684269351",
+    "https://allegro.pl/oferta/obudowa-szafa-rozdzielnica-metalowa-600x800x300-mm-7360982767",
+    "https://allegro.pl/oferta/obudowa-szafa-rozdzielnica-metalowa-1200x800x300-mm-elektryczna-natynkowa-7684266067"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "A/Argenta (PCE / Elettrocanali) GN series",
+   "claim": "Argenta GN806025 (800x600x250, IP66 IK09, plate included) costs 860-1208 zl; GN1008030 (1000x800x300) 1241-1271 zl at Morele/TIM; Allegro has Argenta 800x800x250 (49129) and 1200x800x300 (1698 zl).",
+   "detail": "GN806025: TIM 860.42 zl brutto, nowaelektro/sklep-elektryk 1208.18 zl, Allegro ~1107.95 zl; GN1008030: Morele 1240.57 zl, TIM 1271.34 zl, twojaelektra 1737.95 zl; GN1006030 TIM 1397.06 zl; sheet 1.2-1.5 mm (listing); IK09.",
+   "source_urls": [
+    "https://www.tim.pl/obudowa-metalowa-argenta-800x600x250-z-plyta-ip66-gn806025/p/1115-126AA-PD001",
+    "https://www.tim.pl/obudowa-metalowa-argenta-800x1000x300-ip66-z-plyta-montazowa-gn8010030/p/0001-00020-17001",
+    "https://www.morele.net/elettrocanali-obudowa-metalowa-argenta-1000x800x300-ip66-z-plyta-montazowa-gn1008030-600455488/",
+    "https://allegro.pl/oferta/obudowa-metalowa-argenta-800x800x250-ip66-z-plyta-szafa-rozdzielnica-49129-17762104584"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "A/Sabaj System RH series (Polish manufacturer)",
+   "claim": "Sabaj RH 682.5 (W600 x H800 x D250, IP65, plate, lock with key, PE wire, plugs) appears on Allegro at ~547 zl; RH 863 (800x600x300) 1361-1425 zl; RH 8102.5 (1000x800x250) at TIM.",
+   "detail": "RH 682.5: In<=100 A, Un 400 V, Ui 500 V, class I, IP65, RAL7035; Allegro snippet 547.08 zl (offer URL not captured); RH 863 1361-1425 zl; also stainless RH-682-SS; ABS/thermoset not applicable.",
+   "source_urls": [
+    "https://sklep.sabaj.pl/pl/p/Obudowa-hermetyczna-IP65-600x800x250mm-Szara-z-plyta-montazowa-RH-682.5-Szafa-Sterownicza/1955",
+    "https://www.tim.pl/obudowa-hermetyczna-rh-ip65-800x600x300mm-ral7035-rh-863-6-689/p/0004-00012-22265",
+    "https://www.tim.pl/obudowa-hermetyczna-rh-ip65-1000x800x250mm-ral7035-rh-8102.5-6-698.5?context=P",
+    "https://allegro.pl/oferta/obudowa-hermetyczna-rh-ip67-600x400x300-wxsxg-ral7035-a-rh-643-14664030994"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "A/Hager orion plus FL123A",
+   "claim": "Hager orion plus FL123A 800x600x250 steel IP65, 1.2 mm sidewall, ~20 kg (listing), 1164-1972 zl in PL; no 1000x800x300 in orion plus (closest 950x800x300 FL128A / 1250x800x300 FL130A).",
+   "detail": "he24.pl 1164.21 zl; another PL source 1971.90 zl; RAL7035; class I; plate availability per Hager catalogue.",
+   "source_urls": [
+    "https://he24.pl/Obudowa-staLowa-800x600x250-IP65-FL123A-Hager",
+    "https://hager.com/pl/katalog/produkt/fl123a-orion-obud-stalowa-800x600x250-drz-pel",
+    "https://hager.com/intl-en/catalogue/information/fl128am-steel-encl-orion-plus-800x800x300-mm"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "A/Other generic 800x600x250 metal boxes (PL wholesalers)",
+   "claim": "Further 800x600x250 IP65/66 steel boxes with plate: GEP-00012 1221.91 zl, NOH-8625 (Next), MB806025 870.16 zl, OM806025 (Adelid) 799 zl.",
+   "detail": "Prices brutto at TIM/dlaelektrykow/uhted; all with mounting plate.",
+   "source_urls": [
+    "https://www.tim.pl/obudowa-metalowa-800x600x250-ip65-z-plyta-montazowa-stalowa-gep-00012/p/0001-00020-69109",
+    "https://dlaelektrykow.pl/rozdzielnice-i-obudowy-metalowe-natynkowe/18633-obudowa-metalowa-ip65-800x600x250-noh-8625-2575312-next.html",
+    "https://www.uhted.pl/obudowa-metalowa-800x600x250-p-1413.html"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "A/ZPAS, Spelsberg, Hensel, Elektro-Plast metal enclosures",
+   "claim": "No ZPAS 'OWS' wall-mounted steel box with plate, nor Spelsberg/Hensel/Elektro-Plast steel enclosures with full mounting plate in the 800x600..1000x800 range, were found on Allegro or Polish shops; these brands are plastic-oriented (Hensel Mi, Spelsberg GEOS/AK, Elektro-Plast OH/EP-LUX) in this size class.",
+   "detail": "ZPAS search returned only telecom/rack cabinets (SU, SD2, SWJ) and unrelated results; Elektro-Plast offers 'UNI-0/T' 300x300x160 with plate and plastic OH series; Hensel Mi max 600x600x170/214.",
+   "source_urls": [
+    "https://www.elektroinzynieria.pl/produkty/obudowy-do-szaf-sterowniczych-i-telemechaniki-14876-11/producent:ZPAS-NET",
+    "https://www.elektrykasklep.pl/towar/43-00-elektro-plast-obudowa-plyta-montazowa/",
+    "https://www.tim.pl/serie/mi/rozdzielnice-i-obudowy",
+    "https://www.spelsberg.com/geos-industrial-and-outdoor-enclosures/"
+   ],
+   "confidence": "low"
+  },
+  {
+   "topic": "A/Transparent / glazed door options (metal)",
+   "claim": "Glazed/transparent doors in this class exist as factory variants for Legrand Atlantic (036948 1000x600x300, 036949 1000x800x300) and as Eaton CS accessory doors (steel frame + safety glass, IP65 when fitted); none found for ETI GT, Adelid, Argenta, Rittal AX on Allegro.",
+   "detail": "036949 glazed 1000x800x300 promo 2112.96 zl (catalogue 4437.41 zl); Eaton: 'transparent doors available separately' per datasheet; Rittal AX viewing-window variants exist in catalogue but not found in PL offers.",
+   "source_urls": [
+    "https://sklep.elektrospark.pl/337300,obudowa-metalowa-z-oknem-atlantic-1000x800x300-ip66-z-plyta-036949-legrand.html",
+    "https://www.tim.pl/obudowa-metalowa-z-oknem-atlantic-1000x600x300-ip66-z-plyta-036948/p/0004-00011-71444",
+    "https://datasheet.eaton.com/datasheet.php?model=111707&locale=pl_PL"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "A/Door reversibility and bottom gland plates (summary)",
+   "claim": "Reversible door confirmed for Eaton CS, Legrand Atlantic, Schneider S3D, Adelid; bottom cable-entry (gland) plate included for Eaton CS, Schneider S3D (1 plate), Legrand Atlantic (1 flange opening), Rittal AX (2 gland plates), Adelid ('plyta wprowadzajaca'); for ETI GT and Argenta not confirmed in accessible sources.",
+   "detail": "Eaton CS door opens 120 deg, 'door can be converted by user'; S3D door reversible 120 deg; Legrand 'reversible door with cable-entry plate'; Adelid 'mozliwosc zmiany kierunku otwierania drzwi'; Rittal AX 'two gland plates for use in the floor'.",
+   "source_urls": [
+    "https://www.eaton.com/us/en-us/skuPage.111707.html",
+    "https://www.se.com/us/en/product/NSYS3D8625P/wall-mounted-steel-enclosure-panelset-s3d-plain-door-with-mounting-plate-800x600x250mm-ip66-ik10/",
+    "https://www.legrand.com/ecatalogue/036931-atlantic-metal-cabinet-vertical-version.html",
+    "https://allegro.pl/oferta/obudowa-rozdzielnica-metalowa-800x600x250-mm-ip66-4877631306",
+    "https://www.rittal.com/us-en_US/products/PG20231215SCH101/PG20231512SCH301/PRO70743?variantId=1180000"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "B/Generic ABS 600x400x200 IP65 with plate (Allegro)",
+   "claim": "Generic ABS hermetic 600x400x200 IP65 boxes with galvanized mounting plate cost 197-249 zl on Allegro; ~5.25 kg; transparent polycarbonate door variants available; door opens up to 210 deg.",
+   "detail": "Allegro 7125688104: 248.75 zl (set: box, 2 plastic locks, galvanized plate, 4 wall brackets); TED CP 5005 197.39 zl; ELS 215 zl; transparent-door 600x400x200 Allegro 9787466936; weight 5.25 kg (TIM 400x600x200).",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-natynkowa-hermetyczna-abs-ip65-600x400x200-7125688104",
+    "https://allegro.pl/oferta/obudowa-abs-plastikowa-przezroczysta-600x400x200-9787466936",
+    "https://amper24.pl/produkt/obudowa-z-tworzywa-hermetyczna-z-plyta-montazowa-400x600x200mm-ip65-ted-cp-5005",
+    "https://www.tim.pl/obudowa-hermetyczna-abs-400x600x200-ip65-op400600200/p/0001-00014-50667"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "B/Generic ABS 700x500x250 IP65 (Allegro)",
+   "claim": "Generic ABS 700x500x250 IP65 boxes (transparent or opaque door) with galvanized plate are 329-449 zl on Allegro.",
+   "detail": "Allegro 9787503614 (transparent): 449 zl; Allegro 11299484986 (OP500700250): 329-419 zl; set includes 1 plastic lock, galvanized plate, 4 brackets.",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-abs-plastikowa-skrzynka-przezroczysta-700x500x250-ip65-9787503614",
+    "https://allegro.pl/oferta/rozdzielnia-skrzynka-elektryczna-abs-ip65-70x50x25-obudowa-plastikowa-11299484986"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "B/Fibox ARCA 806030",
+   "claim": "Fibox ARCA 806030 polycarbonate 800x600x300 IP66 IK10 with mounting plate weighs ~21.45 kg gross; EU price ~EUR 675 net (~2900-3500 zl); no Allegro or PLN offer found.",
+   "detail": "600 (W) x 800 (H) x 300 (D); 2-point lock; DIN frame set DRS ARCA 806030 (4 rows x 26 modules) available; US prices USD 345-543.",
+   "source_urls": [
+    "https://www.fibox.com/products/arca-iec/arca-806030",
+    "https://www.automation24.com/wall-mounting-cabinet-fibox-arca-806030-8120019",
+    "https://www.mrosupply.com/electrical/6505008_drs-arca-806030_fibox/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "B/Schneider Thalassa / PanelSeT PLM",
+   "claim": "Thalassa PLM NSYPLM86G (847x636x300 polyester, IP66 IK10, 17.2-19.3 kg, usable depth 275 mm, NO mounting plate) costs 1599.61 zl brutto; NSYPLM64G (647x436x250) 979 zl; glazed variant NSYPLM86TG exists; plate sold separately.",
+   "detail": "elektrykasklep: PLM86G 1300.50 net / 1599.61 gross; PLM64G 796.16 net / 979.28 gross; hurtowniaelnar 812.32 zl; not found on Allegro.",
+   "source_urls": [
+    "https://www.elektrykasklep.pl/towar/nsyplm86g-schneider-obudowa-natynkowa/",
+    "https://www.elektrykasklep.pl/towar/nsyplm64g-schneider-obudowa-natynkowa/",
+    "https://www.tme.com/us/en-us/details/nsyplm86g/wall-mounting-enclosures/schneider-electric/",
+    "https://www.electrika.com/catalogues/Schneider-Electric-Universal-Enclosures/Power-distribution-accessories/NSYPLM86TG/WM-POL-PLM847X636X300-IP66GLAZED/part/585845"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "B/Hensel Mi and Spelsberg",
+   "claim": "Hensel Mi largest single box is size 8: 600x600x170 (Mi 0800 transparent lid 1756-2700 zl, Mi 0801 opaque), IP65, plate is an accessory; Mi 0410 (300x600x214) 1101 zl with plate 565x265 189 zl; Spelsberg GEOS-L confirmed only up to 40x50 cm (GEOS-L 4050-22), 60x60 not confirmed.",
+   "detail": "Depth 170/214 mm only; screwed polycarbonate lid, no hinged door -> unsuitable for door-mounted HMI.",
+   "source_urls": [
+    "https://www.tim.pl/obudowa-pusta-mi-ip-65-wlk-8-600x600x170-pokrywa-przezroczysta-mi-0800-2000006",
+    "https://www.tim.pl/obudowa-pusta-mi-ip-65-wlk-4-300x600x214-pokrywa-wysoka-przezroczysta-mi-0410-2000290/p/1115-117YY-HN009",
+    "https://www.spelsberg.pl/puste-obudowy-przemyslowe/do-40-x-50-cm-elastyczne/wysokosc-226-mm-geos-l-22-geos-l-22/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "C/Hager Golf VS418TD (4x18, transparent door)",
+   "claim": "Hager Golf VS418TD surface 4x18 IP40 transparent door: 646.5 x 389.5 x 98.5 mm (depth ~99 mm).",
+   "detail": "72 modules; plastic transparent door; class II.",
+   "source_urls": [
+    "https://www.elektrykasklep.pl/towar/vs418td-hager-natynkowa-modulowa-rozdzielnica/",
+    "https://hager.com/pl/katalog/produkt/vs418td-golf-rozdz-n-t-ip40-drzwi-trans-72m",
+    "https://www.tim.pl/rozdzielnica-modulowa-4x18-natynkowa-ip40-golf-drzwi-transparentne-vs418td/p/1115-821AA-HG013"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "C/Other 4-row surface boards - depths",
+   "claim": "Depths: Hager Volta VA48CN (4x12, IP30) 96.5 mm; Hager vector II IP65 (VE412L 4x12, VE318L 3x18) 151 mm; Legrand Practibox S 4x18 (137439 transparent) 108 mm; Legrand XL3 125 4x18 (401659 transparent) 750x450x150 mm; Schneider Mini Pragma ~101.5-102 mm (1x18/3x12; 4x18 not confirmed); Elektro-Plast Economic Box 2x18 354x434x105 mm, EP-LUX PLUS RN 4/72 4x18 IP65 (1964-01); Noark PHS 48T not found.",
+   "detail": "All IP30/IP40 except vector (IP65) and EP-LUX PLUS (IP65).",
+   "source_urls": [
+    "https://assets.hager.com/step-content/P/PDS_789310980101DE/Document/std.lang.all/VA48CN_0101_de-DE.pdf",
+    "https://hager.com/pl/katalog/produkt/ve412l-vector-ii-rozdzielnica-ip65-4r-48m",
+    "https://www.legrand.pl/pl/e-katalog/produkty/rozdzielnica-nascienna-practibox-s-4x18-z-drzwiami-przezroczystymi-137439",
+    "https://www.legrand.pl/pl/e-katalog/produkty/rozdzielnica-nascienna-xl3-125-4x18-drzwi-przezroczyste-401659",
+    "https://www.tim.pl/rozdzielnica-modulowa-1x18-natynkowa-ip40-drzwi-przezroczyste-mini-pragma-mip12118t/p/1115-133AA-GS085",
+    "https://www.tim.pl/rozdzielnica-modulowa-hermetyczna-4x18-natynkowa-ep-lux-plus-rn-472-obudowy-laczone-2x2x36mod-n-pe-ip65-szara-1964-01/p/0004-00011-78807"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "C/5x24 and 6x24 surface boards on Allegro",
+   "claim": "Hager univers FW524WT (5x24, 941x571x150 mm) 981-1359 zl and FW624WT (6x24, 1091x571x150 mm) ~1300 zl; Schneider PrismaSeT XS PSXS-6-24-NT-P (6x24, 550x1050x168 mm, transparent, IP40 IK09) 2806.82 zl, 5x24 2301.77 zl; Eaton BP-O-600/10-C (6x24, IP30, depth 262 mm) 1339.14 zl.",
+   "detail": "FW: metal door, IP30/40, class I, depth 150 mm; PrismaSeT XS build-in depth 155 mm, outer 168 mm; Eaton BP-O-600/10-C 262 mm deep (xEnergy Basic).",
+   "source_urls": [
+    "https://allegro.pl/oferta/hager-rozdzielnica-modulowa-natynkowa-6x24-fw624wt-10410916003",
+    "https://allegro.pl/oferta/hager-rozdzielnica-natynkowa-fw2-5x24-fw524wt-8973850347",
+    "https://hager.com/pl/katalog/produkt/fw624wt-fw2-rodz-n-t-6r-144m-6x24-i-kl-ip40",
+    "https://www.elektrykasklep.pl/towar/lvsxr624-schneider-obudowa-natynkowa-prismaset/",
+    "https://ivolta.pl/lvsxr624-rozdzielnica-prismaset-xs-6x24-psxs-6-24-nt-p-natynkowa-drzwi-przezroczyste-ip40-ik09-lvsxr624/31263/produkt/",
+    "https://datasheet.eaton.com/datasheet.php?model=293308&locale=pl_PL"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "C/Fitting a 7-inch HMI (181x108x15 mm board) into a modular board door",
+   "claim": "In 4x18 boards (depth 97-108 mm) the module front faces sit nearly flush with the cover plate and the door is only ~8-15 mm in front, so a 15 mm-thick 181x108 mm display board cannot sit in the door without leaving one row empty and cutting the cover plate; a transparent plastic door (Golf, Practibox) is thin and not suited to a 160x90 mm cut-out; only metal-door 150-170 mm deep boards (Hager univers FW, PrismaSeT XS) or Eaton BP-O (262 mm) can take it, still sacrificing one row (board spans ~10 modules x 1 row).",
+   "detail": "Engineering assessment from listed depths; modular devices are ~70 mm deep, DIN rail to front cover ~45 mm; row pitch 125-150 mm; board 181x108 mm, active 153.8x85.6 mm.",
+   "source_urls": [
+    "https://www.elektrykasklep.pl/towar/vs418td-hager-natynkowa-modulowa-rozdzielnica/",
+    "https://www.elektrykasklep.pl/towar/lvsxr624-schneider-obudowa-natynkowa-prismaset/",
+    "https://www.atomic14.com/esp32/boards/sunton-esp32-8048s070/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "HMI/7-inch board identification and dimensions",
+   "claim": "A 7-inch ESP32 board of 181x108 mm matches the Sunton ESP32-8048S070(C): 181.0 x 108.0 mm PCB, active area 153.84 x 85.63 mm, 800x480 IPS, GT911 capacitive touch, 3.2 mm mounting holes; Waveshare ESP32-S3-Touch-LCD-7 (800x480) and 7B (1024x600) are the Allegro-available alternatives at ~168-402 zl.",
+   "detail": "Sunton board 181x108 mm; mounting holes 3.2 mm; Waveshare ESP32-S3-Touch-LCD-7 Allegro offers 18176697600, 17913798935; 7B 1024x600 Allegro 18116782086.",
+   "source_urls": [
+    "https://www.atomic14.com/esp32/boards/sunton-esp32-8048s070/",
+    "https://www.espboards.dev/esp32/cyd-esp32-8048s070/",
+    "https://allegro.pl/oferta/wyswietlacz-ips-7-800x480-esp32-wifi-can-rs485-esp32-s3-touch-lcd-7-18176697600",
+    "https://allegro.pl/oferta/esp32-s3-waveshare-lcd-1024x600-dotykowy-wi-fi-ble-can-rs485-i2c-18116782086"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "HMI/How installers mount a 7-inch HMI in a steel door",
+   "claim": "Industrial 7-inch HMIs use a rectangular cut-out of about 192x138 mm (some 186x128) and are clamped from behind with 4-6 mounting clips at 0.5-0.6 Nm; accepted panel thickness 1.0-5 mm (steel 1.5-6 mm); the HMI's own front gasket restores IP65 at the door. For bare ESP32 boards there is no industrial bezel kit: practice is a cut-out slightly smaller than the glass (~156x88 mm for 153.8x85.6 active area, or ~165x100 mm to show the whole glass), M3 standoffs on the 3.2 mm PCB holes into the door, and a 3D-printed/laser-cut bezel with foam gasket (ready models exist on Printables/Thingiverse/MakerWorld); 'ramka montazowa 7 cali' on Allegro returns only RPi desk cases (33-100+ zl), not panel-mount frames.",
+   "detail": "Cut-out 192x138 mm (7.6x5.4 in) for generic 7-inch HMI protective cover 220x180x24 mm; Beijer X2 pro 7: clips, 0.5-0.6 Nm, panel 1.0-5.0 mm; Phoenix HMI wall mounting kit 2701380 exists; Waveshare RPi5 7-inch case 32316 and 11301 case on Allegro; VESA is irrelevant for door mounting.",
+   "source_urls": [
+    "https://vxb.com/products/industrial-7-inch-hmi-panel-protective-cover-high",
+    "https://www.beijerelectronics.com/docs/x3/pro-7-web/en/mounting-and-installation.html",
+    "https://www.phoenixcontact.com/en-us/products/mounting-material-hmi-wall-mounting-kit-2701380",
+    "https://www.printables.com/model/1294432-display-enclosure-for-7-inch-esp32-8048s070c-touch/related",
+    "https://www.thingiverse.com/thing:7015666",
+    "https://allegro.pl/listing?string=obudowa+wy%C5%9Bwietlacz+7+cali"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Door sheet thickness for HMI cut-out",
+   "claim": "Door sheet thicknesses: Eaton CS 1.5 mm (CS-86/250) / 2 mm (CS-106/300); Legrand Atlantic 1.8 mm; Adelid 1.2 mm; Rittal AX body/door 1.5 mm class (plate 2.5 mm); all within HMI clip range 1-5 mm.",
+   "detail": "Eaton CS-106/300: body 1.5, door 2, plate 3, bottom plate 2 mm; Adelid 1.2-1.5 mm; Legrand body 1.0 mm, door 1.8 mm.",
+   "source_urls": [
+    "https://datasheet.eaton.com/datasheet.php?model=111713&locale=uk_EN",
+    "https://www.eaton.com/us/en-us/skuPage.111707.html",
+    "https://www.electricautomationnetwork.com/en/legrand/036931-legrand-arm-metal-atlantic-800x600x250",
+    "https://allegro.pl/oferta/obudowa-rozdzielnica-metalowa-800x600x250-mm-ip66-4877631306"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Thermal/Natural dissipation estimate for 100-200 W",
+   "claim": "Using IEC TR 60890 / Rittal method (A = 1.4*W*(H+D) + 1.8*H*D, k = 5.5 W/m2K for painted steel, dT = P/(k*A)): 800x600x250 -> A 1.24 m2, dT 15/22/29 K at 100/150/200 W; 800x600x300 -> 1.36 m2, 13/20/27 K; 1000x600x300 -> 1.63 m2, 11/17/22 K; 1000x800x300 -> 2.00 m2, 9/14/18 K.",
+   "detail": "Sealed IP66 steel box, wall-mounted, free convection; at 25 C ambient and 150 W, internal air ~47 C (800x600x250) vs ~39 C (1000x800x300); plastic (PC/polyester) k ~3.5 W/m2K gives ~1.6x higher rise; hot spots near resistive 'burnt contact' heaters will exceed air temp.",
+   "source_urls": [
+    "https://www.rittal.com/us_en/apps/download/img/uploads/US573-WP-TR%20Perfect%20Climate%20Inside%20Your%20Enclosure.pdf",
+    "https://cdn.standards.iteh.ai/samples/20257/2b51a1763d3e471eb5cfbc5c7c808285/IEC-TR-60890-2014.pdf",
+    "https://sparkycalc.com/switchboard-heat-load-calculator/"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Thermal/Forced ventilation parts on Allegro",
+   "claim": "Filter fans and grilles on Allegro: 120x120 filter fan 30 m3/h IP54 (Plastim) 116.92 zl; 150x150 filter fan 230 V 58 m3/h (ATV2200) 202.68 zl; 204x204 filter fan (ATV3200) 308.48 zl; 204x204 WEF10 170 m3/h 45 W IP54 402.99 zl; Schneider ClimaSys outlet grille with filter 223x223 IP54 NSYCAG223LPF 165.82 zl; bare 120x120x38 230 V fan with thermostat 139 zl; filter grille 120x120 (92x92 hole) 19.99-33.69 zl; DIN thermostat KTS 011 / KTO 011 22-40 zl.",
+   "detail": "Air need: Q[m3/h] ~ 3.1*P/dT -> 200 W at dT 10 K needs ~62 m3/h (150x150 fan borderline, 204x204 comfortable); adding fan+grille drops rating to IP54; thermostat KTS 011 (NO, closes on rise) for fan, KTO 011 (NC) for heater.",
+   "source_urls": [
+    "https://allegro.pl/oferta/wentylator-filtrujacy-230-v-ac-204x204mm-atv3200-14022605478",
+    "https://allegro.pl/produkt/kratka-wentylacyjna-wentylacyjne-schneider-electric-bialy-ece6fbfa-d3d0-4854-9651-ae77220492a9?fromInactiveOffer=archived%3Fdd_referrer&offerId=18766190376",
+    "https://allegro.pl/produkt/wentylator-podwojny-do-szafy-rack-lub-sterowniczej-230v-2-x-120x120x38-mm-a3bf87a0-e93e-4917-ab0c-55cfecb474e3",
+    "https://allegro.pl/oferta/wentylator-do-szaf-rack-120x120x38mm-230v-5871456707",
+    "https://allegro.pl/oferta/termostat-do-wentylatorow-kts-011-7364992248",
+    "https://allegro.pl/oferta/termostat-miniaturowy-kto-011-kts-011-11331677409"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "DIN rails on the mounting plate (Allegro)",
+   "claim": "TH35 (EN 60715) perforated rails 2 m: BAKS from 13.23 zl, VCX from 5.99 zl, F-elektro from 19.80 zl, ONESTO TH35x15 (15 mm high) 27.99 zl; rail stand-offs ('uchwyt dystansowy') from 8 zl; TH35 adapters/holders 4.99-9.90 zl; rails are bolted M5/M6 (or self-tapping) to the 2-3 mm galvanized plate, TH35x15 preferred for stiffness over long spans and for heavier devices (contactors).",
+   "detail": "Plate fixing through rail perforation; typical row pitch 125-150 mm for 45 mm modular devices with 40x60 / 60x80 slotted cable duct between rows; use spacers 10-20 mm where cable duct or device base needs clearance.",
+   "source_urls": [
+    "https://allegro.pl/produkt/onesto-szyna-montazowa-ocynkowana-listwa-perforowana-din-th35-15mm-2m-b681d3c3-319d-4c15-8ad2-62e968c1a910",
+    "https://allegro.pl/listing?string=szyna+monta%C5%BCowa+perforowana+th35",
+    "https://allegro.pl/listing?string=uchwyt+szyny+th35"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "SHORTLIST 1 (budget 800x600x250)",
+   "claim": "Adelid 'Obudowa Rozdzielnica Metalowa 800x600x250 mm IP66' (OM806025) - 799.00 zl - IP66 IK09, 1.2 mm, 26.7 kg, plate + gland plate, reversible door; seller appears to be the Adelid brand store (not confirmed).",
+   "detail": "https://allegro.pl/oferta/obudowa-rozdzielnica-metalowa-800x600x250-mm-ip66-4877631306 ; 799.00 zl (also 849 zl at offer 7769074421); Smart free delivery.",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-rozdzielnica-metalowa-800x600x250-mm-ip66-4877631306"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "SHORTLIST 2 (800x600x300, branded)",
+   "claim": "Eaton CS-86/300 (111708) 'EATON Obudowa z plyta montazowa 800x600x300mm CS-86/300' - 935-1000 zl - IP66 IK10, plate 3 mm (770x550 class), door 1.5 mm, reversible, bottom gland plate; alternative Adelid OM806030 800x600x300 899 zl.",
+   "detail": "https://allegro.pl/produkt/rozdzielnica-eaton-1000-v-ip66-0-a-797b7cf2-e441-4b8b-81f3-97d57ac3e147 (935.38 zl; offerId 17739059022 at 999.97 zl); Adelid https://allegro.pl/oferta/obudowa-szafa-rozdzielnica-metalowa-800x600x300-mm-elektryczna-natynkowa-4877631140 899 zl.",
+   "source_urls": [
+    "https://allegro.pl/produkt/rozdzielnica-eaton-1000-v-ip66-0-a-797b7cf2-e441-4b8b-81f3-97d57ac3e147",
+    "https://allegro.pl/oferta/obudowa-szafa-rozdzielnica-metalowa-800x600x300-mm-elektryczna-natynkowa-4877631140"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "SHORTLIST 3 (1000x800x300, best value branded)",
+   "claim": "Rittal AX 1180.000 'Obudowa kompaktowa 800x1000x300mm AX 1180.000' - 1582.41 zl - IP66 IK10, 52 kg, galvanized plate 745x975x2.5 mm, 2 gland plates, 2 cam locks; cheaper than Adelid's 1000x800x300 (1649 zl) with better specification.",
+   "detail": "https://allegro.pl/oferta/obudowa-kompaktowa-800x1000x300mm-ax-1180-000-16422788244 ; 1582.41 zl; seller not visible in snippet.",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-kompaktowa-800x1000x300mm-ax-1180-000-16422788244",
+    "https://www.rittal.com/us-en_US/products/PG20231215SCH101/PG20231512SCH301/PRO70743?variantId=1180000"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "SHORTLIST 4 (1000x800x300, budget / premium)",
+   "claim": "Adelid 'Obudowa Szafa Rozdzielnica Metalowa 1000x800x300' (OM1008030) - 1649.00 zl - IP66, 1.2-1.5 mm, ~48.6 kg shipping, plate + gland plate; premium alternative Eaton CS-108/300 (111715) 2269-2479 zl.",
+   "detail": "Adelid: https://allegro.pl/oferta/obudowa-szafa-rozdzielnica-metalowa-1000x800x300-7684269351 (1649 zl); Eaton: https://allegro.pl/oferta/obudowa-cs-1000x800x300mm-ip66-z-plyta-montazowa-cs-108-300-111715-17130395404 (2269.17 zl).",
+   "source_urls": [
+    "https://allegro.pl/oferta/obudowa-szafa-rozdzielnica-metalowa-1000x800x300-7684269351",
+    "https://allegro.pl/oferta/obudowa-cs-1000x800x300mm-ip66-z-plyta-montazowa-cs-108-300-111715-17130395404"
+   ],
+   "confidence": "high"
+  },
+  {
+   "topic": "Size reference table (outer HxWxD, plate, weight)",
+   "claim": "Consolidated: 800x600x250 - Eaton CS-86/250 plate 770x550x3, 32.7 kg; Legrand 036931 plate ~737x543, 30.9 kg; S3D 8625P 27.8 kg; ETI GT 80-60-25 30.1 kg; Adelid OM806025 26.7 kg; Rittal AE 1058.500 34 kg / AX 1058.000 32 kg. 1000x600x300 - Eaton CS-106/300 plate 970x550x3, 44.8-45.4 kg; ETI GT 100-60-30 39.8 kg; CRN 106300P 38.2 kg. 1000x800x300 - Rittal AX 1180.000 plate 745x975x2.5, 52 kg; Adelid OM1008030 ~48.6 kg (shipping).",
+   "detail": "700x500x250 and 600x400x250: Eaton CS-75/250, CS-64/250 exist (CS-75/200 archived Allegro 14195915641; CS-55/250 Allegro 8055718606; CS-66/250 Allegro 12726003849); ETI GT 70-50-25 and GT 60-40-25 (001102121) exist, Allegro price not captured.",
+   "source_urls": [
+    "https://www.electricautomationnetwork.com/en/eaton-moeller/wall-enclosure-mounting-plate-hxwxd800x600x250mm-eaton-moeller-111707-cs-86-250",
+    "https://datasheet.eaton.com/datasheet.php?model=111713&locale=uk_EN",
+    "https://www.rittal.com/us-en_US/products/PG20231215SCH101/PG20231512SCH301/PRO70743?variantId=1180000",
+    "https://www.etipolam.com.pl/katalog-elektroniczny//001102143-gt-indoor-use-ip66-ik10-1000mm-600mm-300mm",
+    "https://www.tme.com/us/en-us/details/eti-gt-60-40-25/wall-mounting-enclosures/eti-polam/gt-60-40-25/",
+    "https://allegro.pl/oferta/eaton-111699-obudowa-metal-cs-66-250-600x600x250-12726003849"
+   ],
+   "confidence": "medium"
+  }
+ ],
+ "recommendations": [
+  "Primary choice: steel wall enclosure 1000x800x300 with full mounting plate - Rittal AX 1180.000 on Allegro (1582 zl, IK10, 2.5 mm plate 745x975, two gland plates, 52 kg) or Adelid OM1008030 (1649 zl) if Rittal stock/shipping fails. This size gives ~745x975 mm of plate for 4 TH35 rows (incl. Shelly Pro DIN units, fault relays/contactors, DIN meter), 60-80 mm ducts, CT space on supply wires, and keeps natural-convection rise to ~14 K at 150 W.",
+  "Compact alternative if wall space is limited: 800x600x300 (Eaton CS-86/300 ~935-1000 zl or Adelid OM806030 899 zl). Prefer 300 mm depth over 250 mm: door-mounted 7-inch board (15 mm + standoffs) plus 70 mm DIN devices plus 20-30 mm plate/duct clearance consumes ~130 mm, leaving margin for wiring behind the door only at 300 mm.",
+  "Do not use a modular 4x18/6x24 distribution board as the main enclosure: depths 97-168 mm, IP30/40, plastic transparent doors, and no room for a 15 mm display in the door without sacrificing a row; use one only as a sub-panel for MCB/RCD presentation if the client wants a 'typical home board' look.",
+  "Avoid plastic (ABS/polyester) for this unit: lower heat conduction (~1.6x higher temperature rise), no bonded metal body for PE-fault demonstrations, and branded sizes (Fibox ARCA 806030, PLM86G) cost 1600-3500 zl without plate; generic ABS 600x400x200 at ~250 zl is too small.",
+  "HMI: mount the ESP32-8048S070 (181x108 mm) directly in the steel door - cut ~165x100 mm (whole glass) or ~156x88 mm (active area) opening, fix with M3 standoffs on the 3.2 mm PCB holes, add a 3D-printed bezel with closed-cell foam gasket; keep the opening on the hinge-far half of the door and route the display cable with a flexible loom. If an industrial look is wanted, use a standard 192x138 mm cut-out and a commercial 7-inch HMI instead.",
+  "Thermal: at <=150 W the 1000x800x300 steel box needs no fan (dT ~14 K); if 'burnt/loose contact' heaters push dissipation to 200 W or ambient >30 C, add a 150x150 or 204x204 filter fan (ATV2200 58 m3/h 203 zl / ATV3200 308 zl) low on one side, a 223x223 ClimaSys outlet grille (166 zl) high on the opposite side, and a KTS 011 thermostat (22-40 zl); accept IP54.",
+  "DIN layout: TH35x15 perforated rails (2 m, 13-28 zl) bolted to the plate on 10-20 mm stand-offs where cable ducts cross; ~125-150 mm row pitch; reserve the bottom 150 mm above the gland plate for terminals, CTs on the 6 mm2 feeders and the DLB CT leads.",
+  "Ask for the client's enclosure sign-off on: size (800x600x300 vs 1000x800x300), brand tier (Adelid vs Rittal/Eaton), hinge side, door-mounted HMI yes/no, and whether a transparent door matters (only Legrand factory glazed or Eaton accessory door offer it; none on Allegro)."
+ ],
+ "open_questions_for_user": [
+  "Which Shelly models are in stock (Shelly Pro 1/2/3/4PM/3EM are DIN-rail 1-2 module units; Plus/Gen3 are flush-box modules needing adapters) - this sets the DIN-module count and therefore the enclosure size.",
+  "Will the board be wall-mounted permanently or moved to demos/trainings? A 1000x800x300 steel box weighs 50-60 kg empty; 800x600x300 is 30-35 kg.",
+  "Indoor only (IP40 would suffice) or also outdoor/van transport (keep IP54-66)?",
+  "Is a transparent/glazed door required to show the wiring (adds 500-2000 zl and limits brands), or is a plain steel door with the 7-inch HMI acceptable?",
+  "How much heat will the 'burnt contact' / high-resistance simulation dump continuously (resistor wattage)? Above ~150 W a filter fan is needed.",
+  "Should the HMI sit in the door or in a separate small desk/console box connected by cable (safer for a 230/400 V demo door that will be opened often)?",
+  "Preferred Allegro sellers or company account (Allegro Business) - seller names could not be read from search snippets."
+ ],
+ "gaps": [
+  "Allegro seller names were not visible in search snippets for any offer; only offer IDs/URLs are given.",
+  "ETI GT: mounting plate dimensions, door reversibility, gland-plate inclusion and transparent-door option could not be confirmed (etigroup.eu and TME blocked for fetch); GT 80-60-25 and GT 100-60-30 current Allegro offers not found (only 2021 archive).",
+  "Eaton CS-86/250: current Allegro offer price (~800-892 zl) came from a snippet without a captured offer URL; confirm before quoting.",
+  "Schneider S3D NSYS3D8625P: Allegro listing exists but price not captured; sheet thickness and plate dimensions not found. CRN prices only in EUR/USD.",
+  "Legrand Atlantic: no Allegro offers found; only wholesaler prices (TIM, elektrycznie.pl).",
+  "ZPAS 'OWS' line not found at all; Spelsberg sizes above 40x50 cm and Elektro-Plast steel enclosures with plate not found.",
+  "Fibox ARCA 806030: no PLN price; Hensel Mi plate accessory prices only partial.",
+  "Modular boards: Noark PHS 48T and Mini Pragma 4x18 depths not found; distance DIN-rail-to-door for each board is an estimate (~45 mm device face above rail, door 8-15 mm in front).",
+  "Adelid plate dimensions and exact net weights (catalogue PDF at adelid.pl is blocked for fetch); weight 26.73 kg (800x600x250) is from a reseller, 48.6 kg (1000x800x300) is shipping weight.",
+  "Thermal numbers are calculated from the IEC 60890 simplified method, not measured; k = 5.5 W/m2K assumes painted steel, free air around sides/top and no solar load."
+ ]
+}
