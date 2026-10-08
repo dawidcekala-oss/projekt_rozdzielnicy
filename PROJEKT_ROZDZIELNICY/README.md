@@ -15,6 +15,7 @@ przekładniki modułu DLB w środku (moduł na zewnątrz).
 | 2 | Architektura elektryczna i sterowania | RPi 5 + Z-Wave (Shelly Wave Pro 3) + GPIO, testy ≤16 A |
 | 3 | Lista zakupowa (BOM) z podziałem na koszyki Allegro | `bom/bom.json` v5 (bez SPD i licznika, RCD z magazynu, montażowe poza kosztorysem) + kosztorys w `docs/pdf/03_…` |
 | 4 | Pełny schemat połączeń na jednej stronie A4 | rew. C – `schemat/gen_schemat.py` → `docs/pdf/03_schemat_i_lista_zakupow.pdf` |
+| 4b | Schemat blokowy poglądowy (co z czym, jak współpracuje, 4 scenariusze) | `schemat/gen_blokowy.py` → `docs/pdf/04_schemat_blokowy.pdf` |
 | 5 | Rozmieszczenie w obudowie, zarys firmware HMI | - |
 
 ## Struktura
