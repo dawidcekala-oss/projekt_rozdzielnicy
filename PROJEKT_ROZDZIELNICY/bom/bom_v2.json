@@ -1,0 +1,488 @@
+{
+ "wersja": "2026-10-15 v2 (ekonomiczna) – na bazie rew. C: bez Z-Wave i Shelly (płytka 16 przekaźników), RPi 4 + ekran 7″ HDMI, mały toroid 2×55 V (progi ładowarek 150/270 V), 1× PZEM-004T, tańsze styczniki (Adelid/Gacia), obudowa 600×400×200, bez rozłącznika -Q1, bez wtyku i przewodów (magazyn)",
+ "koszyki": {
+  "K1": "Aparatura elektryczna – jeden sklep z aparaturą modułową na Allegro (Adelid/Gacia/Pawbol + Noark/Eaton gdzie trzeba)",
+  "K2": "Elektronika i sterowanie – Botland / Kamami / MSALAMON (sklepy na Allegro)",
+  "K3": "Transformator toroidalny – Indel / Telto (Allegro)",
+  "K5": "Z magazynu Ampere Point (0 zł): RCD, moduł DLB-A1 z CT, przewód z wtykiem CEE 32 A, przewody 6 / 2,5 mm²"
+ },
+ "pozycje": [
+  {
+   "id": 1,
+   "ozn": "-F1",
+   "koszyk": "K5",
+   "ilosc": 1,
+   "nazwa": "Wyłącznik różnicowoprądowy 4P 40 A 30 mA – z magazynu (typ A/F/B; typ AC nie)",
+   "model": "własny RCD",
+   "fraza": "",
+   "cena": 0,
+   "zrodlo": "magazyn"
+  },
+  {
+   "id": 2,
+   "ozn": "-F6",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "RCBO 1P+N B6 30 mA typ A – własne RCD obwodów sterowania (drzwi, zasilacz, elektronika)",
+   "model": "dowolna marka (Eaton PFL6, Hager ADA, ETI KZS-2M, Noark Ex9NL-N)",
+   "fraza": "RCBO 1P+N B6 30mA typ A",
+   "cena": 60,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 3,
+   "ozn": "-F3",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Wyłącznik nadprądowy 3P B16 – zabezpieczenie sekcji usterek i obu gniazd CEE (testy do 16 A)",
+   "model": "Noark Ex9BN 3P B16 (kod 100053)",
+   "fraza": "Noark Ex9BN 3P B16 100053",
+   "cena": 35,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 4,
+   "ozn": "-F5",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Wyłącznik nadprądowy 2P B16 (L+N) – gałąź gniazd 230 V",
+   "model": "Noark Ex9BN 2P B16",
+   "fraza": "Noark Ex9BN 2P B16",
+   "cena": 30,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 5,
+   "ozn": "-F7",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Wyłącznik nadprądowy 1P B10 – pierwotne transformatora",
+   "model": "Noark Ex9BN 1P B10 (kod 100006)",
+   "fraza": "Noark Ex9BN 1P B10 100006",
+   "cena": 14,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 6,
+   "ozn": "-F8",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Podstawa bezpiecznikowa modułowa 5×20 na TH35 + bezpieczniki 1,6 A (zabezpieczenie wtórnego małego transformatora -T1)",
+   "model": "podstawa 5x20 TH35 + wkładki T 1,6 A",
+   "fraza": "podstawa bezpiecznikowa modułowa 5x20 TH35",
+   "cena": 12,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 7,
+   "ozn": "-K1",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Stycznik modułowy 25 A, 4NO, cewka 230 V AC, 2 moduły – stycznik główny wyjścia (cewka z Lc; E-STOP/kluczyk odłączają sprzętowo)",
+   "model": "Gacia HC-425-230-40 (4NO 25 A)",
+   "fraza": "stycznik modułowy 25A 4NO 230V Gacia",
+   "cena": 49,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 8,
+   "ozn": "-K3, -K4, -K5, -K8",
+   "koszyk": "K1",
+   "ilosc": 4,
+   "nazwa": "Stycznik modułowy 25 A, 2NC, cewka 230 V AC, 1 moduł (zanik L3, luźny styk, bocznik rezystora, przerwa N)",
+   "model": "Adelid SM2 25-02 230V (2NC)",
+   "fraza": "Adelid stycznik modułowy 25A 2NC 230V SM2 25-02",
+   "cena": 40,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 9,
+   "ozn": "-K6, -K9, -K10, -K11, -K12a, -K12b",
+   "koszyk": "K1",
+   "ilosc": 6,
+   "nazwa": "Stycznik modułowy 25 A, 2NO+2NC (przełączny), cewka 230 V AC, 2 moduły (wstawienie -T1 w L1, przerwa PE z potwierdzeniem, zamiana N–PE, zamiana L–N, pominięcie RCD ×2)",
+   "model": "Adelid SM4 25-22 230V (2NO+2NC)",
+   "fraza": "Adelid stycznik modułowy 25-22 230V 25A 2NO 2NC",
+   "cena": 60,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 10,
+   "ozn": "-K2",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Stycznik modułowy 25 A, 2NO+2NC – zamiana faz L2↔L3 (F9); przełączany tylko przy wyłączonym -K1",
+   "model": "Adelid SM4 25-22 230V",
+   "fraza": "Adelid stycznik modułowy 25-22 230V 25A 2NO 2NC",
+   "cena": 60,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 11,
+   "ozn": "-RL1, -RL2",
+   "koszyk": "K1",
+   "ilosc": 2,
+   "nazwa": "Przekaźnik 230 V AC, 2 styki przełączne 5 A, z podstawką na TH35 – biegunowość pierwotnego -T1 (buck/boost) i wybór odczepu 55/110 V (prąd ≈ 0, tylko stan gotowości ładowarki)",
+   "model": "przekaźnik DPDT 230 V AC + podstawka DIN",
+   "fraza": "przekaźnik DPDT 230V AC 2x5A podstawka szyna DIN",
+   "cena": 16,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 12,
+   "ozn": "-K13",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Przekaźnik kolejności i zaniku faz, 1 moduł",
+   "model": "F&F CKF-B",
+   "fraza": "F&F CKF-B",
+   "cena": 70,
+   "zrodlo": "oferta"
+  },
+  {
+   "id": 13,
+   "ozn": "-W2",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Blok rozdzielczy 1P 125 A, 7 zacisków, TH35 – szyna PE (płyta montażowa, drzwi, radiator, -G1, -A20)",
+   "model": "blok rozdzielczy 1P 125 A 7 zacisków",
+   "fraza": "blok rozdzielczy 1P 125A 7 otworów",
+   "cena": 32,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 14,
+   "ozn": "-X2",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Gniazdo stałe CEE 32 A 5P 400 V IP44 (natynkowe)",
+   "model": "PCE 125-6",
+   "fraza": "gniazdo stałe PCE 125-6 32A 5P",
+   "cena": 55,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 15,
+   "ozn": "-X3",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Gniazdo stałe CEE 16 A 5P 400 V IP44 (natynkowe)",
+   "model": "PCE 115-6",
+   "fraza": "gniazdo stałe PCE 115-6 16A 5P",
+   "cena": 40,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 16,
+   "ozn": "-X4a, -X4b",
+   "koszyk": "K1",
+   "ilosc": 2,
+   "nazwa": "Gniazdo Schuko 16 A natynkowe hermetyczne IP44 z klapką",
+   "model": "Elektro-Plast Elektro 16A IP44 natynkowe",
+   "fraza": "gniazdo natynkowe hermetyczne IP44 16A klapka",
+   "cena": 15,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 17,
+   "ozn": "-S0",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Przycisk bezpieczeństwa grzybkowy Ø22, 1NC+1NO (blok NO dokupić, jeśli wersja ma tylko 1NC), odblokowanie przez obrót",
+   "model": "XB2-BS542 (klon) / Spamel ST22-B",
+   "fraza": "przycisk grzybkowy bezpieczeństwa 22mm 1NC 1NO",
+   "cena": 20,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 18,
+   "ozn": "-S1",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Przełącznik kluczykowy Ø22, 2 położenia, 1NO, kluczyk wyjmowany w 0",
+   "model": "XB2-BG21 / LAY5-BG21 (klon), 1NO",
+   "fraza": "przełącznik kluczykowy 22mm 2 pozycje 1NO",
+   "cena": 25,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 19,
+   "ozn": "-H1, -H2",
+   "koszyk": "K1",
+   "ilosc": 2,
+   "nazwa": "Lampka sygnalizacyjna LED Ø22 230 V (zielona + czerwona)",
+   "model": "AD16-22DS 230V",
+   "fraza": "lampka kontrolna LED 22mm 230V AD16-22DS",
+   "cena": 6,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 20,
+   "ozn": "-U1",
+   "koszyk": "K1",
+   "ilosc": 1,
+   "nazwa": "Obudowa plastikowa ABS 600×400×200 mm IP65 z płytą montażową (galwanizowaną), drzwi pełne",
+   "model": "TED / Pawbol 600x400x200 z płytą",
+   "fraza": "obudowa hermetyczna ABS 600x400x200 z płytą montażową",
+   "cena": 197,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 31,
+   "ozn": "-A1",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Komputer sterujący Raspberry Pi 4 Model B 2 GB",
+   "model": "Raspberry Pi 4B 2GB",
+   "fraza": "Raspberry Pi 4 Model B 2GB",
+   "cena": 290,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 32,
+   "ozn": "-A2",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Ekran dotykowy 7″ 1024×600 HDMI (pojemnościowy, USB dotyk) – w drzwiach",
+   "model": "ekran 7 cali HDMI 1024x600 dotykowy do Raspberry Pi",
+   "fraza": "ekran dotykowy 7 cali HDMI 1024x600 Raspberry Pi",
+   "cena": 130,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 33,
+   "ozn": "-A4",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Płytka 16 przekaźników 10 A/250 V AC z optoizolacją, cewki 5 V, wejścia aktywne stanem niskim – wszystkie cewki styczników, drabinka upływów, lampka, przekaźniki -RL",
+   "model": "moduł 16 przekaźników 5V optoizolacja",
+   "fraza": "moduł przekaźników 16 kanałów 5V optoizolacja",
+   "cena": 60,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 34,
+   "ozn": "-A7a…-A7d",
+   "koszyk": "K2",
+   "ilosc": 4,
+   "nazwa": "Moduł wykrywania napięcia 230 V AC z optoizolacją (PC817), wyjście 3,3/5 V – sygnały zwrotne do RPi: Lc OK, -S0 wciśnięty, -K13 CKF-B, -K9 PE przerwane",
+   "model": "optoizolator 1-kanałowy AC 220V PC817",
+   "fraza": "optoizolator 1 kanałowy AC 220V PC817",
+   "cena": 16,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 35,
+   "ozn": "-P2",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Miernik 1-faz. PZEM-004T v3 (U, I, P, kWh) z przekładnikiem 100 A – L1″ wyjścia; UART TTL (opto) wprost do RPi",
+   "model": "Peacefair PZEM-004T v3.0 100 A",
+   "fraza": "PZEM-004T 100A",
+   "cena": 41,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 36,
+   "ozn": "-R1",
+   "koszyk": "K2",
+   "ilosc": 2,
+   "nazwa": "Rezystor mocy 1 Ω 100 W w obudowie aluminiowej (2 równolegle = 0,5 Ω / 200 W; 128 W przy 16 A)",
+   "model": "RX24 1R 100W",
+   "fraza": "rezystor mocy 1 ohm 100W aluminiowy",
+   "cena": 18,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 37,
+   "ozn": "-R1",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Radiator aluminiowy ok. 150×100×40 mm",
+   "model": "radiator profil 150x100x40",
+   "fraza": "radiator aluminiowy 150x100x40",
+   "cena": 45,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 38,
+   "ozn": "-B1",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Termostat bimetaliczny KSD301 85 °C NC – sprzętowa blokada rezystora -R1 (w obwodzie cewki -K5)",
+   "model": "KSD301 85C NC",
+   "fraza": "KSD301 85C NC",
+   "cena": 4,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 39,
+   "ozn": "-R2",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Rezystor 100 Ω 50 W aluminiowy (słabe PE)",
+   "model": "RX24 100R 50W",
+   "fraza": "rezystor mocy 100 ohm 50W aluminiowy",
+   "cena": 12,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 40,
+   "ozn": "-R3",
+   "koszyk": "K2",
+   "ilosc": 2,
+   "nazwa": "Rezystor 110 kΩ 2 W metalizowany (2 szeregowo = 220 kΩ, PE pod napięciem)",
+   "model": "110k 2W",
+   "fraza": "rezystor 110k 2W",
+   "cena": 1,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 41,
+   "ozn": "-R4",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Rezystor 6,8 kΩ 25 W (upływ AC 34 mA)",
+   "model": "RX24 6K8 25W",
+   "fraza": "rezystor mocy 6,8k 25W",
+   "cena": 8,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 42,
+   "ozn": "-V1, -C1, -R5, -R6, -R7",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Zestaw upływu DC 6 mA: 2× dioda 1N4007 (szeregowo), kondensator 22 µF 400 V, rezystor 56 kΩ 5 W, rezystor 100 kΩ 1 W, rezystor 100 Ω 2 W (ograniczenie prądu ładowania C1)",
+   "model": "1N4007, 22uF/400V, 56k 5W, 100k 1W, 100R 2W",
+   "fraza": "dioda 1N4007",
+   "cena": 10,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 43,
+   "ozn": "-RV1, -RV2, -RT1",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Warystor S14K275 (-RV1 pierwotne T1) + warystor S20K275 (-RV2 L230–N230, ochrona elektroniki bez SPD) + termistor NTC 10D-20 (softstart T1)",
+   "model": "S14K275, S20K275, NTC 10D-20",
+   "fraza": "warystor S14K275",
+   "cena": 25,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 44,
+   "ozn": "RV",
+   "koszyk": "K2",
+   "ilosc": 2,
+   "nazwa": "Warystor S10K275 – opakowanie 10 szt. (gasik równolegle do każdej z 13 cewek 230 V → 2 opakowania)",
+   "model": "S10K275",
+   "fraza": "warystor S10K275",
+   "cena": 5,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 45,
+   "ozn": "-G1",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Zasilacz DIN 5 V 6,5 A (RPi 5 + ekran + płytka przekaźników)",
+   "model": "Mean Well HDR-60-5",
+   "fraza": "Mean Well HDR-60-5",
+   "cena": 95,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 46,
+   "ozn": "-A1",
+   "koszyk": "K2",
+   "ilosc": 1,
+   "nazwa": "Karta microSD 32 GB A2 + kabel micro-HDMI–HDMI + kabel USB-C z otwartymi końcami (zasilanie z -G1)",
+   "model": "microSD 32GB A2, kabel micro HDMI, kabel USB-C",
+   "fraza": "karta microSD 32GB A2",
+   "cena": 45,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 51,
+   "ozn": "-T1",
+   "koszyk": "K3",
+   "ilosc": 1,
+   "nazwa": "Transformator toroidalny 230 V / 2×55 V, 160 VA – usterki napięciowe: buck −110 V (120 V) / boost +55 V (285 V) tylko w stanie gotowości ładowarki; wtórne zabezpieczone -F8 1,6 A",
+   "model": "Indel TST160/024 (230 V / 2×55 V, 2×1,45 A)",
+   "fraza": "transformator toroidalny TST160/024 2x55V",
+   "cena": 170,
+   "zrodlo": "szac."
+  },
+  {
+   "id": 60,
+   "ozn": "-T2, -T3, -T4, -A20",
+   "koszyk": "K5",
+   "ilosc": 1,
+   "nazwa": "Przekładniki CT i moduł DLB-A1 – z magazynu (moduł na zewnątrz, zasilany z L230/N230)",
+   "model": "DLB-A1",
+   "fraza": "",
+   "cena": 0,
+   "zrodlo": "magazyn"
+  },
+  {
+   "id": 61,
+   "ozn": "-W0",
+   "koszyk": "K5",
+   "ilosc": 1,
+   "nazwa": "Przewód zasilający z wtykiem CEE 32 A 5P – z magazynu (z ładowarki 3-faz.); wprowadzony dławnicą na zaciski -F1",
+   "model": "własny przewód 5G4/5G6 + wtyk CEE 32 A",
+   "fraza": "",
+   "cena": 0,
+   "zrodlo": "magazyn"
+  },
+  {
+   "id": 62,
+   "ozn": "-",
+   "koszyk": "K5",
+   "ilosc": 1,
+   "nazwa": "Przewody 6 mm² (tor 32 A do -F3) i 2,5 mm² (sekcja usterek, gniazda, cewki) – z magazynu; przewody sygnałowe do GPIO: dowolne z magazynu (≥0,5 mm²)",
+   "model": "LgY / H07V-K",
+   "fraza": "",
+   "cena": 0,
+   "zrodlo": "magazyn"
+  }
+ ],
+ "opcje": [
+  {
+   "nazwa": "Ekran = telefon/tablet w przeglądarce (RPi Zero 2 W zamiast RPi 4, bez -A2)",
+   "delta": -325,
+   "uwagi": "RPi Zero 2 W ok. 95 zł; interfejs WWW przez Wi-Fi (RPi jako punkt dostępowy). Tracisz ekran w drzwiach."
+  },
+  {
+   "nazwa": "Bez RCBO -F6 (zwykły B6 1P za 11 zł)",
+   "delta": -49,
+   "uwagi": "Obwody 230 V na drzwiach (kluczyk, E-STOP, lampki) i moduł DLB bez własnego RCD."
+  },
+  {
+   "nazwa": "3× PZEM-004T zamiast 1× (pomiar każdej fazy)",
+   "delta": 82,
+   "uwagi": "+2 moduły i 2 przejściówki USB-UART (po ok. 10 zł)."
+  },
+  {
+   "nazwa": "-P3 ZMPT101B + -A5 ADS1115 (pomiar N″–PE″)",
+   "delta": 57,
+   "uwagi": "Skreślone w v2 – reakcję ładowarki i tak obserwujemy; przydatne tylko do dokumentowania F4/F5."
+  },
+  {
+   "nazwa": "-M1 wentylator radiatora + termostat -B2",
+   "delta": 45,
+   "uwagi": "Skreślone w v2: 128 W przez ≤60 s na radiatorze 150×100 obywa się bez wentylatora; -B1 85 °C zostaje."
+  },
+  {
+   "nazwa": "Obudowa 700×500×250 zamiast 600×400×200",
+   "delta": 202,
+   "uwagi": "Więcej miejsca na montaż i zapas szyn."
+  },
+  {
+   "nazwa": "Zamiana faz F9 łącznikiem krzywkowym L-0-P 16 A zamiast -K2",
+   "delta": -17,
+   "uwagi": "Wybór ręczny, nie z ekranu. Mała oszczędność – nie polecam."
+  }
+ ]
+}

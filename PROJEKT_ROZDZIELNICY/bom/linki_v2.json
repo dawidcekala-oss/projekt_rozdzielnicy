@@ -1,0 +1,392 @@
+{
+ "1": {
+  "id": 1,
+  "url": null,
+  "url_typ": "brak",
+  "tytul_oferty": "",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "",
+  "pewnosc": "srednia"
+ },
+ "2": {
+  "id": 2,
+  "url": "https://allegro.pl/listing?string=RCBO+1P+N+B6+30mA+typ+A",
+  "url_typ": "listing",
+  "tytul_oferty": "RCBO 1P+N B6 30mA typ A",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "W rew. C liczyłem Noark za 95 zł; tańsze marki od ok. 55 zł. Można skreślić (−60 zł), jeśli akceptujesz obwody 230 V na drzwiach bez własnego RCD.",
+  "pewnosc": "srednia"
+ },
+ "3": {
+  "id": 3,
+  "url": "https://allegro.pl/oferta/noark-wylacznik-nadpradowy-3p-b-16a-100053-17401298491",
+  "url_typ": "oferta",
+  "tytul_oferty": "Wyłącznik nadprądowy Ex9BN 3P B16 Noark 100053",
+  "cena_pln": 29.78,
+  "sprzedawca": null,
+  "uwagi": "Dokładny kod 100053, 6 kA, 3 moduły.",
+  "pewnosc": "wysoka"
+ },
+ "4": {
+  "id": 4,
+  "url": "https://allegro.pl/listing?string=noark+ex9bn+2p+b16",
+  "url_typ": "listing",
+  "tytul_oferty": "Noark Ex9BN 2P B16 (listing)",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Brak oferty 2P B16 Noark w wynikach (4 zapytania). Alternatywa pełnowartościowa: RCBO/wyłącznik 2P B16 innej marki (Eaton, Hager, ETI) – aparat musi rozłączać L i N.",
+  "pewnosc": "niska"
+ },
+ "5": {
+  "id": 5,
+  "url": "https://allegro.pl/oferta/noark-wylacznik-nadpradowy-1p-b10a-6ka-ac-100006-8955242586",
+  "url_typ": "oferta",
+  "tytul_oferty": "NOARK Wyłącznik nadprądowy 1P B10A 6kA AC 100006",
+  "cena_pln": 8.19,
+  "sprzedawca": null,
+  "uwagi": "Dokładny kod 100006. Cena ze snippetu (zakres u innych 7,20-11,50 zł); ten sam sprzedawca co poz. 6.",
+  "pewnosc": "srednia"
+ },
+ "6": {
+  "id": 6,
+  "url": "https://allegro.pl/listing?string=podstawa+bezpiecznikowa+modułowa+5x20+TH35",
+  "url_typ": "listing",
+  "tytul_oferty": "podstawa bezpiecznikowa modułowa 5x20 TH35",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "",
+  "pewnosc": "srednia"
+ },
+ "7": {
+  "id": 7,
+  "url": "https://allegro.pl/oferta/stycznik-modulowy-instalacyjny-3f-25a-4z-4no-230v-8209154722",
+  "url_typ": "oferta",
+  "tytul_oferty": "Stycznik modułowy instalacyjny 3F 25A 4Z 4NO 230V Gacia",
+  "cena_pln": 49.23,
+  "sprzedawca": null,
+  "uwagi": "Zamiast Noark Ex9CH25 40 (85 zł). Inne oferty 4NO 25 A: 46–55 zł.",
+  "pewnosc": "srednia"
+ },
+ "8": {
+  "id": 8,
+  "url": "https://allegro.pl/listing?string=Adelid+stycznik+modułowy+25A+2NC+230V+SM2+25-02",
+  "url_typ": "listing",
+  "tytul_oferty": "Adelid stycznik modułowy 25A 2NC 230V SM2 25-02",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Zamiast Noark Ex9CH25 02 (77 zł). W wynikach 34–49 zł; sprawdzić, czy oferta to 2 styki NC (1P 2NC), nie 1NC.",
+  "pewnosc": "srednia"
+ },
+ "9": {
+  "id": 9,
+  "url": "https://allegro.pl/oferta/stycznik-modulowy-25-22-230v-25a-4z-3-faz-2no-2nc-12387352908",
+  "url_typ": "oferta",
+  "tytul_oferty": "Stycznik modułowy 25-22 230V 25A 4Z 3-faz 2NO 2NC Adelid",
+  "cena_pln": 59.99,
+  "sprzedawca": null,
+  "uwagi": "Zamiast Noark Ex9CH25 22 (110 zł). Stycznik -K2 (zamiana faz) i -K7 wypadły: patrz zmiany.",
+  "pewnosc": "srednia"
+ },
+ "10": {
+  "id": 10,
+  "url": "https://allegro.pl/oferta/stycznik-modulowy-25-22-230v-25a-4z-3-faz-2no-2nc-12387352908",
+  "url_typ": "oferta",
+  "tytul_oferty": "Stycznik modułowy 25-22 230V 25A 4Z 3-faz 2NO 2NC Adelid",
+  "cena_pln": 59.99,
+  "sprzedawca": null,
+  "uwagi": "Alternatywa ręczna: łącznik krzywkowy L-0-P 16 A 3P w obudowie (ok. 43 zł) – oszczędność 17 zł, ale usterkę wybiera się ręcznie, nie z ekranu.",
+  "pewnosc": "srednia"
+ },
+ "11": {
+  "id": 11,
+  "url": "https://allegro.pl/listing?string=przekaźnik+DPDT+230V+AC+2x5A+podstawka+szyna+DIN",
+  "url_typ": "listing",
+  "tytul_oferty": "przekaźnik DPDT 230V AC 2x5A podstawka szyna DIN",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Zastępują stycznik -K7 (110 zł). W wynikach 11–21 zł za przekaźnik z podstawką.",
+  "pewnosc": "srednia"
+ },
+ "12": {
+  "id": 12,
+  "url": "https://allegro.pl/oferta/f-f-czujnik-kolejnosci-i-zaniku-faz-ckf-b-11724890071",
+  "url_typ": "oferta",
+  "tytul_oferty": "PRZEKAŹNIK KOLEJNOŚCI I ZANIKU FAZ OPÓŹNIENIE 4S ASYMETRIA 55V F&F CKF-B",
+  "cena_pln": 77,
+  "sprzedawca": null,
+  "uwagi": "Dokładny model F&F CKF-B, 1NO 10 A, TH35. Inne oferty 70-82 zł (np. 6842090330).",
+  "pewnosc": "wysoka"
+ },
+ "13": {
+  "id": 13,
+  "url": "https://allegro.pl/oferta/blok-rozdzielczy-lkn-125a-1x35-1x16-6x16-szary-al-cu-15513900591",
+  "url_typ": "oferta",
+  "tytul_oferty": "Blok rozdzielczy LKN 125A (1x35/1x16 - 6x16) szary F-ELEKTRO",
+  "cena_pln": 31.67,
+  "sprzedawca": null,
+  "uwagi": "Tylko jeden blok (PE). Szyna N: zaciski RCD i gniazd łączone łańcuchowo (zaciski podwójne).",
+  "pewnosc": "srednia"
+ },
+ "14": {
+  "id": 14,
+  "url": "https://allegro.pl/oferta/gniazdo-silowe-stale-iolowane-pieciobiegunowe-ip44-32a-5p-125-6-pce-8498725841",
+  "url_typ": "oferta",
+  "tytul_oferty": "GNIAZDO SIŁOWE stałe izolowane pięciobiegunowe IP44 32A 5P 125-6 PCE",
+  "cena_pln": 29.9,
+  "sprzedawca": null,
+  "uwagi": "Dokładny model PCE 125-6. Tańsze oferty tego modelu od 18,76 zł (np. 7568391953, 5505718596).",
+  "pewnosc": "wysoka"
+ },
+ "15": {
+  "id": 15,
+  "url": "https://allegro.pl/oferta/pce-gniazdo-silowe-stale-ip44-16a-5p-400v-115-6-9433471041",
+  "url_typ": "oferta",
+  "tytul_oferty": "Gniazdo stałe PCE 16A 5P 400V 6h IP44 115-6K",
+  "cena_pln": 19.57,
+  "sprzedawca": null,
+  "uwagi": "Wariant 115-6K (kompaktowa obudowa PCE), parametry zgodne 16 A 5P 400 V IP44. Inne oferty 14,50-27 zł.",
+  "pewnosc": "wysoka"
+ },
+ "16": {
+  "id": 16,
+  "url": "https://allegro.pl/listing?string=hermes+gniazdo+pojedyncze+natynkowe+ip44+0321-01",
+  "url_typ": "listing",
+  "tytul_oferty": "Hermes gniazdo pojedyncze n/t z/u IP44 z klapką białe 0321-01 (Elektro-Plast Nasielsk)",
+  "cena_pln": 10.45,
+  "sprzedawca": null,
+  "uwagi": "Cena ze snippetu bez konkretnej oferty. Znaleziona pewna oferta tylko dla wersji podwójnej 0322-01: 11437916512. BOM: 2 szt.",
+  "pewnosc": "niska"
+ },
+ "17": {
+  "id": 17,
+  "url": "https://allegro.pl/oferta/przycisk-bezpieczenstwa-grzybek-xb2-bs542-metalowy-5006849653",
+  "url_typ": "oferta",
+  "tytul_oferty": "PRZYCISK BEZPIECZEŃSTWA GRZYBEK XB2 BS542 METALOWY",
+  "cena_pln": 20.0,
+  "sprzedawca": null,
+  "uwagi": "Adelid XB2-BS542 11,99 zł ma tylko 1NC – dokupić blok styku NO (ok. 8 zł) albo wybrać wersję BS545 (1NC+1NO). Odblokowanie obrotem, kołnierz metalowy.",
+  "pewnosc": "srednia"
+ },
+ "18": {
+  "id": 18,
+  "url": "https://allegro.pl/listing?string=prze%C5%82%C4%85cznik+kluczykowy+22mm+BG21+1NO",
+  "url_typ": "listing",
+  "tytul_oferty": "Przełącznik kluczykowy 22 mm BG21 (klon XB2/LAY5), 2 położenia, 1NO (listing)",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Klony BG21 16–30 zł; oryginał Spamel ST22-SAA-10 ok. 89 zł (oferta 14569609102), jeśli wolisz markowy. Kluczyk wyjmowany w położeniu 0.",
+  "pewnosc": "srednia"
+ },
+ "19": {
+  "id": 19,
+  "url": "https://allegro.pl/listing?string=AD16-22DS+230V",
+  "url_typ": "listing",
+  "tytul_oferty": "Kontrolka AD16-22DS/G-230V AC/DC zielona LED 22mm",
+  "cena_pln": 6.82,
+  "sprzedawca": null,
+  "uwagi": "Brak bezpośredniego URL oferty w wynikach; cena ze snippetu (zielona 6,82 zł, czerwona ok. 7,50 zł). Potrzeba 1 zielona + 1 czerwona.",
+  "pewnosc": "niska"
+ },
+ "20": {
+  "id": 20,
+  "url": "https://allegro.pl/oferta/skrzynka-szafa-obudowa-abs-plastikowa-600x400x200-8875818572",
+  "url_typ": "oferta",
+  "tytul_oferty": "Obudowa z tworzywa, hermetyczna z płytą 400x600x200 mm IP65",
+  "cena_pln": 197.39,
+  "sprzedawca": null,
+  "uwagi": "Zamiast 700×500×250 (399 zł). Mieści ok. 60 modułów na 2 szynach + płytkę przekaźników, RPi, radiator i mały toroid. Jeśli wolisz zapas miejsca: 700×500 za 399 zł.",
+  "pewnosc": "srednia"
+ },
+ "31": {
+  "id": 31,
+  "url": "https://allegro.pl/listing?string=Raspberry+Pi+4+Model+B+2GB",
+  "url_typ": "listing",
+  "tytul_oferty": "Raspberry Pi 4 Model B 2GB",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Zamiast RPi 5 4 GB (410 zł). Wystarcza na ekran + GPIO + Modbus. Wariant jeszcze tańszy: Raspberry Pi Zero 2 W (ok. 95 zł) z ekranem = telefon/tablet w przeglądarce (bez -A2).",
+  "pewnosc": "srednia"
+ },
+ "32": {
+  "id": 32,
+  "url": "https://allegro.pl/listing?string=ekran+dotykowy+7+cali+HDMI+1024x600+Raspberry+Pi",
+  "url_typ": "listing",
+  "tytul_oferty": "ekran dotykowy 7 cali HDMI 1024x600 Raspberry Pi",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Zamiast Raspberry Pi Touch Display 2 (282 zł). Oferty 106–160 zł. Potrzebny kabel micro-HDMI do RPi 4.",
+  "pewnosc": "srednia"
+ },
+ "33": {
+  "id": 33,
+  "url": "https://allegro.pl/listing?string=moduł+przekaźników+16+kanałów+5V+optoizolacja",
+  "url_typ": "listing",
+  "tytul_oferty": "moduł przekaźników 16 kanałów 5V optoizolacja",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Zastępuje płytkę 8 przekaźników (95 zł) + 5× Shelly Wave Pro 3 + kontroler Z-Wave (189 zł). Uwaga do oprogramowania: wejścia aktywne stanem niskim – używać GPIO z podciąganiem w górę (GPIO 2–8) albo dodać rezystory, żeby przekaźniki nie załączały się przy starcie RPi.",
+  "pewnosc": "srednia"
+ },
+ "34": {
+  "id": 34,
+  "url": "https://allegro.pl/oferta/optoizolator-1-kanalowy-ac-220v-separacja-galwaniczna-pc817-16822611454",
+  "url_typ": "oferta",
+  "tytul_oferty": "MSALAMON Optoizolator 1-kanałowy AC 220V PC817",
+  "cena_pln": 15.79,
+  "sprzedawca": null,
+  "uwagi": "Zastępują wejścia SW Shelly. Wersja 3-kanałowa ok. 46 zł.",
+  "pewnosc": "srednia"
+ },
+ "35": {
+  "id": 35,
+  "url": "https://allegro.pl/oferta/miernik-amperometr-peacefair-pzem-004t-ac-100a-14333289502",
+  "url_typ": "oferta",
+  "tytul_oferty": "Miernik Amperometr Peacefair PZEM-004T AC 100A",
+  "cena_pln": 40.99,
+  "sprzedawca": null,
+  "uwagi": "Zamiast 3× PZEM-016 + izolowany konwerter RS485 (545 zł). Jedna faza wystarczy: usterki napięciowe są na L1, obecność/kolejność faz L1–L3 potwierdza -K13 CKF-B. Opcja: 3 szt. (+82 zł) + przejściówki USB-UART.",
+  "pewnosc": "srednia"
+ },
+ "36": {
+  "id": 36,
+  "url": "https://allegro.pl/produkt/rezystor-drutowy-100w-1-ohm-opornik-d9958fa9-bd46-4f97-ba6d-6f46a883fdbc",
+  "url_typ": "produkt",
+  "tytul_oferty": "Rezystor drutowy 100W 1 ohm opornik (AH-100WS 1R J)",
+  "cena_pln": 33.9,
+  "sprzedawca": null,
+  "uwagi": "Odpowiednik RX24 100W 1R w obudowie alu z radiatorem; potrzeba 2 szt. Brak tańszej oferty RX24 100W 1R w wynikach.",
+  "pewnosc": "srednia"
+ },
+ "37": {
+  "id": 37,
+  "url": "https://allegro.pl/oferta/radiator-naturalny-aluminiowy-150-mm-17054683198",
+  "url_typ": "oferta",
+  "tytul_oferty": "RADIATOR NATURALNY ALUMINIOWY 150 MM",
+  "cena_pln": 27.06,
+  "sprzedawca": null,
+  "uwagi": "Długość 150 mm, 24 żebra; szerokość/wysokość nie potwierdzone (150x100x40). Alternatywa: 150/130/40 mm używany 45 zł.",
+  "pewnosc": "niska"
+ },
+ "38": {
+  "id": 38,
+  "url": "https://allegro.pl/oferta/termostat-bimetaliczny-nc-10a-250v-85c-ksd301-7229676742",
+  "url_typ": "oferta",
+  "tytul_oferty": "Termostat bimetaliczny NC 10A 250V 85C ksd301",
+  "cena_pln": 3.6,
+  "sprzedawca": "atelektronics",
+  "uwagi": "85C NC. Wersja 60C NO osobno ok. 2,55-3,00 zł (listing 'KSD301 60C NO'); u tego samego sprzedawcy różne temp.",
+  "pewnosc": "wysoka"
+ },
+ "39": {
+  "id": 39,
+  "url": "https://allegro.pl/oferta/rezystor-drutowy-50w-100-ohm-7228127496",
+  "url_typ": "oferta",
+  "tytul_oferty": "REZYSTOR DRUTOWY 50W 100 OHM",
+  "cena_pln": 6.9,
+  "sprzedawca": null,
+  "uwagi": "Drutowy z radiatorem alu, 100R 50W, montaż śrubowy (odpowiednik RX24). Inne oferty 10-15 zł.",
+  "pewnosc": "srednia"
+ },
+ "41": {
+  "id": 41,
+  "url": "https://allegro.pl/listing?string=rezystor+6%2C8k+25W",
+  "url_typ": "listing",
+  "tytul_oferty": "Rezystor mocy 6,8 kohm 25W z radiatorem",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Brak oferty 6K8 25W w wynikach (tylko 6R8 = 6,8 Ω). Alternatywa: 2× 3,3 kΩ 25 W szeregowo (=6,6 kΩ, 35 mA) albo 2× 13 kΩ 10 W równolegle (=6,5 kΩ). NIE 2× 6,8 kΩ równolegle (3,4 kΩ → 68 mA).",
+  "pewnosc": "niska"
+ },
+ "42": {
+  "id": 42,
+  "url": "https://allegro.pl/oferta/dioda-prostownicza-1n4007-1000v-1a-10szt-7641932208",
+  "url_typ": "oferta",
+  "tytul_oferty": "Dioda Prostownicza 1N4007 1000V 1A 10szt",
+  "cena_pln": 10.0,
+  "sprzedawca": null,
+  "uwagi": "Cena = suma składników: diody 1N4007 10 szt. 2,20 zł (oferta) + kondensator 22 µF/400 V ok. 3 zł + 56 kΩ 5 W ok. 2 zł + 100 kΩ 1 W ok. 1 zł + 100 Ω 2 W ok. 1 zł – szukać u tego samego sprzedawcy elektroniki.",
+  "pewnosc": "srednia"
+ },
+ "43": {
+  "id": 43,
+  "url": "https://allegro.pl/oferta/warystor-14mm-tnt-s14k275-430v-275v-ac-350v-dc-275vac-14471524822",
+  "url_typ": "oferta",
+  "tytul_oferty": "WARYSTOR 14mm TNT S14K275 430V 275V AC 350V DC 275VAC",
+  "cena_pln": 25.0,
+  "sprzedawca": null,
+  "uwagi": "Cena = suma: S14K275 5 szt. 5,49 zł (oferta) + S20K275 ok. 2,5 zł + NTC 10D-20 ok. 17 zł (tańsza alternatywa NTC 10D-15 ok. 5 zł).",
+  "pewnosc": "srednia"
+ },
+ "44": {
+  "id": 44,
+  "url": "https://allegro.pl/oferta/10-szt-warystor-avx-275vac-ve13-s10k275-10-10791276334",
+  "url_typ": "oferta",
+  "tytul_oferty": "[10 szt] Warystor AVX 275Vac VE13= S10K275 Ø10",
+  "cena_pln": 4.9,
+  "sprzedawca": null,
+  "uwagi": "Zamiennik AVX VE13 = S10K275, opak. 10 szt. Na 12 szt. potrzeba 2 opak. Oryginał EPCOS S10K275 w ofercie 18376389078.",
+  "pewnosc": "wysoka"
+ },
+ "45": {
+  "id": 45,
+  "url": "https://allegro.pl/produkt/zasilacz-mean-well-hdr-60-5-din-5-v-6-5-a-32-w-21be4e08-7c77-4c54-8578-e4a3f7f81d9c",
+  "url_typ": "produkt",
+  "tytul_oferty": "Zasilacz Mean Well HDR-60-5 DIN 5 V 6,5 A 32 W",
+  "cena_pln": 80.81,
+  "sprzedawca": null,
+  "uwagi": "Karta produktu; oferty 80,81-99,99 zł (Smart). 5 V / 6,5 A / 32,5 W, szyna DIN.",
+  "pewnosc": "srednia"
+ },
+ "46": {
+  "id": 46,
+  "url": "https://allegro.pl/listing?string=karta+microSD+32GB+A2",
+  "url_typ": "listing",
+  "tytul_oferty": "karta microSD 32GB A2",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "",
+  "pewnosc": "srednia"
+ },
+ "51": {
+  "id": 51,
+  "url": "https://allegro.pl/listing?string=transformator+toroidalny+TST160/024+2x55V",
+  "url_typ": "listing",
+  "tytul_oferty": "transformator toroidalny TST160/024 2x55V",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "Zamiast 630 VA 2×30 V (569 zł), który i tak nie przekraczał progów ładowarek (150/270 V). Oferty 160 VA 2×55 V były w wynikach bez widocznej ceny – szacunek 150–190 zł; 200 VA 2×55 V podobnie.",
+  "pewnosc": "srednia"
+ },
+ "60": {
+  "id": 60,
+  "url": null,
+  "url_typ": "brak",
+  "tytul_oferty": "",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "",
+  "pewnosc": "srednia"
+ },
+ "61": {
+  "id": 61,
+  "url": null,
+  "url_typ": "brak",
+  "tytul_oferty": "",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "",
+  "pewnosc": "srednia"
+ },
+ "62": {
+  "id": 62,
+  "url": null,
+  "url_typ": "brak",
+  "tytul_oferty": "",
+  "cena_pln": null,
+  "sprzedawca": null,
+  "uwagi": "",
+  "pewnosc": "srednia"
+ }
+}
